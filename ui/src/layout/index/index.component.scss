@@ -1,0 +1,301 @@
+@import "index";
+// 字体颜色
+$font-color: $normal-color;
+// 头部背景色
+$header-background-color: $primary-color;
+// 头部文字颜色
+$header-color: lighten($primary-color, 60%);
+// 菜单栏背景色
+$sider-background-color: #e8e8e8;
+// 标签页背景色
+$tabs-background-color: #f5f5f5;
+// 正文背景色
+$content-background-color: lighten($primary-color, 100%);
+// 头部高度
+$header-height: 46px;
+// 标签页高度
+$tabs-height: 38px;
+// 菜单栏宽度
+$sider-width: 200px;
+// 悬停背景色
+$sider-node-hover-background-color: #d0d0d0;
+// 悬停文字颜色
+$sider-node-hover-color: $normal-color;
+// 选中背景颜色
+$selected-background-color: $assist-color;
+// 选中文字颜色
+$selected-color: white;
+// 动画时间
+$transition-duration: 0.3s;
+// 阴影
+$box-shadow: 1px 1px 1px rgba(200, 200, 200, 0.1);
+// 悬停效果
+@mixin hover {
+  color: $sider-node-hover-color;
+  background-color: $sider-node-hover-background-color;
+}
+
+// 选中效果
+@mixin activated {
+  color: $selected-color;
+  background-color: $selected-background-color;
+}
+
+// 框架页样式
+app-index {
+  color: $font-color;
+  ul,
+  li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  > app-header {
+    background-color: $header-background-color;
+    color: $header-color;
+    height: $header-height;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0; // box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    box-sizing: border-box;
+    > .logo {
+      display: flex;
+      align-items: center;
+      img {
+        width: 35px;
+      }
+      .title {
+        margin-left: 10px;
+      }
+    }
+    > .nav {
+      display: flex;
+      align-items: center;
+      > span {
+        cursor: default;
+      }
+      > p {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 2px;
+        > span {
+          cursor: default;
+          &.info {
+            font-size: 12px;
+            padding-left: 5px;
+          }
+          &[class^="icon-"] {
+            font-size: 18px;
+            display: inline-block;
+          }
+        }
+        &:hover {
+          background-color: lighten($primary-color, 10%);
+          transition: color $transition-duration,
+            background-color $transition-duration;
+        }
+      }
+    }
+  }
+  > app-tabs {
+    background-color: $tabs-background-color;
+    width: 100%;
+    height: $tabs-height;
+    position: fixed;
+    top: $header-height;
+    left: $sider-width;
+    z-index: 11; // box-shadow: $box-shadow;
+    transition: left $transition-duration;
+    font-size: 14px;
+    ul {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      li {
+        min-width: 90px;
+        max-width: 180px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        box-sizing: border-box;
+        padding-left: 10px;
+        padding-right: 30px;
+        user-select: none;
+        border-right: 1px solid #fff;
+        position: relative;
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-left: 5px;
+          color: lighten($normal-color, 30%);
+          flex: 1;
+        }
+        i {
+          font-size: 16px;
+        }
+        .close {
+          width: 20px;
+          height: 20px;
+          margin-right: 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          right: 0;
+          i {
+            font-weight: bold;
+            opacity: 0;
+            transition: color $transition-duration;
+            font-size: 12px;
+            padding: 2px;
+            border-radius: 10px;
+          }
+          &:hover {
+            i {
+              background: #e8eaed;
+            }
+          }
+        }
+        &.active {
+          background-color: white;
+          span {
+            color: $normal-color;
+          }
+        }
+        &.active,
+        &:hover {
+          .close {
+            i {
+              color: black;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  > app-sider {
+    background-color: $sider-background-color;
+    height: 100%;
+    width: $sider-width;
+    position: fixed;
+    top: $header-height + $tabs-height;
+    left: 0;
+    z-index: 11;
+    box-shadow: $box-shadow;
+    transition: width $transition-duration,
+      background-color $transition-duration;
+    li {
+      a {
+        padding: 0 15px;
+        transition: background-color $transition-duration;
+        display: flex;
+        align-items: center;
+        height: $tabs-height;
+        font-size: 14px;
+        color: $font-color;
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin: 0 5px;
+          transition: visibility $transition-duration,
+            opacity $transition-duration;
+          flex: 1;
+        }
+        i {
+          font-size: 16px;
+          &.arrow {
+            transition: visibility $transition-duration,
+              opacity $transition-duration;
+          }
+        }
+        &:hover {
+          @include hover;
+        }
+        &.active {
+          @include activated;
+          &:hover {
+            @include activated;
+          }
+        }
+      }
+    }
+  }
+  > app-content {
+    background-color: $content-background-color;
+    padding-top: $header-height + $tabs-height;
+    padding-left: $sider-width;
+    transition: padding $transition-duration;
+    height: 100%;
+    display: block;
+  }
+  > app-toggle {
+    background-color: $sider-background-color;
+    height: $tabs-height;
+    width: $sider-width;
+    position: fixed;
+    top: $header-height;
+    left: 0;
+    z-index: 12;
+    box-shadow: $box-shadow;
+    transition: width $transition-duration;
+    .toggle {
+      height: $tabs-height;
+      width: $tabs-height + 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: color $transition-duration,
+        background-color $transition-duration;
+      &:hover {
+        color: $sider-node-hover-color;
+        background-color: $sider-node-hover-background-color;
+      }
+      &.selected {
+        color: $selected-color;
+        background-color: $selected-background-color;
+      }
+    }
+  }
+}
+
+// 框架页中缩起菜单栏后的样式
+app-index.sider-shrink {
+  > app-tabs {
+    left: $tabs-height + 10;
+  }
+  > app-content {
+    padding-left: $tabs-height + 10;
+  }
+  > app-sider,
+  > app-toggle {
+    width: $tabs-height + 10;
+  }
+  > app-sider {
+    li {
+      a {
+        span,
+        i.arrow {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+      ul {
+        visibility: hidden;
+        height: 0;
+        opacity: 0;
+      }
+    }
+  }
+}
