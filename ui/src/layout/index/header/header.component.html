@@ -1,0 +1,17 @@
+<div class="logo">
+  <img src="../../../assets/logo.png" />
+  <span class="title">NG-NEST</span>
+</div>
+<div class="nav">
+  <p>
+    <span class="icon-message-circle" title="消息"></span>
+  </p>
+  <p>
+    <span class="icon-user" title="用户"></span>
+    <span class="info">{{auth.user.name}}</span>
+  </p>
+  <p *ngIf="auth.user.name" (click)="action('logout')">
+    <span class="icon-log-out " title="登出"></span>
+    <span class="info">登出</span>
+  </p>
+</div>

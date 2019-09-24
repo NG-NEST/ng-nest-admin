@@ -1,10 +1,18 @@
-:root {
-  --nm-primary-color-dark: #303f9f;
-  --nm-primary-color: #3f51b5;
-  --nm-primary-color-light: #c5cae9;
-  --nm-primary-color-text: #ffffff;
-  --nm-accent-color: #ff5722;
-  --nm-primary-text-color: #212121;
-  --nm-secondary-text-color: #757575;
-  --nm-divider-color: #bdbdbd;
-}
+
+// 样式前缀
+$prefix: nm;
+// 颜色
+$primary-color: #3d404d;
+$assist-color: #3194d0;
+$normal-color: #2e2e2e;
+$danger-color: #e9686b;
+$orange-color: orange;
+$yellow-color: #b39828;
+$a-color: $assist-color;
+$a-hover-color: lighten($a-color, 10%);
+// 内容内边距
+$padding-content: 15px;
+// 边框颜色
+$border-color: #dadada;
+// 输入框
+$input-focus-border-color: $a-color;

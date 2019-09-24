@@ -10,7 +10,7 @@ export class AppComponent {
   title = "ng-nest-admin-ui";
   constructor(@Inject(DOCUMENT) private doc: Document) {
     let color = getComputedStyle(this.doc.documentElement).getPropertyValue(
-      "--nm-primary-color"
+      "--primary-color"
     );
     console.log(color);
   }

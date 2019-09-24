@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let item of indexService.session.tabsPage" (click)="tab(item)" [ngClass]="{'active': item.router==indexService.session.activatedPage}">
+    <i class="{{item.icon}}"></i>
+    <span>{{item.label}}</span>
+    <div class="close" (click)="close(item)" *ngIf="indexService.session.tabsPage.length>1"><i title="关闭" class="icon-x"></i></div>
+  </li>
+</ul>
