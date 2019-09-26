@@ -44,6 +44,14 @@ export const mainRoutes: Routes = [
 export const layoutRoutes: Routes = [
   // 如果路由为空就指向配置的默认首页
   { path: "", redirectTo: environment.defaultPage, pathMatch: "full" },
+  // 仪表盘
+  {
+    path: "dashboard",
+    loadChildren: () =>
+      import("../main/dashboard/dashboard.module").then(x => x.DashboardModule),
+    canLoad: [AuthGuard]
+  },
+
   // 示例功能
   // { path: 'examples', loadChildren: 'src/main/examples/example.module#ExampleModule', canLoad: [AuthGuard] },
   // // 工作型首页

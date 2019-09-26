@@ -1,10 +1,10 @@
 <a
   *ngIf="option.router && option.router != '$'"
   (click)="sider(option)"
-  routerLink="{{ option.router }}"
-  routerLinkActive="active"
-  title="{{ option.title }}"
-  [ngStyle]="{ 'padding-left.px': 15 * level }"
+  [routerLink]="option.router"
+  [routerLinkActive]="'active'"
+  [title]="option.title"
+  [style.padding-left.px]="15 * level"
 >
   <ng-container
     *ngTemplateOutlet="itemTemp; context: { option: option }"
@@ -13,7 +13,7 @@
 <a
   *ngIf="!option.router || option.router == '$'"
   (click)="toggle($event, option)"
-  title="{{ option.title }}"
+  [title]="option.title"
   [ngStyle]="{ 'padding-left.px': 15 * level }"
 >
   <ng-container

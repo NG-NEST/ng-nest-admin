@@ -64,17 +64,38 @@ export class AuthService {
    */
   login(user: User): Observable<any> {
     return Observable.create(x => {
-      this.httpService.post(`${this.controllerName}/login`, user).subscribe(
-        z => {
-          this.user = Object.assign(user, z);
-          this.isLoggedIn = true;
-          x.next(z);
-          x.complete();
-        },
-        k => {
-          x.error(k);
+      let test = {
+        name: "admin",
+        token: "123",
+        permissions: {
+          actions: [],
+          menus: [
+            {
+              id: "1",
+              label: "仪表盘",
+              router: "dashboard",
+              icon: "icon-zap",
+              parentId: null,
+              path: "1"
+            }
+          ]
         }
-      );
+      };
+      this.user = Object.assign(user, test);
+      this.isLoggedIn = true;
+      x.next(this.user);
+      x.complete();
+      // this.httpService.post(`${this.controllerName}/login`, user).subscribe(
+      //   z => {
+      //     this.user = Object.assign(user, z);
+      //     this.isLoggedIn = true;
+      //     x.next(z);
+      //     x.complete();
+      //   },
+      //   k => {
+      //     x.error(k);
+      //   }
+      // );
     });
   }
 

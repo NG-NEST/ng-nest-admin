@@ -1,15 +1,25 @@
-<form>
+<form (submit)="login()" [formGroup]="userForm">
   <ul>
     <li class="login">
-      <img class="logo" src="../../assets/logo.png" />
-      <span>NG-NEST</span>
+      <img class="logo" src="assets/img/logo.png" />
+      <span>NG-NEST-ADMIN</span>
     </li>
     <li>
-      <nm-input [(ngModel)]="user.account" name="account"></nm-input>
+      <nm-input
+        [formControl]="userForm.get('account')"
+        [nmIcon]="'ado-user'"
+        [nmIconLayout]="'left'"
+      ></nm-input>
     </li>
     <li>
-      <nm-input [(ngModel)]="user.password" name="password"></nm-input>
+      <nm-input
+        [formControl]="userForm.get('password')"
+        [nmIcon]="'ado-lock'"
+        [nmIconLayout]="'left'"
+      ></nm-input>
     </li>
-    <li class="submit"></li>
+    <li class="submit">
+      <button type="submit">登录</button>
+    </li>
   </ul>
 </form>
