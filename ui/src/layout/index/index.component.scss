@@ -1,30 +1,30 @@
 @import "index";
 // 字体颜色
-$font-color: $normal-color;
+$font-color: $primary-text-color;
 // 头部背景色
 $header-background-color: $primary-color;
 // 头部文字颜色
-$header-color: lighten($primary-color, 60%);
+$header-color: $primary-color-text;
 // 菜单栏背景色
-$sider-background-color: #e8e8e8;
+$sider-background-color: #f0f0f0;
 // 标签页背景色
-$tabs-background-color: #f5f5f5;
+$tabs-background-color: #f0f0f0;
 // 正文背景色
-$content-background-color: lighten($primary-color, 100%);
+$content-background-color: $primary-text-color;
 // 头部高度
-$header-height: 46px;
+$header-height: 3.5rem;
 // 标签页高度
-$tabs-height: 38px;
+$tabs-height: 2.375rem;
 // 菜单栏宽度
-$sider-width: 200px;
+$sider-width: 12.5rem;
 // 悬停背景色
-$sider-node-hover-background-color: #d0d0d0;
+$sider-node-hover-background-color: rgba(0, 0, 0, 0.02);
 // 悬停文字颜色
-$sider-node-hover-color: $normal-color;
+$sider-node-hover-color: $primary-text-color;
 // 选中背景颜色
-$selected-background-color: $assist-color;
+$selected-background-color: rgba(0, 0, 0, 0.04);
 // 选中文字颜色
-$selected-color: white;
+$selected-color: $primary-color;
 // 动画时间
 $transition-duration: 0.3s;
 // 阴影
@@ -57,21 +57,22 @@ app-index {
     width: 100%;
     position: fixed;
     top: 0;
-    left: 0; // box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+    left: 0;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 0 1rem;
     box-sizing: border-box;
     > .logo {
       display: flex;
       align-items: center;
       img {
-        width: 35px;
+        width: 2.25rem;
       }
       .title {
-        margin-left: 10px;
+        font-size: 1.5rem;
+        margin-left: 0.625rem;
       }
     }
     > .nav {
@@ -80,24 +81,25 @@ app-index {
       > span {
         cursor: default;
       }
-      > p {
+      > a {
         display: flex;
         align-items: center;
-        padding: 6px 12px;
-        border-radius: 2px;
+        padding: 0 0.625rem;
+        height: 2rem;
+        line-height: 2rem;
+        border-radius: 0.125rem;
+        font-size: 0.875rem;
         > span {
           cursor: default;
           &.info {
-            font-size: 12px;
-            padding-left: 5px;
-          }
-          &[class^="icon-"] {
-            font-size: 18px;
-            display: inline-block;
+            padding-left: 0.375rem;
           }
         }
+        > .nm-icon {
+          font-size: 1.25rem;
+        }
         &:hover {
-          background-color: lighten($primary-color, 10%);
+          background-color: rgba(0, 0, 0, 0.2);
           transition: color $transition-duration,
             background-color $transition-duration;
         }
@@ -111,23 +113,23 @@ app-index {
     position: fixed;
     top: $header-height;
     left: $sider-width;
-    z-index: 11; // box-shadow: $box-shadow;
+    z-index: 11;
     transition: left $transition-duration;
-    font-size: 14px;
+    font-size: 0.875rem;
     ul {
       display: flex;
       align-items: center;
       height: 100%;
       li {
-        min-width: 90px;
-        max-width: 180px;
+        min-width: 5.625rem;
+        max-width: 11.25rem;
         height: 100%;
         display: flex;
         align-items: center;
         white-space: nowrap;
         box-sizing: border-box;
-        padding-left: 10px;
-        padding-right: 30px;
+        padding-left: 0.625rem;
+        padding-right: 1.875rem;
         user-select: none;
         border-right: 1px solid #fff;
         position: relative;
@@ -135,48 +137,38 @@ app-index {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          margin-left: 5px;
-          color: lighten($normal-color, 30%);
+          margin-left: 0.375rem;
           flex: 1;
         }
-        i {
-          font-size: 16px;
-        }
         .close {
-          width: 20px;
-          height: 20px;
-          margin-right: 4px;
+          margin-right: 0.25rem;
           display: flex;
           justify-content: center;
           align-items: center;
           position: absolute;
           right: 0;
-          i {
+          .nm-icon {
             font-weight: bold;
             opacity: 0;
             transition: color $transition-duration;
-            font-size: 12px;
-            padding: 2px;
-            border-radius: 10px;
-          }
-          &:hover {
-            i {
-              background: #e8eaed;
-            }
+            padding: 0.125rem;
           }
         }
         &.active {
           background-color: white;
           span {
-            color: $normal-color;
+            color: $primary-text-color;
           }
         }
         &.active,
         &:hover {
           .close {
-            i {
-              color: black;
+            .nm-icon {
+              color: $secondary-text-color;
               opacity: 1;
+              &:hover {
+                color: $primary-text-color;
+              }
             }
           }
         }
@@ -191,29 +183,28 @@ app-index {
     top: $header-height + $tabs-height;
     left: 0;
     z-index: 11;
-    box-shadow: $box-shadow;
     transition: width $transition-duration,
       background-color $transition-duration;
     li {
       a {
-        padding: 0 15px;
+        padding: 0 1rem;
         transition: background-color $transition-duration;
         display: flex;
         align-items: center;
         height: $tabs-height;
-        font-size: 14px;
+        font-size: 0.875rem;
         color: $font-color;
         span {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          margin: 0 5px;
+          margin: 0 0.375rem;
           transition: visibility $transition-duration,
             opacity $transition-duration;
           flex: 1;
         }
-        i {
-          font-size: 16px;
+        .nm-icon {
+          font-size: 1.125rem;
           &.arrow {
             transition: visibility $transition-duration,
               opacity $transition-duration;
@@ -224,6 +215,7 @@ app-index {
         }
         &.active {
           @include activated;
+          border-right: 2px solid $primary-color;
           &:hover {
             @include activated;
           }
@@ -232,7 +224,6 @@ app-index {
     }
   }
   > app-content {
-    background-color: $content-background-color;
     padding-top: $header-height + $tabs-height;
     padding-left: $sider-width;
     transition: padding $transition-duration;
@@ -247,17 +238,18 @@ app-index {
     top: $header-height;
     left: 0;
     z-index: 12;
-    box-shadow: $box-shadow;
     transition: width $transition-duration;
     .toggle {
       height: $tabs-height;
-      width: $tabs-height + 10;
+      width: $tabs-height + 0.625rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
       transition: color $transition-duration,
         background-color $transition-duration;
+      .nm-icon {
+        font-size: 1.125rem;
+      }
       &:hover {
         color: $sider-node-hover-color;
         background-color: $sider-node-hover-background-color;
@@ -273,14 +265,14 @@ app-index {
 // 框架页中缩起菜单栏后的样式
 app-index.sider-shrink {
   > app-tabs {
-    left: $tabs-height + 10;
+    left: $tabs-height + 0.625rem;
   }
   > app-content {
-    padding-left: $tabs-height + 10;
+    padding-left: $tabs-height + 0.625rem;
   }
   > app-sider,
   > app-toggle {
-    width: $tabs-height + 10;
+    width: $tabs-height + 0.625rem;
   }
   > app-sider {
     li {

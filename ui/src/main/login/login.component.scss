@@ -5,7 +5,6 @@ app-login {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $primary-color;
   ul {
     background: #e7e7e7;
     padding: 50px 80px;
@@ -24,25 +23,6 @@ app-login {
       }
       nm-input.icon-left > p > input {
         padding-left: 33px;
-      }
-      > nm-button,
-      > nm-button > p,
-      > nm-button > p > button {
-        width: 100%;
-      }
-      > nm-button > p > button {
-        display: flex;
-        justify-content: center;
-        border-radius: 3px;
-        background: #3194d0;
-        padding: 8px;
-        border-width: 0;
-        > span {
-          color: #fff;
-        }
-        > span[class*="icon-"] {
-          font-size: 20px;
-        }
       }
       &.login {
         display: flex;

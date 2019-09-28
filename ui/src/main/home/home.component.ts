@@ -1,18 +1,18 @@
 import { Component, ViewEncapsulation } from "@angular/core";
 
 /**
- * 仪表盘
+ * 首页
  *
  * @export
- * @class DashboardComponent
+ * @class HomeComponent
  */
 @Component({
-  selector: "app-dashboard",
+  selector: "app-home",
   template: `
-    仪表盘
+    首页
   `,
   encapsulation: ViewEncapsulation.None
 })
-export class DashboardComponent {
+export class HomeComponent {
   constructor() {}
 }

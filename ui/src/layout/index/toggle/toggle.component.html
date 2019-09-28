@@ -1,7 +1,7 @@
 <div
   class="toggle"
   (click)="toggle()"
-  [ngClass]="{ selected: indexService.local.siderShrink }"
+  [ngClass]="{ selected: !indexService.local.siderShrink }"
 >
-  <span class="icon-menu"></span>
+  <nm-icon [nmType]="'ado-unordered-list'"></nm-icon>
 </div>
