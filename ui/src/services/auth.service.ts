@@ -72,11 +72,19 @@ export class AuthService {
           menus: [
             {
               id: "1",
-              label: "仪表盘",
-              router: "dashboard",
-              icon: "icon-zap",
+              label: "首页",
+              router: "home",
+              icon: "ado-home",
               parentId: null,
               path: "1"
+            },
+            {
+              id: "2",
+              label: "仪表盘",
+              router: "dashboard",
+              icon: "ado-radar-chart",
+              parentId: null,
+              path: "2"
             }
           ]
         }

@@ -1,17 +1,17 @@
 <div class="logo">
   <img src="assets/img/logo-white.png" />
-  <span class="title">NG-NEST</span>
+  <span class="title">NG-NEST-ADMIN</span>
 </div>
 <div class="nav">
-  <p>
-    <span class="icon-message-circle" title="消息"></span>
-  </p>
-  <p>
-    <span class="icon-user" title="用户"></span>
+  <a>
+    <nm-icon [nmType]="'ado-message'"></nm-icon>
+  </a>
+  <a>
+    <nm-icon [nmType]="'ado-user'"></nm-icon>
     <span class="info">{{ auth.user.name }}</span>
-  </p>
-  <p *ngIf="auth.user.name" (click)="action('logout')">
-    <span class="icon-log-out " title="登出"></span>
+  </a>
+  <a *ngIf="auth.user.name" (click)="action('logout')">
+    <nm-icon [nmType]="'ado-logout'"></nm-icon>
     <span class="info">登出</span>
-  </p>
+  </a>
 </div>

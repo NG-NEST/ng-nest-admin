@@ -1,18 +1,11 @@
-
-// 样式前缀
-$prefix: nm;
-// 颜色
-$primary-color: #3d404d;
-$assist-color: #3194d0;
-$normal-color: #2e2e2e;
-$danger-color: #e9686b;
-$orange-color: orange;
-$yellow-color: #b39828;
-$a-color: $assist-color;
-$a-hover-color: lighten($a-color, 10%);
-// 内容内边距
-$padding-content: 15px;
-// 边框颜色
-$border-color: #dadada;
-// 输入框
-$input-focus-border-color: $a-color;
+/*
+ * 颜色参数
+ */
+$primary-color: var(--primary-color);
+$primary-color-dark: var(--primary-color-dark);
+$primary-color-light: var(--primary-color-light);
+$primary-color-text: var(--primary-color-text);
+$accent-color: var(--accent-color);
+$primary-text-color: var(--primary-text-color);
+$secondary-text-color: var(--secondary-text-color);
+$divider-color: var(--divider-color);
