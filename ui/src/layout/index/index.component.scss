@@ -133,6 +133,7 @@ app-index {
         user-select: none;
         border-right: 1px solid #fff;
         position: relative;
+        transition: background-color $transition-duration;
         span {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -188,7 +189,8 @@ app-index {
     li {
       a {
         padding: 0 1rem;
-        transition: background-color $transition-duration;
+        transition: background-color $transition-duration,
+          border-color $transition-duration;
         display: flex;
         align-items: center;
         height: $tabs-height;
@@ -215,7 +217,6 @@ app-index {
         }
         &.active {
           @include activated;
-          border-right: 2px solid $primary-color;
           &:hover {
             @include activated;
           }
@@ -231,7 +232,7 @@ app-index {
     display: block;
   }
   > app-toggle {
-    background-color: $sider-background-color;
+    background-color: $selected-background-color;
     height: $tabs-height;
     width: $sider-width;
     position: fixed;
@@ -239,16 +240,21 @@ app-index {
     left: 0;
     z-index: 12;
     transition: width $transition-duration;
+    border-bottom: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    box-sizing: border-box;
     .toggle {
       height: $tabs-height;
       width: $tabs-height + 0.625rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      float: right;
       transition: color $transition-duration,
         background-color $transition-duration;
       .nm-icon {
         font-size: 1.125rem;
+        transition: transform $transition-duration;
       }
       &:hover {
         color: $sider-node-hover-color;
@@ -257,6 +263,9 @@ app-index {
       &.selected {
         color: $selected-color;
         background-color: $selected-background-color;
+        .nm-icon {
+          transform: rotate(180deg);
+        }
       }
     }
   }
