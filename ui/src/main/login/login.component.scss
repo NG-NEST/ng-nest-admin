@@ -40,7 +40,12 @@ app-login {
         }
       }
       &.submit {
-        margin-top: 30px;
+        margin-top: 1rem;
+        > nm-button {
+          width: 100%;
+          font-size: 0.875rem;
+          height: 1.875rem;
+        }
       }
     }
   }

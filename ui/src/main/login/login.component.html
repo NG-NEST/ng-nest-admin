@@ -6,20 +6,21 @@
     </li>
     <li>
       <nm-input
-        [formControl]="userForm.get('account')"
+        [formControlName]="'account'"
         [nmIcon]="'ado-user'"
         [nmIconLayout]="'left'"
       ></nm-input>
     </li>
     <li>
       <nm-input
-        [formControl]="userForm.get('password')"
+        [formControlName]="'password'"
         [nmIcon]="'ado-lock'"
+        [nmType]="'password'"
         [nmIconLayout]="'left'"
       ></nm-input>
     </li>
     <li class="submit">
-      <button type="submit">登录</button>
+      <nm-button [nmLabel]="'登 录'" (click)="login()"></nm-button>
     </li>
   </ul>
 </form>
