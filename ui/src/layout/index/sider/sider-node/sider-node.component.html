@@ -35,8 +35,16 @@
 <ng-template #itemTemp let-opt="option">
   <nm-icon [nmType]="opt.icon"></nm-icon>
   <span>{{ opt.label }}</span>
-  <i
-    [ngStyle]="{ display: !(child.length > 0 ? true : false) ? 'none' : '' }"
-    class="arrow icon-{{ opt.childrenShow ? 'chevron-down' : 'chevron-right' }}"
-  ></i>
+  <ng-container *ngIf="child.length > 0 ? true : false">
+    <nm-icon
+      class="sider-arrow"
+      *ngIf="opt.childrenShow"
+      [nmType]="'ado-down'"
+    ></nm-icon>
+    <nm-icon
+      class="sider-arrow"
+      *ngIf="!opt.childrenShow"
+      [nmType]="'ado-right'"
+    ></nm-icon>
+  </ng-container>
 </ng-template>

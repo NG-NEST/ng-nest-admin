@@ -6,6 +6,7 @@ import { filter } from "rxjs/operators";
 import * as _ from "lodash";
 import { AuthService, Menu as AuthMenu } from "../../services/auth.service";
 import { NavService } from "src/services/nav.service";
+import { NmCrumbNode } from "ng-moon/crumb";
 
 @Injectable({ providedIn: "root" })
 export class IndexService {
@@ -13,6 +14,9 @@ export class IndexService {
 
   // 当前存储关键字
   key: string = "Index";
+
+  // 面包屑数据
+  crumbData: NmCrumbNode[] = [];
 
   // 菜单数据
   public get menus(): Menu[] {
@@ -143,6 +147,7 @@ export class IndexService {
       .pipe(filter(x => x instanceof NavigationEnd))
       .subscribe((x: NavigationEnd) => {
         this.setTabs();
+        this.setCrumb();
       });
   }
 
@@ -174,6 +179,33 @@ export class IndexService {
         };
       }
     }
+  }
+
+  /**
+   * 面包屑处理
+   *
+   * @memberof LayoutService
+   */
+  setCrumb() {
+    let menu = _.find(this.menus, x => x.router === this.session.activatedPage);
+    let crumbs: NmCrumbNode[] = [];
+    let addParent = (item: Menu) => {
+      if (item.parentId === null && item.parentId === "") return;
+      let parent = _.find(this.menus, x => x.id === item.parentId);
+      if (parent) {
+        crumbs.unshift({
+          nmKey: parent.id,
+          nmLabel: parent.label,
+          data: parent
+        });
+        addParent(parent);
+      }
+    };
+    if (menu) {
+      crumbs.push({ nmKey: menu.id, nmLabel: menu.label, data: menu });
+      addParent(menu);
+    }
+    this.crumbData = crumbs;
   }
 }
 

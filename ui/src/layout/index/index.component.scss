@@ -15,8 +15,12 @@ $content-background-color: $primary-text-color;
 $header-height: 3.5rem;
 // 标签页高度
 $tabs-height: 2.375rem;
+// 面包屑导航高度
+$crumb-height: 2.375rem;
 // 菜单栏宽度
 $sider-width: 12.5rem;
+// 内容区域的内边距
+$content-padding: 1rem;
 // 悬停背景色
 $sider-node-hover-background-color: rgba(0, 0, 0, 0.02);
 // 悬停文字颜色
@@ -108,13 +112,13 @@ app-index {
   }
   > app-tabs {
     background-color: $tabs-background-color;
-    width: 100%;
+    width: calc(100% - #{$sider-width});
     height: $tabs-height;
     position: fixed;
     top: $header-height;
     left: $sider-width;
     z-index: 11;
-    transition: left $transition-duration;
+    transition: left $transition-duration, width $transition-duration;
     font-size: 0.875rem;
     ul {
       display: flex;
@@ -176,6 +180,34 @@ app-index {
       }
     }
   }
+  > app-crumb {
+    width: calc(100% - #{$sider-width});
+    height: $crumb-height;
+    position: fixed;
+    top: $header-height + $tabs-height;
+    background-color: #fafafa;
+    left: $sider-width;
+    z-index: 11;
+    transition: left $transition-duration, width $transition-duration;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    padding: 0 $content-padding/2;
+    .crumb-operation {
+      .nm-icon {
+        font-size: 1.125rem;
+        padding: 0.25rem;
+        cursor: pointer;
+        transition: background-color $transition-duration;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.06);
+        }
+      }
+    }
+    .nm-crumb {
+      margin-left: 1rem;
+    }
+  }
   > app-sider {
     background-color: $sider-background-color;
     height: 100%;
@@ -196,6 +228,7 @@ app-index {
         height: $tabs-height;
         font-size: 0.875rem;
         color: $font-color;
+        user-select: none;
         span {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -207,7 +240,8 @@ app-index {
         }
         .nm-icon {
           font-size: 1.125rem;
-          &.arrow {
+          &.sider-arrow {
+            font-size: 1rem;
             transition: visibility $transition-duration,
               opacity $transition-duration;
           }
@@ -225,14 +259,14 @@ app-index {
     }
   }
   > app-content {
-    padding-top: $header-height + $tabs-height;
+    padding-top: $header-height + $tabs-height + $crumb-height;
     padding-left: $sider-width;
     transition: padding $transition-duration;
     height: 100%;
     display: block;
   }
   > app-toggle {
-    background-color: $selected-background-color;
+    background-color: #fafafa;
     height: $tabs-height;
     width: $sider-width;
     position: fixed;
@@ -273,8 +307,10 @@ app-index {
 
 // 框架页中缩起菜单栏后的样式
 app-index.sider-shrink {
-  > app-tabs {
+  > app-tabs,
+  > app-crumb {
     left: $tabs-height + 0.625rem;
+    width: calc(100% - #{$tabs-height + 0.625rem});
   }
   > app-content {
     padding-left: $tabs-height + 0.625rem;
@@ -287,7 +323,7 @@ app-index.sider-shrink {
     li {
       a {
         span,
-        i.arrow {
+        .sider-arrow {
           visibility: hidden;
           opacity: 0;
         }
