@@ -1,6 +1,14 @@
 <div class="crumb-operation">
-  <nm-icon [nmType]="'ado-arrow-left'"></nm-icon>
-  <nm-icon [nmType]="'ado-arrow-right'"></nm-icon>
-  <nm-icon [nmType]="'ado-reload'"></nm-icon>
+  <nm-icon [nmType]="'ado-left'" (click)="back()" title="点击可后退，按住可以查看历史记录"></nm-icon>
+  <nm-icon
+    [nmType]="'ado-right'"
+    (click)="forward()"
+    title="点击可前进，按住可以查看历史记录"
+  ></nm-icon>
+  <nm-icon
+    [nmType]="'ado-reload'"
+    (click)="reload()"
+    title="重新加载此标签页"
+  ></nm-icon>
 </div>
 <nm-crumb [nmData]="indexService.crumbData"></nm-crumb>

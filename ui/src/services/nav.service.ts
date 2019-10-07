@@ -65,4 +65,22 @@ export class NavService {
     let url = this.location.path();
     ReuseStrategyService.deleteRouteSnapshot(url);
   }
+
+  getUrl(path: string): { path: string; param: any } {
+    let result = {
+      path: "",
+      param: {}
+    };
+    if (path.indexOf(";") > -1) {
+      let spt = path.split(";");
+      result.path = spt[0];
+      for (let i = 1; i < spt.length; i++) {
+        let st = spt[i].split("=");
+        result.param[st[0]] = st[1];
+      }
+    } else {
+      result.path = path;
+    }
+    return result;
+  }
 }
