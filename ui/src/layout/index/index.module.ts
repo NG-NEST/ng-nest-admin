@@ -9,6 +9,7 @@ import { ToggleComponent } from "./toggle/toggle.component";
 import { TabsComponent } from "./tabs/tabs.component";
 import { HeaderComponent } from "./header/header.component";
 import { ContentComponent } from "./content/content.component";
+import { CrumbComponent } from './crumb/crumb.component';
 
 // 声明模块中拥有的视图类
 const components = [
@@ -18,6 +19,7 @@ const components = [
   SiderComponent,
   SiderNodeComponent,
   TabsComponent,
+  CrumbComponent,
   ToggleComponent
 ];
 

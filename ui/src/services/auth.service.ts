@@ -85,6 +85,22 @@ export class AuthService {
               icon: "ado-radar-chart",
               parentId: null,
               path: "2"
+            },
+            {
+              id: "3",
+              label: "系统管理",
+              router: null,
+              icon: "ado-setting",
+              parentId: null,
+              path: "3"
+            },
+            {
+              id: "4",
+              label: "用户管理",
+              router: "users",
+              icon: "ado-user",
+              parentId: "3",
+              path: "3.4"
             }
           ]
         }
