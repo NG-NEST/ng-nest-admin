@@ -11,7 +11,7 @@ import { ReuseStrategyService } from "../../services/reuse-strategy.service";
 @Component({
   selector: "no-auth",
   template: `
-    抱歉，您没有权限访问此页面!
+    <nm-inner>抱歉，您没有权限访问此页面!</nm-inner>
   `,
   encapsulation: ViewEncapsulation.None
 })

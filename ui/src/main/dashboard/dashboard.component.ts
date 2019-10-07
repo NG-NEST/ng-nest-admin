@@ -8,9 +8,7 @@ import { Component, ViewEncapsulation } from "@angular/core";
  */
 @Component({
   selector: "app-dashboard",
-  template: `
-    仪表盘
-  `,
+  templateUrl: "dashboard.component.html",
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent {

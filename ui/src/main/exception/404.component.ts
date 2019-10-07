@@ -11,7 +11,7 @@ import { ReuseStrategyService } from "../../services/reuse-strategy.service";
 @Component({
   selector: "exception-404",
   template: `
-    404 抱歉，你访问的页面不存在!
+    <nm-inner>404 抱歉，你访问的页面不存在!</nm-inner>
   `,
   encapsulation: ViewEncapsulation.None
 })
