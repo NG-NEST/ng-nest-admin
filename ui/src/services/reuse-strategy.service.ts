@@ -5,6 +5,11 @@ import {
 } from "@angular/router";
 import * as _ from "lodash";
 
+export interface RouteReuseStorage {
+  key: string;
+  handle: DetachedRouteHandle;
+}
+
 /**
  * 路由复用策略
  *
@@ -14,7 +19,7 @@ import * as _ from "lodash";
  */
 export class ReuseStrategyService implements RouteReuseStrategy {
   // 存储的复用路由
-  public static handlers: { [key: string]: DetachedRouteHandle } = {};
+  public static storages: RouteReuseStorage[] = [];
   // 用一个临时变量记录待删除的路由
   private static waitDelete: string;
 
@@ -50,7 +55,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
       ReuseStrategyService.waitDelete = null;
       return;
     }
-    ReuseStrategyService.handlers[this.getRouteUrl(route)] = handle;
+    this.add(this.getRouteUrl(route), handle);
   }
 
   /**
@@ -61,7 +66,10 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @memberof ReuseStrategyService
    */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return !!ReuseStrategyService.handlers[this.getRouteUrl(route)];
+    return !!_.find(
+      ReuseStrategyService.storages,
+      x => x.key == this.getRouteUrl(route)
+    );
   }
 
   /**
@@ -75,7 +83,12 @@ export class ReuseStrategyService implements RouteReuseStrategy {
     if (!route.routeConfig) {
       return null;
     }
-    return ReuseStrategyService.handlers[this.getRouteUrl(route)];
+    let stroage = _.find(
+      ReuseStrategyService.storages,
+      x => x.key == this.getRouteUrl(route)
+    );
+    console.log(ReuseStrategyService.storages);
+    return stroage ? stroage.handle : null;
   }
 
   /**
@@ -123,19 +136,25 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    */
   public static deleteRouteSnapshot(name?: string): void {
     if (name) {
-      let handle = name.replace(/\//g, "_");
-      _.findKey(ReuseStrategyService.handlers, (x, y) => {
-        if (y.indexOf(handle) === 0) {
+      let key = name.replace(/\//g, "_");
+      _.find(ReuseStrategyService.storages, x => {
+        if (x.key.indexOf(key) === 0) {
           // let sub = ReuseStrategyService.handlers[y]['componentRef']['instance']['sub']
           // if(sub) sub.unsubscribe();
-          delete ReuseStrategyService.handlers[y];
+          _.remove(ReuseStrategyService.storages, y => y.key == x.key);
         }
       });
-      ReuseStrategyService.waitDelete = handle;
+      ReuseStrategyService.waitDelete = key;
     } else {
-      for (let key in ReuseStrategyService.handlers) {
-        delete ReuseStrategyService.handlers[key];
-      }
+      ReuseStrategyService.storages = [];
     }
+  }
+
+  private add(key: string, handle: DetachedRouteHandle) {
+    _.remove(ReuseStrategyService.storages, x => x.key == key);
+    ReuseStrategyService.storages = [
+      ...ReuseStrategyService.storages,
+      { key: key, handle: handle }
+    ];
   }
 }
