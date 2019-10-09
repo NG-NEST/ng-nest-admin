@@ -87,7 +87,6 @@ export class ReuseStrategyService implements RouteReuseStrategy {
       ReuseStrategyService.storages,
       x => x.key == this.getRouteUrl(route)
     );
-    console.log(ReuseStrategyService.storages);
     return stroage ? stroage.handle : null;
   }
 
@@ -137,13 +136,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
   public static deleteRouteSnapshot(name?: string): void {
     if (name) {
       let key = name.replace(/\//g, "_");
-      _.find(ReuseStrategyService.storages, x => {
-        if (x.key.indexOf(key) === 0) {
-          // let sub = ReuseStrategyService.handlers[y]['componentRef']['instance']['sub']
-          // if(sub) sub.unsubscribe();
-          _.remove(ReuseStrategyService.storages, y => y.key == x.key);
-        }
-      });
+      _.remove(ReuseStrategyService.storages, x=> x.key.indexOf(key) === 0)
       ReuseStrategyService.waitDelete = key;
     } else {
       ReuseStrategyService.storages = [];
