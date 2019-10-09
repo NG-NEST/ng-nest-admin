@@ -24,22 +24,9 @@ export class TabsComponent implements OnInit {
     if (tab && tab.router) {
       let page = tab.router;
       let subRoot = tab.subPage;
-      let param = {};
+      let param = tab.param;
       if (subRoot) {
-        if (subRoot.indexOf(";") > -1) {
-          let subs = subRoot.split(";");
-          subs.forEach((x, i) => {
-            if (i == 0) {
-              subRoot = x;
-              page += `/${subRoot}`;
-            } else {
-              let vals = x.split("=");
-              param[vals[0]] = vals[1];
-            }
-          });
-        } else {
-          page += `/${subRoot}`;
-        }
+        page += `/${subRoot}`;
       }
       this.router.navigate([`/${environment.layout}/${page}`, param]);
     }

@@ -159,22 +159,27 @@ export class IndexService {
   setTabs() {
     let url = this.nav.getUrl(this.router.url);
     let routers = url.path.split("/");
+    console.log(url);
     if (routers.length > 2) {
       let router = routers[2];
       let subPage = routers.length > 3 ? _.drop(routers, 3).join("/") : null;
+      let param = url.param;
       let menu = _.find(this.menus, x => x.router == router);
       if (menu) {
         let tabsPage = this.session.tabsPage;
         let tab = _.find(tabsPage, x => x.router == menu.router);
         if (tab) {
           tab.subPage = subPage;
+          tab.param = param;
         } else {
           menu.subPage = subPage;
+          menu.param = param;
           tabsPage.unshift(menu);
         }
         this.session = {
           activatedPage: router,
           subPage: subPage,
+          param: param,
           tabsPage: tabsPage
         };
       }
@@ -233,6 +238,8 @@ export interface Session {
   activatedPage?: string;
   // 当前激活页面的子页面
   subPage?: string;
+  // 当前激活页面的参数
+  param?: { [property: string]: any };
   // 标签页数据
   tabsPage?: Menu[];
 }
@@ -246,4 +253,6 @@ export interface Session {
 export interface Menu extends AuthMenu {
   // 子路由页面
   subPage?: string;
+  // 参数
+  param?: { [property: string]: any };
 }
