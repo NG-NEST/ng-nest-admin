@@ -4,6 +4,7 @@ import { Location } from "@angular/common";
 import { Router, NavigationStart, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import * as _ from "lodash";
+import { Subscription } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class NavService {
@@ -11,20 +12,51 @@ export class NavService {
 
   history: NavigationEnd[] = [];
 
-  constructor(private router: Router, private location: Location) {
-    this.router.events
-      .pipe(filter(x => x instanceof NavigationStart))
-      .subscribe((x: NavigationStart) => {
-        if (this.clearTo) {
-          ReuseStrategyService.deleteRouteSnapshot(x.url);
-          this.clearTo = false;
-        }
-      });
-    this.router.events
-      .pipe(filter(x => x instanceof NavigationEnd))
-      .subscribe((x: NavigationEnd) => {
-        if (x.url === x.urlAfterRedirects) this.history.unshift(x);
-      });
+  first: NavigationEnd;
+
+  last: NavigationEnd;
+
+  now: NavigationEnd;
+
+  disabledBack: boolean = true;
+
+  disabledForward: boolean = true;
+
+  subscriptions: Subscription[] = [];
+
+  constructor(private router: Router, private location: Location) {}
+
+  init() {
+    if (this.subscriptions.length > 0) {
+      this.destroy();
+    } else {
+      this.subscriptions = [
+        this.router.events
+          .pipe(filter(x => x instanceof NavigationStart))
+          .subscribe((x: NavigationStart) => {
+            if (this.clearTo) {
+              ReuseStrategyService.deleteRouteSnapshot(x.url);
+              this.clearTo = false;
+            }
+          }),
+        this.router.events
+          .pipe(filter(x => x instanceof NavigationEnd))
+          .subscribe((x: NavigationEnd) => {
+            if (x.url === x.urlAfterRedirects) {
+              this.history.unshift(x);
+              this.first = _.first(this.history);
+              this.last = _.last(this.history);
+              this.now = x;
+            }
+          })
+      ];
+    }
+  }
+
+  destroy() {
+    this.history = [];
+    this.disabledBack = true;
+    this.disabledForward = true;
   }
 
   back(clearTo?: boolean) {
