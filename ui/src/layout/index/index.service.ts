@@ -159,7 +159,6 @@ export class IndexService {
   setTabs() {
     let url = this.nav.getUrl(this.router.url);
     let routers = url.path.split("/");
-    console.log(url);
     if (routers.length > 2) {
       let router = routers[2];
       let subPage = routers.length > 3 ? _.drop(routers, 3).join("/") : null;

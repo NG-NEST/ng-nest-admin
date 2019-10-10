@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { IndexService } from "../index.service";
 import { NavService } from "./../../../services/nav.service";
+import * as _ from "lodash";
 
 @Component({
   selector: "app-crumb",
@@ -22,10 +23,13 @@ export class CrumbComponent implements OnInit {
     let url = this.nav.getUrl(this.router.url);
     url.param.timestamp = new Date().getTime();
     ReuseStrategyService.deleteRouteSnapshot(url.path);
+    _.remove(this.nav.history, _.first(this.nav.history));
     this.router.navigate([url.path, url.param]);
   }
 
-  back() {}
+  back() {
+    this.nav.back();
+  }
 
   forward() {}
 }

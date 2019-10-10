@@ -1,10 +1,16 @@
 <div class="crumb-operation">
-  <nm-icon [nmType]="'ado-left'" (click)="back()" title="点击可后退，按住可以查看历史记录"></nm-icon>
+  <!-- <nm-icon
+    [class.disabled]="nav.disabledBack"
+    [nmType]="'ado-left'"
+    (click)="back()"
+    title="点击可后退，按住可以查看历史记录"
+  ></nm-icon>
   <nm-icon
+    [class.disabled]="nav.disabledForward"
     [nmType]="'ado-right'"
     (click)="forward()"
     title="点击可前进，按住可以查看历史记录"
-  ></nm-icon>
+  ></nm-icon> -->
   <nm-icon
     [nmType]="'ado-reload'"
     (click)="reload()"
