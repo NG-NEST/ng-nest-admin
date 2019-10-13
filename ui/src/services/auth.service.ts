@@ -101,6 +101,46 @@ export class AuthService {
               icon: "ado-user",
               parentId: "3",
               path: "3.4"
+            },
+            {
+              id: "5",
+              label: "角色管理",
+              router: "roles",
+              icon: "ado-user",
+              parentId: "3",
+              path: "3.5"
+            },
+            {
+              id: "6",
+              label: "组织管理",
+              router: "organization",
+              icon: "ado-user",
+              parentId: "3",
+              path: "3.6"
+            },
+            {
+              id: "7",
+              label: "模块管理",
+              router: "modules",
+              icon: "ado-user",
+              parentId: "3",
+              path: "3.7"
+            },
+            {
+              id: "8",
+              label: "基础信息",
+              router: null,
+              icon: "ado-user",
+              parentId: "3",
+              path: "3.8"
+            },
+            {
+              id: "9",
+              label: "基础信息",
+              router: "base-info",
+              icon: "ado-user",
+              parentId: "8",
+              path: "3.8.9"
             }
           ]
         }
@@ -163,18 +203,19 @@ export class User {
 }
 
 export class Action {
-  code: string;
-  icon: string;
-  id: string;
-  menuId: string;
-  name: string;
+  code?: string;
+  icon?: string;
+  id?: string;
+  menuId?: string;
+  name?: string;
 }
 
 export class Menu {
-  icon: string;
-  id: string;
-  label: string;
-  parentId: string;
-  path: string;
-  router: string;
+  icon?: string;
+  id?: string;
+  label?: string;
+  parentId?: string;
+  path?: string;
+  router?: string;
+  [prototype: string]: any;
 }

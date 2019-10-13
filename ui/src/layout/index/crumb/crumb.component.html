@@ -17,4 +17,4 @@
     title="重新加载此标签页"
   ></nm-icon>
 </div>
-<nm-crumb [nmData]="indexService.crumbData"></nm-crumb>
+<nm-crumb [nmData]="indexService.crumbData" (nmNodeClick)="nodeClick($event)"></nm-crumb>
