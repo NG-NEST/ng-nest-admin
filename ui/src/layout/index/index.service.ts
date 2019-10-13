@@ -7,6 +7,7 @@ import * as _ from "lodash";
 import { AuthService, Menu as AuthMenu } from "../../services/auth.service";
 import { NavService } from "src/services/nav.service";
 import { NmCrumbNode } from "ng-moon/crumb";
+import { NmPortalOverlayRef } from "ng-moon";
 
 @Injectable({ providedIn: "root" })
 export class IndexService {
@@ -17,6 +18,12 @@ export class IndexService {
 
   // 面包屑数据
   crumbData: NmCrumbNode[] = [];
+
+  // 弹出菜单的节点
+  floatNode: Menu;
+
+  // 弹出菜单
+  portal: NmPortalOverlayRef;
 
   // 菜单数据
   public get menus(): Menu[] {
@@ -210,6 +217,14 @@ export class IndexService {
       addParent(menu);
     }
     this.crumbData = crumbs;
+  }
+
+  floatChild(child: Menu[]) {
+    return _.map(_.cloneDeep(child), x => {
+      x.router =
+        x.router != null ? `./${environment.layout}/${x.router}` : x.router;
+      return x;
+    });
   }
 }
 
