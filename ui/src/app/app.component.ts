@@ -12,6 +12,5 @@ export class AppComponent {
     let color = getComputedStyle(this.doc.documentElement).getPropertyValue(
       "--primary-color"
     );
-    console.log(color);
   }
 }

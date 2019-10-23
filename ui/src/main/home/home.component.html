@@ -1,1 +1,3 @@
-<nm-inner>首页信息<nm-input [(ngModel)]="value"></nm-input></nm-inner>
+<cdk-virtual-scroll-viewport itemSize="50" style="height:400px; width:400px">
+  <div *cdkVirtualFor="let item of items" style="height:50px;">{{ item }}</div>
+</cdk-virtual-scroll-viewport>

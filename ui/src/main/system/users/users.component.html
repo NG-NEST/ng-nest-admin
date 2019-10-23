@@ -1,0 +1,11 @@
+<nm-inner>
+  <nm-table
+    [nmColumns]="columns"
+    [nmActions]="actions"
+    [nmData]="data"
+    [nmIndex]="query.index"
+    [nmSize]="query.size"
+    [nmTotal]="total"
+    (nmIndexChange)="indexChange($event)"
+  ></nm-table>
+</nm-inner>
