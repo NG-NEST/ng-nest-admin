@@ -9,7 +9,7 @@ export const environment = {
   // 默认的首页
   defaultPage: "home",
   // Api请求地址
-  api: ""
+  api: "http://localhost:3000/"
 };
 
 /*

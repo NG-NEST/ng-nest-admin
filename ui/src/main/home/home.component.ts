@@ -13,5 +13,6 @@ import { Component, ViewEncapsulation } from "@angular/core";
 })
 export class HomeComponent {
   value: any;
+  items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
   constructor() {}
 }

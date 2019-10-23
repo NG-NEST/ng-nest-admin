@@ -1,58 +1,58 @@
+import { Observable } from "rxjs";
 import { HttpService } from "./http.service";
 import * as _ from "lodash";
 
 export interface Id {
-    id: string | number;
+  id: string | number;
 }
 
 export interface Controller {
-    name: string
+  name: string;
 }
 
 export interface RepositoryOption {
-    controller: Controller
+  controller: Controller;
 }
 
-export interface ResultList<T> {
-    list?: T[],
-    count?: number;
-    query?: Query;
+export interface ResultList<Entity extends Id> {
+  list?: Entity[];
+  total?: number;
+  query?: Query;
 }
 
 export interface Query {
-    index?: number;
-    size?: number;
-    filter?: any;
+  index?: number;
+  size?: number;
+  filter?: any;
 }
 
-export class RepositoryService {
+export class RepositoryService<Entity extends Id> {
+  constructor(public http: HttpService, public option: RepositoryOption) {}
 
-    constructor(
-        public http: HttpService,
-        public option: RepositoryOption
-    ) { }
-
-    findAll(query?: Query) {
-        let param: Query = { index: 1, size: 10 };
-        if (query) {
-            param = Object.assign(param, query)
-        }
-        return this.http.get(`${this.option.controller.name}/${param.size}/${param.index}`, query.filter);
+  getList(query?: Query): Observable<ResultList<Entity>> {
+    let param: Query = { index: 1, size: 10 };
+    if (query) {
+      param = Object.assign(param, query);
     }
+    return this.http.get(
+      `${this.option.controller.name}/${param.size}/${param.index}`,
+      query.filter
+    );
+  }
 
-    findOne(id) {
-        return this.http.get(`${this.option.controller.name}/${id}`);
-    }
+  get(id: number | string): Observable<Entity> {
+    return this.http.get(`${this.option.controller.name}/${id}`);
+  }
 
-    create(entity) {
-        return this.http.post(`${this.option.controller.name}`, entity);
-    }
+  post(entity: Entity): Observable<Entity> {
+    return this.http.post(`${this.option.controller.name}`, entity);
+  }
 
-    update(entity) {
-        return this.http.put(`${this.option.controller.name}`, entity);
-    }
+  put(entity: Entity): Observable<Entity> {
+    return this.http.put(`${this.option.controller.name}`, entity);
+  }
 
-    remove(id) {
-        return this.http.delete(`${this.option.controller.name}/${id}`);
-    }
+  delete(id: number | string): Observable<boolean> {
+    return this.http.delete(`${this.option.controller.name}/${id}`);
+  }
 }
