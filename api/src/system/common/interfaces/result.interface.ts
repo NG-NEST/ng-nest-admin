@@ -7,4 +7,11 @@ export interface ResultList<T> {
 export interface Query {
   size: number;
   index: number;
+  sort?: string[];
+  filter?: Filter[];
+}
+
+export interface Filter {
+  field: string;
+  value: string | number;
 }

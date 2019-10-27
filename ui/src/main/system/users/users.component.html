@@ -3,9 +3,10 @@
     [nmColumns]="columns"
     [nmActions]="actions"
     [nmData]="data"
-    [nmIndex]="query.index"
-    [nmSize]="query.size"
+    [nmIndex]="index"
+    [nmSize]="size"
     [nmTotal]="total"
     (nmIndexChange)="indexChange($event)"
+    (nmActionClick)="actionClick($event)"
   ></nm-table>
 </nm-inner>

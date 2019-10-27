@@ -23,8 +23,8 @@ export class HttpService {
    * @returns
    * @memberof HttpService
    */
-  get(url: string, params?) {
-    return this.request("GET", url, params);
+  get(url: string, params?, isBody?) {
+    return this.request("GET", url, params, isBody);
   }
 
   /**
@@ -73,11 +73,16 @@ export class HttpService {
    * @returns
    * @memberof HttpService
    */
-  request(method: string, url: string, params?): Observable<any> {
+  request(
+    method: string,
+    url: string,
+    params?,
+    isBody = false
+  ): Observable<any> {
     let option = {};
     url = `${environment.api}${url}`;
     method = method.toUpperCase();
-    if (["POST", "PUT", "DELETE"].indexOf(method) > -1) {
+    if (["POST", "PUT", "DELETE"].indexOf(method) > -1 || isBody) {
       option = { body: params };
     } else if (["GET"].indexOf(method) > -1) {
       option = { params: params };

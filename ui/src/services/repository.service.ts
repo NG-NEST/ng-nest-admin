@@ -23,20 +23,29 @@ export interface ResultList<Entity extends Id> {
 export interface Query {
   index?: number;
   size?: number;
-  filter?: any;
+  sort?: string[];
+  filter?: Filter[];
+}
+
+export interface Filter {
+  field: string;
+  value: string;
 }
 
 export class RepositoryService<Entity extends Id> {
   constructor(public http: HttpService, public option: RepositoryOption) {}
 
-  getList(query?: Query): Observable<ResultList<Entity>> {
-    let param: Query = { index: 1, size: 10 };
-    if (query) {
-      param = Object.assign(param, query);
-    }
+  getList(
+    index?: number,
+    size?: number,
+    query?: Query
+  ): Observable<ResultList<Entity>> {
+    index = index ? index : 1;
+    size = size ? size : 10;
     return this.http.get(
-      `${this.option.controller.name}/${param.size}/${param.index}`,
-      query.filter
+      `${this.option.controller.name}/${size}/${index}`,
+      query,
+      true
     );
   }
 
