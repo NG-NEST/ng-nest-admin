@@ -22,8 +22,9 @@ export class ControllerService<Entity extends Id> {
   async getList(
     @Param('index', new ParseIntPipe()) index: number = 1,
     @Param('size', new ParseIntPipe()) size: number = 10,
-    @Query() query: any,
+    @Body() query: any,
   ): Promise<ResultList<Entity>> {
+    console.log(query);
     return await this.service.getList(index, size, query);
   }
 

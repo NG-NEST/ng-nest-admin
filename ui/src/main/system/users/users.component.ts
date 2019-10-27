@@ -64,6 +64,8 @@ export class UsersComponent {
     { nmKey: "phone", nmLabel: "电话", nmFlex: 1 }
   ];
   query: Query = {};
+  index = 1;
+  size = 10;
   total = 0;
   data: User[];
 
@@ -72,7 +74,7 @@ export class UsersComponent {
   }
 
   getList(): Observable<User[]> {
-    return this.usersService.getList(this.query).pipe(
+    return this.usersService.getList(this.index, this.size, this.query).pipe(
       map(x => {
         this.total = x.total;
         this.data = _.map(x.list, y => {
@@ -85,7 +87,11 @@ export class UsersComponent {
   }
 
   indexChange(index: number) {
-    this.query.index = index;
+    this.index = index;
     this.getList().subscribe();
+  }
+
+  actionClick(action: NmTableAction) {
+    console.log(action);
   }
 }
