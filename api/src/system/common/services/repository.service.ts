@@ -1,8 +1,9 @@
-import { Query, Filter } from "./../interfaces/result.interface";
+import { Query, Filter, GroupItem } from "./../interfaces/result.interface";
 import { Injectable } from "@nestjs/common";
 import { Repository, getManager, ObjectID, SelectQueryBuilder } from "typeorm";
 import { Id } from "../interfaces/id.interface";
 import { ResultList } from "../interfaces/result.interface";
+import * as _ from "lodash";
 
 @Injectable()
 export class RepositoryService<Entity extends Id> {
@@ -12,17 +13,30 @@ export class RepositoryService<Entity extends Id> {
     index: number,
     size: number,
     query: Query
-  ): Promise<ResultList<Entity>> {
-    return new Promise<ResultList<Entity>>(async x => {
+  ): Promise<ResultList<Entity | GroupItem>> {
+    return new Promise<ResultList<Entity | GroupItem>>(async x => {
       let qb = this.repository.createQueryBuilder("entity");
+      let list: Entity[] | GroupItem[] = [];
+      let total: number = 0;
       this.setFilter(qb, query.filter);
-      this.setSort(qb, query.sort);
-      let result: ResultList<Entity> = {
-        list: await qb
+      if (query.group) {
+        let group = await this.setGroup(qb, query.group);
+        group = _.sortBy(group, query.sort);
+        let start = size * (index - 1);
+        let end = start + size;
+        list = _.slice(group, start, end);
+        total = group.length;
+      } else {
+        this.setSort(qb, query.sort);
+        list = await qb
           .skip(size * (index - 1))
           .take(size)
-          .getMany(),
-        total: await qb.getCount(),
+          .getMany();
+        total = await qb.getCount();
+      }
+      let result: ResultList<Entity | GroupItem> = {
+        list: list,
+        total: total,
         query: query
       };
       x(result);
@@ -65,8 +79,25 @@ export class RepositoryService<Entity extends Id> {
     }
   }
 
+  async setGroup(rep: SelectQueryBuilder<Entity>, group: string) {
+    let result = [];
+    if (group) {
+      result = (await rep
+        .groupBy(`entity.${group}`)
+        .select([`entity.${group}`, `count(entity.${group}) as count`])
+        .getRawMany()).map(y => {
+        let mapTo = {};
+        mapTo[group] = y[`entity_${group}`];
+        mapTo["count"] = parseInt(y.count);
+        return mapTo;
+      });
+    }
+    return result;
+  }
+
   setSort(rep: SelectQueryBuilder<Entity>, sort: string[]) {
     if (sort && sort.length > 0) {
+      let condition = {};
       sort.forEach(x => {
         let spt = x.split(" ");
         let order: "ASC" | "DESC" =
@@ -75,8 +106,9 @@ export class RepositoryService<Entity extends Id> {
               ? "DESC"
               : "ASC"
             : "ASC";
-        rep = rep.orderBy(`entity.${spt[0]}`, order);
+        condition[`entity.${spt[0]}`] = order;
       });
+      rep = rep.orderBy(condition);
     }
     return rep;
   }
