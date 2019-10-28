@@ -9,6 +9,12 @@ export interface Query {
   index: number;
   sort?: string[];
   filter?: Filter[];
+  group?: string;
+}
+
+export interface GroupItem {
+  [prototype: string]: any;
+  count?: number;
 }
 
 export interface Filter {

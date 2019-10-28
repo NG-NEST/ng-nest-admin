@@ -6,31 +6,29 @@ import {
   Body,
   Put,
   Delete,
-  ParseIntPipe,
-  Query,
-} from '@nestjs/common';
-import { RepositoryService } from './repository.service';
-import { Id } from '../interfaces/id.interface';
-import { ResultList } from '../interfaces/result.interface';
-import { ObjectID } from 'typeorm';
+  ParseIntPipe
+} from "@nestjs/common";
+import { RepositoryService } from "./repository.service";
+import { Id } from "../interfaces/id.interface";
+import { ResultList, GroupItem } from "../interfaces/result.interface";
+import { ObjectID } from "typeorm";
 
 @Injectable()
 export class ControllerService<Entity extends Id> {
   constructor(private readonly service: RepositoryService<Entity>) {}
 
-  @Get(':size/:index')
+  @Get(":size/:index")
   async getList(
-    @Param('index', new ParseIntPipe()) index: number = 1,
-    @Param('size', new ParseIntPipe()) size: number = 10,
-    @Body() query: any,
-  ): Promise<ResultList<Entity>> {
-    console.log(query);
+    @Param("index", new ParseIntPipe()) index: number = 1,
+    @Param("size", new ParseIntPipe()) size: number = 10,
+    @Body() query: any
+  ): Promise<ResultList<Entity | GroupItem>> {
     return await this.service.getList(index, size, query);
   }
 
-  @Get(':id')
+  @Get(":id")
   async get(
-    @Param('id') id: string | number | Date | ObjectID,
+    @Param("id") id: string | number | Date | ObjectID
   ): Promise<Entity> {
     return await this.service.get(id);
   }
@@ -45,9 +43,9 @@ export class ControllerService<Entity extends Id> {
     return await this.service.put(entity);
   }
 
-  @Delete(':id')
+  @Delete(":id")
   async delete(
-    @Param('id') id: string | number | Date | ObjectID,
+    @Param("id") id: string | number | Date | ObjectID
   ): Promise<Entity> {
     return await this.service.delete(id);
   }

@@ -25,6 +25,7 @@ export interface Query {
   size?: number;
   sort?: string[];
   filter?: Filter[];
+  group?: string;
 }
 
 export interface Filter {
