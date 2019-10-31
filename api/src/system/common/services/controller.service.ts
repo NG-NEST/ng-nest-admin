@@ -17,7 +17,7 @@ import { ObjectID } from "typeorm";
 export class ControllerService<Entity extends Id> {
   constructor(private readonly service: RepositoryService<Entity>) {}
 
-  @Get(":size/:index")
+  @Post(":size/:index")
   async getList(
     @Param("index", new ParseIntPipe()) index: number = 1,
     @Param("size", new ParseIntPipe()) size: number = 10,
