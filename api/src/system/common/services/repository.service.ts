@@ -21,7 +21,12 @@ export class RepositoryService<Entity extends Id> {
       this.setFilter(qb, query.filter);
       if (query.group) {
         let group = await this.setGroup(qb, query.group);
-        group = _.sortBy(group, query.sort);
+        let sort = this.transformSort(query.sort, "");
+        group = _.orderBy(
+          group,
+          _.map(sort, (v, k) => k),
+          _.map(sort, (v: string, k) => v.toLowerCase() as "desc" | "asc")
+        );
         let start = size * (index - 1);
         let end = start + size;
         list = _.slice(group, start, end);
@@ -68,7 +73,7 @@ export class RepositoryService<Entity extends Id> {
     return await this.repository.remove(entity);
   }
 
-  setFilter(rep: SelectQueryBuilder<Entity>, filter: Filter[]) {
+  private setFilter(rep: SelectQueryBuilder<Entity>, filter: Filter[]) {
     if (filter && filter.length > 0) {
       let param = {};
       filter.forEach((x, index) => {
@@ -79,7 +84,7 @@ export class RepositoryService<Entity extends Id> {
     }
   }
 
-  async setGroup(rep: SelectQueryBuilder<Entity>, group: string) {
+  private async setGroup(rep: SelectQueryBuilder<Entity>, group: string) {
     let result = [];
     if (group) {
       result = (await rep
@@ -95,21 +100,27 @@ export class RepositoryService<Entity extends Id> {
     return result;
   }
 
-  setSort(rep: SelectQueryBuilder<Entity>, sort: string[]) {
+  private setSort(rep: SelectQueryBuilder<Entity>, sort: string[]) {
     if (sort && sort.length > 0) {
-      let condition = {};
+      rep = rep.orderBy(this.transformSort(sort));
+    }
+    return rep;
+  }
+
+  private transformSort(sort: string[], entity = "entity"): any {
+    let condition = {};
+    if (sort && sort.length > 0) {
       sort.forEach(x => {
         let spt = x.split(" ");
         let order: "ASC" | "DESC" =
-          spt.length > 1
-            ? spt[1].toUpperCase() == "DESC"
-              ? "DESC"
-              : "ASC"
-            : "ASC";
-        condition[`entity.${spt[0]}`] = order;
+          spt.length > 1 ? (spt[1].toUpperCase() == "DESC" ? "DESC" : "ASC") : "ASC";
+        if (entity !== "") {
+          condition[`${entity}.${spt[0]}`] = order;
+        } else {
+          condition[`${spt[0]}`] = order;
+        }
       });
-      rep = rep.orderBy(condition);
     }
-    return rep;
+    return condition;
   }
 }
