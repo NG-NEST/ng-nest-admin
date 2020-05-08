@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, ObjectID } from "typeorm";
-import { RepositoryService } from "../common/services/repository.service";
-import { User } from "./entities/user.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RepositoryService } from '../common/services/repository.service';
+import { User } from './entities/user.entity';
 
 export interface UserQuery {
   organizationId: string;
