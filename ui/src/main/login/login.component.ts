@@ -1,14 +1,15 @@
-import { FormGroup } from "@angular/forms";
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
-import { environment } from "../../environments/environment";
-import { FormBuilder } from "@angular/forms";
+import { FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { environment } from '../../environments/environment';
+import { FormBuilder } from '@angular/forms';
+import { XMessageService } from '@ng-nest/ui/message';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
@@ -16,15 +17,11 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
 
   userForm: FormGroup = this.formBuilder.group({
-    account: ["admin"],
-    password: ["123qwe"]
+    account: ['admin'],
+    password: ['123qwe']
   });
 
-  constructor(
-    public authService: AuthService,
-    public router: Router,
-    public formBuilder: FormBuilder
-  ) {}
+  constructor(public authService: AuthService, public router: Router, public formBuilder: FormBuilder, public message: XMessageService) {}
 
   ngOnInit() {}
 
@@ -37,9 +34,7 @@ export class LoginComponent implements OnInit {
         this.authService.login(user).subscribe(
           () => {
             if (this.authService.isLoggedIn) {
-              let redirect = this.authService.redirectUrl
-                ? this.authService.redirectUrl
-                : `/${environment.layout}`;
+              let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : `/${environment.layout}`;
               this.router.navigate([redirect]);
             }
             this.loading = false;
@@ -50,7 +45,7 @@ export class LoginComponent implements OnInit {
         );
       } else {
         this.loading = false;
-        // this.toastService.create("用户名或密码不能为空！");
+        this.message.warning('用户名或密码不能为空！');
       }
     }
   }

@@ -11,7 +11,7 @@ app-login {
     border-radius: 2px;
     > li {
       margin: 5px;
-      > nm-input > p {
+      > x-input > p {
         > input {
           border-radius: 3px;
           font-size: 14px;
@@ -21,7 +21,7 @@ app-login {
           padding: 11px;
         }
       }
-      nm-input.icon-left > p > input {
+      x-input.icon-left > p > input {
         padding-left: 33px;
       }
       &.login {
@@ -41,7 +41,7 @@ app-login {
       }
       &.submit {
         margin-top: 1rem;
-        > nm-button {
+        > x-button {
           width: 100%;
           font-size: 0.875rem;
           height: 1.875rem;

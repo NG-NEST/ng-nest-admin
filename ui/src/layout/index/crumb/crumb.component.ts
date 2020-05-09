@@ -1,23 +1,18 @@
-import { ReuseStrategyService } from "./../../../services/reuse-strategy.service";
-import { Router } from "@angular/router";
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ViewContainerRef,
-  ElementRef
-} from "@angular/core";
-import { IndexService } from "../index.service";
-import { NavService } from "./../../../services/nav.service";
-import * as _ from "lodash";
-import { NmPortalService, NmCrumbNodeClick } from "ng-moon";
-import { FloatNodeComponent } from "../sider/float-node/float-node.component";
-import { Overlay } from "@angular/cdk/overlay";
-import { FLOAT_NODE_OPTION } from "../sider/float-node/float-node.type";
+import { ReuseStrategyService } from './../../../services/reuse-strategy.service';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewEncapsulation, ViewContainerRef, ElementRef } from '@angular/core';
+import { IndexService } from '../index.service';
+import { NavService } from './../../../services/nav.service';
+import * as _ from 'lodash';
+import { XPortalService } from '@ng-nest/ui/portal';
+import { XCrumbNodeClick } from '@ng-nest/ui/crumb';
+import { FloatNodeComponent } from '../sider/float-node/float-node.component';
+import { Overlay } from '@angular/cdk/overlay';
+import { FLOAT_NODE_OPTION } from '../sider/float-node/float-node.type';
 
 @Component({
-  selector: "app-crumb",
-  templateUrl: "./crumb.component.html",
+  selector: 'app-crumb',
+  templateUrl: './crumb.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class CrumbComponent implements OnInit {
@@ -25,37 +20,35 @@ export class CrumbComponent implements OnInit {
     public indexService: IndexService,
     public router: Router,
     public nav: NavService,
-    public portal: NmPortalService,
+    public portal: XPortalService,
     public viewContainerRef: ViewContainerRef,
     public overlay: Overlay
   ) {}
 
   ngOnInit() {}
 
-  nodeClick(event: NmCrumbNodeClick) {
-    this.indexService.portal = this.portal.create({
-      nmContent: FloatNodeComponent,
-      nmViewContainerRef: this.viewContainerRef,
-      nmOverlayConfig: {
+  nodeClick(event: XCrumbNodeClick) {
+    this.indexService.portal = this.portal.attach({
+      content: FloatNodeComponent,
+      viewContainerRef: this.viewContainerRef,
+      overlayConfig: {
         hasBackdrop: true,
         positionStrategy: this.overlay
           .position()
           .connectedTo(
             new ElementRef(event.event.srcElement),
-            { originX: "start", originY: "bottom" },
-            { overlayX: "start", overlayY: "top" }
+            { originX: 'start', originY: 'bottom' },
+            { overlayX: 'start', overlayY: 'top' }
           ),
-        backdropClass: ""
+        backdropClass: ''
       },
-      nmInjector: this.portal.createInjector(
-        this.indexService.floatChild(
-          this.indexService.menus.filter(x => x.parentId === event.node.data.id)
-        ),
+      injector: this.portal.createInjector(
+        this.indexService.floatChild(this.indexService.menus.filter((x) => x.parentId === event.node.data.id)),
         FLOAT_NODE_OPTION
       )
     });
-    this.indexService.portal.nmOverlayRef.backdropClick().subscribe(() => {
-      this.indexService.portal.nmOverlayRef.detach();
+    this.indexService.portal.overlayRef.backdropClick().subscribe(() => {
+      this.indexService.portal.overlayRef.detach();
     });
   }
 

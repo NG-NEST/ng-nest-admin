@@ -4,14 +4,10 @@
     (click)="tab(item)"
     [ngClass]="{ active: item.router == indexService.session.activatedPage }"
   >
-    <nm-icon [nmType]="item.icon"></nm-icon>
+    <x-icon [type]="item.icon"></x-icon>
     <span>{{ item.label }}</span>
-    <div
-      class="close"
-      (click)="close(item)"
-      *ngIf="indexService.session.tabsPage.length > 1"
-    >
-      <nm-icon title="关闭" [nmType]="'ado-close'"></nm-icon>
+    <div class="close" (click)="close(item)" *ngIf="indexService.session.tabsPage.length > 1">
+      <x-icon title="关闭" type="ado-close"></x-icon>
     </div>
   </li>
 </ul>

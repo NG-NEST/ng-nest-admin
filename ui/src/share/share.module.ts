@@ -1,9 +1,9 @@
-import { FormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
-import { NgMoonModule } from "ng-moon";
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 // 模块
-const modules = [FormsModule, NgMoonModule];
+const modules = [FormsModule, ReactiveFormsModule, HttpClientModule];
 
 /**
  * 共享模块

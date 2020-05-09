@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { RepositoryService, Id } from "../../../services/repository.service";
-import { HttpService } from "../../../services/http.service";
+import { Injectable } from '@angular/core';
+import { RepositoryService, Id } from 'src/services/repository.service';
+import { HttpService } from 'src/services/http.service';
 
 @Injectable()
 export class UsersService extends RepositoryService<User> {
   constructor(public http: HttpService) {
-    super(http, { controller: { name: "users" } });
+    super(http, { controller: { name: 'users' } });
   }
 }
 

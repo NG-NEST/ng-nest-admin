@@ -1,12 +1,3 @@
-<nm-inner>
-  <nm-table
-    [nmColumns]="columns"
-    [nmActions]="actions"
-    [nmData]="data"
-    [nmIndex]="index"
-    [nmSize]="size"
-    [nmTotal]="total"
-    (nmIndexChange)="indexChange($event)"
-    (nmActionClick)="actionClick($event)"
-  ></nm-table>
-</nm-inner>
+<x-inner>
+  <x-table [columns]="columns" [actions]="actions" [service]="usersService" (actionClick)="actionClick($event)"></x-table>
+</x-inner>

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from "@angular/core";
+import { Component, ViewEncapsulation } from '@angular/core';
 
 /**
  * 首页
@@ -7,12 +7,12 @@ import { Component, ViewEncapsulation } from "@angular/core";
  * @class HomeComponent
  */
 @Component({
-  selector: "app-home",
-  templateUrl: "home.component.html",
+  selector: 'app-home',
+  templateUrl: 'home.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent {
   value: any;
-  items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
+  // items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
   constructor() {}
 }

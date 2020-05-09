@@ -1,29 +1,30 @@
-import { Injectable, Component } from "@angular/core";
-import { SettingService } from "../../services/setting.service";
-import { environment } from "../../environments/environment";
-import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
-import { filter } from "rxjs/operators";
-import * as _ from "lodash";
-import { AuthService, Menu as AuthMenu } from "../../services/auth.service";
-import { NavService } from "src/services/nav.service";
-import { NmCrumbNode } from "ng-moon/crumb";
-import { NmPortalOverlayRef } from "ng-moon";
+import { Injectable, Component } from '@angular/core';
+import { SettingService } from '../../services/setting.service';
+import { environment } from '../../environments/environment';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { AuthService, Menu as AuthMenu } from '../../services/auth.service';
+import { NavService } from 'src/services/nav.service';
+import { XCrumbNode } from '@ng-nest/ui/crumb';
+import { XPortalOverlayRef } from '@ng-nest/ui/portal';
+import { FloatNodeComponent } from './sider/float-node/float-node.component';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class IndexService {
   componentRefs: Component[] = [];
 
   // 当前存储关键字
-  key: string = "Index";
+  key: string = 'Index';
 
   // 面包屑数据
-  crumbData: NmCrumbNode[] = [];
+  crumbData: XCrumbNode[] = [];
 
   // 弹出菜单的节点
   floatNode: Menu;
 
   // 弹出菜单
-  portal: NmPortalOverlayRef;
+  portal: XPortalOverlayRef<FloatNodeComponent>;
 
   // 菜单数据
   public get menus(): Menu[] {
@@ -126,10 +127,10 @@ export class IndexService {
    */
   push(tab: Menu, activtedRouter: ActivatedRoute) {
     return new Promise((x, y) => {
-      if (!tab.router) y("路由页面不存在!");
+      if (!tab.router) y('路由页面不存在!');
       this.router
         .navigate([`${tab.router}`], { relativeTo: activtedRouter })
-        .then(z => {
+        .then((z) => {
           // this.session = { activatedPage: tab.page };
           // let tabs = _.filter(this.session.tabsPage, x => x.page == tab.page);
           // if (tabs.length === 0) {
@@ -137,7 +138,7 @@ export class IndexService {
           // }
           x(z);
         })
-        .catch(z => {
+        .catch((z) => {
           y(z);
         });
     });
@@ -150,12 +151,10 @@ export class IndexService {
    */
   listenerRouter() {
     this.removeSession();
-    this.router.events
-      .pipe(filter(x => x instanceof NavigationEnd))
-      .subscribe((x: NavigationEnd) => {
-        this.setTabs();
-        this.setCrumb();
-      });
+    this.router.events.pipe(filter((x) => x instanceof NavigationEnd)).subscribe((x: NavigationEnd) => {
+      this.setTabs();
+      this.setCrumb();
+    });
   }
 
   /**
@@ -165,15 +164,15 @@ export class IndexService {
    */
   setTabs() {
     let url = this.nav.getUrl(this.router.url);
-    let routers = url.path.split("/");
+    let routers = url.path.split('/');
     if (routers.length > 2) {
       let router = routers[2];
-      let subPage = routers.length > 3 ? _.drop(routers, 3).join("/") : null;
+      let subPage = routers.length > 3 ? _.drop(routers, 3).join('/') : null;
       let param = url.param;
-      let menu = _.find(this.menus, x => x.router == router);
+      let menu = _.find(this.menus, (x) => x.router == router);
       if (menu) {
         let tabsPage = this.session.tabsPage;
-        let tab = _.find(tabsPage, x => x.router == menu.router);
+        let tab = _.find(tabsPage, (x) => x.router == menu.router);
         if (tab) {
           tab.subPage = subPage;
           tab.param = param;
@@ -198,31 +197,30 @@ export class IndexService {
    * @memberof LayoutService
    */
   setCrumb() {
-    let menu = _.find(this.menus, x => x.router === this.session.activatedPage);
-    let crumbs: NmCrumbNode[] = [];
+    let menu = _.find(this.menus, (x) => x.router === this.session.activatedPage);
+    let crumbs: XCrumbNode[] = [];
     let addParent = (item: Menu) => {
-      if (item.parentId === null && item.parentId === "") return;
-      let parent = _.find(this.menus, x => x.id === item.parentId);
+      if (item.parentId === null && item.parentId === '') return;
+      let parent = _.find(this.menus, (x) => x.id === item.parentId);
       if (parent) {
         crumbs.unshift({
-          nmKey: parent.id,
-          nmLabel: parent.label,
+          id: parent.id,
+          label: parent.label,
           data: parent
         });
         addParent(parent);
       }
     };
     if (menu) {
-      crumbs.push({ nmKey: menu.id, nmLabel: menu.label, data: menu });
+      crumbs.push({ id: menu.id, label: menu.label, data: menu });
       addParent(menu);
     }
     this.crumbData = crumbs;
   }
 
   floatChild(child: Menu[]) {
-    return _.map(_.cloneDeep(child), x => {
-      x.router =
-        x.router != null ? `./${environment.layout}/${x.router}` : x.router;
+    return _.map(_.cloneDeep(child), (x) => {
+      x.router = x.router != null ? `./${environment.layout}/${x.router}` : x.router;
       return x;
     });
   }

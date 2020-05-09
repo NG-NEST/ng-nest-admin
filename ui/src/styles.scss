@@ -1,17 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./styles/index";
+@import './styles/index';
 @font-face {
-  font-family: "ubuntu";
-  src: url("assets/fonts/ubuntu.eot?#") format("eot"),
-    url("assets/fonts/ubuntu.ttf") format("truetype"),
-    url("assets/fonts/ubuntu.woff") format("woff"),
-    url("assets/fonts/ubuntu.svg#ubuntu") format("svg");
+  font-family: 'ubuntu';
+  src: url('assets/fonts/ubuntu.eot?#') format('eot'), url('assets/fonts/ubuntu.ttf') format('truetype'),
+    url('assets/fonts/ubuntu.woff') format('woff'), url('assets/fonts/ubuntu.svg#ubuntu') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 :root {
-  --primary-color-dark: #303f9f;
-  --primary-color: #3f51b5;
+  --primary-color-dark: var(--x-primary-a100);
+  --primary-color: var(--x-primary);
   --primary-color-light: #c5cae9;
   --primary-color-text: #ffffff;
   --accent-color: #ff5722;
@@ -62,11 +60,9 @@ a {
 code,
 pre,
 tt {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
-    monospace;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
 
 html {
-  font-family: ubuntu, -apple-system, SF UI Text, Arial, PingFang SC,
-    Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  font-family: ubuntu, -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 }

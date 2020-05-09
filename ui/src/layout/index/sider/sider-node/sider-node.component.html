@@ -6,9 +6,7 @@
   [title]="option.label"
   [style.padding-left.rem]="1 * level"
 >
-  <ng-container
-    *ngTemplateOutlet="itemTemp; context: { option: option }"
-  ></ng-container>
+  <ng-container *ngTemplateOutlet="itemTemp; context: { option: option }"></ng-container>
 </a>
 <a
   *ngIf="!option.router || option.router == '$'"
@@ -16,36 +14,20 @@
   [title]="option.label"
   [ngStyle]="{ 'padding-left.rem': 1 * level }"
 >
-  <ng-container
-    *ngTemplateOutlet="itemTemp; context: { option: option }"
-  ></ng-container>
+  <ng-container *ngTemplateOutlet="itemTemp; context: { option: option }"></ng-container>
 </a>
 <ul
   *ngIf="(child.length > 0 ? true : false) && option.childrenShow"
   [ngClass]="{ 'first-node': level == 1 && indexService.local.siderShrink }"
 >
-  <li
-    app-sider-node
-    *ngFor="let item of child"
-    [option]="item"
-    [level]="level"
-    [float]="float"
-  ></li>
+  <li app-sider-node *ngFor="let item of child" [option]="item" [level]="level" [float]="float"></li>
 </ul>
 
 <ng-template #itemTemp let-opt="option">
-  <nm-icon [nmType]="opt.icon"></nm-icon>
+  <x-icon [type]="opt.icon"></x-icon>
   <span>{{ opt.label }}</span>
   <ng-container *ngIf="child.length > 0 ? true : false">
-    <nm-icon
-      class="sider-arrow"
-      *ngIf="opt.childrenShow"
-      [nmType]="'ado-up'"
-    ></nm-icon>
-    <nm-icon
-      class="sider-arrow"
-      *ngIf="!opt.childrenShow"
-      [nmType]="'ado-down'"
-    ></nm-icon>
+    <x-icon class="sider-arrow" *ngIf="opt.childrenShow" [type]="'ado-up'"></x-icon>
+    <x-icon class="sider-arrow" *ngIf="!opt.childrenShow" [type]="'ado-down'"></x-icon>
   </ng-container>
 </ng-template>

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { Router } from "@angular/router";
-import { ReuseStrategyService } from "../../services/reuse-strategy.service";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReuseStrategyService } from '../../services/reuse-strategy.service';
 
 /**
  * 没有权限访问的页面
@@ -9,10 +9,8 @@ import { ReuseStrategyService } from "../../services/reuse-strategy.service";
  * @class NoAuthComponent
  */
 @Component({
-  selector: "no-auth",
-  template: `
-    <nm-inner>抱歉，您没有权限访问此页面!</nm-inner>
-  `,
+  selector: 'no-auth',
+  template: ` <x-inner>抱歉，您没有权限访问此页面!</x-inner> `,
   encapsulation: ViewEncapsulation.None
 })
 export class NoAuthComponent implements OnInit {

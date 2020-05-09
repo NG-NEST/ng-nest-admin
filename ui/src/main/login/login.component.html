@@ -5,22 +5,13 @@
       <span>NG-NEST-ADMIN</span>
     </li>
     <li>
-      <nm-input
-        [formControlName]="'account'"
-        [nmIcon]="'ado-user'"
-        [nmIconLayout]="'left'"
-      ></nm-input>
+      <x-input formControlName="account" icon="ado-user" iconLayout="left"></x-input>
     </li>
     <li>
-      <nm-input
-        [formControlName]="'password'"
-        [nmIcon]="'ado-lock'"
-        [nmType]="'password'"
-        [nmIconLayout]="'left'"
-      ></nm-input>
+      <x-input formControlName="password" icon="ado-lock" type="password" iconLayout="left"></x-input>
     </li>
     <li class="submit">
-      <nm-button [nmLabel]="'登 录'" (click)="login()"></nm-button>
+      <x-button (click)="login()">登 录</x-button>
     </li>
   </ul>
 </form>

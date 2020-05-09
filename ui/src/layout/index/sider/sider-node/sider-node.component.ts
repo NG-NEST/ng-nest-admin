@@ -1,24 +1,16 @@
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ViewContainerRef,
-  ElementRef,
-  HostBinding,
-  Input
-} from "@angular/core";
-import { IndexService, Menu } from "../../index.service";
-import { ReuseStrategyService } from "../../../../services/reuse-strategy.service";
-import * as _ from "lodash";
-import { environment } from "src/environments/environment";
-import { NmPortalService } from "ng-moon/portal";
-import { FloatNodeComponent } from "../float-node/float-node.component";
-import { Overlay } from "@angular/cdk/overlay";
-import { FLOAT_NODE_OPTION } from "../float-node/float-node.type";
+import { Component, OnInit, ViewEncapsulation, ViewContainerRef, ElementRef, HostBinding, Input } from '@angular/core';
+import { IndexService, Menu } from '../../index.service';
+import { ReuseStrategyService } from '../../../../services/reuse-strategy.service';
+import * as _ from 'lodash';
+import { environment } from 'src/environments/environment';
+import { XPortalService } from '@ng-nest/ui/portal';
+import { FloatNodeComponent } from '../float-node/float-node.component';
+import { Overlay } from '@angular/cdk/overlay';
+import { FLOAT_NODE_OPTION } from '../float-node/float-node.type';
 
 @Component({
-  selector: "[app-sider-node]",
-  templateUrl: "./sider-node.component.html",
+  selector: '[app-sider-node]',
+  templateUrl: './sider-node.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class SiderNodeComponent implements OnInit {
@@ -37,17 +29,17 @@ export class SiderNodeComponent implements OnInit {
   // 子节点
   child: Menu[] = [];
 
-  @HostBinding("class.childrenShow") get childrenShow() {
+  @HostBinding('class.childrenShow') get childrenShow() {
     return this.option.childrenShow;
   }
 
-  @HostBinding("class.floatShow") get floatShow() {
+  @HostBinding('class.floatShow') get floatShow() {
     return this.option.floatShow;
   }
 
   constructor(
     public indexService: IndexService,
-    public portal: NmPortalService,
+    public portal: XPortalService,
     public viewContainerRef: ViewContainerRef,
     public overlay: Overlay,
     public elementRef: ElementRef
@@ -55,9 +47,7 @@ export class SiderNodeComponent implements OnInit {
 
   ngOnInit() {
     this.level = this.level + 1;
-    this.child = this.indexService.menus.filter(
-      x => x.parentId === this.option.id
-    );
+    this.child = this.indexService.menus.filter((x) => x.parentId === this.option.id);
     if (this.float) this.child = this.indexService.floatChild(this.child);
   }
 
@@ -71,30 +61,23 @@ export class SiderNodeComponent implements OnInit {
   toggle(event: Event, option) {
     event.stopPropagation();
     if (this.indexService.local.siderShrink && this.level == 1 && !this.float) {
-      this.indexService.portal = this.portal.create({
-        nmContent: FloatNodeComponent,
-        nmViewContainerRef: this.viewContainerRef,
-        nmOverlayConfig: {
+      this.indexService.portal = this.portal.attach({
+        content: FloatNodeComponent,
+        viewContainerRef: this.viewContainerRef,
+        overlayConfig: {
           hasBackdrop: true,
           positionStrategy: this.overlay
             .position()
-            .connectedTo(
-              this.elementRef,
-              { originX: "end", originY: "top" },
-              { overlayX: "start", overlayY: "top" }
-            ),
-          backdropClass: ""
+            .connectedTo(this.elementRef, { originX: 'end', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
+          backdropClass: ''
         },
-        nmInjector: this.portal.createInjector(
-          this.indexService.floatChild(this.child),
-          FLOAT_NODE_OPTION
-        )
+        injector: this.portal.createInjector(this.indexService.floatChild(this.child), FLOAT_NODE_OPTION)
       });
       this.indexService.floatNode = this.option;
       this.option.floatShow = true;
-      this.indexService.portal.nmOverlayRef.backdropClick().subscribe(() => {
+      this.indexService.portal.overlayRef.backdropClick().subscribe(() => {
         this.option.floatShow = false;
-        this.indexService.portal.nmOverlayRef.detach();
+        this.indexService.portal.overlayRef.detach();
       });
     } else {
       if (this.child.length > 0) option.childrenShow = !option.childrenShow;
@@ -102,18 +85,13 @@ export class SiderNodeComponent implements OnInit {
   }
 
   sider(option) {
-    let tab = _.find(
-      this.indexService.session.tabsPage,
-      x => x.router == option.router
-    );
+    let tab = _.find(this.indexService.session.tabsPage, (x) => x.router == option.router);
     if (tab && tab.subPage) {
-      ReuseStrategyService.deleteRouteSnapshot(
-        `/${environment.layout}/${option.router}`
-      );
+      ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${option.router}`);
     }
     if (this.indexService.portal) {
       this.indexService.floatNode.floatShow = false;
-      this.indexService.portal.nmOverlayRef.detach();
+      this.indexService.portal.overlayRef.detach();
     }
   }
 }

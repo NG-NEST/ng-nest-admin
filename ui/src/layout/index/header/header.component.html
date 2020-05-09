@@ -4,14 +4,14 @@
 </div>
 <div class="nav">
   <a>
-    <nm-icon [nmType]="'ado-message'"></nm-icon>
+    <x-icon type="ado-message"></x-icon>
   </a>
   <a>
-    <nm-icon [nmType]="'ado-user'"></nm-icon>
+    <x-icon type="ado-user"></x-icon>
     <span class="info">{{ auth.user.name }}</span>
   </a>
   <a *ngIf="auth.user.name" (click)="action('logout')">
-    <nm-icon [nmType]="'ado-logout'"></nm-icon>
+    <x-icon type="ado-logout"></x-icon>
     <span class="info">登出</span>
   </a>
 </div>
