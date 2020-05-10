@@ -4,7 +4,7 @@
   [routerLink]="option.router"
   [routerLinkActive]="'active'"
   [title]="option.label"
-  [style.padding-left.rem]="1 * level"
+  [style.padding-left.rem]="0.875 * level"
 >
   <ng-container *ngTemplateOutlet="itemTemp; context: { option: option }"></ng-container>
 </a>
@@ -12,7 +12,7 @@
   *ngIf="!option.router || option.router == '$'"
   (click)="toggle($event, option)"
   [title]="option.label"
-  [ngStyle]="{ 'padding-left.rem': 1 * level }"
+  [ngStyle]="{ 'padding-left.rem': 0.875 * level }"
 >
   <ng-container *ngTemplateOutlet="itemTemp; context: { option: option }"></ng-container>
 </a>

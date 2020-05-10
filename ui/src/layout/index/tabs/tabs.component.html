@@ -1,13 +1,17 @@
-<ul>
-  <li
-    *ngFor="let item of indexService.session.tabsPage"
-    (click)="tab(item)"
-    [ngClass]="{ active: item.router == indexService.session.activatedPage }"
-  >
-    <x-icon [type]="item.icon"></x-icon>
-    <span>{{ item.label }}</span>
-    <div class="close" (click)="close(item)" *ngIf="indexService.session.tabsPage.length > 1">
+<x-slider
+  [data]="indexService.session.tabsPage"
+  size="big"
+  [nodeTpl]="nodeTpl"
+  (indexChange)="tab($event)"
+  [activatedIndex]="activatedIndex"
+></x-slider>
+
+<ng-template #nodeTpl let-node="$node">
+  <div class="tab">
+    <x-icon *ngIf="node.icon" [type]="node.icon"></x-icon>
+    <span>{{ node.label }}</span>
+    <div class="close" (click)="close(node)" *ngIf="indexService.session.tabsPage.length > 1">
       <x-icon title="关闭" type="ado-close"></x-icon>
     </div>
-  </li>
-</ul>
+  </div>
+</ng-template>

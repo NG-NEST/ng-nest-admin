@@ -1,16 +1,20 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { IndexService, Menu } from "../index.service";
-import { Router } from "@angular/router";
-import * as _ from "lodash";
-import { environment } from "src/environments/environment";
-import { ReuseStrategyService } from "../../../services/reuse-strategy.service";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { IndexService, Menu } from '../index.service';
+import { Router } from '@angular/router';
+import * as _ from 'lodash';
+import { environment } from 'src/environments/environment';
+import { ReuseStrategyService } from '../../../services/reuse-strategy.service';
 
 @Component({
-  selector: "app-tabs",
-  templateUrl: "./tabs.component.html",
+  selector: 'app-tabs',
+  templateUrl: './tabs.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class TabsComponent implements OnInit {
+  get activatedIndex() {
+    return this.indexService.session.tabsPage.findIndex((x) => x.router === this.indexService.session.activatedPage);
+  }
+
   constructor(public indexService: IndexService, private router: Router) {}
 
   ngOnInit() {}
@@ -20,7 +24,8 @@ export class TabsComponent implements OnInit {
    *
    * @memberof TabsComponent
    */
-  tab(tab: Menu) {
+  tab(index: number) {
+    const tab = this.indexService.session.tabsPage.find((x, i) => i === index);
     if (tab && tab.router) {
       let page = tab.router;
       let subRoot = tab.subPage;
@@ -46,10 +51,9 @@ export class TabsComponent implements OnInit {
       if (x.router === tab.router) deleteIndex = index;
       return x.router === tab.router;
     });
-    ReuseStrategyService.deleteRouteSnapshot(
-      `/${environment.layout}/${tab.router}`
-    );
+    ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${tab.router}`);
     this.indexService.session = { tabsPage: tabsPage };
+    this.indexService.session.tabsPage = [...tabsPage];
 
     // 判断路由跳转
     if (tab.router === this.indexService.session.activatedPage) {
@@ -63,7 +67,7 @@ export class TabsComponent implements OnInit {
       if (deleteIndex > 0 && tabsPage.length <= deleteIndex) {
         pushIndex = deleteIndex - 1;
       }
-      this.tab(tabsPage[pushIndex]);
+      this.tab(pushIndex);
     }
   }
 }

@@ -10,17 +10,17 @@ $sider-background-color: #f0f0f0;
 // 标签页背景色
 $tabs-background-color: #f0f0f0;
 // 正文背景色
-$content-background-color: $primary-text-color;
+$content-background-color: $background-color;
 // 头部高度
 $header-height: 3.5rem;
 // 标签页高度
-$tabs-height: 2.375rem;
+$tabs-height: 2.25rem;
 // 面包屑导航高度
-$crumb-height: 2.375rem;
+$crumb-height: 2.25rem;
 // 菜单栏宽度
 $sider-width: 12.5rem;
 // 内容区域的内边距
-$content-padding: 1rem;
+$content-padding: 0.875rem;
 // 悬停背景色
 $sider-node-hover-background-color: rgba(0, 0, 0, 0.05);
 // 悬停文字颜色
@@ -49,7 +49,7 @@ $box-shadow: 1px 1px 1px rgba(200, 200, 200, 0.1);
 @mixin silder {
   li {
     a {
-      padding: 0 1rem;
+      padding: 0 0.875rem;
       transition: background-color $transition-duration, border-color $transition-duration;
       display: flex;
       align-items: center;
@@ -169,60 +169,62 @@ app-index {
     z-index: 11;
     transition: left $transition-duration, width $transition-duration;
     font-size: 0.875rem;
-    ul {
+    .x-slider-scroll > ul > li x-link.x-size-big {
+      padding: 0;
+    }
+    .x-slider-scroll > ul > li.x-slider-highlight {
+      background-color: #fafafa;
+      border: none;
+      border-radius: 0;
+    }
+    .tab {
+      min-width: 5.625rem;
+      max-width: 11.25rem;
+      padding: 0 1.875rem 0 0.875rem;
+      height: 100%;
       display: flex;
       align-items: center;
-      height: 100%;
-      li {
-        min-width: 5.625rem;
-        max-width: 11.25rem;
-        height: 100%;
-        display: flex;
-        align-items: center;
+      white-space: nowrap;
+      box-sizing: border-box;
+      user-select: none;
+      position: relative;
+      border-right: 0.0625rem solid #fafafa;
+      transition: background-color $transition-duration;
+      span {
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
-        box-sizing: border-box;
-        padding-left: 0.625rem;
-        padding-right: 1.875rem;
-        user-select: none;
-        border-right: 1px solid #fff;
-        position: relative;
-        transition: background-color $transition-duration;
+        margin-left: 0.375rem;
+        flex: 1;
+      }
+      .close {
+        margin-right: 0.25rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        .x-icon {
+          font-weight: bold;
+          opacity: 0;
+          transition: color $transition-duration;
+          padding: 0.125rem;
+        }
+      }
+      &.active {
+        background-color: $background-color;
         span {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          margin-left: 0.375rem;
-          flex: 1;
+          color: $primary-text-color;
         }
+      }
+      &.active,
+      &:hover {
         .close {
-          margin-right: 0.25rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          right: 0;
           .x-icon {
-            font-weight: bold;
-            opacity: 0;
-            transition: color $transition-duration;
-            padding: 0.125rem;
-          }
-        }
-        &.active {
-          background-color: #fafafa;
-          span {
-            color: $primary-text-color;
-          }
-        }
-        &.active,
-        &:hover {
-          .close {
-            .x-icon {
-              color: $secondary-text-color;
-              opacity: 1;
-              &:hover {
-                color: $primary-text-color;
-              }
+            color: $secondary-text-color;
+            opacity: 1;
+            &:hover {
+              color: $primary-text-color;
             }
           }
         }

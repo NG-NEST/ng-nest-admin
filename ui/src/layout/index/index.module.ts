@@ -14,6 +14,7 @@ import { FloatNodeComponent } from './sider/float-node/float-node.component';
 import { XIconModule } from '@ng-nest/ui/icon';
 import { XPortalModule } from '@ng-nest/ui/portal';
 import { XCrumbModule } from '@ng-nest/ui/crumb';
+import { XSliderModule } from '@ng-nest/ui/slider';
 
 // 声明模块中拥有的视图类
 const components = [
@@ -31,7 +32,7 @@ const components = [
 const entryComponents = [FloatNodeComponent];
 
 @NgModule({
-  imports: [CommonModule, ShareModule, IndexRoutesModule, XIconModule, XPortalModule, XCrumbModule],
+  imports: [CommonModule, ShareModule, IndexRoutesModule, XIconModule, XPortalModule, XCrumbModule, XSliderModule],
   declarations: [...components],
   entryComponents: [...entryComponents],
   exports: [...components]

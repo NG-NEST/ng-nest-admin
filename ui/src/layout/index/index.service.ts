@@ -187,6 +187,8 @@ export class IndexService {
           param: param,
           tabsPage: tabsPage
         };
+        // TODO: 对象赋值无法触发 ngOnChanges 事件
+        this.session.tabsPage = [...this.session.tabsPage];
       }
     }
   }

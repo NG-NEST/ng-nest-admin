@@ -16,6 +16,8 @@
   --primary-text-color: #212121;
   --secondary-text-color: #757575;
   --divider-color: #bdbdbd;
+
+  --background-color: #fafafa;
 }
 *,
 :after,
@@ -35,7 +37,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #fafafa;
+  background: var(--background-color);
 }
 
 body,
