@@ -1,7 +1,7 @@
 <form (submit)="login()" [formGroup]="userForm">
   <ul>
     <li class="login">
-      <img class="logo" src="assets/img/logo.png" />
+      <img class="logo" src="assets/img/logo/logo-96x96.png" />
       <span>NG-NEST-ADMIN</span>
     </li>
     <li>
@@ -11,7 +11,7 @@
       <x-input formControlName="password" icon="ado-lock" type="password" iconLayout="left"></x-input>
     </li>
     <li class="submit">
-      <x-button (click)="login()">登 录</x-button>
+      <x-button type="primary" (click)="login()">登 录</x-button>
     </li>
   </ul>
 </form>

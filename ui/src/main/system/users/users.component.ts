@@ -1,11 +1,23 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import * as _ from 'lodash';
+import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { XTableColumn, XTableAction } from '@ng-nest/ui/table';
-import { UsersService, User } from './users.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { Query } from 'src/services/repository.service';
-import { XData } from '@ng-nest/ui/core';
+import { UsersService } from './users.service';
+import {
+  XFormRow,
+  XInputControl,
+  XSelectControl,
+  XCascadeControl,
+  XColorPickerControl,
+  XDatePickerControl,
+  XInputNumberControl,
+  XRadioControl,
+  XRateControl,
+  XSwitchControl,
+  XTimePickerControl,
+  XSliderSelectControl,
+  XCheckboxControl,
+  XFormComponent
+} from '@ng-nest/ui/form';
+import { SettingService } from 'src/services/setting.service';
 
 /**
  * 用户管理
@@ -60,14 +72,81 @@ export class UsersComponent {
     }
   ];
   columns: XTableColumn[] = [
-    { id: 'account', label: '用户', flex: 2 },
-    { id: 'name', label: '姓名', flex: 1 },
-    { id: 'email', label: '邮箱', flex: 1 },
-    { id: 'phone', label: '电话', flex: 1 }
+    { id: 'index', label: '序号', width: 100, left: 0, type: 'index' },
+    { id: 'account', label: '用户', width: 120, left: 100, search: true, sort: true },
+    { id: 'name', label: '姓名', width: 100, left: 220 },
+    { id: 'organization', label: '组织机构', width: 100 },
+    { id: 'email', label: '邮箱', width: 200 },
+    { id: 'phone', label: '电话', width: 150 },
+    { id: 'description', label: '备注', flex: 1 }
   ];
-  constructor(public usersService: UsersService) {}
+
+  title = '';
+  visible = false;
+
+  @ViewChild('form', { static: false }) form: XFormComponent;
+  controls: XFormRow[] = [
+    {
+      title: '基本信息',
+      icon: 'fto-list',
+      controls: [
+        new XInputControl({
+          id: 'account',
+          label: '用户',
+          required: true,
+          maxlength: 16,
+          pattern: /^[A-Za-z0-9]{4,16}$/,
+          message: '只能包括数字、字母的组合，长度为4-16位'
+        }),
+        new XInputControl({
+          id: 'password',
+          label: '密码',
+          type: 'password',
+          required: true,
+          maxlength: 16,
+          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\\W]{6,18}$/,
+          message: '密码中必须包含字母和数字，长度为6-16位'
+        }),
+        new XInputControl({ id: 'surePassword', label: '确认密码', type: 'password', required: true })
+      ]
+    },
+    {
+      title: '详细信息',
+      icon: 'fto-user',
+      controls: [
+        new XInputControl({ id: 'name', label: '姓名', required: true }),
+        new XInputControl({ id: 'organization', label: '组织机构', required: true }),
+        new XInputControl({ id: 'email', label: '邮箱' }),
+        new XInputControl({ id: 'phone', label: '电话' })
+      ]
+    }
+  ];
+
+  constructor(public service: UsersService, private setting: SettingService) {}
 
   actionClick(action: XTableAction) {
-    console.log(action);
+    this.title = action.label;
+    switch (action.label) {
+      case '新增':
+        this.add();
+        break;
+    }
+  }
+
+  close() {
+    this.visible = false;
+  }
+
+  add() {
+    this.visible = true;
+  }
+
+  confirm() {
+    // this.visible = false;
+    // console.log(this.form.formGroup.value);
+    this.service.post(Object.assign({ id: this.setting.guid() }, this.form.formGroup.value)).subscribe((x) => {
+      console.log(x);
+      this.visible = false;
+    });
   }
 }

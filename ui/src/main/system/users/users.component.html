@@ -1,3 +1,22 @@
 <x-inner>
-  <x-table [columns]="columns" [actions]="actions" [service]="usersService" (actionClick)="actionClick($event)"></x-table>
+  <x-table
+    [columns]="columns"
+    [actions]="actions"
+    [service]="service"
+    [size]="1000"
+    [adaption-height]="160"
+    (actionClick)="actionClick($event)"
+    allow-select-row
+    virtual-scroll
+  ></x-table>
 </x-inner>
+
+<x-dialog [title]="title" [visible]="visible" width="28rem" (close)="close()" [footer]="footerTpl">
+  <x-form #form [controls]="controls" direction="row" label-suffix=":" label-width="5rem" label-align="end" span="22" space="2"></x-form>
+</x-dialog>
+
+<ng-template #footerTpl>
+  <div class="dialog-footer">
+    <x-button type="primary" (click)="confirm()">确 认</x-button>
+  </div>
+</ng-template>

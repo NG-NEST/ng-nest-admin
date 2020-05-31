@@ -90,7 +90,7 @@ export class SiderNodeComponent implements OnInit {
       ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${option.router}`);
     }
     if (this.indexService.portal) {
-      this.indexService.floatNode.floatShow = false;
+      if (this.indexService.floatNode) this.indexService.floatNode.floatShow = false;
       this.indexService.portal.overlayRef.detach();
     }
   }

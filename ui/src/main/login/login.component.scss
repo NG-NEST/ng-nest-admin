@@ -1,12 +1,15 @@
-@import "index";
+@import 'index';
 app-login {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  > form {
+    box-shadow: $box-shadow;
+  }
   ul {
-    background: #e7e7e7;
+    background: white;
     padding: 50px 80px;
     border-radius: 2px;
     > li {
@@ -17,7 +20,7 @@ app-login {
           font-size: 14px;
           padding: 10px;
         }
-        > span[class*="icon-"] {
+        > span[class*='icon-'] {
           padding: 11px;
         }
       }
@@ -30,9 +33,6 @@ app-login {
         align-items: center;
         margin-bottom: 30px;
         flex-direction: column;
-        img.logo {
-          width: 150px;
-        }
         span {
           margin-top: 10px;
           font-size: 20px;
@@ -41,10 +41,11 @@ app-login {
       }
       &.submit {
         margin-top: 1rem;
-        > x-button {
-          width: 100%;
-          font-size: 0.875rem;
-          height: 1.875rem;
+        x-button {
+          display: flex;
+          .x-button {
+            flex: 1;
+          }
         }
       }
     }

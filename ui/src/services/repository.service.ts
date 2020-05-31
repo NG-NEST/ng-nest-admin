@@ -1,6 +1,6 @@
-import { Observable } from "rxjs";
-import { HttpService } from "./http.service";
-import * as _ from "lodash";
+import { Observable } from 'rxjs';
+import { HttpService } from './http.service';
+import * as _ from 'lodash';
 
 export interface Id {
   id: string | number;
@@ -36,17 +36,10 @@ export interface Filter {
 export class RepositoryService<Entity extends Id> {
   constructor(public http: HttpService, public option: RepositoryOption) {}
 
-  getList(
-    index?: number,
-    size?: number,
-    query?: Query
-  ): Observable<ResultList<Entity>> {
+  getList(index?: number, size?: number, query?: Query): Observable<ResultList<Entity>> {
     index = index ? index : 1;
     size = size ? size : 10;
-    return this.http.post(
-      `${this.option.controller.name}/${size}/${index}`,
-      query
-    );
+    return this.http.post(`${this.option.controller.name}/${size}/${index}`, query);
   }
 
   get(id: number | string): Observable<Entity> {

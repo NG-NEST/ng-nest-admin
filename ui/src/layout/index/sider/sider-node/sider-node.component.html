@@ -27,7 +27,6 @@
   <x-icon [type]="opt.icon"></x-icon>
   <span>{{ opt.label }}</span>
   <ng-container *ngIf="child.length > 0 ? true : false">
-    <x-icon class="sider-arrow" *ngIf="opt.childrenShow" [type]="'ado-up'"></x-icon>
-    <x-icon class="sider-arrow" *ngIf="!opt.childrenShow" [type]="'ado-down'"></x-icon>
+    <x-icon class="sider-arrow" [class.show]="opt.childrenShow" type="fto-chevron-right"></x-icon>
   </ng-container>
 </ng-template>

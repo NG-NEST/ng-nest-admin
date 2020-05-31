@@ -17,7 +17,7 @@
   --secondary-text-color: #757575;
   --divider-color: #bdbdbd;
 
-  --background-color: #fafafa;
+  --background-color: var(--x-white);
 }
 *,
 :after,
@@ -56,7 +56,6 @@ ul {
 a {
   text-decoration: none;
   transition: all 0.4s;
-  cursor: default;
 }
 
 code,

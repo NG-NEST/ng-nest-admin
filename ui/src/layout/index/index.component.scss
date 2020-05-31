@@ -2,13 +2,13 @@
 // 字体颜色
 $font-color: $primary-text-color;
 // 头部背景色
-$header-background-color: $primary-color;
+$header-background-color: #f0f0f0;
 // 头部文字颜色
-$header-color: $primary-color-text;
+$header-color: var(--x-text);
 // 菜单栏背景色
-$sider-background-color: #f0f0f0;
+$sider-background-color: #fafafa;
 // 标签页背景色
-$tabs-background-color: #f0f0f0;
+$tabs-background-color: #fafafa;
 // 正文背景色
 $content-background-color: $background-color;
 // 头部高度
@@ -31,8 +31,6 @@ $selected-background-color: rgba(0, 0, 0, 0.025);
 $selected-color: $primary-color;
 // 动画时间
 $transition-duration: 0.3s;
-// 阴影
-$box-shadow: 1px 1px 1px rgba(200, 200, 200, 0.1);
 // 悬停效果
 @mixin hover {
   color: $sider-node-hover-color;
@@ -68,8 +66,11 @@ $box-shadow: 1px 1px 1px rgba(200, 200, 200, 0.1);
       .x-icon {
         font-size: 1.125rem;
         &.sider-arrow {
-          font-size: 1rem;
-          transition: visibility $transition-duration, opacity $transition-duration;
+          font-size: 0.875rem;
+          transition: visibility $transition-duration, opacity $transition-duration, transform $transition-duration;
+          &.show {
+            transform: rotate(90deg);
+          }
         }
       }
       &:hover {
@@ -173,7 +174,7 @@ app-index {
       padding: 0;
     }
     .x-slider-scroll > ul > li.x-slider-highlight {
-      background-color: #fafafa;
+      background-color: var(--x-white);
       border: none;
       border-radius: 0;
     }
@@ -236,7 +237,7 @@ app-index {
     height: $crumb-height;
     position: fixed;
     top: $header-height + $tabs-height;
-    background-color: #fafafa;
+    background-color: var(--x-white);
     left: $sider-width;
     z-index: 11;
     transition: left $transition-duration, width $transition-duration;
@@ -289,8 +290,6 @@ app-index {
     left: 0;
     z-index: 12;
     transition: width $transition-duration;
-    border-bottom: 1px solid #e8e8e8;
-    border-right: 1px solid #e8e8e8;
     box-sizing: border-box;
     .toggle {
       height: $tabs-height;
@@ -326,8 +325,6 @@ app-float-node {
     min-width: $sider-width - 2rem;
     box-shadow: $box-shadow;
     background-color: #ffffff;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.08);
   }
   @include silder;
 }
