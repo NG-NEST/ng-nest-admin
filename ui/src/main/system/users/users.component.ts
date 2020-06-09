@@ -1,22 +1,7 @@
 import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { XTableColumn, XTableAction } from '@ng-nest/ui/table';
 import { UsersService } from './users.service';
-import {
-  XFormRow,
-  XInputControl,
-  XSelectControl,
-  XCascadeControl,
-  XColorPickerControl,
-  XDatePickerControl,
-  XInputNumberControl,
-  XRadioControl,
-  XRateControl,
-  XSwitchControl,
-  XTimePickerControl,
-  XSliderSelectControl,
-  XCheckboxControl,
-  XFormComponent
-} from '@ng-nest/ui/form';
+import { XFormRow, XInputControl, XFormComponent, XControl } from '@ng-nest/ui/form';
 import { SettingService } from 'src/services/setting.service';
 
 /**
@@ -85,41 +70,31 @@ export class UsersComponent {
   visible = false;
 
   @ViewChild('form', { static: false }) form: XFormComponent;
-  controls: XFormRow[] = [
+  controls: XControl[] = [
     {
-      title: '基本信息',
-      icon: 'fto-list',
-      controls: [
-        new XInputControl({
-          id: 'account',
-          label: '用户',
-          required: true,
-          maxlength: 16,
-          pattern: /^[A-Za-z0-9]{4,16}$/,
-          message: '只能包括数字、字母的组合，长度为4-16位'
-        }),
-        new XInputControl({
-          id: 'password',
-          label: '密码',
-          type: 'password',
-          required: true,
-          maxlength: 16,
-          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\\W]{6,18}$/,
-          message: '密码中必须包含字母和数字，长度为6-16位'
-        }),
-        new XInputControl({ id: 'surePassword', label: '确认密码', type: 'password', required: true })
-      ]
+      control: 'input',
+      id: 'account',
+      label: '用户',
+      required: true,
+      maxlength: 16,
+      pattern: /^[A-Za-z0-9]{4,16}$/,
+      message: '只能包括数字、字母的组合，长度为4-16位'
     },
     {
-      title: '详细信息',
-      icon: 'fto-user',
-      controls: [
-        new XInputControl({ id: 'name', label: '姓名', required: true }),
-        new XInputControl({ id: 'organization', label: '组织机构', required: true }),
-        new XInputControl({ id: 'email', label: '邮箱' }),
-        new XInputControl({ id: 'phone', label: '电话' })
-      ]
-    }
+      control: 'input',
+      id: 'password',
+      label: '密码',
+      type: 'password',
+      required: true,
+      maxlength: 16,
+      pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\\W]{6,18}$/,
+      message: '密码中必须包含字母和数字，长度为6-16位'
+    },
+    { control: 'input', id: 'surePassword', label: '确认密码', type: 'password', required: true },
+    { control: 'input', id: 'name', label: '姓名', required: true },
+    { control: 'input', id: 'organization', label: '组织机构', required: true },
+    { control: 'input', id: 'email', label: '邮箱' },
+    { control: 'input', id: 'phone', label: '电话' }
   ];
 
   constructor(public service: UsersService, private setting: SettingService) {}

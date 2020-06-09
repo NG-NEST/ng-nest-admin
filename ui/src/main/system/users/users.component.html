@@ -17,6 +17,9 @@
 
 <ng-template #footerTpl>
   <div class="dialog-footer">
-    <x-button type="primary" (click)="confirm()">确 认</x-button>
+    <x-buttons space="1">
+      <x-button (click)="close()">取 消</x-button>
+      <x-button type="primary" (click)="!form.formGroup.invalid && confirm()" [disabled]="form.formGroup.invalid">确 认</x-button>
+    </x-buttons>
   </div>
 </ng-template>

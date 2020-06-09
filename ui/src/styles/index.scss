@@ -19,6 +19,9 @@
 }
 
 .dialog-footer {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   text-align: center;
+  > x-buttons > x-button .x-button {
+    width: 5rem;
+  }
 }
