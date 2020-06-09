@@ -1,38 +1,40 @@
-import { Routes } from "@angular/router";
-import { environment } from "./environment";
-import { AuthGuard } from "../services/auth-guard";
+import { Routes } from '@angular/router';
+import { environment } from './environment';
+import { AuthGuard } from '../services/auth-guard';
 
 // 公共路由
 export const shareRoutes: Routes = [
   // 没有权限的显示模块
   {
-    path: "no-auth",
-    loadChildren: () =>
-      import("../main/no-auth/no-auth.module").then(x => x.NoAuthModule)
+    path: 'no-auth',
+    loadChildren: () => import('../main/no-auth/no-auth.module').then((x) => x.NoAuthModule),
+    data: {
+      animation: 'no-auth'
+    }
   },
   // 错误的路由或不存在的路由指向的模块
   {
-    path: "**",
-    loadChildren: () =>
-      import("../main/exception/404.module").then(x => x.Exception404Module)
+    path: '**',
+    loadChildren: () => import('../main/exception/404.module').then((x) => x.Exception404Module),
+    data: {
+      animation: '404'
+    }
   }
 ];
 
 // 顶级路由，指向框架页
 export const mainRoutes: Routes = [
   // 如果路由为空就指向 index
-  { path: "", redirectTo: environment.layout, pathMatch: "full" },
+  { path: '', redirectTo: environment.layout, pathMatch: 'full' },
   // 登录页
   {
-    path: "login",
-    loadChildren: () =>
-      import("../main/login/login.module").then(x => x.LoginModule)
+    path: 'login',
+    loadChildren: () => import('../main/login/login.module').then((x) => x.LoginModule)
   },
   // index
   {
-    path: "index",
-    loadChildren: () =>
-      import("../layout/index/index.module").then(x => x.IndexModule),
+    path: 'index',
+    loadChildren: () => import('../layout/index/index.module').then((x) => x.IndexModule),
     canActivateChild: [AuthGuard],
     canLoad: [AuthGuard]
   },
@@ -43,27 +45,33 @@ export const mainRoutes: Routes = [
 // 框架页中对应的路由，指向具体的页面，框架页面中的路由都会带上顶级路由 index 如：/index/workplace
 export const layoutRoutes: Routes = [
   // 如果路由为空就指向配置的默认首页
-  { path: "", redirectTo: environment.defaultPage, pathMatch: "full" },
+  { path: '', redirectTo: environment.defaultPage, pathMatch: 'full' },
   // 首页
   {
-    path: "home",
-    loadChildren: () =>
-      import("../main/home/home.module").then(x => x.HomeModule),
-    canLoad: [AuthGuard]
+    path: 'home',
+    loadChildren: () => import('../main/home/home.module').then((x) => x.HomeModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'home'
+    }
   },
   // 仪表盘
   {
-    path: "dashboard",
-    loadChildren: () =>
-      import("../main/dashboard/dashboard.module").then(x => x.DashboardModule),
-    canLoad: [AuthGuard]
+    path: 'dashboard',
+    loadChildren: () => import('../main/dashboard/dashboard.module').then((x) => x.DashboardModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'dashboard'
+    }
   },
   // 用户管理
   {
-    path: "users",
-    loadChildren: () =>
-      import("../main/system/users/users.module").then(x => x.UsersModule),
-    canLoad: [AuthGuard]
+    path: 'users',
+    loadChildren: () => import('../main/system/users/users.module').then((x) => x.UsersModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'users'
+    }
   },
 
   // 示例功能
