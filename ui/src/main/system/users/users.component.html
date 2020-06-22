@@ -1,25 +1,7 @@
 <x-inner>
-  <x-table
-    [columns]="columns"
-    [actions]="actions"
-    [service]="service"
-    [size]="1000"
-    [adaption-height]="160"
-    (actionClick)="actionClick($event)"
-    allow-select-row
-    virtual-scroll
-  ></x-table>
+  <ad-tool top>
+    <div></div>
+    <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+  </ad-tool>
+  <x-table [columns]="columns" [rowHeight]="35" [data]="data" [size]="20" [bodyHeight]="100" [adaptionHeight]="204" virtualScroll></x-table>
 </x-inner>
-
-<x-dialog [title]="title" [visible]="visible" width="28rem" (close)="close()" [footer]="footerTpl">
-  <x-form #form [controls]="controls" direction="row" label-suffix=":" label-width="5rem" label-align="end" span="22" space="2"></x-form>
-</x-dialog>
-
-<ng-template #footerTpl>
-  <div class="dialog-footer">
-    <x-buttons space="1">
-      <x-button (click)="close()">取 消</x-button>
-      <x-button type="primary" (click)="!form.formGroup.invalid && confirm()" [disabled]="form.formGroup.invalid">确 认</x-button>
-    </x-buttons>
-  </div>
-</ng-template>

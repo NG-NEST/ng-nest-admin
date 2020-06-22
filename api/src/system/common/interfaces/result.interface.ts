@@ -1,23 +1,30 @@
-export interface ResultList<T> {
-  list: T[];
+import { XId } from './id.interface';
+
+export interface XResultList<Entity extends XId> {
+  list?: Entity[];
   total?: number;
-  query?: Query;
+  query?: XQuery;
 }
 
-export interface Query {
-  size: number;
-  index: number;
-  sort?: string[];
-  filter?: Filter[];
+export interface XQuery {
+  index?: number;
+  size?: number;
+  sort?: XSort[];
+  filter?: XFilter[];
   group?: string;
 }
 
-export interface GroupItem {
-  [prototype: string]: any;
-  count?: number;
+export interface XFilter {
+  field: string;
+  value: string;
+  operation?: XOperation;
 }
 
-export interface Filter {
-  field: string;
-  value: string | number;
+export type XOperation = '%' | '=' | '>' | '>=' | '<' | '<=';
+
+export interface XSort extends XFilter {}
+
+export interface XGroupItem extends XId {
+  [prototype: string]: any;
+  count?: number;
 }

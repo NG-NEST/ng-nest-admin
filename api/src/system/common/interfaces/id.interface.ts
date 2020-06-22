@@ -1,5 +1,5 @@
 import { ObjectID } from 'typeorm';
 
-export interface Id {
+export interface XId {
   id: string | number | Date | ObjectID;
 }

@@ -1,0 +1,21 @@
+<x-inner>
+  <x-form
+    #form
+    [controls]="controls"
+    direction="row"
+    labelSuffix=":"
+    [labelWidth]="config.labelWidth"
+    width="24rem"
+    labelAlign="end"
+    span="24"
+    space="2"
+  ></x-form>
+  <ad-tool [style.margin-top.rem]="2" [style.padding-left]="config.labelWidth">
+    <x-buttons [space]="1">
+      <x-button type="primary" (click)="!form.formGroup.invalid && confirm()" [disabled]="form.formGroup.invalid">
+        确 认
+      </x-button>
+      <x-button (click)="cancel()">取 消</x-button>
+    </x-buttons>
+  </ad-tool>
+</x-inner>

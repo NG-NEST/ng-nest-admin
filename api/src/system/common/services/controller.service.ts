@@ -9,12 +9,12 @@ import {
   ParseIntPipe
 } from "@nestjs/common";
 import { RepositoryService } from "./repository.service";
-import { Id } from "../interfaces/id.interface";
-import { ResultList, GroupItem } from "../interfaces/result.interface";
+import { XId } from "../interfaces/id.interface";
+import { XResultList, XGroupItem } from "../interfaces/result.interface";
 import { ObjectID } from "typeorm";
 
 @Injectable()
-export class ControllerService<Entity extends Id> {
+export class ControllerService<Entity extends XId> {
   constructor(private readonly service: RepositoryService<Entity>) {}
 
   @Post(":size/:index")
@@ -22,7 +22,7 @@ export class ControllerService<Entity extends Id> {
     @Param("index", new ParseIntPipe()) index: number = 1,
     @Param("size", new ParseIntPipe()) size: number = 10,
     @Body() query: any
-  ): Promise<ResultList<Entity | GroupItem>> {
+  ): Promise<XResultList<Entity | XGroupItem>> {
     return await this.service.getList(index, size, query);
   }
 

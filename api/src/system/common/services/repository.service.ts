@@ -1,31 +1,27 @@
-import { Query, Filter, GroupItem } from "./../interfaces/result.interface";
-import { Injectable } from "@nestjs/common";
-import { Repository, getManager, ObjectID, SelectQueryBuilder } from "typeorm";
-import { Id } from "../interfaces/id.interface";
-import { ResultList } from "../interfaces/result.interface";
-import * as _ from "lodash";
+import { XQuery, XFilter, XGroupItem, XSort } from './../interfaces/result.interface';
+import { Injectable } from '@nestjs/common';
+import { Repository, getManager, ObjectID, SelectQueryBuilder } from 'typeorm';
+import { XId } from '../interfaces/id.interface';
+import { XResultList } from '../interfaces/result.interface';
+import * as _ from 'lodash';
 
 @Injectable()
-export class RepositoryService<Entity extends Id> {
+export class RepositoryService<Entity extends XId> {
   constructor(private repository: Repository<Entity>) {}
 
-  async getList(
-    index: number,
-    size: number,
-    query: Query
-  ): Promise<ResultList<Entity | GroupItem>> {
-    return new Promise<ResultList<Entity | GroupItem>>(async x => {
-      let qb = this.repository.createQueryBuilder("entity");
-      let list: Entity[] | GroupItem[] = [];
+  async getList(index: number, size: number, query: XQuery): Promise<XResultList<Entity | XGroupItem>> {
+    return new Promise<XResultList<Entity | XGroupItem>>(async x => {
+      let qb = this.repository.createQueryBuilder('entity');
+      let list: Entity[] | XGroupItem[] = [];
       let total: number = 0;
       this.setFilter(qb, query.filter);
       if (query.group) {
         let group = await this.setGroup(qb, query.group);
-        let sort = this.transformSort(query.sort, "");
+        let sort = this.transformSort(query.sort, '');
         group = _.orderBy(
           group,
           _.map(sort, (v, k) => k),
-          _.map(sort, (v: string, k) => v.toLowerCase() as "desc" | "asc")
+          _.map(sort, (v: string, k) => v.toLowerCase() as 'desc' | 'asc')
         );
         let start = size * (index - 1);
         let end = start + size;
@@ -39,7 +35,7 @@ export class RepositoryService<Entity extends Id> {
           .getMany();
         total = await qb.getCount();
       }
-      let result: ResultList<Entity | GroupItem> = {
+      let result: XResultList<Entity | XGroupItem> = {
         list: list,
         total: total,
         query: query
@@ -73,7 +69,7 @@ export class RepositoryService<Entity extends Id> {
     return await this.repository.remove(entity);
   }
 
-  private setFilter(rep: SelectQueryBuilder<Entity>, filter: Filter[]) {
+  private setFilter(rep: SelectQueryBuilder<Entity>, filter: XFilter[]) {
     if (filter && filter.length > 0) {
       let param = {};
       filter.forEach((x, index) => {
@@ -87,37 +83,38 @@ export class RepositoryService<Entity extends Id> {
   private async setGroup(rep: SelectQueryBuilder<Entity>, group: string) {
     let result = [];
     if (group) {
-      result = (await rep
-        .groupBy(`entity.${group}`)
-        .select([`entity.${group}`, `count(entity.${group}) as count`])
-        .getRawMany()).map(y => {
+      result = (
+        await rep
+          .groupBy(`entity.${group}`)
+          .select([`entity.${group}`, `count(entity.${group}) as count`])
+          .getRawMany()
+      ).map(y => {
         let mapTo = {};
         mapTo[group] = y[`entity_${group}`];
-        mapTo["count"] = parseInt(y.count);
+        mapTo['count'] = parseInt(y.count);
         return mapTo;
       });
     }
     return result;
   }
 
-  private setSort(rep: SelectQueryBuilder<Entity>, sort: string[]) {
+  private setSort(rep: SelectQueryBuilder<Entity>, sort: XSort[]) {
     if (sort && sort.length > 0) {
       rep = rep.orderBy(this.transformSort(sort));
     }
     return rep;
   }
 
-  private transformSort(sort: string[], entity = "entity"): any {
-    let condition = {};
+  private transformSort(sort: XSort[], entity = 'entity'): any {
+    let condition: { [prop: string]: 'ASC' | 'DESC' } = {};
     if (sort && sort.length > 0) {
       sort.forEach(x => {
-        let spt = x.split(" ");
-        let order: "ASC" | "DESC" =
-          spt.length > 1 ? (spt[1].toUpperCase() == "DESC" ? "DESC" : "ASC") : "ASC";
-        if (entity !== "") {
-          condition[`${entity}.${spt[0]}`] = order;
+        const order: 'ASC' | 'DESC' = x.value.toUpperCase() as 'ASC' | 'DESC';
+        const field = x.field;
+        if (entity !== '') {
+          condition[`${entity}.${field}`] = order;
         } else {
-          condition[`${spt[0]}`] = order;
+          condition[`${field}`] = order;
         }
       });
     }
