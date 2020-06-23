@@ -28,14 +28,14 @@ export class IndexService {
 
   // 菜单数据
   public get menus(): Menu[] {
-    return this.auth.user.permissions.menus;
+    return this.auth.user.permissions?.menus as Menu[];
   }
 
   // 本地长期存储
-  private _local = null;
+  private _local: Local;
 
   // 当前会话存储
-  private _session = null;
+  private _session: Session;
 
   constructor(
     public auth: AuthService,
@@ -167,11 +167,11 @@ export class IndexService {
     let routers = url.path.split('/');
     if (routers.length > 2) {
       let router = routers[2];
-      let subPage = routers.length > 3 ? _.drop(routers, 3).join('/') : null;
+      let subPage = routers.length > 3 ? _.drop(routers, 3).join('/') : undefined;
       let param = url.param;
-      let menu = _.find(this.menus, (x) => x.router == router);
+      let menu = _.find(this.menus, (x) => x.router == router) as Menu;
       if (menu) {
-        let tabsPage = this.session.tabsPage;
+        let tabsPage = this.session.tabsPage as Menu[];
         let tab = _.find(tabsPage, (x) => x.router == menu.router);
         if (tab) {
           tab.subPage = subPage;
@@ -187,8 +187,7 @@ export class IndexService {
           param: param,
           tabsPage: tabsPage
         };
-        // TODO: 对象赋值无法触发 ngOnChanges 事件
-        this.session.tabsPage = [...this.session.tabsPage];
+        this.session.tabsPage = [...(this.session.tabsPage as Menu[])];
       }
     }
   }
@@ -202,8 +201,8 @@ export class IndexService {
     let menu = _.find(this.menus, (x) => x.router === this.session.activatedPage);
     let crumbs: XCrumbNode[] = [];
     let addParent = (item: Menu) => {
-      if (item.parentId === null && item.parentId === '') return;
-      let parent = _.find(this.menus, (x) => x.id === item.parentId);
+      if (item.pid === null && item.pid === '') return;
+      let parent = _.find(this.menus, (x) => x.id === item.pid);
       if (parent) {
         crumbs.unshift({
           id: parent.id,

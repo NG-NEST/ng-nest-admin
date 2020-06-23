@@ -1,9 +1,7 @@
-import { XQuery, XFilter, XGroupItem, XSort } from './../interfaces/result.interface';
 import { Injectable } from '@nestjs/common';
 import { Repository, getManager, ObjectID, SelectQueryBuilder } from 'typeorm';
-import { XId } from '../interfaces/id.interface';
-import { XResultList } from '../interfaces/result.interface';
-import * as _ from 'lodash';
+import { XQuery, XFilter, XGroupItem, XSort, XId, XResultList } from '../interfaces';
+import { orderBy, slice, map } from 'lodash';
 
 @Injectable()
 export class RepositoryService<Entity extends XId> {
@@ -18,14 +16,14 @@ export class RepositoryService<Entity extends XId> {
       if (query.group) {
         let group = await this.setGroup(qb, query.group);
         let sort = this.transformSort(query.sort, '');
-        group = _.orderBy(
+        group = orderBy(
           group,
-          _.map(sort, (v, k) => k),
-          _.map(sort, (v: string, k) => v.toLowerCase() as 'desc' | 'asc')
+          map(sort, (v, k) => k),
+          map(sort, (v: string, k) => v.toLowerCase() as 'desc' | 'asc')
         );
         let start = size * (index - 1);
         let end = start + size;
-        list = _.slice(group, start, end);
+        list = slice(group, start, end);
         total = group.length;
       } else {
         this.setSort(qb, query.sort);

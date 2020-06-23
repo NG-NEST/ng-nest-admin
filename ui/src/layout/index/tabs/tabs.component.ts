@@ -12,7 +12,17 @@ import { ReuseStrategyService } from '../../../services/reuse-strategy.service';
 })
 export class TabsComponent implements OnInit {
   get activatedIndex() {
-    return this.indexService.session.tabsPage.findIndex((x) => x.router === this.indexService.session.activatedPage);
+    return this.indexService.session.tabsPage
+      ? this.indexService.session.tabsPage.findIndex((x) => x.router === this.indexService.session.activatedPage)
+      : -1;
+  }
+
+  get showClose() {
+    return this.indexService.session.tabsPage && this.indexService.session.tabsPage.length > 1 ? true : false;
+  }
+
+  get getData() {
+    return this.indexService.session.tabsPage ? this.indexService.session.tabsPage : [];
   }
 
   constructor(public indexService: IndexService, private router: Router) {}
@@ -25,7 +35,7 @@ export class TabsComponent implements OnInit {
    * @memberof TabsComponent
    */
   tab(index: number) {
-    const tab = this.indexService.session.tabsPage.find((x, i) => i === index);
+    const tab = this.indexService.session.tabsPage?.find((x, i) => i === index);
     if (tab && tab.router) {
       let page = tab.router;
       let subRoot = tab.subPage;
@@ -43,7 +53,7 @@ export class TabsComponent implements OnInit {
    * @memberof TabsComponent
    */
   close(tab: Menu) {
-    let tabsPage = this.indexService.session.tabsPage;
+    let tabsPage = this.indexService.session.tabsPage as Menu[];
     let deleteIndex = 0;
 
     // 清除标签页
@@ -67,7 +77,9 @@ export class TabsComponent implements OnInit {
       if (deleteIndex > 0 && tabsPage.length <= deleteIndex) {
         pushIndex = deleteIndex - 1;
       }
-      this.tab(pushIndex);
+      if (pushIndex !== null) {
+        this.tab(pushIndex);
+      }
     }
   }
 }

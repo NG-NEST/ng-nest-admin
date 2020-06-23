@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-import { Observable, of } from "rxjs";
-import { tap } from "rxjs/operators";
-import { HttpService } from "./http.service";
-import { SettingService } from "./setting.service";
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { HttpService } from './http.service';
+import { SettingService } from './setting.service';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   // 存储的KEY
-  key = "Auth";
+  key = 'Auth';
 
   // 是否登录
   isLoggedIn = false;
@@ -17,9 +17,9 @@ export class AuthService {
   redirectUrl: string;
 
   // 控制器的名称
-  controllerName = "auth";
+  controllerName = 'auth';
 
-  private _user = null;
+  private _user: User = {};
 
   get user(): User {
     if (!this._user) {
@@ -34,8 +34,6 @@ export class AuthService {
   set user(value: User) {
     this._user = Object.assign(this._user ? this._user : new User(), value);
     this.settingService.setSession(this.key, this._user);
-    if (this._user.rememberClient)
-      this.settingService.setLocal(this.key, this._user);
   }
 
   removeLocal() {
@@ -46,10 +44,7 @@ export class AuthService {
     this.settingService.removeSession(this.key);
   }
 
-  constructor(
-    public httpService: HttpService,
-    public settingService: SettingService
-  ) {
+  constructor(public httpService: HttpService, public settingService: SettingService) {
     if (this.user.account && this.user.token) {
       this.isLoggedIn = true;
     }
@@ -63,84 +58,84 @@ export class AuthService {
    * @memberof AuthService
    */
   login(user: User): Observable<any> {
-    return Observable.create(x => {
+    return new Observable((x) => {
       let test = {
-        name: "admin",
-        token: "123",
+        name: 'admin',
+        token: '123',
         permissions: {
           actions: [],
           menus: [
             {
-              id: "1",
-              label: "首页",
-              router: "home",
-              icon: "ado-home",
-              parentId: null,
-              path: "1"
+              id: '1',
+              label: '首页',
+              router: 'home',
+              icon: 'ado-home',
+              pid: null,
+              path: '1'
             },
             {
-              id: "2",
-              label: "仪表盘",
-              router: "dashboard",
-              icon: "ado-radar-chart",
-              parentId: null,
-              path: "2"
+              id: '2',
+              label: '仪表盘',
+              router: 'dashboard',
+              icon: 'ado-radar-chart',
+              pid: null,
+              path: '2'
             },
             {
-              id: "3",
-              label: "系统管理",
+              id: '3',
+              label: '系统管理',
               router: null,
-              icon: "ado-setting",
-              parentId: null,
-              path: "3"
+              icon: 'ado-setting',
+              pid: null,
+              path: '3'
             },
             {
-              id: "4",
-              label: "用户管理",
-              router: "users",
-              icon: "ado-user",
-              parentId: "3",
-              path: "3.4"
+              id: '4',
+              label: '用户管理',
+              router: 'users',
+              icon: 'ado-user',
+              pid: '3',
+              path: '3.4'
             },
             {
-              id: "5",
-              label: "角色管理",
-              router: "roles",
-              icon: "ado-user",
-              parentId: "3",
-              path: "3.5"
+              id: '5',
+              label: '角色管理',
+              router: 'roles',
+              icon: 'ado-user',
+              pid: '3',
+              path: '3.5'
             },
             {
-              id: "6",
-              label: "组织管理",
-              router: "organization",
-              icon: "ado-user",
-              parentId: "3",
-              path: "3.6"
+              id: '6',
+              label: '组织管理',
+              router: 'organization',
+              icon: 'ado-user',
+              pid: '3',
+              path: '3.6'
             },
             {
-              id: "7",
-              label: "模块管理",
-              router: "modules",
-              icon: "ado-user",
-              parentId: "3",
-              path: "3.7"
+              id: '7',
+              label: '模块管理',
+              router: 'modules',
+              icon: 'ado-user',
+              pid: '3',
+              path: '3.7'
             },
             {
-              id: "8",
-              label: "基础信息",
+              id: '8',
+              label: '基础信息',
               router: null,
-              icon: "ado-user",
-              parentId: "3",
-              path: "3.8"
+              icon: 'ado-user',
+              pid: '3',
+              path: '3.8'
             },
             {
-              id: "9",
-              label: "基础信息",
-              router: "base-info",
-              icon: "ado-user",
-              parentId: "8",
-              path: "3.8.9"
+              id: '9',
+              label: '基础信息',
+              router: 'base-info',
+              icon: 'ado-user',
+              pid: '8',
+              path: '3.8.9'
             }
           ]
         }
@@ -188,13 +183,13 @@ export class AuthService {
  */
 export class User {
   // 用户名
-  account?: string = "";
+  account?: string = '';
   // 密码
-  password?: string = "";
+  password?: string = '';
   // token
-  token?: string = "";
+  token?: string = '';
   // 姓名
-  name?: string = "";
+  name?: string = '';
   // 权限
   permissions?: {
     actions?: Action[];
@@ -214,7 +209,7 @@ export class Menu {
   icon?: string;
   id?: string;
   label?: string;
-  parentId?: string;
+  pid?: string;
   path?: string;
   router?: string;
   [prototype: string]: any;

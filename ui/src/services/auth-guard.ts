@@ -1,17 +1,9 @@
-import { Injectable } from "@angular/core";
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  Router,
-  CanActivateChild,
-  CanLoad,
-  Route
-} from "@angular/router";
-import { Observable } from "rxjs";
-import { AuthService } from "./auth.service";
-import { environment } from "../environments/environment";
-import * as _ from "lodash";
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild, CanLoad, Route } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { environment } from '../environments/environment';
+import { find } from 'lodash';
 /**
  * 路由守卫
  *
@@ -20,21 +12,15 @@ import * as _ from "lodash";
  * @implements {CanActivate}
  * @implements {CanActivateChild}
  */
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(public authService: AuthService, public router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | Observable<boolean> | Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.checkLogin(state.url);
   }
 
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | Observable<boolean> | Promise<boolean> {
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.canActivate(childRoute, state);
   }
 
@@ -43,18 +29,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       return true;
     }
     this.authService.redirectUrl = url;
-    this.router.navigate(["/login"]);
+    this.router.navigate(['/login']);
     return false;
   }
 
   checkModule(route: Route) {
-    if (
-      route.path === environment.layout ||
-      _.find(
-        this.authService.user.permissions.menus,
-        x => x.router === route.path
-      )
-    ) {
+    if (route.path === environment.layout || find(this.authService.user.permissions?.menus, (x) => x.router === route.path)) {
       return true;
     }
     this.router.navigate([`${environment.layout}/no-auth`]);

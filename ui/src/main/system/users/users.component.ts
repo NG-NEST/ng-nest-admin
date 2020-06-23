@@ -30,7 +30,7 @@ export class UsersComponent {
 
   constructor(public service: UsersService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  action(type) {
+  action(type: string) {
     switch (type) {
       case 'add':
         this.router.navigate([`./${type}`], { relativeTo: this.activatedRoute });

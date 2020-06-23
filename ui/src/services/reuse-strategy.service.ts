@@ -1,9 +1,5 @@
-import {
-  RouteReuseStrategy,
-  ActivatedRouteSnapshot,
-  DetachedRouteHandle
-} from "@angular/router";
-import * as _ from "lodash";
+import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
+import * as _ from 'lodash';
 
 export interface RouteReuseStorage {
   key: string;
@@ -21,7 +17,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
   // 存储的复用路由
   public static storages: RouteReuseStorage[] = [];
   // 用一个临时变量记录待删除的路由
-  private static waitDelete: string;
+  private static waitDelete: string | null;
 
   /**
    * 表示对所有路由允许复用 如果你有路由不想利用可以在这加一些业务逻辑判断
@@ -42,15 +38,9 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @returns {void}
    * @memberof ReuseStrategyService
    */
-  public store(
-    route: ActivatedRouteSnapshot,
-    handle: DetachedRouteHandle
-  ): void {
+  public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
     if (handle == null) return;
-    if (
-      ReuseStrategyService.waitDelete &&
-      this.getRouteUrl(route).indexOf(ReuseStrategyService.waitDelete) == 0
-    ) {
+    if (ReuseStrategyService.waitDelete && this.getRouteUrl(route).indexOf(ReuseStrategyService.waitDelete) == 0) {
       //如果待删除是当前路由则不存储快照
       ReuseStrategyService.waitDelete = null;
       return;
@@ -66,10 +56,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @memberof ReuseStrategyService
    */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return !!_.find(
-      ReuseStrategyService.storages,
-      x => x.key == this.getRouteUrl(route)
-    );
+    return !!_.find(ReuseStrategyService.storages, (x) => x.key == this.getRouteUrl(route));
   }
 
   /**
@@ -79,14 +66,11 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @returns {DetachedRouteHandle}
    * @memberof ReuseStrategyService
    */
-  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     if (!route.routeConfig) {
       return null;
     }
-    let stroage = _.find(
-      ReuseStrategyService.storages,
-      x => x.key == this.getRouteUrl(route)
-    );
+    let stroage = _.find(ReuseStrategyService.storages, (x) => x.key == this.getRouteUrl(route));
     return stroage ? stroage.handle : null;
   }
 
@@ -99,14 +83,8 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @returns {boolean}
    * @memberof ReuseStrategyService
    */
-  public shouldReuseRoute(
-    future: ActivatedRouteSnapshot,
-    curr: ActivatedRouteSnapshot
-  ): boolean {
-    return (
-      future.routeConfig === curr.routeConfig &&
-      JSON.stringify(future.params) == JSON.stringify(curr.params)
-    );
+  public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+    return future.routeConfig === curr.routeConfig && JSON.stringify(future.params) == JSON.stringify(curr.params);
   }
 
   /**
@@ -118,7 +96,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @memberof ReuseStrategyService
    */
   private getRouteUrl(route: ActivatedRouteSnapshot) {
-    let url = route["_routerState"].url.replace(/\//g, "_");
+    let url = (route as any)['_routerState'].url.replace(/\//g, '_');
     // if (!route.routeConfig.loadChildren) {
     //     url += `${route.routeConfig.component.toString().split('(')[0].split(' ')[1]}`
     // }
@@ -135,8 +113,8 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    */
   public static deleteRouteSnapshot(name?: string): void {
     if (name) {
-      let key = name.replace(/\//g, "_");
-      _.remove(ReuseStrategyService.storages, x=> x.key.indexOf(key) === 0)
+      let key = name.replace(/\//g, '_');
+      _.remove(ReuseStrategyService.storages, (x) => x.key.indexOf(key) === 0);
       ReuseStrategyService.waitDelete = key;
     } else {
       ReuseStrategyService.storages = [];
@@ -144,10 +122,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
   }
 
   private add(key: string, handle: DetachedRouteHandle) {
-    _.remove(ReuseStrategyService.storages, x => x.key == key);
-    ReuseStrategyService.storages = [
-      ...ReuseStrategyService.storages,
-      { key: key, handle: handle }
-    ];
+    _.remove(ReuseStrategyService.storages, (x) => x.key == key);
+    ReuseStrategyService.storages = [...ReuseStrategyService.storages, { key: key, handle: handle }];
   }
 }

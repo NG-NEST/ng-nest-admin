@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   // 框架页
-  layout: "index",
+  layout: 'index',
   // 默认的首页
-  defaultPage: "home",
+  defaultPage: 'organization',
   // Api请求地址
-  api: "http://localhost:3000/"
+  api: 'http://localhost:3000/'
 };
 
 /*

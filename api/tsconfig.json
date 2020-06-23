@@ -9,7 +9,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@ng-nest/api/core": ["./src/core"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }

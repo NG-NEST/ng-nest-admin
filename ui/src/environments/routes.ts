@@ -73,6 +73,15 @@ export const layoutRoutes: Routes = [
       animation: 'users'
     }
   },
+  // 组织管理
+  {
+    path: 'organization',
+    loadChildren: () => import('../main/system/organization/organization.module').then((x) => x.OrganizationModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'organization'
+    }
+  },
 
   // 示例功能
   // { path: 'examples', loadChildren: 'src/main/examples/example.module#ExampleModule', canLoad: [AuthGuard] },

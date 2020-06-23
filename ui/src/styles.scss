@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import './styles/index';
+@import './styles/core/index';
 @font-face {
   font-family: 'ubuntu';
   src: url('assets/fonts/ubuntu.eot?#') format('eot'), url('assets/fonts/ubuntu.ttf') format('truetype'),
@@ -15,14 +16,12 @@
   --accent-color: #ff5722;
   --primary-text-color: #212121;
   --secondary-text-color: #757575;
-  --divider-color: #bdbdbd;
+  --divider-color: var(--x-border);
 
   --background-color: var(--x-white);
-}
-*,
-:after,
-:before {
-  box-sizing: border-box;
+  --font-size: 0.875rem;
+  --padding: 0.875rem;
+  --border: 0.0625rem solid var(--divider-color);
 }
 
 *:focus {

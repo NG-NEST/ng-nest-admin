@@ -1,3 +1,4 @@
+$prefix: 'ad';
 /*
  * 颜色参数
  */
@@ -9,6 +10,10 @@ $accent-color: var(--accent-color);
 $primary-text-color: var(--primary-text-color);
 $secondary-text-color: var(--secondary-text-color);
 $divider-color: var(--divider-color);
+
 $background-color: var(--background-color);
+$font-size: var(--font-size);
+$padding: var(--padding);
+$border: var(--border);
 
 $box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0.125rem 0.0625rem;

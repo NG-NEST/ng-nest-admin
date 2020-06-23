@@ -1,16 +1,10 @@
-<x-slider
-  [data]="indexService.session.tabsPage"
-  size="big"
-  [nodeTpl]="nodeTpl"
-  (indexChange)="tab($event)"
-  [activatedIndex]="activatedIndex"
-></x-slider>
+<x-slider [data]="getData" size="big" [nodeTpl]="nodeTpl" (indexChange)="tab($event)" [activatedIndex]="activatedIndex"></x-slider>
 
 <ng-template #nodeTpl let-node="$node">
   <div class="tab">
     <x-icon *ngIf="node.icon" [type]="node.icon"></x-icon>
     <span>{{ node.label }}</span>
-    <div class="close" (click)="close(node)" *ngIf="indexService.session.tabsPage.length > 1">
+    <div class="close" (click)="close(node)" *ngIf="showClose">
       <x-icon title="关闭" type="ado-close"></x-icon>
     </div>
   </div>

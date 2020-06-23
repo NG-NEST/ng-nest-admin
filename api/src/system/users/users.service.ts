@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RepositoryService } from '../common/services/repository.service';
+import { RepositoryService } from '@ng-nest/api/core';
 import { User } from './entities/user.entity';
 
 export interface UserQuery {

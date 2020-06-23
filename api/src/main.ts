@@ -7,10 +7,10 @@ async function bootstrap() {
   app.enableCors();
 
   const options = new DocumentBuilder()
-    .setTitle('ng-moon-admin-api')
-    .setDescription('The ng-moon-admin-api description')
+    .setTitle('ng-nest-admin-api')
+    .setDescription('The ng-nest-admin-api description')
     .setVersion('1.0')
-    .addTag('ng-moon-admin-api')
+    .addTag('ng-nest-admin-api')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

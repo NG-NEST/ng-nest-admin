@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewEncapsulation, ViewContainerRef, ElementRef, HostBinding, Input } from '@angular/core';
 import { IndexService, Menu } from '../../index.service';
 import { ReuseStrategyService } from '../../../../services/reuse-strategy.service';
-import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
 import { XPortalService } from '@ng-nest/ui/portal';
 import { FloatNodeComponent } from '../float-node/float-node.component';
 import { Overlay } from '@angular/cdk/overlay';
+import { find } from 'lodash';
 import { FLOAT_NODE_OPTION } from '../float-node/float-node.type';
 
 @Component({
@@ -47,7 +47,7 @@ export class SiderNodeComponent implements OnInit {
 
   ngOnInit() {
     this.level = this.level + 1;
-    this.child = this.indexService.menus.filter((x) => x.parentId === this.option.id);
+    this.child = this.indexService.menus.filter((x) => x.pid === this.option.id);
     if (this.float) this.child = this.indexService.floatChild(this.child);
   }
 
@@ -58,7 +58,7 @@ export class SiderNodeComponent implements OnInit {
    * @param {any} option
    * @memberof SiderNodeComponent
    */
-  toggle(event: Event, option) {
+  toggle(event: Event, option: Menu) {
     event.stopPropagation();
     if (this.indexService.local.siderShrink && this.level == 1 && !this.float) {
       this.indexService.portal = this.portal.attach({
@@ -75,23 +75,23 @@ export class SiderNodeComponent implements OnInit {
       });
       this.indexService.floatNode = this.option;
       this.option.floatShow = true;
-      this.indexService.portal.overlayRef.backdropClick().subscribe(() => {
+      this.indexService.portal.overlayRef?.backdropClick().subscribe(() => {
         this.option.floatShow = false;
-        this.indexService.portal.overlayRef.detach();
+        this.indexService.portal.overlayRef?.detach();
       });
     } else {
       if (this.child.length > 0) option.childrenShow = !option.childrenShow;
     }
   }
 
-  sider(option) {
-    let tab = _.find(this.indexService.session.tabsPage, (x) => x.router == option.router);
+  sider(option: Menu) {
+    let tab = find(this.indexService.session.tabsPage, (x) => x.router == option.router);
     if (tab && tab.subPage) {
       ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${option.router}`);
     }
     if (this.indexService.portal) {
       if (this.indexService.floatNode) this.indexService.floatNode.floatShow = false;
-      this.indexService.portal.overlayRef.detach();
+      this.indexService.portal.overlayRef?.detach();
     }
   }
 }

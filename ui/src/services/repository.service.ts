@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
 import * as _ from 'lodash';
+import { XId } from '@ng-nest/ui/core';
 
-export interface Id {
-  id: string | number;
+export interface Id extends XId {
+  id: any;
 }
 
 export interface Controller {

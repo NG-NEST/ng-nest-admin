@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {}
 
-  action(type) {
+  action(type: string) {
     switch (type) {
       case "logout":
         this.auth.logout().subscribe(x => {

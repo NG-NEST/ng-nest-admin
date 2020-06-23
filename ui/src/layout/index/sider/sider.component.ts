@@ -1,20 +1,15 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  ViewEncapsulation
-} from "@angular/core";
-import { IndexService } from "../index.service";
-import * as _ from "lodash";
+import { Component, OnInit, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { IndexService } from '../index.service';
+import * as _ from 'lodash';
 
 @Component({
-  selector: "app-sider",
-  templateUrl: "./sider.component.html",
+  selector: 'app-sider',
+  templateUrl: './sider.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class SiderComponent implements OnInit {
   // 输入参数-菜单数据
-  option: any = _.filter(this.indexService.menus, x => x.parentId === null);
+  option: any = _.filter(this.indexService.menus, (x) => x.pid === null);
 
   // 输出参数-节点点击
   nodeEmit = new EventEmitter<object>();

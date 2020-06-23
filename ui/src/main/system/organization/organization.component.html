@@ -1,0 +1,43 @@
+<x-inner class="ad-inner">
+  <x-tree
+    class="ad-tree-left"
+    [data]="data"
+    expandedLevel="0"
+    [labelTpl]="labelTpl"
+    [nodeHeight]="1.875"
+    (activatedChange)="action('get', $event)"
+  >
+  </x-tree>
+  <div class="ad-form-right">
+    <x-form
+      [formGroup]="formGroup"
+      [controls]="controls"
+      direction="row"
+      labelSuffix=":"
+      labelWidth="6rem"
+      width="20rem"
+      labelAlign="end"
+      span="24"
+      space="2"
+    ></x-form>
+    <ad-tool [style.margin-top.rem]="2" [style.padding-left]="'6rem'">
+      <x-buttons [space]="1">
+        <x-button type="primary" (click)="!formGroup.invalid && action('save')" [disabled]="formGroup.invalid">
+          确 认
+        </x-button>
+        <x-button (click)="action('cancel')">取 消</x-button>
+      </x-buttons>
+    </ad-tool>
+  </div>
+</x-inner>
+
+<ng-template #labelTpl let-node="$node">
+  <div class="ad-tree-node">
+    <span>{{ node.label }}</span>
+    <span class="ad-tree-btn">
+      <x-link icon="fto-plus-square" title="新增" (click)="action('add', node)"></x-link>
+      <x-link icon="fto-edit" title="修改" (click)="action('update', node)"></x-link>
+      <x-link icon="fto-trash-2" title="删除" (click)="action('delete', node)"></x-link>
+    </span>
+  </div>
+</ng-template>
