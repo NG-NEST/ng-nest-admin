@@ -13,6 +13,7 @@ import { SettingService } from './setting.service';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
+  api: string;
   constructor(public http: HttpClient, public setting: SettingService) {}
 
   /**

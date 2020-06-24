@@ -12,6 +12,7 @@
     <x-form
       [formGroup]="formGroup"
       [controls]="controls"
+      [disabled]="disabled"
       direction="row"
       labelSuffix=":"
       labelWidth="6rem"
@@ -22,10 +23,14 @@
     ></x-form>
     <ad-tool [style.margin-top.rem]="2" [style.padding-left]="'6rem'">
       <x-buttons [space]="1">
-        <x-button type="primary" (click)="!formGroup.invalid && action('save')" [disabled]="formGroup.invalid">
+        <x-button
+          type="primary"
+          (click)="!formGroup.invalid && !this.disabled && action('save', this.selected)"
+          [disabled]="formGroup.invalid && this.disabled"
+        >
           确 认
         </x-button>
-        <x-button (click)="action('cancel')">取 消</x-button>
+        <x-button (click)="action('cancel', this.selected)">取 消</x-button>
       </x-buttons>
     </ad-tool>
   </div>
@@ -36,7 +41,7 @@
     <span>{{ node.label }}</span>
     <span class="ad-tree-btn">
       <x-link icon="fto-plus-square" title="新增" (click)="action('add', node)"></x-link>
-      <x-link icon="fto-edit" title="修改" (click)="action('update', node)"></x-link>
+      <x-link icon="fto-edit" title="修改" (click)="action('edit', node)"></x-link>
       <x-link icon="fto-trash-2" title="删除" (click)="action('delete', node)"></x-link>
     </span>
   </div>

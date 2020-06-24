@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { RepositoryService, Id } from 'src/services/repository.service';
+import { RepositoryService } from 'src/services/repository.service';
 import { HttpService } from 'src/services/http.service';
+import { XTreeNode } from '@ng-nest/ui/tree';
 
 @Injectable()
 export class OrganizationService extends RepositoryService<Organization> {
@@ -9,7 +10,7 @@ export class OrganizationService extends RepositoryService<Organization> {
   }
 }
 
-export interface Organization extends Id {
+export interface Organization extends XTreeNode {
   label?: string;
   type?: string;
   icon?: string;

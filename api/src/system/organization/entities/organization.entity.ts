@@ -15,7 +15,7 @@ export class Organization {
   @Column()
   icon: string;
 
-  @Column({ nullable: true, length: 36 })
+  @Column({ nullable: true, length: 36, name: 'parentId' })
   pid?: string;
 
   @Column({ nullable: true, type: 'text' })
