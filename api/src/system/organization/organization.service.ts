@@ -42,10 +42,7 @@ export class OrganizationService extends RepositoryService<Organization> {
     let remove = await this.organizationRepository.findOne(id);
     let moves = await this.organizationRepository.find({ where: { path: Like(`${remove.path}%`) } });
     moves = orderBy(moves, x => -x.path.length);
-    return await getManager().transaction(async x => {
-      // return await x.remove(x => moves.find(y => y.id === x.id));
-      moves.forEach(async y => await x.remove(y));
-      return new Promise<any>(null);
-    });
+    moves.forEach(async y => await this.organizationRepository.remove(y));
+    return remove;
   }
 }

@@ -20,13 +20,11 @@ import { SettingService } from 'src/services/setting.service';
 export class OrganizationComponent {
   formGroup = new FormGroup({});
 
-  // get disabled() {
-  //   return !['edit', 'add'].includes(this.type);
-  // }
+  get disabled() {
+    return !['edit', 'add'].includes(this.type);
+  }
 
   type = 'info';
-
-  disabled = false;
 
   selected: Organization;
 
@@ -74,9 +72,7 @@ export class OrganizationComponent {
 
   ngOnInit() {}
 
-  ngAfterViewInit() {
-    this.disabled = true;
-  }
+  ngAfterViewInit() {}
 
   action(type: string, node: Organization) {
     switch (type) {
@@ -85,7 +81,6 @@ export class OrganizationComponent {
         this.service.get(node?.id).subscribe((x) => this.formGroup.patchValue(x));
         break;
       case 'add':
-        this.disabled = false;
         this.type = type;
         this.formGroup.reset();
         this.formGroup.patchValue({
@@ -95,7 +90,6 @@ export class OrganizationComponent {
         });
         break;
       case 'edit':
-        this.disabled = false;
         this.type = type;
         this.action('get', node);
         break;
@@ -112,7 +106,6 @@ export class OrganizationComponent {
           });
         } else if (this.type === 'edit') {
           this.service.put(this.formGroup.value).subscribe((x) => {
-            debugger;
             this.type = 'info';
             Object.assign(node, this.formGroup.value);
             node.change && node.change();
