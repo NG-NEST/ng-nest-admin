@@ -7,8 +7,6 @@ export interface XResultList<Entity extends XId> {
 }
 
 export interface XQuery {
-  index?: number;
-  size?: number;
   sort?: XSort[];
   filter?: XFilter[];
   group?: string;
@@ -18,9 +16,10 @@ export interface XFilter {
   field: string;
   value: string;
   operation?: XOperation;
+  relation?: string;
 }
 
-export type XOperation = '%' | '=' | '>' | '>=' | '<' | '<=';
+export type XOperation = '%' | '=' | '>' | '>=' | '<' | '<=' | '';
 
 export interface XSort extends XFilter {}
 

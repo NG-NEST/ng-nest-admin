@@ -1,6 +1,27 @@
-<x-inner>
-  <ad-tool top>
-    <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
-  </ad-tool>
-  <x-table [columns]="columns" [rowHeight]="35" [data]="data" [size]="20" [bodyHeight]="100" [adaptionHeight]="204" virtualScroll></x-table>
+<x-inner class="ad-inner">
+  <x-tree
+    class="ad-tree-left"
+    #treeCom
+    [data]="treeData"
+    expandedLevel="0"
+    [nodeHeight]="1.875"
+    (activatedChange)="action('tree-info', $event)"
+  >
+  </x-tree>
+  <div class="ad-table-right">
+    <ad-tool top>
+      <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+    </ad-tool>
+    <x-table
+      #tableCom
+      [columns]="columns"
+      [rowHeight]="35"
+      [data]="data"
+      [size]="20"
+      [query]="query"
+      [bodyHeight]="100"
+      [adaptionHeight]="204"
+      virtualScroll
+    ></x-table>
+  </div>
 </x-inner>

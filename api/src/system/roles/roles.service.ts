@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ObjectID } from 'typeorm';
-import { RepositoryService } from '@ng-nest/api/core';
+import { RepositoryService, XQuery } from '@ng-nest/api/core';
 import { Role } from './entities/role.entity';
 
 @Injectable()
-export class RolesService extends RepositoryService<Role> {
+export class RolesService extends RepositoryService<Role, XQuery> {
   constructor(
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>

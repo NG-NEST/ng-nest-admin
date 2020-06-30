@@ -4,10 +4,10 @@ import { XQuery, XFilter, XGroupItem, XSort, XId, XResultList } from '../interfa
 import { orderBy, slice, map } from 'lodash';
 
 @Injectable()
-export class RepositoryService<Entity extends XId> {
+export class RepositoryService<Entity extends XId, Query extends XQuery> {
   constructor(private repository: Repository<Entity>) {}
 
-  async getList(index: number, size: number, query: XQuery): Promise<XResultList<Entity | XGroupItem>> {
+  async getList(index: number, size: number, query: Query): Promise<XResultList<Entity | XGroupItem>> {
     return new Promise<XResultList<Entity | XGroupItem>>(async x => {
       let qb = this.repository.createQueryBuilder('entity');
       let list: Entity[] | XGroupItem[] = [];
@@ -72,7 +72,36 @@ export class RepositoryService<Entity extends XId> {
       let param = {};
       filter.forEach((x, index) => {
         param[`param${index}`] = x.value;
-        rep = rep.where(`entity.${x.field} = :param${index}`);
+        if (x.relation) {
+          rep = rep.leftJoin(`entity.${x.relation}`, 'relation');
+          switch (x.operation) {
+            case '=':
+              rep = rep.where(`relation.id = :param${index}`);
+              break;
+          }
+        } else {
+          switch (x.operation) {
+            case '=':
+              rep = rep.where(`entity.${x.field} = :param${index}`);
+              break;
+            case '>':
+              rep = rep.where(`entity.${x.field} > :param${index}`);
+              break;
+            case '>=':
+              rep = rep.where(`entity.${x.field} >= :param${index}`);
+              break;
+            case '<':
+              rep = rep.where(`entity.${x.field} < :param${index}`);
+              break;
+            case '<=':
+              rep = rep.where(`entity.${x.field} < :param${index}`);
+              break;
+            default:
+              // '%'
+              rep = rep.where(`entity.${x.field} like %:param${index}%`);
+              break;
+          }
+        }
       });
       rep.setParameters(param);
     }

@@ -10,11 +10,23 @@ import { XTableModule } from '@ng-nest/ui/table';
 import { XInnerModule } from '@ng-nest/ui/inner';
 import { XFormModule } from '@ng-nest/ui/form';
 import { XButtonModule } from '@ng-nest/ui/button';
+import { OrganizationService } from '../organization/organization.service';
+import { XTreeModule } from '@ng-nest/ui/tree';
 
 @NgModule({
-  imports: [CommonModule, ShareModule, XButtonModule, XInnerModule, XTableModule, XFormModule, AdToolModule, UsersRoutesModule],
+  imports: [
+    CommonModule,
+    ShareModule,
+    XButtonModule,
+    XInnerModule,
+    XTableModule,
+    XFormModule,
+    XTreeModule,
+    AdToolModule,
+    UsersRoutesModule
+  ],
   declarations: [UsersComponent, UserOperateComponent],
   exports: [UsersComponent, UserOperateComponent],
-  providers: [UsersService]
+  providers: [UsersService, OrganizationService]
 })
 export class UsersModule {}

@@ -1,17 +1,17 @@
 import { Injectable, Get, Param, Post, Body, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { RepositoryService } from './repository.service';
-import { XId, XResultList, XGroupItem } from '../interfaces';
+import { XId, XResultList, XGroupItem, XQuery } from '../interfaces';
 import { ObjectID } from 'typeorm';
 
 @Injectable()
-export class ControllerService<Entity extends XId> {
-  constructor(private readonly service: RepositoryService<Entity>) {}
+export class ControllerService<Entity extends XId, Query extends XQuery> {
+  constructor(private readonly service: RepositoryService<Entity, Query>) {}
 
   @Post(':size/:index')
   async getList(
     @Param('index', new ParseIntPipe()) index: number = 1,
     @Param('size', new ParseIntPipe()) size: number = 10,
-    @Body() query: any
+    @Body() query: Query
   ): Promise<XResultList<Entity | XGroupItem>> {
     return await this.service.getList(index, size, query);
   }

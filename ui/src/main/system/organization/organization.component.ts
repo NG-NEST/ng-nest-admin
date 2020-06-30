@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationService, Organization } from './organization.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
-import { SettingService } from 'src/services/setting.service';
+import { guid } from '@ng-nest/ui/core';
+import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 
 /**
  * 组织管理
@@ -15,9 +15,11 @@ import { SettingService } from 'src/services/setting.service';
  */
 @Component({
   selector: 'app-organization',
-  templateUrl: 'organization.component.html'
+  templateUrl: 'organization.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrganizationComponent {
+  @ViewChild('treeCom') treeCom: XTreeComponent;
   formGroup = new FormGroup({});
 
   get disabled() {
@@ -28,7 +30,36 @@ export class OrganizationComponent {
 
   selected: Organization;
 
+  activatedId: string;
+
   data = () => this.service.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list));
+
+  actions: XTreeAction[] = [
+    {
+      id: 'add',
+      label: '新增',
+      icon: 'fto-plus-square',
+      handler: (node: Organization) => {
+        this.action('add', node);
+      }
+    },
+    {
+      id: 'edit',
+      label: '修改',
+      icon: 'fto-edit',
+      handler: (node: Organization) => {
+        this.action('edit', node);
+      }
+    },
+    {
+      id: 'delete',
+      label: '删除',
+      icon: 'fto-trash-2',
+      handler: (node: Organization) => {
+        this.action('delete', node);
+      }
+    }
+  ];
 
   controls: XFormRow[] = [
     {
@@ -67,34 +98,37 @@ export class OrganizationComponent {
       ]
     }
   ];
-
-  constructor(public service: OrganizationService, public message: XMessageService, public setting: SettingService) {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {}
+  constructor(private service: OrganizationService, private message: XMessageService) {}
 
   action(type: string, node: Organization) {
     switch (type) {
-      case 'get':
+      case 'info':
+        this.type = type;
         this.selected = node;
-        this.service.get(node?.id).subscribe((x) => this.formGroup.patchValue(x));
+        this.service.get(node?.id).subscribe((x) => {
+          this.formGroup.patchValue(x);
+        });
         break;
       case 'add':
         this.type = type;
+        this.selected = node;
         this.formGroup.reset();
         this.formGroup.patchValue({
-          id: this.setting.guid(),
+          id: guid(),
           pid: node.id,
           type: 'department'
         });
         break;
       case 'edit':
         this.type = type;
-        this.action('get', node);
+        this.service.get(node?.id).subscribe((x) => {
+          this.formGroup.patchValue(x);
+        });
         break;
       case 'delete':
         this.service.delete(node.id).subscribe((x) => {
+          this.treeCom.removeNode(node);
+          this.formGroup.reset();
           this.message.success('删除成功！');
         });
         break;
@@ -102,18 +136,19 @@ export class OrganizationComponent {
         if (this.type === 'add') {
           this.service.post(this.formGroup.value).subscribe((x) => {
             this.type = 'info';
+            this.treeCom.addNode(x);
             this.message.success('新增成功！');
           });
         } else if (this.type === 'edit') {
           this.service.put(this.formGroup.value).subscribe((x) => {
             this.type = 'info';
-            Object.assign(node, this.formGroup.value);
-            node.change && node.change();
+            this.treeCom.updateNode(node, this.formGroup.value);
             this.message.success('修改成功！');
           });
         }
         break;
       case 'cancel':
+        this.formGroup.reset();
         break;
     }
   }
