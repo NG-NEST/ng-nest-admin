@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { guid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
+import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 
 /**
  * 组织管理
@@ -98,7 +99,7 @@ export class OrganizationComponent {
       ]
     }
   ];
-  constructor(private service: OrganizationService, private message: XMessageService) {}
+  constructor(private service: OrganizationService, private message: XMessageService, private msgBox: XMessageBoxService) {}
 
   action(type: string, node: Organization) {
     switch (type) {
@@ -126,10 +127,18 @@ export class OrganizationComponent {
         });
         break;
       case 'delete':
-        this.service.delete(node.id).subscribe((x) => {
-          this.treeCom.removeNode(node);
-          this.formGroup.reset();
-          this.message.success('删除成功！');
+        this.msgBox.confirm({
+          title: '提示',
+          content: `此操作将永久删除此条数据：${node.label}，是否继续？`,
+          type: 'warning',
+          callback: (action: XMessageBoxAction) => {
+            action === 'confirm' &&
+              this.service.delete(node.id).subscribe((x) => {
+                this.treeCom.removeNode(node);
+                this.formGroup.reset();
+                this.message.success('删除成功！');
+              });
+          }
         });
         break;
       case 'save':
@@ -148,6 +157,7 @@ export class OrganizationComponent {
         }
         break;
       case 'cancel':
+        this.type = 'info';
         this.formGroup.reset();
         break;
     }

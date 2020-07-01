@@ -12,10 +12,10 @@
   ></x-form>
   <ad-tool [style.margin-top.rem]="2" [style.padding-left]="config.labelWidth">
     <x-buttons [space]="1">
-      <x-button type="primary" (click)="!form.formGroup.invalid && confirm()" [disabled]="form.formGroup.invalid">
+      <x-button type="primary" (click)="!form.formGroup.invalid && action('save')" [disabled]="form.formGroup.invalid">
         确 认
       </x-button>
-      <x-button (click)="cancel()">取 消</x-button>
+      <x-button (click)="action('cancel')">取 消</x-button>
     </x-buttons>
   </ad-tool>
 </x-inner>

@@ -11,6 +11,7 @@ import { XButtonModule } from '@ng-nest/ui/button';
 import { XTreeModule } from '@ng-nest/ui/tree';
 import { XLinkModule } from '@ng-nest/ui/link';
 import { XMessageModule } from '@ng-nest/ui/message';
+import { XMessageBoxModule } from '@ng-nest/ui/message-box';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { XMessageModule } from '@ng-nest/ui/message';
     XTreeModule,
     XLinkModule,
     XMessageModule,
+    XMessageBoxModule,
     AdToolModule,
     OrganizationRoutesModule
   ],

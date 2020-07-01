@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ObjectID } from 'typeorm';
 import { RepositoryService, XQuery } from '@ng-nest/api/core';
 import { User } from './entities/user.entity';
 
@@ -11,5 +11,9 @@ export class UsersService extends RepositoryService<User, XQuery> {
     public readonly usersRepository: Repository<User>
   ) {
     super(usersRepository);
+  }
+
+  async get(id: string | number | Date | ObjectID): Promise<User> {
+    return await this.usersRepository.findOne(id, { relations: ['roles', 'organizations'] });
   }
 }

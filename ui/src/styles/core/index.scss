@@ -29,11 +29,8 @@
     margin-right: $padding;
     border-right: $border;
     .x-tree-node-content {
-      &:hover {
-        .#{$prefix}-tree-btn {
-          display: flex;
-          align-items: center;
-        }
+      &.x-activated {
+        color: $primary-color;
       }
     }
   }
@@ -51,5 +48,15 @@
   }
   &-table-right {
     flex: 1;
+  }
+  &-table-actions {
+    display: flex;
+    align-items: center;
+    x-link:not(:first-child) {
+      margin-left: 0.5rem;
+    }
+    .x-icon {
+      font-size: 1rem;
+    }
   }
 }

@@ -3,8 +3,9 @@ import { XFormComponent, XControl } from '@ng-nest/ui/form';
 import { SettingService } from 'src/services/setting.service';
 import { UsersService } from '../users.service';
 import { NavService } from 'src/services/nav.service';
-import { OrganizationService } from '../../organization/organization.service';
+import { OrganizationService, Organization } from '../../organization/organization.service';
 import { map } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-user-operate',
@@ -12,6 +13,9 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserOperateComponent implements OnInit {
+  id: string | null;
+  type: string | null;
+  selected: Organization;
   config = {
     labelWidth: '6rem'
   };
@@ -54,23 +58,48 @@ export class UserOperateComponent implements OnInit {
     private service: UsersService,
     private organization: OrganizationService,
     private setting: SettingService,
+    private activatedRoute: ActivatedRoute,
     private nav: NavService
-  ) {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {}
-
-  cancel() {
-    this.nav.back();
+  ) {
+    this.activatedRoute.paramMap.subscribe((x: ParamMap) => {
+      this.id = x.get('id');
+      this.type = x.get('type');
+      this.selected = {
+        id: x.get('selectedId'),
+        label: x.get('selectedLabel') as string
+      };
+      if (this.selected.id) {
+        (this.controls.find((x) => x.id === 'organizations') as XControl).value = this.selected;
+      }
+    });
   }
 
-  confirm() {
-    this.service
-      .post(Object.assign({ id: this.setting.guid() }, this.setFind(this.form.formGroup.value, 'organizations')))
-      .subscribe((x) => {
-        this.nav.back(true);
-      });
+  ngOnInit() {
+    this.action(this.type);
+  }
+
+  action(type: string | null) {
+    switch (type) {
+      case 'info':
+        this.service.get(this.id as string).subscribe((x) => {
+          
+          this.form.formGroup.patchValue(x);
+        });
+        break;
+      case 'edit':
+        this.action('info');
+        break;
+      case 'save':
+        this.service
+          .post(Object.assign({ id: this.setting.guid() }, this.setFind(this.form.formGroup.value, 'organizations')))
+          .subscribe((x) => {
+            this.nav.back(true);
+          });
+        break;
+      case 'cancel':
+        this.nav.back();
+        break;
+    }
   }
 
   setFind(value: any, ...keys: string[]) {

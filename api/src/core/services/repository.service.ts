@@ -73,10 +73,10 @@ export class RepositoryService<Entity extends XId, Query extends XQuery> {
       filter.forEach((x, index) => {
         param[`param${index}`] = x.value;
         if (x.relation) {
-          rep = rep.leftJoin(`entity.${x.relation}`, 'relation');
+          rep = rep.leftJoin(`entity.${x.relation}`, x.relation);
           switch (x.operation) {
             case '=':
-              rep = rep.where(`relation.id = :param${index}`);
+              rep = rep.where(`${x.relation}.${x.field} = :param${index}`);
               break;
           }
         } else {

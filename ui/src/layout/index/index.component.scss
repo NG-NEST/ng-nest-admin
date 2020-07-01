@@ -4,7 +4,7 @@ $font-color: $primary-text-color;
 // 头部背景色
 $header-background-color: #f0f0f0;
 // 头部文字颜色
-$header-color: var(--x-text);
+$header-color: $primary-text-color;
 // 菜单栏背景色
 $sider-background-color: #fafafa;
 // 标签页背景色
@@ -174,7 +174,7 @@ app-index {
       padding: 0;
     }
     .x-slider-scroll > ul > li.x-slider-highlight {
-      background-color: var(--x-white);
+      background-color: $background-color;
       border: none;
       border-radius: 0;
     }
@@ -237,7 +237,7 @@ app-index {
     height: $crumb-height;
     position: fixed;
     top: $header-height + $tabs-height;
-    background-color: var(--x-white);
+    background-color: $background-color;
     left: $sider-width;
     z-index: 11;
     transition: left $transition-duration, width $transition-duration;
