@@ -47,24 +47,26 @@ export class UsersComponent {
     private msgBox: XMessageBoxService
   ) {}
 
-  action(type: string, $event?: any) {
+  action(type: string, item?: any) {
     switch (type) {
       case 'add':
-        this.router.navigate([`./${type}`, { selectedId: this.selected?.id, selectedLabel: this.selected?.label }], {
-          relativeTo: this.activatedRoute
-        });
+        let param = {};
+        if (this.selected) {
+          param = { selectedId: this.selected?.id, selectedLabel: this.selected?.label };
+        }
+        this.router.navigate([`./${type}`, param], { relativeTo: this.activatedRoute });
         break;
       case 'edit':
-        this.router.navigate([`./${type}/${$event.id}`], { relativeTo: this.activatedRoute });
+        this.router.navigate([`./${type}/${item.id}`], { relativeTo: this.activatedRoute });
         break;
       case 'delete':
         this.msgBox.confirm({
           title: '提示',
-          content: `此操作将永久删除此条数据：${$event.account}，是否继续？`,
+          content: `此操作将永久删除此条数据：${item.account}，是否继续？`,
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
-              this.service.delete($event.id).subscribe((x) => {
+              this.service.delete(item.id).subscribe((x) => {
                 this.tableCom.change(this.index);
                 this.message.success('删除成功！');
               });
@@ -72,8 +74,8 @@ export class UsersComponent {
         });
         break;
       case 'tree-info':
-        this.selected = $event;
-        let filter = { field: 'id', value: $event.id, operation: '=', relation: 'organizations' } as any;
+        this.selected = item;
+        let filter = { field: 'id', value: item.id, operation: '=', relation: 'organizations' } as any;
         if (!this.query.filter || this.query.filter.length == 0) {
           this.query.filter = [filter];
         } else {

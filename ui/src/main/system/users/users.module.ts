@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersRoutesModule } from './users-routes.module';
 import { UsersComponent } from './users.component';
-import { UserOperateComponent } from './user-operate/user-operate.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ShareModule } from 'src/share/share.module';
 import { AdToolModule } from 'src/share/tool/tool.module';
 import { UsersService } from './users.service';
@@ -31,8 +31,8 @@ import { XMessageModule } from '@ng-nest/ui/message';
     AdToolModule,
     UsersRoutesModule
   ],
-  declarations: [UsersComponent, UserOperateComponent],
-  exports: [UsersComponent, UserOperateComponent],
+  declarations: [UsersComponent, UserDetailComponent],
+  exports: [UsersComponent, UserDetailComponent],
   providers: [UsersService, OrganizationService]
 })
 export class UsersModule {}

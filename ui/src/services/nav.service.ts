@@ -71,7 +71,8 @@ export class NavService {
           _.remove(this.history, (x) => x.id > his.id);
         });
       } else {
-        let url = _.join(_.take(urlSplit, urlSplit.length - 1), '/');
+        const i = urlSplit.length === 5 ? 2 : 1;
+        let url = _.join(_.take(urlSplit, urlSplit.length - i), '/');
         this.backTo(url, first.url);
       }
       return false;

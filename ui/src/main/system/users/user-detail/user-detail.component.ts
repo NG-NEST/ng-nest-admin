@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { XFormComponent, XControl } from '@ng-nest/ui/form';
 import { SettingService } from 'src/services/setting.service';
 import { UsersService } from '../users.service';
@@ -8,11 +8,11 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
-  selector: 'app-user-operate',
-  templateUrl: './user-operate.component.html',
+  selector: 'app-user-detail',
+  templateUrl: './user-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserOperateComponent implements OnInit {
+export class UserDetailComponent implements OnInit {
   id: string | null;
   type: string | null;
   selected: Organization;
@@ -45,21 +45,28 @@ export class UserOperateComponent implements OnInit {
       id: 'organizations',
       label: '组织机构',
       required: true,
+      multiple: true,
       treeData: () => this.organization.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list))
     },
     { control: 'input', id: 'roles', label: '角色', required: true },
     { control: 'input', id: 'email', label: '邮箱' },
-    { control: 'input', id: 'phone', label: '电话' }
+    { control: 'input', id: 'phone', label: '电话' },
+    { control: 'input', id: 'id', hidden: true, value: this.setting.guid() }
   ];
 
   @ViewChild('form') form: XFormComponent;
+
+  get formInvalid() {
+    return this.form?.formGroup?.invalid;
+  }
 
   constructor(
     private service: UsersService,
     private organization: OrganizationService,
     private setting: SettingService,
     private activatedRoute: ActivatedRoute,
-    private nav: NavService
+    private nav: NavService,
+    private cdr: ChangeDetectorRef
   ) {
     this.activatedRoute.paramMap.subscribe((x: ParamMap) => {
       this.id = x.get('id');
@@ -69,7 +76,7 @@ export class UserOperateComponent implements OnInit {
         label: x.get('selectedLabel') as string
       };
       if (this.selected.id) {
-        (this.controls.find((x) => x.id === 'organizations') as XControl).value = this.selected;
+        (this.controls.find((x) => x.id === 'organizations') as XControl).value = [this.selected];
       }
     });
   }
@@ -78,11 +85,14 @@ export class UserOperateComponent implements OnInit {
     this.action(this.type);
   }
 
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
+
   action(type: string | null) {
     switch (type) {
       case 'info':
         this.service.get(this.id as string).subscribe((x) => {
-          
           this.form.formGroup.patchValue(x);
         });
         break;
@@ -90,11 +100,15 @@ export class UserOperateComponent implements OnInit {
         this.action('info');
         break;
       case 'save':
-        this.service
-          .post(Object.assign({ id: this.setting.guid() }, this.setFind(this.form.formGroup.value, 'organizations')))
-          .subscribe((x) => {
+        if (this.type === 'add') {
+          this.service.post(this.setForm(this.form.formGroup.value)).subscribe((x) => {
             this.nav.back(true);
           });
+        } else if (this.type === 'edit') {
+          this.service.put(this.setForm(this.form.formGroup.value)).subscribe((x) => {
+            this.nav.back(true);
+          });
+        }
         break;
       case 'cancel':
         this.nav.back();
@@ -102,10 +116,16 @@ export class UserOperateComponent implements OnInit {
     }
   }
 
+  setForm(value: any) {
+    this.setFind(value, 'organizations');
+    return value;
+  }
+
   setFind(value: any, ...keys: string[]) {
     for (let key of keys) {
       let val = value[key];
       if (Array.isArray(val)) {
+        value[key] = val.map((x) => ({ id: x.id, label: x.label }));
       } else {
         value[key] = [{ id: val.id, label: val.label }];
       }
