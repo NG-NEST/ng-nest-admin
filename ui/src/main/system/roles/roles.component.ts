@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
-import { UsersService } from './users.service';
+import { RolesService } from './roles.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { OrganizationService, Organization } from '../organization/organization.service';
@@ -9,10 +9,10 @@ import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: 'users.component.html'
+  selector: 'app-roles',
+  templateUrl: 'roles.component.html'
 })
-export class UsersComponent {
+export class RolesComponent {
   index = 1;
   query: XQuery = { filter: [] };
   data = (index: number, size: number, query: any) =>
@@ -24,16 +24,13 @@ export class UsersComponent {
   columns: XTableColumn[] = [
     { id: 'index', label: '序号', width: 80, left: 0, type: 'index' },
     { id: 'actions', label: '操作', width: 100, left: 80 },
-    { id: 'account', label: '用户', width: 100, left: 180, sort: true },
-    { id: 'name', label: '姓名', width: 80, sort: true },
-    { id: 'email', label: '邮箱', flex: 1 },
-    { id: 'phone', label: '电话', flex: 1 }
+    { id: 'name', label: '角色名称', flex: 1, sort: true }
   ];
 
   @ViewChild('tableCom') tableCom: XTableComponent;
 
   constructor(
-    public service: UsersService,
+    public service: RolesService,
     private organization: OrganizationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -59,7 +56,7 @@ export class UsersComponent {
       case 'delete':
         this.msgBox.confirm({
           title: '提示',
-          content: `此操作将永久删除此条数据：${item.account}，是否继续？`,
+          content: `此操作将永久删除此条数据：${item.name}，是否继续？`,
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
@@ -72,11 +69,11 @@ export class UsersComponent {
         break;
       case 'tree-info':
         this.selected = item;
-        let filter = { field: 'id', value: item.id, operation: '=', relation: 'organizations' } as any;
+        let filter = { field: 'organizationId', value: item.id, operation: '=' } as any;
         if (!this.query.filter || this.query.filter.length == 0) {
           this.query.filter = [filter];
         } else {
-          let flt = this.query.filter.find((x) => x.field === 'id' && x.relation === 'organizations');
+          let flt = this.query.filter.find((x) => x.field === 'organizationId');
           if (flt) flt.value = filter.value;
           else this.query.filter = [...this.query.filter, filter];
         }

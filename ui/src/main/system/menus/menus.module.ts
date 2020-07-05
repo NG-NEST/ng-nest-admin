@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OrganizationRoutesModule } from './organization-routes.module';
-import { OrganizationComponent } from './organization.component';
+import { MenusRoutesModule } from './menus-routes.module';
+import { MenusComponent } from './menus.component';
 import { ShareModule } from 'src/share/share.module';
 import { AdToolModule } from 'src/share/tool/tool.module';
-import { AdAdaptionModule } from 'src/share/adaption/adaption.module';
-import { OrganizationService } from './organization.service';
+import { MenusService } from './menus.service';
 import { XInnerModule } from '@ng-nest/ui/inner';
 import { XFormModule } from '@ng-nest/ui/form';
 import { XButtonModule } from '@ng-nest/ui/button';
@@ -26,11 +25,10 @@ import { XMessageBoxModule } from '@ng-nest/ui/message-box';
     XMessageModule,
     XMessageBoxModule,
     AdToolModule,
-    AdAdaptionModule,
-    OrganizationRoutesModule
+    MenusRoutesModule
   ],
-  declarations: [OrganizationComponent],
-  exports: [OrganizationComponent],
-  providers: [OrganizationService]
+  declarations: [MenusComponent],
+  exports: [MenusComponent],
+  providers: [MenusService]
 })
-export class OrganizationModule {}
+export class MenusModule {}

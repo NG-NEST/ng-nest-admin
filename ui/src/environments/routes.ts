@@ -73,6 +73,15 @@ export const layoutRoutes: Routes = [
       animation: 'users'
     }
   },
+  // 角色管理
+  {
+    path: 'roles',
+    loadChildren: () => import('../main/system/roles/roles.module').then((x) => x.RolesModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'roles'
+    }
+  },
   // 组织管理
   {
     path: 'organization',
@@ -80,6 +89,15 @@ export const layoutRoutes: Routes = [
     canLoad: [AuthGuard],
     data: {
       animation: 'organization'
+    }
+  },
+  // 菜单管理
+  {
+    path: 'menus',
+    loadChildren: () => import('../main/system/menus/menus.module').then((x) => x.MenusModule),
+    canLoad: [AuthGuard],
+    data: {
+      animation: 'menus'
     }
   },
 

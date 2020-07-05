@@ -84,14 +84,17 @@
   --primary-color-light: #c5cae9;
   --primary-color-text: #ffffff;
   --accent-color: #ff5722;
-  --primary-text-color: #212121;
-  --secondary-text-color: #757575;
+  --primary-text-color: var(--x-text);
+  --secondary-text-color: var(--x-text-400);
   --divider-color: var(--x-border);
 
   --background-color: var(--x-white);
+  --background-color-300: var(--x-background-300);
   --font-size: 0.875rem;
   --padding: 0.875rem;
   --border: 0.0625rem solid var(--divider-color);
+  --border-100: var(--x-border-100);
+  --border-200: var(--x-border-200);
 }
 
 *:focus {

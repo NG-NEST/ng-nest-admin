@@ -93,7 +93,7 @@ export class AuthService {
               id: '4',
               label: '用户管理',
               router: 'users',
-              icon: 'ado-user',
+              icon: 'ado-team',
               pid: '3',
               path: '3.4'
             },
@@ -109,15 +109,15 @@ export class AuthService {
               id: '6',
               label: '组织管理',
               router: 'organization',
-              icon: 'ado-user',
+              icon: 'ado-apartment',
               pid: '3',
               path: '3.6'
             },
             {
               id: '7',
-              label: '模块管理',
-              router: 'modules',
-              icon: 'ado-user',
+              label: '菜单管理',
+              router: 'menus',
+              icon: 'fto-menu',
               pid: '3',
               path: '3.7'
             },

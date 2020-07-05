@@ -14,6 +14,6 @@ export class RolesService extends RepositoryService<Role, XQuery> {
   }
 
   async get(id: string | number | Date | ObjectID): Promise<Role> {
-    return await this.roleRepository.findOne(id, { relations: ['actions'] });
+    return await this.roleRepository.findOne(id, { relations: ['actions', 'organization'] });
   }
 }

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersRoutesModule } from './users-routes.module';
-import { UsersComponent } from './users.component';
-import { UserDetailComponent } from './user-detail/user-detail.component';
+import { RolesRoutesModule } from './roles-routes.module';
+import { RolesComponent } from './roles.component';
+import { RoleDetailComponent } from './role-detail/role-detail.component';
 import { ShareModule } from 'src/share/share.module';
 import { AdToolModule } from 'src/share/tool/tool.module';
 import { AdAdaptionModule } from 'src/share/adaption/adaption.module';
-import { UsersService } from './users.service';
+import { RolesService } from './roles.service';
 import { XTableModule } from '@ng-nest/ui/table';
 import { XInnerModule } from '@ng-nest/ui/inner';
 import { XFormModule } from '@ng-nest/ui/form';
@@ -31,10 +31,10 @@ import { XMessageModule } from '@ng-nest/ui/message';
     XMessageBoxModule,
     AdToolModule,
     AdAdaptionModule,
-    UsersRoutesModule
+    RolesRoutesModule
   ],
-  declarations: [UsersComponent, UserDetailComponent],
-  exports: [UsersComponent, UserDetailComponent],
-  providers: [UsersService, OrganizationService]
+  declarations: [RolesComponent, RoleDetailComponent],
+  exports: [RolesComponent, RoleDetailComponent],
+  providers: [RolesService, OrganizationService]
 })
-export class UsersModule {}
+export class RolesModule {}

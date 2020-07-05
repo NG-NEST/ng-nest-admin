@@ -1,7 +1,8 @@
 
-import { Entity, Column, ManyToMany, PrimaryColumn, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, PrimaryColumn, JoinTable, ManyToOne } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Action } from '../../actions/entities/action.entity';
+import { Organization } from '../../organization/entities/organization.entity';
 
 @Entity("system_role")
 export class Role {
@@ -10,6 +11,12 @@ export class Role {
 
     @Column()
     name: string;
+
+    @Column({ length: 36 })
+    organizationId: string;
+
+    @ManyToOne(type => Organization, organization => organization.roles, { onDelete: 'CASCADE' })
+    organization: Organization;
 
     @ManyToMany(type => User, user => user.roles)
     @JoinTable({

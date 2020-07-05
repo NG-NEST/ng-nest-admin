@@ -1,0 +1,41 @@
+<x-inner class="ad-inner">
+  <div class="ad-panel ad-tree-left">
+    <h4>菜单树</h4>
+    <x-tree
+      #treeCom
+      [data]="data"
+      expandedLevel="0"
+      [activatedId]="activatedId"
+      [nodeHeight]="1.875"
+      [actions]="actions"
+      (activatedChange)="action('info', $event)"
+    >
+    </x-tree>
+  </div>
+  <div class="ad-form-right">
+    <x-form
+      [formGroup]="formGroup"
+      [controls]="controls"
+      [disabled]="disabled"
+      direction="row"
+      labelSuffix=":"
+      labelWidth="6rem"
+      width="20rem"
+      labelAlign="end"
+      span="24"
+      space="2"
+    ></x-form>
+    <ad-tool [style.margin-top.rem]="2" [style.padding-left]="'6rem'">
+      <x-buttons [space]="1">
+        <x-button
+          type="primary"
+          (click)="!formGroup.invalid && !disabled && action('save', selected)"
+          [disabled]="formGroup.invalid || disabled"
+        >
+          确 认
+        </x-button>
+        <x-button (click)="action('cancel', selected)">取 消</x-button>
+      </x-buttons>
+    </ad-tool>
+  </div>
+</x-inner>

@@ -276,10 +276,16 @@ app-index {
     @include silder;
   }
   > app-content {
+    height: 100%;
+    width: 100%;
     padding-top: $header-height + $tabs-height + $crumb-height;
     padding-left: $sider-width;
     transition: padding $transition-duration;
     display: block;
+    > div {
+      height: 100%;
+      width: 100%;
+    }
   }
   > app-toggle {
     background-color: $sider-background-color;

@@ -12,8 +12,13 @@ $secondary-text-color: var(--secondary-text-color);
 $divider-color: var(--divider-color);
 
 $background-color: var(--background-color);
+$background-color-300: var(--background-color-300);
 $font-size: var(--font-size);
 $padding: var(--padding);
 $border: var(--border);
+$border-100: var(--border-100);
+$border-200: var(--border-200);
 
-$box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0.125rem 0.0625rem;
+$box-shadow: 0 0 0.125rem 0.0625rem rgba(0, 0, 0, 0.06);
+$box-shadow-panel: 0 0 0.125rem 0.0625rem $border-100;
+$box-shadow-panel-border: 0.0625rem solid $border-200;

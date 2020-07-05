@@ -16,18 +16,50 @@
   background: #f0f0f0;
 }
 
+@mixin ng-nest {
+  x-form {
+    display: block;
+  }
+}
+
 .#{$prefix} {
   &-inner {
     &.x-inner {
       display: flex;
     }
+    @include ng-nest;
+  }
+  &-panel {
+    box-shadow: $box-shadow-panel;
+    border: $box-shadow-panel-border;
+    > h4 {
+      margin: 0;
+      padding: 0 $padding;
+      height: 35px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: $secondary-text-color;
+      background-color: $background-color-300;
+      border-bottom: 0.0625rem solid $border-200;
+      > x-link {
+        margin-left: 0.25rem;
+      }
+    }
+  }
+  &-column {
+    flex-direction: column;
   }
   &-tree-left {
-    width: 15rem;
+    width: 18rem;
     display: block;
-    padding-right: $padding;
     margin-right: $padding;
-    border-right: $border;
+    x-tree {
+      display: block;
+      padding: $padding;
+      overflow-y: auto;
+    }
     .x-tree-node-content {
       &.x-activated {
         color: $primary-color;
@@ -58,5 +90,14 @@
     .x-icon {
       font-size: 1rem;
     }
+  }
+  &-overflow-auto {
+    overflow: auto;
+  }
+  &-overflow-x {
+    overflow-x: auto;
+  }
+  &-overflow-y {
+    overflow-y: auto;
   }
 }

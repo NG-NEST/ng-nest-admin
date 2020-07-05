@@ -60,9 +60,9 @@ export class MenusService extends RepositoryService<Menu, XQuery> {
     let remove = await this.menuRepository.findOne(id);
     let moves = await this.menuRepository.find({ where: { path: Like(`${remove.path}%`) } });
     moves = orderBy(moves, x => -x.path.length);
-    await getManager().transaction(async x => {
-      moves.forEach(async y => await x.remove(y));
-    });
+    for (let move of moves) {
+      await this.menuRepository.remove(move);
+    }
     return remove;
   }
 }

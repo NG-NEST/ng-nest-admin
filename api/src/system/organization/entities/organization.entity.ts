@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToOne, OneToMany, ManyToMany, PrimaryColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Role } from '../../roles/entities/role.entity';
 
 @Entity('system_organization')
 export class Organization {
@@ -38,4 +39,10 @@ export class Organization {
     user => user.organizations
   )
   users: User[];
+
+  @OneToMany(
+    type => Role,
+    role => role.organization
+  )
+  roles: Role[];
 }

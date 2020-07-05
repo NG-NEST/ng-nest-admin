@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { OrganizationService, Organization } from './organization.service';
+import { MenusService, Menus } from './menus.service';
 import { map } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
@@ -9,21 +9,21 @@ import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 
 @Component({
-  selector: 'app-organization',
-  templateUrl: 'organization.component.html',
+  selector: 'app-menus',
+  templateUrl: 'menus.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrganizationComponent {
+export class MenusComponent {
   @ViewChild('treeCom') treeCom: XTreeComponent;
   formGroup = new FormGroup({});
 
   get disabled() {
-    return !['edit', 'add', 'add-root'].includes(this.type);
+    return !['edit', 'add'].includes(this.type);
   }
 
   type = 'info';
 
-  selected: Organization;
+  selected: Menus;
 
   activatedId: string;
 
@@ -34,7 +34,7 @@ export class OrganizationComponent {
       id: 'add',
       label: '新增',
       icon: 'fto-plus-square',
-      handler: (node: Organization) => {
+      handler: (node: Menus) => {
         this.action('add', node);
       }
     },
@@ -42,7 +42,7 @@ export class OrganizationComponent {
       id: 'edit',
       label: '修改',
       icon: 'fto-edit',
-      handler: (node: Organization) => {
+      handler: (node: Menus) => {
         this.action('edit', node);
       }
     },
@@ -50,7 +50,7 @@ export class OrganizationComponent {
       id: 'delete',
       label: '删除',
       icon: 'fto-trash-2',
-      handler: (node: Organization) => {
+      handler: (node: Menus) => {
         this.action('delete', node);
       }
     }
@@ -93,9 +93,9 @@ export class OrganizationComponent {
       ]
     }
   ];
-  constructor(private service: OrganizationService, private message: XMessageService, private msgBox: XMessageBoxService) {}
+  constructor(private service: MenusService, private message: XMessageService, private msgBox: XMessageBoxService) {}
 
-  action(type: string, node: Organization) {
+  action(type: string, node: Menus) {
     switch (type) {
       case 'info':
         this.type = type;
@@ -112,15 +112,6 @@ export class OrganizationComponent {
           id: guid(),
           pid: node.id,
           type: 'department'
-        });
-        break;
-      case 'add-root':
-        this.type = type;
-        this.formGroup.reset();
-        this.formGroup.patchValue({
-          id: guid(),
-          pid: null,
-          type: ''
         });
         break;
       case 'edit':
@@ -145,7 +136,7 @@ export class OrganizationComponent {
         });
         break;
       case 'save':
-        if (this.type === 'add' || this.type === 'add-root') {
+        if (this.type === 'add') {
           this.service.post(this.formGroup.value).subscribe((x) => {
             this.type = 'info';
             this.treeCom.addNode(x);

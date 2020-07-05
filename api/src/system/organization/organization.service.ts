@@ -19,7 +19,8 @@ export class OrganizationService extends RepositoryService<Organization, XQuery>
   }
 
   async post(entity: Organization): Promise<Organization> {
-    let parent = await this.organizationRepository.findOne(entity.pid);
+    let parent = null;
+    if (entity.pid !== null) parent = await this.organizationRepository.findOne(entity.pid);
     return await getManager().transaction<Organization>(async x => {
       entity.path = parent ? `${parent.path}.${entity.id}` : `${entity.id}`;
       let result = await this.organizationRepository.save(entity);
