@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
-import * as _ from 'lodash';
 
 export interface Id {
   id?: string | number;
@@ -23,15 +22,21 @@ export interface ResultList<Entity extends Id> {
 export interface Query {
   index?: number;
   size?: number;
-  sort?: string[];
+  sort?: Sort[];
   filter?: Filter[];
   group?: string;
 }
 
+export interface Sort extends Filter {}
+
 export interface Filter {
   field: string;
   value: string;
+  operation?: Operation;
+  relation?: string;
 }
+
+export type Operation = '%' | '=' | '>' | '>=' | '<' | '<=' | '';
 
 export class RepositoryService<Entity extends Id> {
   constructor(public http: HttpService, public option: RepositoryOption) {}

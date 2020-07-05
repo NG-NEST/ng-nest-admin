@@ -2,18 +2,34 @@ import { Injectable } from '@angular/core';
 import { RepositoryService } from 'src/services/repository.service';
 import { HttpService } from 'src/services/http.service';
 import { XTreeNode } from '@ng-nest/ui/tree';
+import { XId } from '@ng-nest/ui/core';
 
 @Injectable()
-export class MenusService extends RepositoryService<Menus> {
+export class MenusService extends RepositoryService<Menu> {
   constructor(public http: HttpService) {
     super(http, { controller: { name: 'menus' } });
   }
 }
 
-export interface Menus extends XTreeNode {
+@Injectable()
+export class ActionsService extends RepositoryService<Action> {
+  constructor(public http: HttpService) {
+    super(http, { controller: { name: 'actions' } });
+  }
+}
+
+export interface Menu extends XTreeNode {
   label?: string;
-  type?: string;
   icon?: string;
   pid?: string;
   path?: string;
+  router?: string;
+  sort?: string;
+}
+
+export interface Action extends XId {
+  name?: string;
+  code?: string;
+  icon?: string;
+  menuId?: string;
 }

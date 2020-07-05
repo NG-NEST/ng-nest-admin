@@ -1,5 +1,5 @@
 <x-inner class="ad-inner">
-  <div #container class="ad-panel ad-tree-left" style="width: 22rem;">
+  <div class="ad-panel ad-tree-left" style="width: 22rem;">
     <h4>
       <span>组织机构</span>
       <x-link icon="fto-plus" title="增加根节点" (click)="action('add-root', selected)"></x-link>
@@ -8,7 +8,6 @@
       #treeCom
       ad-adaption
       [outerHeight]="197"
-      [container]="container"
       [data]="data"
       expandedLevel="0"
       [activatedId]="activatedId"

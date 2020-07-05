@@ -22,11 +22,12 @@ export class MenusService extends RepositoryService<Menu, XQuery> {
   }
 
   async post(entity: Menu): Promise<Menu> {
-    let parent = await this.menuRepository.findOne(entity.pid);
+    let parent = null;
+    if (entity.pid !== null) parent = await this.menuRepository.findOne(entity.pid);
     return await getManager().transaction<Menu>(async x => {
       entity.path = parent ? `${parent.path}.${entity.id}` : `${entity.id}`;
       let result = await this.menuRepository.save(entity);
-      entity.actions.forEach(async y => await this.actionRepository.save(y));
+      if (entity.actions) entity.actions.forEach(async y => await this.actionRepository.save(y));
       return result;
     });
   }

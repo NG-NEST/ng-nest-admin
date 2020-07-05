@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { MenusService, Menus } from './menus.service';
+import { MenusService, Menu } from './menus.service';
 import { map } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
@@ -7,6 +7,7 @@ import { XMessageService } from '@ng-nest/ui/message';
 import { guid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-menus',
@@ -18,23 +19,31 @@ export class MenusComponent {
   formGroup = new FormGroup({});
 
   get disabled() {
-    return !['edit', 'add'].includes(this.type);
+    return !['edit', 'add', 'add-root'].includes(this.type);
   }
 
   type = 'info';
 
-  selected: Menus;
+  selected: Menu;
 
   activatedId: string;
 
-  data = () => this.service.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list));
+  data = () =>
+    this.service
+      .getList(1, Number.MAX_SAFE_INTEGER, {
+        sort: [
+          { field: 'pid', value: 'asc' },
+          { field: 'sort', value: 'asc' }
+        ]
+      } as any)
+      .pipe(map((x) => x.list));
 
   actions: XTreeAction[] = [
     {
       id: 'add',
       label: '新增',
       icon: 'fto-plus-square',
-      handler: (node: Menus) => {
+      handler: (node: Menu) => {
         this.action('add', node);
       }
     },
@@ -42,15 +51,23 @@ export class MenusComponent {
       id: 'edit',
       label: '修改',
       icon: 'fto-edit',
-      handler: (node: Menus) => {
+      handler: (node: Menu) => {
         this.action('edit', node);
+      }
+    },
+    {
+      id: 'actions',
+      label: '操作设置',
+      icon: 'fto-list',
+      handler: (node: Menu) => {
+        this.action('actions', node);
       }
     },
     {
       id: 'delete',
       label: '删除',
       icon: 'fto-trash-2',
-      handler: (node: Menus) => {
+      handler: (node: Menu) => {
         this.action('delete', node);
       }
     }
@@ -66,17 +83,8 @@ export class MenusComponent {
           required: true
         },
         { control: 'input', id: 'icon', label: '图标' },
-        {
-          control: 'select',
-          id: 'type',
-          label: '类型',
-          data: [
-            { id: 'group', label: '事业部' },
-            { id: 'subsidiary', label: '子公司' },
-            { id: 'department', label: '部门' }
-          ],
-          value: 'department'
-        }
+        { control: 'input', id: 'router', label: '路由' },
+        { control: 'input', id: 'sort', label: '顺序' }
       ]
     },
     {
@@ -93,9 +101,15 @@ export class MenusComponent {
       ]
     }
   ];
-  constructor(private service: MenusService, private message: XMessageService, private msgBox: XMessageBoxService) {}
+  constructor(
+    private service: MenusService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private message: XMessageService,
+    private msgBox: XMessageBoxService
+  ) {}
 
-  action(type: string, node: Menus) {
+  action(type: string, node: Menu) {
     switch (type) {
       case 'info':
         this.type = type;
@@ -112,6 +126,15 @@ export class MenusComponent {
           id: guid(),
           pid: node.id,
           type: 'department'
+        });
+        break;
+      case 'add-root':
+        this.type = type;
+        this.formGroup.reset();
+        this.formGroup.patchValue({
+          id: guid(),
+          pid: null,
+          type: ''
         });
         break;
       case 'edit':
@@ -136,7 +159,7 @@ export class MenusComponent {
         });
         break;
       case 'save':
-        if (this.type === 'add') {
+        if (this.type === 'add' || this.type === 'add-root') {
           this.service.post(this.formGroup.value).subscribe((x) => {
             this.type = 'info';
             this.treeCom.addNode(x);
@@ -153,6 +176,9 @@ export class MenusComponent {
       case 'cancel':
         this.type = 'info';
         this.formGroup.reset();
+        break;
+      case 'actions':
+        this.router.navigate([`./actions`, { menuId: node.id, menuLabel: node.label }], { relativeTo: this.activatedRoute });
         break;
     }
   }

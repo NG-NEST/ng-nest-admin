@@ -10,10 +10,13 @@ export class Menu {
   label: string;
 
   @Column()
-  router: string;
+  router?: string;
 
   @Column()
   icon: string;
+
+  @Column()
+  sort?: number;
 
   @Column({ nullable: true, length: 36, name: 'parentId' })
   pid?: string;

@@ -1,8 +1,13 @@
 <x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left">
-    <h4>菜单树</h4>
+  <div class="ad-panel ad-tree-left" style="width: 22rem;">
+    <h4>
+      <span>菜单树</span>
+      <x-link icon="fto-plus" title="增加根节点" (click)="action('add-root', selected)"></x-link>
+    </h4>
     <x-tree
       #treeCom
+      ad-adaption
+      [outerHeight]="197"
       [data]="data"
       expandedLevel="0"
       [activatedId]="activatedId"
@@ -13,29 +18,32 @@
     </x-tree>
   </div>
   <div class="ad-form-right">
+    <ad-tool top>
+      <x-buttons [space]="0.5">
+        <x-button
+          icon="fto-save"
+          type="primary"
+          (click)="!formGroup.invalid && !disabled && action('save', selected)"
+          [disabled]="formGroup.invalid || disabled"
+        >
+          保存
+        </x-button>
+      </x-buttons>
+    </ad-tool>
     <x-form
+      class="ad-panel ad-overflow-auto"
+      ad-adaption
+      [outerHeight]="202"
       [formGroup]="formGroup"
       [controls]="controls"
       [disabled]="disabled"
       direction="row"
       labelSuffix=":"
-      labelWidth="6rem"
-      width="20rem"
+      labelWidth="4rem"
+      width="30rem"
       labelAlign="end"
-      span="24"
+      span="12"
       space="2"
     ></x-form>
-    <ad-tool [style.margin-top.rem]="2" [style.padding-left]="'6rem'">
-      <x-buttons [space]="1">
-        <x-button
-          type="primary"
-          (click)="!formGroup.invalid && !disabled && action('save', selected)"
-          [disabled]="formGroup.invalid || disabled"
-        >
-          确 认
-        </x-button>
-        <x-button (click)="action('cancel', selected)">取 消</x-button>
-      </x-buttons>
-    </ad-tool>
   </div>
 </x-inner>

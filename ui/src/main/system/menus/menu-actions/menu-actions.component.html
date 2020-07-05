@@ -1,20 +1,10 @@
 <x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left">
-    <h4>组织机构</h4>
-    <x-tree
-      #treeCom
-      ad-adaption
-      [outerHeight]="197"
-      [data]="treeData"
-      expandedLevel="0"
-      [nodeHeight]="1.875"
-      (activatedChange)="action('tree-info', $event)"
-    >
-    </x-tree>
-  </div>
   <div class="ad-table-right">
     <ad-tool top>
-      <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+      <x-buttons [space]="0.5">
+        <x-button icon="fto-chervon-left" (click)="action('cancel')">返回</x-button>
+        <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+      </x-buttons>
     </ad-tool>
     <x-table
       #tableCom
