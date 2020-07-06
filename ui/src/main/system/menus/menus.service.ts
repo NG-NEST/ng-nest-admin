@@ -4,14 +4,14 @@ import { HttpService } from 'src/services/http.service';
 import { XTreeNode } from '@ng-nest/ui/tree';
 import { XId } from '@ng-nest/ui/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MenusService extends RepositoryService<Menu> {
   constructor(public http: HttpService) {
     super(http, { controller: { name: 'menus' } });
   }
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ActionsService extends RepositoryService<Action> {
   constructor(public http: HttpService) {
     super(http, { controller: { name: 'actions' } });

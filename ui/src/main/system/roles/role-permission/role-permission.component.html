@@ -1,0 +1,45 @@
+<x-inner class="ad-inner">
+  <div class="ad-panel ad-tree-left">
+    <h4>菜单树</h4>
+    <x-tree
+      #treeCom
+      ad-adaption
+      [outerHeight]="197"
+      [data]="treeData"
+      expandedLevel="0"
+      [activatedId]="activatedId"
+      [nodeHeight]="1.875"
+      (activatedChange)="action('menu-actions', $event)"
+    >
+    </x-tree>
+  </div>
+  <div class="ad-table-right">
+    <ad-tool top>
+      <x-buttons space="0.5">
+        <x-button icon="fto-chevron-left" (click)="action('cancel', selected)">返回</x-button>
+        <x-button type="primary" icon="fto-plus" (click)="!disabled && action('save', selected)" [disabled]="disabled">保存</x-button>
+      </x-buttons>
+    </ad-tool>
+    <x-table
+      #tableCom
+      [(manual)]="manual"
+      [columns]="columns"
+      [rowHeight]="35"
+      [checkedRow]="checkedRow"
+      (activatedRowChange)="action('activated-row-change', $event)"
+      [allowSelectRow]="false"
+      [data]="tableData"
+      [size]="20"
+      [(index)]="index"
+      [query]="query"
+      [bodyHeight]="100"
+      [bodyColumnTpl]="{ icon: iconTpl }"
+      [adaptionHeight]="204"
+      virtualScroll
+    ></x-table>
+  </div>
+</x-inner>
+
+<ng-template #iconTpl let-column="$column" let-row="$row">
+  <x-icon *ngIf="row.icon" [type]="row.icon"></x-icon>
+</ng-template>

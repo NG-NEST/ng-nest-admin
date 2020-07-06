@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, Observer } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SettingService } from './setting.service';
+import { XMessageService } from '@ng-nest/ui/message';
+import { XMessageBoxService } from '@ng-nest/ui/message-box';
 
 /**
  * http请求
@@ -14,7 +16,12 @@ import { SettingService } from './setting.service';
 @Injectable({ providedIn: 'root' })
 export class HttpService {
   api: string;
-  constructor(public http: HttpClient, public setting: SettingService) {}
+  constructor(
+    public http: HttpClient,
+    public setting: SettingService,
+    public message: XMessageService,
+    public msgBox: XMessageBoxService
+  ) {}
 
   /**
    * get请求
@@ -109,10 +116,15 @@ export class HttpService {
    */
   handleError(error: HttpErrorResponse) {
     if (error.error) {
-      // this.toastService.create({
-      //   message: `[${error.error.errorCode}] ${error.error.errorMessage}`,
-      //   delay: 2000
-      // });
+      console.error(error.error);
+      this.message.error({
+        placement: 'center',
+        effect: 'light',
+        width: '20rem',
+        hideClose: false,
+        title: error.error.message,
+        content: error.error.data
+      });
     }
     return throwError(error.error);
   }

@@ -7,6 +7,8 @@ import { OrganizationService, Organization } from '../../organization/organizati
 import { map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { XMessageService } from '@ng-nest/ui/message';
+import { RolesService } from '../../roles/roles.service';
+import { XQuery } from '@ng-nest/ui/core';
 
 @Component({
   selector: 'app-user-detail',
@@ -49,7 +51,30 @@ export class UserDetailComponent implements OnInit {
       multiple: true,
       treeData: () => this.organization.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list))
     },
-    { control: 'input', id: 'roles', label: '角色', required: true },
+    {
+      control: 'find',
+      id: 'roles',
+      label: '角色',
+      required: true,
+      multiple: true,
+      treeData: () => this.organization.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list)),
+      tableData: (index: number, size: number, query: XQuery) =>
+        this.roles.getList(index, size, query).pipe(
+          map((x) => {
+            x.list = x.list?.map((y: any) => {
+              y.label = y.name;
+              return y;
+            });
+            return x;
+          })
+        ),
+      tableColumns: [
+        { id: 'index', label: '序号', width: 80, left: 0, type: 'index' },
+        { id: 'name', label: '角色名称', flex: 1, sort: true }
+      ],
+      tableRowHeight: 35,
+      treeTableConnect: 'organizationId'
+    },
     { control: 'input', id: 'email', label: '邮箱' },
     { control: 'input', id: 'phone', label: '电话' },
     { control: 'input', id: 'id', hidden: true, value: this.setting.guid() }
@@ -68,6 +93,7 @@ export class UserDetailComponent implements OnInit {
   constructor(
     private service: UsersService,
     private organization: OrganizationService,
+    private roles: RolesService,
     private setting: SettingService,
     private activatedRoute: ActivatedRoute,
     private message: XMessageService,
@@ -98,9 +124,20 @@ export class UserDetailComponent implements OnInit {
   action(type: string | null) {
     switch (type) {
       case 'info':
-        this.service.get(this.id as string).subscribe((x) => {
-          this.form.formGroup.patchValue(x);
-        });
+        this.service
+          .get(this.id as string)
+          .pipe(
+            map((x) => {
+              x.roles = x.roles?.map((y: any) => {
+                y.label = y.name;
+                return y;
+              });
+              return x;
+            })
+          )
+          .subscribe((x) => {
+            this.form.formGroup.patchValue(x);
+          });
         break;
       case 'edit':
         this.action('info');
@@ -125,7 +162,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   setForm(value: any) {
-    this.setFind(value, 'organizations');
+    this.setFind(value, 'organizations', 'roles');
     return value;
   }
 

@@ -1,28 +1,37 @@
-
 import { Entity, Column, ManyToOne, PrimaryColumn, ManyToMany } from 'typeorm';
 import { Menu } from '../../menus/entities/menu.entity';
 import { Role } from '../../roles/entities/role.entity';
 
-@Entity("system_action")
+@Entity('system_action')
 export class Action {
-    @PrimaryColumn("uuid", { length: 36, type: 'char' })
-    id: string;
+  @PrimaryColumn('uuid', { length: 36, type: 'char' })
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    code: string;
+  @Column()
+  code: string;
 
-    @Column()
-    icon: string;
+  @Column()
+  sort?: number;
 
-    @Column({ length: 36 })
-    menuId: string;
+  @Column()
+  icon: string;
 
-    @ManyToOne(type => Menu, menu => menu.actions, { onDelete: 'CASCADE' })
-    menu: Menu;
+  @Column({ length: 36 })
+  menuId: string;
 
-    @ManyToMany(type => Role, role => role.actions)
-    roles: Role[];
+  @ManyToOne(
+    type => Menu,
+    menu => menu.actions,
+    { onDelete: 'CASCADE' }
+  )
+  menu: Menu;
+
+  @ManyToMany(
+    type => Role,
+    role => role.actions
+  )
+  roles: Role[];
 }

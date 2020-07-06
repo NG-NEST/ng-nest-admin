@@ -23,7 +23,7 @@ export class RolesComponent {
   selected: Organization;
   columns: XTableColumn[] = [
     { id: 'index', label: '序号', width: 80, left: 0, type: 'index' },
-    { id: 'actions', label: '操作', width: 100, left: 80 },
+    { id: 'actions', label: '操作', width: 120, left: 80 },
     { id: 'name', label: '角色名称', flex: 1, sort: true }
   ];
 
@@ -78,6 +78,9 @@ export class RolesComponent {
           else this.query.filter = [...this.query.filter, filter];
         }
         this.tableCom.change(1);
+        break;
+      case 'permission':
+        this.router.navigate([`./permission/${item.id}`], { relativeTo: this.activatedRoute });
         break;
     }
   }

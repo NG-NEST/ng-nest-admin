@@ -35,7 +35,7 @@ export class MenusComponent {
           { field: 'pid', value: 'asc' },
           { field: 'sort', value: 'asc' }
         ]
-      } as any)
+      })
       .pipe(map((x) => x.list));
 
   actions: XTreeAction[] = [
@@ -178,7 +178,7 @@ export class MenusComponent {
         this.formGroup.reset();
         break;
       case 'actions':
-        this.router.navigate([`./actions`, { menuId: node.id, menuLabel: node.label }], { relativeTo: this.activatedRoute });
+        this.router.navigate([`./actions/${node.id}`], { relativeTo: this.activatedRoute });
         break;
     }
   }

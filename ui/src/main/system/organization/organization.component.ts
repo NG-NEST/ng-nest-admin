@@ -27,7 +27,15 @@ export class OrganizationComponent {
 
   activatedId: string;
 
-  data = () => this.service.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list));
+  data = () =>
+    this.service
+      .getList(1, Number.MAX_SAFE_INTEGER, {
+        sort: [
+          { field: 'pid', value: 'asc' },
+          { field: 'sort', value: 'asc' }
+        ]
+      })
+      .pipe(map((x) => x.list));
 
   actions: XTreeAction[] = [
     {
@@ -76,7 +84,8 @@ export class OrganizationComponent {
             { id: 'department', label: '部门' }
           ],
           value: 'department'
-        }
+        },
+        { control: 'input', id: 'sort', label: '顺序' }
       ]
     },
     {

@@ -3,7 +3,7 @@ import { RepositoryService } from 'src/services/repository.service';
 import { HttpService } from 'src/services/http.service';
 import { XTreeNode } from '@ng-nest/ui/tree';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OrganizationService extends RepositoryService<Organization> {
   constructor(public http: HttpService) {
     super(http, { controller: { name: 'organization' } });

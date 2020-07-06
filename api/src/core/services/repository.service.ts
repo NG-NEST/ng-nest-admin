@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, getManager, ObjectID, SelectQueryBuilder } from 'typeorm';
-import { XQuery, XFilter, XGroupItem, XSort, XId, XResultList } from '../interfaces';
+import { Repository, getManager, SelectQueryBuilder } from 'typeorm';
+import { XQuery, XFilter, XGroupItem, XSort, XId, XResultList, XIdType } from '../interfaces';
 import { orderBy, slice, map } from 'lodash';
 
 @Injectable()
-export class RepositoryService<Entity extends XId, Query extends XQuery> {
+export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   constructor(private repository: Repository<Entity>) {}
 
   async getList(index: number, size: number, query: Query): Promise<XResultList<Entity | XGroupItem>> {
@@ -42,7 +42,7 @@ export class RepositoryService<Entity extends XId, Query extends XQuery> {
     });
   }
 
-  async get(id: string | number | Date | ObjectID): Promise<Entity> {
+  async get(id: XIdType): Promise<Entity> {
     return await this.repository.findOne(id);
   }
 
@@ -62,7 +62,7 @@ export class RepositoryService<Entity extends XId, Query extends XQuery> {
     }
   }
 
-  async delete(id: string | number | Date | ObjectID): Promise<Entity> {
+  async delete(id: XIdType): Promise<Entity> {
     let entity = await this.repository.findOne(id);
     return await this.repository.remove(entity);
   }
@@ -76,29 +76,29 @@ export class RepositoryService<Entity extends XId, Query extends XQuery> {
           rep = rep.leftJoin(`entity.${x.relation}`, x.relation);
           switch (x.operation) {
             case '=':
-              rep = rep.where(`${x.relation}.${x.field} = :param${index}`);
+              rep.andWhere(`${x.relation}.${x.field} = :param${index}`);
               break;
           }
         } else {
           switch (x.operation) {
             case '=':
-              rep = rep.where(`entity.${x.field} = :param${index}`);
+              rep.andWhere(`entity.${x.field} = :param${index}`);
               break;
             case '>':
-              rep = rep.where(`entity.${x.field} > :param${index}`);
+              rep.andWhere(`entity.${x.field} > :param${index}`);
               break;
             case '>=':
-              rep = rep.where(`entity.${x.field} >= :param${index}`);
+              rep.andWhere(`entity.${x.field} >= :param${index}`);
               break;
             case '<':
-              rep = rep.where(`entity.${x.field} < :param${index}`);
+              rep.andWhere(`entity.${x.field} < :param${index}`);
               break;
             case '<=':
-              rep = rep.where(`entity.${x.field} < :param${index}`);
+              rep.andWhere(`entity.${x.field} < :param${index}`);
               break;
             default:
               // '%'
-              rep = rep.where(`entity.${x.field} like %:param${index}%`);
+              rep.andWhere(`entity.${x.field} like %:param${index}%`);
               break;
           }
         }

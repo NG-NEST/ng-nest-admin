@@ -1,11 +1,10 @@
 import { Injectable, Get, Param, Post, Body, Put, Delete, ParseIntPipe } from '@nestjs/common';
-import { RepositoryService } from './repository.service';
-import { XId, XResultList, XGroupItem, XQuery } from '../interfaces';
-import { ObjectID } from 'typeorm';
+import { XRepositoryService } from './repository.service';
+import { XId, XResultList, XGroupItem, XQuery, XIdType } from '../interfaces';
 
 @Injectable()
-export class ControllerService<Entity extends XId, Query extends XQuery> {
-  constructor(private readonly service: RepositoryService<Entity, Query>) {}
+export class XControllerService<Entity extends XId, Query extends XQuery> {
+  constructor(private readonly service: XRepositoryService<Entity, Query>) {}
 
   @Post(':size/:index')
   async getList(
@@ -17,7 +16,7 @@ export class ControllerService<Entity extends XId, Query extends XQuery> {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string | number | Date | ObjectID): Promise<Entity> {
+  async get(@Param('id') id: XIdType): Promise<Entity> {
     return await this.service.get(id);
   }
 
@@ -32,7 +31,7 @@ export class ControllerService<Entity extends XId, Query extends XQuery> {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string | number | Date | ObjectID): Promise<Entity> {
+  async delete(@Param('id') id: XIdType): Promise<Entity> {
     return await this.service.delete(id);
   }
 }

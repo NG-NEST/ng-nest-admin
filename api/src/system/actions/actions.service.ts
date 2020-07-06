@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RepositoryService, XQuery } from '@ng-nest/api/core';
+import { XRepositoryService, XQuery } from '@ng-nest/api/core';
 import { Action } from './entities/action.entity';
 import { XResultList } from '@ng-nest/api/core';
 
@@ -10,7 +10,7 @@ export interface ActionQuery {
 }
 
 @Injectable()
-export class ActionsService extends RepositoryService<Action, XQuery> {
+export class ActionsService extends XRepositoryService<Action, XQuery> {
   constructor(
     @InjectRepository(Action)
     private readonly entityRepository: Repository<Action>

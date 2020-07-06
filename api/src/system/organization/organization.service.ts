@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getManager, Like, ObjectID } from 'typeorm';
-import { RepositoryService, XQuery } from '@ng-nest/api/core';
+import { Repository, getManager, Like } from 'typeorm';
+import { XRepositoryService, XQuery, XIdType } from '@ng-nest/api/core';
 import { Organization } from './entities/organization.entity';
 import { orderBy } from 'lodash';
 
 @Injectable()
-export class OrganizationService extends RepositoryService<Organization, XQuery> {
+export class OrganizationService extends XRepositoryService<Organization, XQuery> {
   constructor(
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>
@@ -14,7 +14,7 @@ export class OrganizationService extends RepositoryService<Organization, XQuery>
     super(organizationRepository);
   }
 
-  async get(id: string | number | Date | ObjectID): Promise<Organization> {
+  async get(id: XIdType): Promise<Organization> {
     return await this.organizationRepository.findOne(id);
   }
 
@@ -39,7 +39,7 @@ export class OrganizationService extends RepositoryService<Organization, XQuery>
     }
   }
 
-  async delete(id: string | number | Date | ObjectID): Promise<Organization> {
+  async delete(id: XIdType): Promise<Organization> {
     let remove = await this.organizationRepository.findOne(id);
     let moves = await this.organizationRepository.find({ where: { path: Like(`${remove.path}%`) } });
     moves = orderBy(moves, x => -x.path.length);

@@ -7,7 +7,7 @@ export const environment = {
   // 框架页
   layout: 'index',
   // 默认的首页
-  defaultPage: 'menus',
+  defaultPage: 'roles',
   // Api请求地址
   api: 'http://localhost:3000/'
 };

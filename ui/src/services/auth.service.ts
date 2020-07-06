@@ -50,14 +50,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * 登录
-   *
-   * @param {User} user
-   * @returns {Observable<result<string>>}
-   * @memberof AuthService
-   */
-  login(user: User): Observable<any> {
+  loginTest(user: User): Observable<any> {
     return new Observable((x) => {
       let test = {
         name: 'admin',
@@ -120,22 +113,6 @@ export class AuthService {
               icon: 'fto-menu',
               pid: '3',
               path: '3.7'
-            },
-            {
-              id: '8',
-              label: '基础信息',
-              router: null,
-              icon: 'ado-user',
-              pid: '3',
-              path: '3.8'
-            },
-            {
-              id: '9',
-              label: '基础信息',
-              router: 'base-info',
-              icon: 'ado-user',
-              pid: '8',
-              path: '3.8.9'
             }
           ]
         }
@@ -144,17 +121,29 @@ export class AuthService {
       this.isLoggedIn = true;
       x.next(this.user);
       x.complete();
-      // this.httpService.post(`${this.controllerName}/login`, user).subscribe(
-      //   z => {
-      //     this.user = Object.assign(user, z);
-      //     this.isLoggedIn = true;
-      //     x.next(z);
-      //     x.complete();
-      //   },
-      //   k => {
-      //     x.error(k);
-      //   }
-      // );
+    });
+  }
+
+  /**
+   * 登录
+   *
+   * @param {User} user
+   * @returns {Observable<result<string>>}
+   * @memberof AuthService
+   */
+  login(user: User): Observable<any> {
+    return new Observable((x) => {
+      this.httpService.post(`${this.controllerName}/login`, user).subscribe(
+        (z) => {
+          this.user = Object.assign(user, z);
+          this.isLoggedIn = true;
+          x.next(z);
+          x.complete();
+        },
+        (k) => {
+          x.error(k);
+        }
+      );
     });
   }
 
