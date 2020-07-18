@@ -2,16 +2,3 @@
   <img src="assets/img/logo/logo-48x48.png" />
   <span class="title">NG-NEST-ADMIN</span>
 </div>
-<div class="nav">
-  <a>
-    <x-icon type="ado-message"></x-icon>
-  </a>
-  <a>
-    <x-icon type="ado-user"></x-icon>
-    <span class="info">{{ auth.user.name }}</span>
-  </a>
-  <a *ngIf="auth.user.name" (click)="action('logout')">
-    <x-icon type="ado-logout"></x-icon>
-    <span class="info">登出</span>
-  </a>
-</div>

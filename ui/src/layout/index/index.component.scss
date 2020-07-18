@@ -1,39 +1,41 @@
 @import 'index';
 // 字体颜色
-$font-color: $primary-text-color;
+$font-color: $--x-text;
 // 头部背景色
-$header-background-color: #f0f0f0;
+$header-background-color: $--x-background-a100;
 // 头部文字颜色
-$header-color: $primary-text-color;
+$header-color: $--x-text;
 // 菜单栏背景色
-$sider-background-color: #fafafa;
+$sider-background-color: $--x-background-a100;
+// 顶部右侧菜单个数
+$nav-num: 4;
 // 标签页背景色
-$tabs-background-color: #fafafa;
+$tabs-background-color: $--x-background-a100;
 // 正文背景色
-$content-background-color: $background-color;
+$content-background-color: $--x-background;
 // 头部高度
-$header-height: 3.5rem;
+$header-height: 3.25rem;
 // 标签页高度
 $tabs-height: 2.25rem;
 // 面包屑导航高度
 $crumb-height: 2.25rem;
 // 菜单栏宽度
-$sider-width: 12.5rem;
+$sider-width: 15rem;
 // 内容区域的内边距
-$content-padding: 0.875rem;
+$content-padding: $--x-padding-large;
 // 悬停背景色
-$sider-node-hover-background-color: rgba(0, 0, 0, 0.05);
+$sider-node-hover-background-color: rgba(0, 0, 0, 0.06);
 // 悬停文字颜色
-$sider-node-hover-color: $primary-text-color;
+$sider-node-hover-color: $--x-text;
 // 选中背景颜色
-$selected-background-color: rgba(0, 0, 0, 0.025);
+$selected-background-color: rgba(0, 0, 0, 0.06);
 // 选中文字颜色
-$selected-color: $primary-color;
+$selected-color: $--x-primary;
 // 动画时间
 $transition-duration: 0.3s;
 // 悬停效果
 @mixin hover {
-  color: $sider-node-hover-color;
+  color: $selected-color;
   background-color: $sider-node-hover-background-color;
 }
 
@@ -41,6 +43,7 @@ $transition-duration: 0.3s;
 @mixin activated {
   color: $selected-color;
   background-color: $selected-background-color;
+  border-right: 0.125rem solid $selected-color;
 }
 
 // 菜单样式
@@ -105,67 +108,13 @@ app-index {
     padding: 0;
     margin: 0;
   }
-  > app-header {
-    background-color: $header-background-color;
-    color: $header-color;
-    height: $header-height;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    box-sizing: border-box;
-    > .logo {
-      display: flex;
-      align-items: center;
-      img {
-        width: 2.25rem;
-      }
-      .title {
-        font-size: 1.5rem;
-        margin-left: 0.625rem;
-      }
-    }
-    > .nav {
-      display: flex;
-      align-items: center;
-      > span {
-        cursor: default;
-      }
-      > a {
-        display: flex;
-        align-items: center;
-        padding: 0 0.625rem;
-        height: 2rem;
-        line-height: 2rem;
-        border-radius: 0.125rem;
-        font-size: 0.875rem;
-        > span {
-          cursor: default;
-          &.info {
-            padding-left: 0.375rem;
-          }
-        }
-        > .x-icon {
-          font-size: 1.25rem;
-        }
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.2);
-          transition: color $transition-duration, background-color $transition-duration;
-        }
-      }
-    }
-  }
   > app-tabs {
     background-color: $tabs-background-color;
     width: calc(100% - #{$sider-width});
     height: $tabs-height;
+    padding-right: $tabs-height * $nav-num + $--x-padding-medium * 2;
     position: fixed;
-    top: $header-height;
+    top: 0;
     left: $sider-width;
     z-index: 11;
     transition: left $transition-duration, width $transition-duration;
@@ -174,10 +123,37 @@ app-index {
       padding: 0;
     }
     .x-slider-scroll > ul > li.x-slider-highlight {
-      background-color: $background-color;
+      background-color: $--x-background;
       border: none;
       border-radius: 0;
     }
+    .toggle {
+      float: left;
+      .x-link {
+        background-color: $--x-background-a200;
+        width: $tabs-height;
+        height: $tabs-height;
+        .x-icon {
+          font-size: $--x-font-size-large;
+        }
+      }
+    }
+
+    .nav {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 0 $--x-padding-medium;
+      background-color: $--x-background-a200;
+      .x-link {
+        width: $tabs-height;
+        height: $tabs-height;
+        .x-icon {
+          font-size: $--x-font-size-large;
+        }
+      }
+    }
+
     .tab {
       min-width: 5.625rem;
       max-width: 11.25rem;
@@ -189,7 +165,7 @@ app-index {
       box-sizing: border-box;
       user-select: none;
       position: relative;
-      border-right: 0.0625rem solid #fafafa;
+      border-right: 0.0625rem solid $--x-border-900;
       transition: background-color $transition-duration;
       span {
         overflow: hidden;
@@ -213,19 +189,19 @@ app-index {
         }
       }
       &.active {
-        background-color: $background-color;
+        background-color: $--x-background;
         span {
-          color: $primary-text-color;
+          color: $--x-text;
         }
       }
       &.active,
       &:hover {
         .close {
           .x-icon {
-            color: $secondary-text-color;
+            color: $--x-text-100;
             opacity: 1;
             &:hover {
-              color: $primary-text-color;
+              color: $--x-text;
             }
           }
         }
@@ -236,8 +212,8 @@ app-index {
     width: calc(100% - #{$sider-width});
     height: $crumb-height;
     position: fixed;
-    top: $header-height + $tabs-height;
-    background-color: $background-color;
+    top: $tabs-height;
+    background-color: $--x-background;
     left: $sider-width;
     z-index: 11;
     transition: left $transition-duration, width $transition-duration;
@@ -252,10 +228,10 @@ app-index {
         transition: background-color $transition-duration;
         border-radius: 0.125rem;
         &:hover {
-          background-color: rgba(0, 0, 0, 0.06);
+          background-color: $--x-background-a100;
         }
         &.disabled {
-          color: $primary-color-light;
+          color: $--x-primary-500;
           pointer-events: none;
         }
       }
@@ -268,58 +244,53 @@ app-index {
     background-color: $sider-background-color;
     height: 100%;
     width: $sider-width;
+    border-right: $--x-border-base;
+    box-shadow: $--x-box-shadow-light-right;
     position: fixed;
-    top: $header-height + $tabs-height;
+    top: 0;
     left: 0;
     z-index: 11;
     transition: width $transition-duration, background-color $transition-duration;
     @include silder;
+    > app-header {
+      background-color: $header-background-color;
+      color: $header-color;
+      height: $header-height;
+      overflow: hidden;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      > .logo {
+        display: flex;
+        align-items: center;
+        img {
+          width: 2rem;
+          transition: width $transition-duration, padding $transition-duration;
+        }
+        .title {
+          font-size: $--x-font-size-big;
+          margin-left: 0.625rem;
+          visibility: inherit;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          transition: visibility $transition-duration, opacity $transition-duration;
+        }
+      }
+    }
   }
   > app-content {
     height: 100%;
     width: 100%;
-    padding-top: $header-height + $tabs-height + $crumb-height;
+    padding-top: $tabs-height + $crumb-height;
     padding-left: $sider-width;
     transition: padding $transition-duration;
     display: block;
     > div {
       height: 100%;
       width: 100%;
-    }
-  }
-  > app-toggle {
-    background-color: $sider-background-color;
-    height: $tabs-height;
-    width: $sider-width;
-    position: fixed;
-    top: $header-height;
-    left: 0;
-    z-index: 12;
-    transition: width $transition-duration;
-    box-sizing: border-box;
-    .toggle {
-      height: $tabs-height;
-      width: $tabs-height + 0.625rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      float: right;
-      transition: color $transition-duration, background-color $transition-duration;
-      .x-icon {
-        font-size: 1.125rem;
-        transition: transform $transition-duration;
-      }
-      &:hover {
-        color: $sider-node-hover-color;
-        background-color: $sider-node-hover-background-color;
-      }
-      &.selected {
-        color: $selected-color;
-        background-color: $selected-background-color;
-        .x-icon {
-          transform: rotate(180deg);
-        }
-      }
     }
   }
 }
@@ -329,8 +300,9 @@ app-float-node {
     padding: 0.5rem 0;
     max-width: $sider-width;
     min-width: $sider-width - 2rem;
-    box-shadow: $box-shadow;
-    background-color: #ffffff;
+    box-shadow: $--x-box-shadow-light;
+    border: $--x-border-base;
+    background-color: $--x-background-a100;
   }
   @include silder;
 }
@@ -345,11 +317,20 @@ app-index.sider-shrink {
   > app-content {
     padding-left: $tabs-height + 0.625rem;
   }
-  > app-sider,
-  > app-toggle {
-    width: $tabs-height + 0.625rem;
-  }
   > app-sider {
+    width: $tabs-height + 0.625rem;
+    > app-header {
+      padding: 0.75rem;
+      > .logo {
+        img {
+          width: 1.5rem;
+        }
+        .title {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+    }
     li {
       a {
         span,

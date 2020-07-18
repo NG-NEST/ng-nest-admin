@@ -15,6 +15,7 @@ import { XIconModule } from '@ng-nest/ui/icon';
 import { XPortalModule } from '@ng-nest/ui/portal';
 import { XCrumbModule } from '@ng-nest/ui/crumb';
 import { XSliderModule } from '@ng-nest/ui/slider';
+import { XLinkModule } from '@ng-nest/ui/link';
 
 // 声明模块中拥有的视图类
 const components = [
@@ -29,12 +30,11 @@ const components = [
   ToggleComponent
 ];
 
-const entryComponents = [FloatNodeComponent];
+const modules = [CommonModule, ShareModule, IndexRoutesModule, XIconModule, XPortalModule, XCrumbModule, XSliderModule, XLinkModule];
 
 @NgModule({
-  imports: [CommonModule, ShareModule, IndexRoutesModule, XIconModule, XPortalModule, XCrumbModule, XSliderModule],
+  imports: [...modules],
   declarations: [...components],
-  entryComponents: [...entryComponents],
   exports: [...components]
 })
 export class IndexModule {}

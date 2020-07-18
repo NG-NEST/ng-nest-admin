@@ -6,10 +6,11 @@ app-login {
   justify-content: center;
   align-items: center;
   > form {
-    box-shadow: $box-shadow;
+    box-shadow: $--x-box-shadow-light;
+    border: $--x-border-base;
+    border-radius: $--x-border-radius;
   }
   ul {
-    background: white;
     padding: 50px 80px;
     border-radius: 2px;
     > li {

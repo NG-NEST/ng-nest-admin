@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { IndexService, Menu } from '../index.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
-import { ReuseStrategyService } from '../../../services/reuse-strategy.service';
+import { ReuseStrategyService } from 'src/services/reuse-strategy.service';
+import { NavService } from 'src/services/nav.service';
+import { AuthService } from 'src/services/auth.service';
+import { XConfigService, X_THEME_DARK_COLORS, X_THEME_COLORS } from '@ng-nest/ui/core';
 
 @Component({
   selector: 'app-tabs',
@@ -25,7 +29,16 @@ export class TabsComponent implements OnInit {
     return this.indexService.session.tabsPage ? this.indexService.session.tabsPage : [];
   }
 
-  constructor(public indexService: IndexService, private router: Router) {}
+  dark = false;
+
+  constructor(
+    public indexService: IndexService,
+    private router: Router,
+    public auth: AuthService,
+    public location: Location,
+    public nav: NavService,
+    public configService: XConfigService
+  ) {}
 
   ngOnInit() {}
 
@@ -80,6 +93,42 @@ export class TabsComponent implements OnInit {
       if (pushIndex !== null) {
         this.tab(pushIndex);
       }
+    }
+  }
+
+  /**
+   * 展开，缩起点击
+   *
+   * @memberof ToggleComponent
+   */
+  toggle() {
+    this.indexService.local = {
+      siderShrink: !this.indexService.local.siderShrink
+    };
+  }
+
+  /**
+   * 退出
+   */
+  logout() {
+    this.auth.logout().subscribe((x) => {
+      if (x) {
+        this.indexService.removeSession();
+        this.indexService.session = { tabsPage: [] };
+        this.nav.destroy();
+        ReuseStrategyService.deleteRouteSnapshot();
+        ReuseStrategyService.deleteRouteSnapshot(this.location.path());
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  theme() {
+    this.dark = !this.dark;
+    if (this.dark) {
+      this.configService.setDarkTheme({ colors: X_THEME_DARK_COLORS });
+    } else {
+      this.configService.setLightTheme({ colors: X_THEME_COLORS });
     }
   }
 }

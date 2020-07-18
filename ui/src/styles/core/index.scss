@@ -30,19 +30,19 @@
     @include ng-nest;
   }
   &-panel {
-    box-shadow: $box-shadow-panel;
-    border: $box-shadow-panel-border;
+    box-shadow: $--x-box-shadow-light;
+    border: $--x-border-base;
     > h4 {
       margin: 0;
-      padding: 0 $padding;
+      padding: 0 $--x-padding-large;
       height: 35px;
       font-weight: 500;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: $secondary-text-color;
-      background-color: $background-color-300;
-      border-bottom: 0.0625rem solid $border-200;
+      color: $--x-text-100;
+      background-color: $--x-background-a100;
+      border-bottom: $--x-border-base;
       > x-link {
         margin-left: 0.25rem;
       }
@@ -54,15 +54,15 @@
   &-tree-left {
     width: 18rem;
     display: block;
-    margin-right: $padding;
+    margin-right: $--x-padding-large;
     x-tree {
       display: block;
-      padding: $padding;
+      padding: $--x-padding-large;
       overflow-y: auto;
     }
     .x-tree-node-content {
       &.x-activated {
-        color: $primary-color;
+        color: $--x-primary;
       }
     }
   }
