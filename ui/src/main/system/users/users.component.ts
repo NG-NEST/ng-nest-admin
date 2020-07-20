@@ -2,24 +2,31 @@ import { Component, ViewChild } from '@angular/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { UsersService } from './users.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { OrganizationService, Organization } from '../organization/organization.service';
 import { XQuery } from '@ng-nest/ui/core';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
+import { IndexService } from 'src/layout/index/index.service';
+import { PageBase } from 'src/share/base/base-page';
 
 @Component({
   selector: 'app-users',
   templateUrl: 'users.component.html'
 })
-export class UsersComponent {
+export class UsersComponent extends PageBase {
   index = 1;
   query: XQuery = { filter: [] };
   data = (index: number, size: number, query: any) =>
     this.service.getList(index, size, query).pipe((x: any) => {
       return x;
     });
-  treeData = () => this.organization.getList(1, Number.MAX_SAFE_INTEGER).pipe(map((x) => x.list));
+  treeLoading = true;
+  treeData = () =>
+    this.organization.getList(1, Number.MAX_SAFE_INTEGER).pipe(
+      tap(() => (this.treeLoading = false)),
+      map((x) => x.list)
+    );
   selected: Organization;
   columns: XTableColumn[] = [
     { id: 'index', label: '序号', width: 80, left: 0, type: 'index' },
@@ -34,12 +41,15 @@ export class UsersComponent {
 
   constructor(
     public service: UsersService,
+    public indexService: IndexService,
     private organization: OrganizationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private message: XMessageService,
     private msgBox: XMessageBoxService
-  ) {}
+  ) {
+    super(indexService);
+  }
 
   action(type: string, item?: any) {
     switch (type) {

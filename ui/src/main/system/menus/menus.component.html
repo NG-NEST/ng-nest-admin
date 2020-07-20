@@ -1,5 +1,5 @@
 <x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left" style="width: 22rem;">
+  <div class="ad-panel ad-tree-left" [x-loading]="treeLoading" style="width: 22rem;">
     <h4>
       <span>菜单树</span>
       <x-link icon="fto-plus" title="增加根节点" (click)="action('add-root', selected)"></x-link>
@@ -7,12 +7,12 @@
     <x-tree
       #treeCom
       ad-adaption
-      [outerHeight]="140"
+      [outerHeight]="132"
       [data]="data"
       expandedLevel="0"
       [activatedId]="activatedId"
       [nodeHeight]="1.875"
-      [actions]="actions"
+      [actions]="treeActions"
       (activatedChange)="action('info', $event)"
     >
     </x-tree>
@@ -33,7 +33,7 @@
     <x-form
       class="ad-panel ad-overflow-auto"
       ad-adaption
-      [outerHeight]="147"
+      [outerHeight]="140"
       [formGroup]="formGroup"
       [controls]="controls"
       [disabled]="disabled"

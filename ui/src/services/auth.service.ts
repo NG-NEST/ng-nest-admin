@@ -142,6 +142,10 @@ export class AuthService {
         },
         (k) => {
           x.error(k);
+          x.complete();
+        },
+        () => {
+          x.complete();
         }
       );
     });

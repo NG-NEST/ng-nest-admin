@@ -1,10 +1,10 @@
 <x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left">
+  <div class="ad-panel ad-tree-left" [x-loading]="treeLoading">
     <h4>菜单树</h4>
     <x-tree
       #treeCom
       ad-adaption
-      [outerHeight]="140"
+      [outerHeight]="132"
       [data]="treeData"
       expandedLevel="0"
       [activatedId]="activatedId"
@@ -34,8 +34,9 @@
       [query]="query"
       [bodyHeight]="100"
       [bodyColumnTpl]="{ icon: iconTpl }"
-      [adaptionHeight]="148"
+      [adaptionHeight]="140"
       virtualScroll
+      loading
     ></x-table>
   </div>
 </x-inner>

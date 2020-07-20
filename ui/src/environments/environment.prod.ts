@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
   // 框架页
-  layout: "index",
+  layout: 'index',
   // 默认的首页
-  defaultPage: "home",
+  defaultPage: 'home',
   // Api请求地址
-  api: ""
+  api: 'http://adminapi.ngnest.com/'
 };

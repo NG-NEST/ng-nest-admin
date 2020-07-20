@@ -3,6 +3,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { XMessageModule } from '@ng-nest/ui/message';
 import { XMessageBoxModule } from '@ng-nest/ui/message-box';
+import { AdAuthDirective } from './auth/auth.directive';
+
+// 视图
+const declarations = [AdAuthDirective];
 
 // 模块
 const modules = [FormsModule, ReactiveFormsModule, HttpClientModule, XMessageModule, XMessageBoxModule];
@@ -11,7 +15,8 @@ const modules = [FormsModule, ReactiveFormsModule, HttpClientModule, XMessageMod
  * 共享模块
  */
 @NgModule({
+  declarations: [...declarations],
   imports: [...modules],
-  exports: [...modules]
+  exports: [...modules, ...declarations]
 })
 export class ShareModule {}

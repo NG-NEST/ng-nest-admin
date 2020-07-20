@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { SettingService } from '../../services/setting.service';
 import { environment } from '../../environments/environment';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { AuthService, Menu as AuthMenu } from '../../services/auth.service';
@@ -9,6 +9,7 @@ import { NavService } from 'src/services/nav.service';
 import { XCrumbNode } from '@ng-nest/ui/crumb';
 import { XPortalOverlayRef } from '@ng-nest/ui/portal';
 import { FloatNodeComponent } from './sider/float-node/float-node.component';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class IndexService {
@@ -25,6 +26,9 @@ export class IndexService {
 
   // 弹出菜单
   portal: XPortalOverlayRef<FloatNodeComponent>;
+
+  // 当前菜单改变事件
+  menuChange = new Subject<{ previous: string; current: string }>();
 
   // 菜单数据
   public get menus(): Menu[] {
@@ -181,6 +185,7 @@ export class IndexService {
           menu.param = param;
           tabsPage.unshift(menu);
         }
+        const previous = this.session.activatedPage;
         this.session = {
           activatedPage: router,
           subPage: subPage,
@@ -188,6 +193,7 @@ export class IndexService {
           tabsPage: tabsPage
         };
         this.session.tabsPage = [...(this.session.tabsPage as Menu[])];
+        this.menuChange.next({ previous: previous as string, current: router });
       }
     }
   }

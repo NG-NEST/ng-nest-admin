@@ -101,6 +101,9 @@ export class HttpService {
           x.error(y);
           x.complete();
           this.handleError(y);
+        },
+        () => {
+          x.complete();
         }
       );
     });

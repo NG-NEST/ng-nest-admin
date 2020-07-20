@@ -1,6 +1,6 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MenusService, Menu } from './menus.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
@@ -8,13 +8,15 @@ import { guid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PageBase } from 'src/share/base/base-page';
+import { IndexService } from 'src/layout/index/index.service';
 
 @Component({
   selector: 'app-menus',
   templateUrl: 'menus.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenusComponent {
+export class MenusComponent extends PageBase {
   @ViewChild('treeCom') treeCom: XTreeComponent;
   formGroup = new FormGroup({});
 
@@ -28,6 +30,8 @@ export class MenusComponent {
 
   activatedId: string;
 
+  treeLoading = true;
+
   data = () =>
     this.service
       .getList(1, Number.MAX_SAFE_INTEGER, {
@@ -36,9 +40,12 @@ export class MenusComponent {
           { field: 'sort', value: 'asc' }
         ]
       })
-      .pipe(map((x) => x.list));
+      .pipe(
+        tap(() => (this.treeLoading = false)),
+        map((x) => x.list)
+      );
 
-  actions: XTreeAction[] = [
+  treeActions: XTreeAction[] = [
     {
       id: 'add',
       label: '新增',
@@ -103,11 +110,18 @@ export class MenusComponent {
   ];
   constructor(
     private service: MenusService,
+    public indexService: IndexService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private message: XMessageService,
     private msgBox: XMessageBoxService
-  ) {}
+  ) {
+    super(indexService);
+  }
+
+  ngOnInit() {
+    this.treeActions = this.treeActions.filter((x) => this.auth[x.id]);
+  }
 
   action(type: string, node: Menu) {
     switch (type) {

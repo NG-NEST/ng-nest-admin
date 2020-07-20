@@ -102,12 +102,6 @@ $transition-duration: 0.3s;
 // 框架页样式
 app-index {
   color: $font-color;
-  ul,
-  li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
   > app-tabs {
     background-color: $tabs-background-color;
     width: calc(100% - #{$sider-width});
@@ -252,6 +246,10 @@ app-index {
     z-index: 11;
     transition: width $transition-duration, background-color $transition-duration;
     @include silder;
+    > ul {
+      overflow-y: auto;
+      height: calc(100% - #{$header-height});
+    }
     > app-header {
       background-color: $header-background-color;
       color: $header-color;

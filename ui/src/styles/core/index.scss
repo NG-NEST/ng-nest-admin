@@ -7,18 +7,36 @@
   /*滚动条里面小方块*/
   border-radius: 0.125rem;
   // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.1);
+  background: $--x-text-500;
 }
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 0.125rem;
-  background: #f0f0f0;
+  background: $--x-background;
 }
 
 @mixin ng-nest {
   x-form {
     display: block;
+  }
+  x-row {
+    flex: 1;
+  }
+  x-doc {
+    > h2:first-of-type {
+      margin-top: 0;
+    }
+    padding: 0;
+    table {
+      th,
+      td {
+        padding: 0 $--x-padding-large;
+      }
+      th {
+        background-color: $--x-background-a100;
+      }
+    }
   }
 }
 
@@ -26,12 +44,14 @@
   &-inner {
     &.x-inner {
       display: flex;
+      padding: 0.5rem 1rem 1rem 1rem !important;
     }
     @include ng-nest;
   }
   &-panel {
     box-shadow: $--x-box-shadow-light;
     border: $--x-border-base;
+    border-radius: $--x-border-radius;
     > h4 {
       margin: 0;
       padding: 0 $--x-padding-large;
@@ -47,6 +67,10 @@
         margin-left: 0.25rem;
       }
     }
+  }
+  &-content {
+    padding: $--x-padding-large;
+    overflow: auto;
   }
   &-column {
     flex-direction: column;

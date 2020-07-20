@@ -1,10 +1,10 @@
 <x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left">
+  <div class="ad-panel ad-tree-left" [x-loading]="treeLoading">
     <h4>组织机构</h4>
     <x-tree
       #treeCom
       ad-adaption
-      [outerHeight]="140"
+      [outerHeight]="132"
       [data]="treeData"
       expandedLevel="0"
       [nodeHeight]="1.875"
@@ -14,7 +14,7 @@
   </div>
   <div class="ad-table-right">
     <ad-tool top>
-      <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+      <x-button type="primary" icon="fto-plus" [disabled]="!auth['add']" (click)="auth['add'] && action('add')">新增</x-button>
     </ad-tool>
     <x-table
       #tableCom
@@ -26,7 +26,7 @@
       [query]="query"
       [bodyHeight]="100"
       [bodyColumnTpl]="{ actions: actionsTpl }"
-      [adaptionHeight]="148"
+      [adaptionHeight]="140"
       virtualScroll
       loading
     ></x-table>
@@ -35,9 +35,14 @@
 
 <ng-template #actionsTpl let-column="$column" let-row="$row">
   <div class="ad-table-actions">
-    <x-link icon="fto-eye" (click)="action('info', row)" title="查看"></x-link>
-    <x-link icon="fto-edit" (click)="action('edit', row)" title="修改"></x-link>
-    <x-link icon="fto-list" (click)="action('permission', row)" title="权限设置"></x-link>
-    <x-link icon="fto-trash-2" (click)="action('delete', row)" title="删除"></x-link>
+    <x-link icon="fto-eye" [disabled]="!auth['info']" (click)="auth['info'] && action('info', row)" title="查看"></x-link>
+    <x-link icon="fto-edit" [disabled]="!auth['edit']" (click)="auth['edit'] && action('edit', row)" title="修改"></x-link>
+    <x-link
+      icon="fto-list"
+      [disabled]="!auth['permission']"
+      (click)="auth['permission'] && action('permission', row)"
+      title="权限设置"
+    ></x-link>
+    <x-link icon="fto-trash-2" [disabled]="!auth['delete']" (click)="auth['delete'] && action('delete', row)" title="删除"></x-link>
   </div>
 </ng-template>

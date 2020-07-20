@@ -7,9 +7,9 @@ export const environment = {
   // 框架页
   layout: 'index',
   // 默认的首页
-  defaultPage: 'roles',
+  defaultPage: 'home',
   // Api请求地址
-  api: 'http://localhost:3000/'
+  api: 'http://adminapi.ngnest.com/'
 };
 
 /*

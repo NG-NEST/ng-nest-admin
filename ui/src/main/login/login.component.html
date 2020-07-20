@@ -11,7 +11,7 @@
       <x-input formControlName="password" icon="ado-lock" type="password" iconLayout="left"></x-input>
     </li>
     <li class="submit">
-      <x-button type="primary" (click)="login()">登 录</x-button>
+      <x-button type="primary" (click)="login()" [loading]="loading">登 录</x-button>
     </li>
   </ul>
 </form>

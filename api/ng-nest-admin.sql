@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 127.0.0.1
+ Source Server         : 47.93.183.122
  Source Server Type    : MySQL
  Source Server Version : 80017
- Source Host           : localhost:3306
+ Source Host           : 47.93.183.122:3306
  Source Schema         : ng-nest-admin
 
  Target Server Type    : MySQL
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 18/07/2020 11:29:28
+ Date: 20/07/2020 18:08:24
 */
 
 SET NAMES utf8mb4;
@@ -38,14 +38,20 @@ CREATE TABLE `system_action`  (
 -- ----------------------------
 INSERT INTO `system_action` VALUES ('113ed106-2cdd-a596-de50-4b80de1fb83e', '删除', 'delete', 'fto-trash-2', '32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', 4);
 INSERT INTO `system_action` VALUES ('19d1fde7-f3f4-4ce9-e6cc-6b77a5fe1ac4', '修改', 'edit', 'fto-edit', '32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', 3);
+INSERT INTO `system_action` VALUES ('2711f0e9-5f7c-54dc-cf78-f96ef2fcaf19', '新增根节点', 'add-root', 'fto-plus', '4a305e03-c1b9-1ab7-b9ac-3408dced0194', 5);
 INSERT INTO `system_action` VALUES ('28ce1bf4-830a-76ab-c73c-10a7207f92ed', '修改', 'edit', 'fto-edit', '4a305e03-c1b9-1ab7-b9ac-3408dced0194', 3);
+INSERT INTO `system_action` VALUES ('29957623-54fb-d52d-bc69-9be9291eac05', '查看', 'info', 'fto-eye', '05e588cc-6026-005b-927a-0e452c4131ab', 1);
 INSERT INTO `system_action` VALUES ('2afc1b90-0c7f-ae5b-589b-5da8dc78f49a', '查看', 'info', 'fto-eye', '32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', 1);
+INSERT INTO `system_action` VALUES ('2d494d93-050b-f276-d993-a5c55efa6f73', '查看', 'info', 'fto-eye', '5453c6a4-00a8-1512-0708-d0747fc93c25', 1);
 INSERT INTO `system_action` VALUES ('346594b7-0db7-8790-8869-be827d50a104', '删除', 'delete', 'fto-trash-2', '10f15681-0d11-78db-bc92-76d43298a5f8', 5);
 INSERT INTO `system_action` VALUES ('54ccd3ee-0f78-e4aa-8643-a92dc2849000', '查看', 'info', 'fto-eye', '90d5153c-3241-0ef6-27a8-6d00012d1838', 1);
 INSERT INTO `system_action` VALUES ('590ac302-cdca-72c7-60c5-0444b4585899', '查看', 'info', 'fto-eye', '10f15681-0d11-78db-bc92-76d43298a5f8', 1);
 INSERT INTO `system_action` VALUES ('629d4d09-73b6-2aa0-4e58-7108f4660a50', '新增', 'add', 'fto-plus', 'f97d223d-b777-3dfa-c76a-d24244eba25e', 2);
+INSERT INTO `system_action` VALUES ('63c8eeb1-5843-9bb0-d054-e854708a1f14', '查看', 'info', 'fto-eye', 'a787e3e7-1c57-ccad-eafd-7d15de1757ec', 1);
 INSERT INTO `system_action` VALUES ('6dd07b1d-d431-9bf4-62d5-5db3dc99bddb', '查看', 'info', 'fto-eye', '4a305e03-c1b9-1ab7-b9ac-3408dced0194', 1);
+INSERT INTO `system_action` VALUES ('74cfa90b-9e7c-344d-f5ac-2b14350697d9', '查看', 'info', 'fto-eye', '50f2cb4b-c5b4-a953-145f-fd076c675df8', 1);
 INSERT INTO `system_action` VALUES ('75056496-6ca6-1346-7a60-be72cab7d72b', '删除', 'delete', 'fto-trash-2', 'f97d223d-b777-3dfa-c76a-d24244eba25e', 4);
+INSERT INTO `system_action` VALUES ('76faa453-36f3-e773-1527-a3158b706f7a', '查看', 'info', 'fto-eye', '5b99835d-cbb6-06e5-fbd5-c636ff88fb60', 1);
 INSERT INTO `system_action` VALUES ('7adad23f-636d-6bee-0f37-7d29d5b29585', '操作设置', 'actions', 'fto-list', '10f15681-0d11-78db-bc92-76d43298a5f8', 4);
 INSERT INTO `system_action` VALUES ('811047d2-ac97-96a5-686d-59d5a54fcc62', '新增', 'add', 'fto-plus', '32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', 2);
 INSERT INTO `system_action` VALUES ('8eedb227-6be9-7571-ed0b-9e181c6e6716', '修改', 'edit', 'fto-edit', 'f97d223d-b777-3dfa-c76a-d24244eba25e', 3);
@@ -54,6 +60,7 @@ INSERT INTO `system_action` VALUES ('ad39e8cf-2816-9176-ce7f-83fcb84c3cd1', '权
 INSERT INTO `system_action` VALUES ('bf9ba14b-b7db-3adb-662a-a88e417e70e8', '修改', 'edit', 'fto-edit', '10f15681-0d11-78db-bc92-76d43298a5f8', 3);
 INSERT INTO `system_action` VALUES ('cac38734-fa4c-0775-96f2-c4146a4dcbe0', '新增', 'add', 'fto-plus', '10f15681-0d11-78db-bc92-76d43298a5f8', 2);
 INSERT INTO `system_action` VALUES ('e1497f04-16fa-9bee-c77e-fd4afab4ef86', '删除', 'delete', 'fto-trash-2', '4a305e03-c1b9-1ab7-b9ac-3408dced0194', 4);
+INSERT INTO `system_action` VALUES ('e8d9297b-e64c-f0f3-0cdb-95dede4eaa44', '查看', 'info', 'fto-eye', '9c0e8821-9ec5-516f-1694-6a75200f0296', 1);
 INSERT INTO `system_action` VALUES ('f50bd17d-2436-47f3-2f9a-d914ff2ad834', '查看', 'info', 'fto-eye', 'f97d223d-b777-3dfa-c76a-d24244eba25e', 1);
 INSERT INTO `system_action` VALUES ('fb5680c4-47cb-78f9-c107-656f42886e3c', '新增', 'add', 'fto-plus', '4a305e03-c1b9-1ab7-b9ac-3408dced0194', 2);
 
@@ -123,10 +130,16 @@ CREATE TABLE `system_menu`  (
 -- Records of system_menu
 -- ----------------------------
 INSERT INTO `system_menu` VALUES ('0009d7da-3efc-2ea1-3be1-2542c7b6c070', '系统管理', '', 'ado-setting', NULL, '0009d7da-3efc-2ea1-3be1-2542c7b6c070', 3);
+INSERT INTO `system_menu` VALUES ('05e588cc-6026-005b-927a-0e452c4131ab', '测试菜单1', '1', 'fto-file', NULL, '05e588cc-6026-005b-927a-0e452c4131ab', 10);
 INSERT INTO `system_menu` VALUES ('10f15681-0d11-78db-bc92-76d43298a5f8', '菜单管理', 'menus', 'fto-menu', '0009d7da-3efc-2ea1-3be1-2542c7b6c070', '0009d7da-3efc-2ea1-3be1-2542c7b6c070.10f15681-0d11-78db-bc92-76d43298a5f8', 4);
 INSERT INTO `system_menu` VALUES ('32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', '用户管理', 'users', 'ado-team', '0009d7da-3efc-2ea1-3be1-2542c7b6c070', '0009d7da-3efc-2ea1-3be1-2542c7b6c070.32cbc14a-632e-24d0-8d8f-2032c2c7a5e0', 1);
 INSERT INTO `system_menu` VALUES ('4a305e03-c1b9-1ab7-b9ac-3408dced0194', '组织管理', 'organization', 'ado-apartment', '0009d7da-3efc-2ea1-3be1-2542c7b6c070', '0009d7da-3efc-2ea1-3be1-2542c7b6c070.4a305e03-c1b9-1ab7-b9ac-3408dced0194', 3);
+INSERT INTO `system_menu` VALUES ('50f2cb4b-c5b4-a953-145f-fd076c675df8', '测试菜单3', '3', 'fto-file', NULL, '50f2cb4b-c5b4-a953-145f-fd076c675df8', 13);
+INSERT INTO `system_menu` VALUES ('5453c6a4-00a8-1512-0708-d0747fc93c25', '测试菜单2', '2', 'fto-file', NULL, '5453c6a4-00a8-1512-0708-d0747fc93c25', 11);
+INSERT INTO `system_menu` VALUES ('5b99835d-cbb6-06e5-fbd5-c636ff88fb60', '测试菜单4', '4', 'fto-file', NULL, '5b99835d-cbb6-06e5-fbd5-c636ff88fb60', 14);
 INSERT INTO `system_menu` VALUES ('90d5153c-3241-0ef6-27a8-6d00012d1838', '首页', 'home', 'ado-home', NULL, '90d5153c-3241-0ef6-27a8-6d00012d1838', 1);
+INSERT INTO `system_menu` VALUES ('9c0e8821-9ec5-516f-1694-6a75200f0296', '测试菜单6', '6', 'fto-file', NULL, '9c0e8821-9ec5-516f-1694-6a75200f0296', 16);
+INSERT INTO `system_menu` VALUES ('a787e3e7-1c57-ccad-eafd-7d15de1757ec', '测试菜单5', '5', 'fto-file', NULL, 'a787e3e7-1c57-ccad-eafd-7d15de1757ec', 15);
 INSERT INTO `system_menu` VALUES ('e2203f49-23da-5372-a260-ba8f71dc9e08', '仪表盘', 'dashboard', 'ado-radar-chart', NULL, 'e2203f49-23da-5372-a260-ba8f71dc9e08', 2);
 INSERT INTO `system_menu` VALUES ('f97d223d-b777-3dfa-c76a-d24244eba25e', '角色管理', 'roles', 'ado-user', '0009d7da-3efc-2ea1-3be1-2542c7b6c070', '0009d7da-3efc-2ea1-3be1-2542c7b6c070.f97d223d-b777-3dfa-c76a-d24244eba25e', 2);
 
@@ -225,6 +238,7 @@ INSERT INTO `system_role` VALUES ('39f0fdd0-cfb2-0aeb-91c5-eebdbbccdfda', '管�
 INSERT INTO `system_role` VALUES ('51ae97e3-24a7-bca2-1ddd-e032e8202970', '管理员-社交网络事业部', '6695dfb3-1097-5524-cc31-09e2167571b0');
 INSERT INTO `system_role` VALUES ('8e62a3e2-4a60-0a81-3fed-370c11c39504', '管理员-企业发展事业部', '14b135a5-05f6-8362-bf17-0ba7d9f9b650');
 INSERT INTO `system_role` VALUES ('a6deeb36-3370-7002-253c-0226c8203c66', '管理员-网络媒体事业部', 'fe77519d-4467-214e-647b-e0089e45306d');
+INSERT INTO `system_role` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '访客', '4980001f-45af-4a92-a68a-e1e5b128a637');
 
 -- ----------------------------
 -- Table structure for system_role_action
@@ -246,24 +260,44 @@ CREATE TABLE `system_role_action`  (
 -- ----------------------------
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '113ed106-2cdd-a596-de50-4b80de1fb83e');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '19d1fde7-f3f4-4ce9-e6cc-6b77a5fe1ac4');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '2711f0e9-5f7c-54dc-cf78-f96ef2fcaf19');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '28ce1bf4-830a-76ab-c73c-10a7207f92ed');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '29957623-54fb-d52d-bc69-9be9291eac05');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '29957623-54fb-d52d-bc69-9be9291eac05');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '2afc1b90-0c7f-ae5b-589b-5da8dc78f49a');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '2afc1b90-0c7f-ae5b-589b-5da8dc78f49a');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '2d494d93-050b-f276-d993-a5c55efa6f73');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '2d494d93-050b-f276-d993-a5c55efa6f73');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '346594b7-0db7-8790-8869-be827d50a104');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '54ccd3ee-0f78-e4aa-8643-a92dc2849000');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '54ccd3ee-0f78-e4aa-8643-a92dc2849000');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '590ac302-cdca-72c7-60c5-0444b4585899');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '590ac302-cdca-72c7-60c5-0444b4585899');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '629d4d09-73b6-2aa0-4e58-7108f4660a50');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '629d4d09-73b6-2aa0-4e58-7108f4660a50');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '63c8eeb1-5843-9bb0-d054-e854708a1f14');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '6dd07b1d-d431-9bf4-62d5-5db3dc99bddb');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '6dd07b1d-d431-9bf4-62d5-5db3dc99bddb');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '74cfa90b-9e7c-344d-f5ac-2b14350697d9');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '74cfa90b-9e7c-344d-f5ac-2b14350697d9');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '75056496-6ca6-1346-7a60-be72cab7d72b');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '76faa453-36f3-e773-1527-a3158b706f7a');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '7adad23f-636d-6bee-0f37-7d29d5b29585');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '811047d2-ac97-96a5-686d-59d5a54fcc62');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '811047d2-ac97-96a5-686d-59d5a54fcc62');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '8eedb227-6be9-7571-ed0b-9e181c6e6716');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', '9067e591-16f5-b7a7-9336-a09a8b10fa5e');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', '9067e591-16f5-b7a7-9336-a09a8b10fa5e');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'ad39e8cf-2816-9176-ce7f-83fcb84c3cd1');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'bf9ba14b-b7db-3adb-662a-a88e417e70e8');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'cac38734-fa4c-0775-96f2-c4146a4dcbe0');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', 'cac38734-fa4c-0775-96f2-c4146a4dcbe0');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'e1497f04-16fa-9bee-c77e-fd4afab4ef86');
+INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'e8d9297b-e64c-f0f3-0cdb-95dede4eaa44');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'f50bd17d-2436-47f3-2f9a-d914ff2ad834');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', 'f50bd17d-2436-47f3-2f9a-d914ff2ad834');
 INSERT INTO `system_role_action` VALUES ('365612aa-3646-c1ab-f026-07e25a874c01', 'fb5680c4-47cb-78f9-c107-656f42886e3c');
+INSERT INTO `system_role_action` VALUES ('e88d7417-2981-c495-2d40-65a57b03748c', 'fb5680c4-47cb-78f9-c107-656f42886e3c');
 
 -- ----------------------------
 -- Table structure for system_table
@@ -298,8 +332,13 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
+INSERT INTO `system_user` VALUES ('09f2a43a-fe98-8ae2-0645-5c04ae02873c', 'fangke2', '123qwe', '', '', '访客2');
 INSERT INTO `system_user` VALUES ('12ef81dd-890b-cfea-ab4c-0e0a8c4bf8e6', 'lily', '123qwe', 'lily@leihao.com', '15896969696', '李莉');
+INSERT INTO `system_user` VALUES ('46a80cc5-2f73-2012-d31b-0f28060d5867', 'fangke1', '123qwe', '', '', '访客1');
 INSERT INTO `system_user` VALUES ('48c55613-5042-0fe9-9c9a-1743822125ee', 'admin', '123qwe', 'admin@leihao.com', '15888888888', '管理员');
+INSERT INTO `system_user` VALUES ('4cff9683-e2df-e5ee-68cf-b063619ce3aa', 'fangke4', '123qwe', '', '', '访客4');
+INSERT INTO `system_user` VALUES ('6a998d89-d49f-cfa7-9728-654dde089d7e', 'fangke5', '123qwe', '', '', '访客5');
+INSERT INTO `system_user` VALUES ('b15ed784-f3e9-b671-d780-fcee0c0f2494', 'fangke3', '123qwe', '', '', '访客3');
 
 -- ----------------------------
 -- Table structure for system_user_organization
@@ -319,8 +358,13 @@ CREATE TABLE `system_user_organization`  (
 -- ----------------------------
 -- Records of system_user_organization
 -- ----------------------------
+INSERT INTO `system_user_organization` VALUES ('09f2a43a-fe98-8ae2-0645-5c04ae02873c', '4980001f-45af-4a92-a68a-e1e5b128a637');
 INSERT INTO `system_user_organization` VALUES ('12ef81dd-890b-cfea-ab4c-0e0a8c4bf8e6', '4980001f-45af-4a92-a68a-e1e5b128a637');
+INSERT INTO `system_user_organization` VALUES ('46a80cc5-2f73-2012-d31b-0f28060d5867', '4980001f-45af-4a92-a68a-e1e5b128a637');
 INSERT INTO `system_user_organization` VALUES ('48c55613-5042-0fe9-9c9a-1743822125ee', '4980001f-45af-4a92-a68a-e1e5b128a637');
+INSERT INTO `system_user_organization` VALUES ('4cff9683-e2df-e5ee-68cf-b063619ce3aa', '4980001f-45af-4a92-a68a-e1e5b128a637');
+INSERT INTO `system_user_organization` VALUES ('6a998d89-d49f-cfa7-9728-654dde089d7e', '4980001f-45af-4a92-a68a-e1e5b128a637');
+INSERT INTO `system_user_organization` VALUES ('b15ed784-f3e9-b671-d780-fcee0c0f2494', '4980001f-45af-4a92-a68a-e1e5b128a637');
 
 -- ----------------------------
 -- Table structure for system_user_role
@@ -342,5 +386,10 @@ CREATE TABLE `system_user_role`  (
 -- ----------------------------
 INSERT INTO `system_user_role` VALUES ('48c55613-5042-0fe9-9c9a-1743822125ee', '365612aa-3646-c1ab-f026-07e25a874c01');
 INSERT INTO `system_user_role` VALUES ('12ef81dd-890b-cfea-ab4c-0e0a8c4bf8e6', '39f0fdd0-cfb2-0aeb-91c5-eebdbbccdfda');
+INSERT INTO `system_user_role` VALUES ('09f2a43a-fe98-8ae2-0645-5c04ae02873c', 'e88d7417-2981-c495-2d40-65a57b03748c');
+INSERT INTO `system_user_role` VALUES ('46a80cc5-2f73-2012-d31b-0f28060d5867', 'e88d7417-2981-c495-2d40-65a57b03748c');
+INSERT INTO `system_user_role` VALUES ('4cff9683-e2df-e5ee-68cf-b063619ce3aa', 'e88d7417-2981-c495-2d40-65a57b03748c');
+INSERT INTO `system_user_role` VALUES ('6a998d89-d49f-cfa7-9728-654dde089d7e', 'e88d7417-2981-c495-2d40-65a57b03748c');
+INSERT INTO `system_user_role` VALUES ('b15ed784-f3e9-b671-d780-fcee0c0f2494', 'e88d7417-2981-c495-2d40-65a57b03748c');
 
 SET FOREIGN_KEY_CHECKS = 1;

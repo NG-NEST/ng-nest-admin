@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
@@ -32,6 +32,7 @@ export class RolePermissionComponent implements OnInit {
   checkedRow: { [prop: string]: any[] } = {};
   index = 1;
   query: XQuery = { filter: [], sort: [{ field: 'sort', value: 'asc' }] };
+  treeLoading = true;
 
   treeData = () =>
     this.menus
@@ -41,7 +42,10 @@ export class RolePermissionComponent implements OnInit {
           { field: 'sort', value: 'asc' }
         ]
       })
-      .pipe(map((x) => x.list));
+      .pipe(
+        tap(() => (this.treeLoading = false)),
+        map((x) => x.list)
+      );
 
   tableData = (index: number, size: number, query: any) =>
     this.actions.getList(index, size, query).pipe((x: any) => {

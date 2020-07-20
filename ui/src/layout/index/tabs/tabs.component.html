@@ -10,8 +10,8 @@
 </div>
 
 <div class="nav">
+  <a href="https://github.com/NG-NEST/ng-nest-admin" target="_blank"><x-link icon="ado-github" title="github"></x-link></a>
   <x-link [icon]="!dark ? 'fto-moon' : 'fto-sun'" (click)="theme()" [title]="!dark ? '暗黑风格' : '默认风格'"></x-link>
-  <x-link icon="ado-message" title="消息"></x-link>
   <x-link icon="ado-user" [title]="auth.user.name"></x-link>
   <x-link icon="ado-logout" title="退出" *ngIf="auth.user.name" (click)="logout()"></x-link>
 </div>

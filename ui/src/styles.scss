@@ -42,6 +42,10 @@ ul {
 a {
   text-decoration: none;
   transition: all 0.4s;
+  color: $--x-primary;
+  &:hover {
+    color: $--x-primary;
+  }
 }
 
 code,

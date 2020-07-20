@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { environment } from '../../environments/environment';
 import { FormBuilder } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -28,15 +29,17 @@ export class LoginComponent implements OnInit {
   // 登录
   login() {
     if (this.loading == false) {
-      this.loading = true;
       let user = this.userForm.value;
       if (user.account && user.password) {
+        this.loading = true;
         this.authService.login(user).subscribe(
           () => {
             if (this.authService.isLoggedIn) {
               let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : `/${environment.layout}`;
               this.router.navigate([redirect]);
             }
+          },
+          () => {
             this.loading = false;
           },
           () => {
@@ -44,7 +47,6 @@ export class LoginComponent implements OnInit {
           }
         );
       } else {
-        this.loading = false;
         this.message.warning('用户名或密码不能为空！');
       }
     }

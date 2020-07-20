@@ -1,19 +1,21 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationService, Organization } from './organization.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { guid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
+import { PageBase } from 'src/share/base/base-page';
+import { IndexService } from 'src/layout/index/index.service';
 
 @Component({
   selector: 'app-organization',
   templateUrl: 'organization.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrganizationComponent {
+export class OrganizationComponent extends PageBase {
   @ViewChild('treeCom') treeCom: XTreeComponent;
   formGroup = new FormGroup({});
 
@@ -27,6 +29,8 @@ export class OrganizationComponent {
 
   activatedId: string;
 
+  treeLoading = true;
+
   data = () =>
     this.service
       .getList(1, Number.MAX_SAFE_INTEGER, {
@@ -35,9 +39,12 @@ export class OrganizationComponent {
           { field: 'sort', value: 'asc' }
         ]
       })
-      .pipe(map((x) => x.list));
+      .pipe(
+        tap(() => (this.treeLoading = false)),
+        map((x) => x.list)
+      );
 
-  actions: XTreeAction[] = [
+  treeActions: XTreeAction[] = [
     {
       id: 'add',
       label: '新增',
@@ -102,7 +109,18 @@ export class OrganizationComponent {
       ]
     }
   ];
-  constructor(private service: OrganizationService, private message: XMessageService, private msgBox: XMessageBoxService) {}
+  constructor(
+    private service: OrganizationService,
+    public indexService: IndexService,
+    private message: XMessageService,
+    private msgBox: XMessageBoxService
+  ) {
+    super(indexService);
+  }
+
+  ngOnInit() {
+    this.treeActions = this.treeActions.filter((x) => this.auth[x.id]);
+  }
 
   action(type: string, node: Organization) {
     switch (type) {

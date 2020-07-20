@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   HostBinding,
-  ViewEncapsulation
+  ViewEncapsulation,
+  SimpleChanges
 } from "@angular/core";
 import { IndexService } from "./index.service";
 import { NavService } from "./../../services/nav.service";
@@ -24,4 +25,8 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+
+  }
 }
