@@ -5,7 +5,7 @@
     NG-NEST-ADMIN
 </h1>
 
-基于 Angular 和 Nestjs 构建的开源后台管理系统。
+基于 Angular 和 Nestjs 构建的开源后台管理系统。[Demo 地址](http://adminui.ngnest.com)
 
 > - 提供基本的系统管理模块（用户、角色、组织和菜单）
 > - 基于 RBAC 的权限管理
