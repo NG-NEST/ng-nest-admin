@@ -19,7 +19,7 @@ export class AuthService {
   // 控制器的名称
   controllerName = 'auth';
 
-  private _user: User = {};
+  private _user: User;
 
   get user(): User {
     if (!this._user) {
