@@ -183,7 +183,7 @@ export class IndexService {
         } else {
           menu.subPage = subPage;
           menu.param = param;
-          tabsPage.unshift(menu);
+          tabsPage.push(menu);
         }
         const previous = this.session.activatedPage;
         this.session = {
