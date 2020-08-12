@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component } from '@angular/core';
+import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class AppComponent {
   title = 'ng-nest-admin-ui';
-  constructor(@Inject(DOCUMENT) private doc: Document) {
-    let color = getComputedStyle(this.doc.documentElement).getPropertyValue('--x-primary');
+  constructor(private config: ConfigService) {
+    this.config.init();
   }
 }

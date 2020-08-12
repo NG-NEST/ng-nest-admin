@@ -1,16 +1,19 @@
 @import 'index';
+
+$--x-box-shadow-light: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+$--x-box-shadow-light-right: 0 2px 2px -6px rgba(0, 0, 0, 0.56), 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+$--x-box-shadow-light-bottom: 0 2px 2px -6px rgba(0, 0, 0, 0.56), 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 2px 2px -6px rgba(0, 0, 0, 0.12);
+
 // 字体颜色
 $font-color: $--x-text;
 // 头部背景色
-$header-background-color: $--x-background-a100;
+$header-background-color: rgba(0, 0, 0, 0.8);
 // 头部文字颜色
 $header-color: $--x-text;
 // 菜单栏背景色
-$sider-background-color: $--x-background-a100;
+$sider-background-color: rgba(0, 0, 0, 0.8);
 // 顶部右侧菜单个数
 $nav-num: 4;
-// 标签页背景色
-$tabs-background-color: $--x-background-a100;
 // 正文背景色
 $content-background-color: $--x-background;
 // 头部高度
@@ -18,7 +21,7 @@ $header-height: 3.25rem;
 // 标签页高度
 $tabs-height: 2.25rem;
 // 面包屑导航高度
-$crumb-height: 2.25rem;
+$crumb-height: 2rem;
 // 菜单栏宽度
 $sider-width: 15rem;
 // 内容区域的内边距
@@ -33,7 +36,6 @@ $selected-background-color: rgba(0, 0, 0, 0.06);
 $selected-color: $--x-primary;
 // 动画时间
 $transition-duration: 0.3s;
-// 悬停效果
 @mixin hover {
   color: $selected-color;
   background-color: $sider-node-hover-background-color;
@@ -99,32 +101,57 @@ $transition-duration: 0.3s;
   }
 }
 
+// 组件样式
+@mixin ng-nest {
+  x-form {
+    display: block;
+  }
+  x-row {
+    flex: 1;
+  }
+  x-doc {
+    > h2:first-of-type {
+      margin-top: 0;
+    }
+    padding: 0;
+    table {
+      th,
+      td {
+        padding: 0 $--x-padding-large;
+      }
+      th {
+        background-color: $--x-background-a100;
+      }
+    }
+  }
+}
+
 // 框架页样式
 app-index {
   color: $font-color;
+  display: block;
+  width: 100%;
+  height: 100%;
   > app-tabs {
-    background-color: $tabs-background-color;
     width: calc(100% - #{$sider-width});
     height: $tabs-height;
     padding-right: $tabs-height * $nav-num + $--x-padding-medium * 2;
     position: fixed;
     top: 0;
     left: $sider-width;
-    z-index: 11;
+    z-index: 13;
     transition: left $transition-duration, width $transition-duration;
     font-size: 0.875rem;
     .x-slider-scroll > ul > li x-link.x-size-big {
       padding: 0;
     }
     .x-slider-scroll > ul > li.x-slider-highlight {
-      background-color: $--x-background;
       border: none;
       border-radius: 0;
     }
     .toggle {
       float: left;
       .x-link {
-        background-color: $--x-background-a200;
         width: $tabs-height;
         height: $tabs-height;
         .x-icon {
@@ -138,7 +165,6 @@ app-index {
       right: 0;
       top: 0;
       padding: 0 $--x-padding-medium;
-      background-color: $--x-background-a200;
       .x-link {
         width: $tabs-height;
         height: $tabs-height;
@@ -159,7 +185,6 @@ app-index {
       box-sizing: border-box;
       user-select: none;
       position: relative;
-      border-right: 0.0625rem solid $--x-border-900;
       transition: background-color $transition-duration;
       span {
         overflow: hidden;
@@ -207,14 +232,14 @@ app-index {
     height: $crumb-height;
     position: fixed;
     top: $tabs-height;
-    background-color: $--x-background;
     left: $sider-width;
-    z-index: 11;
+    z-index: 12;
     transition: left $transition-duration, width $transition-duration;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     display: flex;
     align-items: center;
     padding: 0 $content-padding/2;
+    box-shadow: $--x-box-shadow-light-bottom;
     .crumb-operation {
       .x-icon {
         font-size: 1.125rem;
@@ -235,10 +260,8 @@ app-index {
     }
   }
   > app-sider {
-    background-color: $sider-background-color;
     height: 100%;
     width: $sider-width;
-    border-right: $--x-border-base;
     box-shadow: $--x-box-shadow-light-right;
     position: fixed;
     top: 0;
@@ -249,9 +272,11 @@ app-index {
     > ul {
       overflow-y: auto;
       height: calc(100% - #{$header-height});
+      position: relative;
+      z-index: 10;
     }
     > app-header {
-      background-color: $header-background-color;
+      // background-color: $header-background-color;
       color: $header-color;
       height: $header-height;
       overflow: hidden;
@@ -261,6 +286,8 @@ app-index {
       justify-content: space-between;
       padding: 0 1rem;
       box-sizing: border-box;
+      position: relative;
+      z-index: 10;
       > .logo {
         display: flex;
         align-items: center;
@@ -278,6 +305,27 @@ app-index {
         }
       }
     }
+    > .silder-image {
+      position: absolute;
+      z-index: 1;
+      height: 100%;
+      width: 100%;
+      display: block;
+      top: 0;
+      left: 0;
+      background-size: cover;
+      background-position: 50%;
+      background-image: url(/assets/img/sider/sider-1.jpg);
+      &:after {
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        content: '';
+        display: block;
+        opacity: 0.93;
+      }
+    }
   }
   > app-content {
     height: 100%;
@@ -291,18 +339,264 @@ app-index {
       width: 100%;
     }
   }
+  .#{$prefix} {
+    &-inner {
+      &.x-inner {
+        display: flex;
+        padding: 0.875rem !important;
+      }
+      @include ng-nest;
+    }
+    &-panel {
+      border-radius: $--x-border-radius;
+      > h4 {
+        margin: 0;
+        position: relative;
+        padding: 0 $--x-padding-large;
+        height: 35px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: $--x-text-300;
+        > x-link {
+          margin-left: 0.25rem;
+        }
+      }
+    }
+    &-content {
+      padding: $--x-padding-large;
+      overflow: auto;
+    }
+    &-column {
+      flex-direction: column;
+    }
+    &-tree-left {
+      width: 18rem;
+      display: block;
+      margin-right: $--x-padding-large;
+      x-tree {
+        display: block;
+        padding: $--x-padding-large;
+        overflow-y: auto;
+      }
+      .x-tree-node-content {
+        &.x-activated {
+          color: $--x-primary;
+        }
+      }
+    }
+    &-tree-node {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    &-tree-btn {
+      margin-left: 2rem;
+      display: none;
+    }
+    &-form-right {
+      flex: 1;
+    }
+    &-table-right {
+      flex: 1;
+    }
+    &-table-actions {
+      display: flex;
+      align-items: center;
+      x-link:not(:first-child) {
+        margin-left: 0.5rem;
+      }
+      .x-icon {
+        font-size: 1rem;
+      }
+    }
+    &-overflow-auto {
+      overflow: auto;
+    }
+    &-overflow-x {
+      overflow-x: auto;
+    }
+    &-overflow-y {
+      overflow-y: auto;
+    }
+  }
 }
 
+// 浮动菜单样式
 app-float-node {
   > ul {
     padding: 0.5rem 0;
     max-width: $sider-width;
     min-width: $sider-width - 2rem;
     box-shadow: $--x-box-shadow-light;
-    border: $--x-border-base;
-    background-color: $--x-background-a100;
   }
   @include silder;
+}
+
+// 明亮模式
+.x-light {
+  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
+  $--x-border-base: 1px solid rgba(0, 0, 0, 0.08);
+  $background-color: white;
+  $tabs-background-color: #f1f3f5;
+  app-index {
+    > app-tabs {
+      background-color: $tabs-background-color;
+      .x-slider-scroll > ul > li.x-slider-highlight {
+        background-color: $background-color;
+      }
+      .tab {
+        border-right: 1px solid rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    > app-crumb {
+      background-color: $background-color;
+    }
+
+    > app-sider {
+      border-right: $--x-border-base;
+      > .silder-image {
+        &:after {
+          background-color: $background-color;
+        }
+      }
+    }
+
+    .#{$prefix} {
+      &-panel {
+        background-color: $background-color;
+        box-shadow: $--x-box-shadow-light;
+        > h4 {
+          border-bottom: $--x-border-base;
+        }
+      }
+      &-tree-left {
+        x-tree {
+          background-color: $background-color;
+        }
+      }
+      &-form-right {
+        x-form {
+          background-color: $background-color;
+        }
+      }
+    }
+
+    .x-button,
+    .x-table,
+    .x-card {
+      box-shadow: $--x-box-shadow-light;
+    }
+
+    .x-table {
+      border: none;
+      background-color: $background-color;
+      > thead > tr > th {
+        background-color: $background-color;
+        border-bottom: $--x-border-base;
+      }
+      > tbody tr > td {
+        background-color: $background-color;
+        border-bottom: $--x-border-base;
+      }
+    }
+
+    .x-card {
+      border: none;
+      background-color: $background-color;
+    }
+  }
+  app-float-node {
+    > ul {
+      background-color: $background-color;
+    }
+  }
+}
+
+// 暗黑模式
+.x-dark {
+  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.5);
+  $--x-border-base: 1px solid rgba(0, 0, 0, 0.4);
+  $background-color: #1e1e1f;
+  $background-color-light: #272727;
+  $background-color-light-100: #2f2f2f;
+  app-index {
+    background-color: $background-color;
+    > app-tabs {
+      background-color: $background-color;
+      .x-slider-scroll > ul > li.x-slider-highlight {
+        background-color: $background-color-light-100;
+      }
+      .tab {
+        border-right: $--x-border-base;
+      }
+    }
+
+    > app-crumb {
+      background-color: $background-color-light-100;
+    }
+
+    > app-sider {
+      border-right: $--x-border-base;
+      > .silder-image {
+        &:after {
+          background-color: #1d1d1d;
+        }
+      }
+    }
+
+    .#{$prefix} {
+      &-panel {
+        background-color: $background-color-light;
+        box-shadow: $--x-box-shadow-light;
+        > h4 {
+          border-bottom: $--x-border-base;
+        }
+      }
+      &-tree-left {
+        x-tree {
+          background-color: $background-color-light;
+        }
+      }
+      &-form-right {
+        x-form {
+          background-color: $background-color-light;
+        }
+      }
+    }
+
+    .x-button,
+    .x-table,
+    .x-card {
+      box-shadow: $--x-box-shadow-light;
+    }
+
+    .x-table {
+      border: none;
+      background-color: $background-color-light;
+      > thead > tr > th {
+        background-color: $background-color-light;
+        border-bottom: $--x-border-base;
+      }
+      > tbody tr > td {
+        background-color: $background-color-light;
+        border-bottom: $--x-border-base;
+      }
+    }
+
+    .x-card {
+      border: none;
+      background-color: $background-color-light;
+    }
+  }
+  app-float-node {
+    > ul {
+      background-color: $background-color-light-100;
+      box-shadow: $--x-box-shadow-light;
+    }
+  }
 }
 
 // 框架页中缩起菜单栏后的样式

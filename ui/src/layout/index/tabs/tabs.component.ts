@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ReuseStrategyService } from 'src/services/reuse-strategy.service';
 import { NavService } from 'src/services/nav.service';
 import { AuthService } from 'src/services/auth.service';
-import { XConfigService, X_THEME_DARK_COLORS, X_THEME_COLORS } from '@ng-nest/ui/core';
+import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: 'app-tabs',
@@ -29,15 +29,13 @@ export class TabsComponent implements OnInit {
     return this.indexService.session.tabsPage ? this.indexService.session.tabsPage : [];
   }
 
-  dark = false;
-
   constructor(
     public indexService: IndexService,
     private router: Router,
     public auth: AuthService,
     public location: Location,
     public nav: NavService,
-    public configService: XConfigService
+    public config: ConfigService
   ) {}
 
   ngOnInit() {}
@@ -124,11 +122,6 @@ export class TabsComponent implements OnInit {
   }
 
   theme() {
-    this.dark = !this.dark;
-    if (this.dark) {
-      this.configService.setDarkTheme({ colors: X_THEME_DARK_COLORS });
-    } else {
-      this.configService.setLightTheme({ colors: X_THEME_COLORS });
-    }
+    this.config.dark = !this.config.dark;
   }
 }
