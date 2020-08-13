@@ -46,9 +46,5 @@ $ cd ui
 $ npm install
 $ ng serve -o
 ```
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin-home.png" />
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin-users.png" />
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin-role-find.png" />
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin-roles.png" />
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin-menu.png" />
-<img src="https://ngnest.com/assets/img/admin/ng-nest-admin.gif" />
+<img style="border: 1px solid #fefefe" src="https://ngnest.com/static/docs/course/rbac/1-introduction/demo/1__ng-nest-admin/light.png" />
+<img style="border: 1px solid #fefefe" src="https://ngnest.com/static/docs/course/rbac/1-introduction/demo/1__ng-nest-admin/dark.png" />
