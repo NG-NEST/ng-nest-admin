@@ -1,0 +1,82 @@
+[
+  {
+    "value": 12,
+    "name": "NG-NEST"
+  },
+  {
+    "value": 9,
+    "name": "定制主题"
+  },
+  {
+    "value": 8,
+    "name": "全局配置"
+  },
+  {
+    "value": 8,
+    "name": "国际化"
+  },
+  {
+    "value": 8,
+    "name": "Button"
+  },
+  {
+    "value": 8,
+    "name": "Icon"
+  },
+  {
+    "value": 8,
+    "name": "Layout"
+  },
+  {
+    "value": 6,
+    "name": "Theme"
+  },
+  {
+    "value": 6,
+    "name": "Avatar"
+  },
+  {
+    "value": 6,
+    "name": "Form"
+  },
+  {
+    "value": 6,
+    "name": "Table"
+  },
+  {
+    "value": 6,
+    "name": "Input"
+  },
+  {
+    "value": 6,
+    "name": "Badge"
+  },
+  {
+    "value": 6,
+    "name": "Card"
+  },
+  {
+    "value": 6,
+    "name": "Carousel"
+  },
+  {
+    "value": 6,
+    "name": "Collapse"
+  },
+  {
+    "value": 6,
+    "name": "Comment"
+  },
+  {
+    "value": 6,
+    "name": "Empty"
+  },
+  {
+    "value": 6,
+    "name": "Outlet"
+  },
+  {
+    "value": 6,
+    "name": "Statistics"
+  }
+]

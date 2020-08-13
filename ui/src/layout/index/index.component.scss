@@ -124,6 +124,14 @@ $transition-duration: 0.3s;
       }
     }
   }
+  .x-card {
+    .x-card-header {
+      padding: 0 $--x-padding-large;
+      height: 35px;
+      font-weight: 600;
+      color: $--x-text-300;
+    }
+  }
 }
 
 // 框架页样式
@@ -339,13 +347,14 @@ app-index {
       width: 100%;
     }
   }
+  @include ng-nest;
   .#{$prefix} {
     &-inner {
       &.x-inner {
         display: flex;
         padding: 0.875rem !important;
+        overflow: auto;
       }
-      @include ng-nest;
     }
     &-panel {
       border-radius: $--x-border-radius;
@@ -440,6 +449,41 @@ app-float-node {
   $--x-border-base: 1px solid rgba(0, 0, 0, 0.08);
   $background-color: white;
   $tabs-background-color: #f1f3f5;
+
+  .x-button:not(.x-button-closable),
+  .x-table,
+  .x-card,
+  .x-tag {
+    box-shadow: $--x-box-shadow-light;
+  }
+
+  .x-table {
+    border: none;
+    background-color: $background-color;
+    > thead > tr > th {
+      background-color: $background-color;
+      border-bottom: $--x-border-base;
+    }
+    > tbody tr > td {
+      background-color: $background-color;
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-card {
+    border: none;
+    background-color: $background-color;
+    .x-card-header {
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-dialog x-alert .x-alert {
+    background-color: $background-color;
+    box-shadow: $--x-box-shadow-light;
+    border: none;
+  }
+
   app-index {
     > app-tabs {
       background-color: $tabs-background-color;
@@ -483,30 +527,6 @@ app-float-node {
         }
       }
     }
-
-    .x-button,
-    .x-table,
-    .x-card {
-      box-shadow: $--x-box-shadow-light;
-    }
-
-    .x-table {
-      border: none;
-      background-color: $background-color;
-      > thead > tr > th {
-        background-color: $background-color;
-        border-bottom: $--x-border-base;
-      }
-      > tbody tr > td {
-        background-color: $background-color;
-        border-bottom: $--x-border-base;
-      }
-    }
-
-    .x-card {
-      border: none;
-      background-color: $background-color;
-    }
   }
   app-float-node {
     > ul {
@@ -522,6 +542,41 @@ app-float-node {
   $background-color: #1e1e1f;
   $background-color-light: #272727;
   $background-color-light-100: #2f2f2f;
+
+  .x-button:not(.x-button-closable),
+  .x-table,
+  .x-card,
+  .x-tag {
+    box-shadow: $--x-box-shadow-light;
+  }
+
+  .x-table {
+    border: none;
+    background-color: $background-color-light;
+    > thead > tr > th {
+      background-color: $background-color-light;
+      border-bottom: $--x-border-base;
+    }
+    > tbody tr > td {
+      background-color: $background-color-light;
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-card {
+    border: none;
+    background-color: $background-color-light;
+    .x-card-header {
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-dialog x-alert .x-alert {
+    background-color: $background-color-light;
+    box-shadow: $--x-box-shadow-light;
+    border: none;
+  }
+
   app-index {
     background-color: $background-color;
     > app-tabs {
@@ -565,30 +620,6 @@ app-float-node {
           background-color: $background-color-light;
         }
       }
-    }
-
-    .x-button,
-    .x-table,
-    .x-card {
-      box-shadow: $--x-box-shadow-light;
-    }
-
-    .x-table {
-      border: none;
-      background-color: $background-color-light;
-      > thead > tr > th {
-        background-color: $background-color-light;
-        border-bottom: $--x-border-base;
-      }
-      > tbody tr > td {
-        background-color: $background-color-light;
-        border-bottom: $--x-border-base;
-      }
-    }
-
-    .x-card {
-      border: none;
-      background-color: $background-color-light;
     }
   }
   app-float-node {

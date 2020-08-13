@@ -2,6 +2,7 @@ import { Injectable, Inject, RendererFactory2, Renderer2 } from '@angular/core';
 import { XConfigService, X_THEME_DARK_COLORS, X_THEME_COLORS } from '@ng-nest/ui/core';
 import { SettingService } from './setting.service';
 import { DOCUMENT } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
@@ -14,7 +15,9 @@ export class ConfigService {
     this.setTheme();
     this.setBodyClass();
     this.settingService.setLocal('Dark', value);
+    this.darkChange.next(value);
   }
+  darkChange = new BehaviorSubject<boolean>(this.dark);
   renderer: Renderer2;
   constructor(
     public renderFac: RendererFactory2,
