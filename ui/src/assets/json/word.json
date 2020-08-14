@@ -78,5 +78,17 @@
   {
     "value": 6,
     "name": "Statistics"
+  },
+  {
+    "value": 6,
+    "name": "NG-NEST-ADMIN"
+  },
+  {
+    "value": 6,
+    "name": "Popover"
+  },
+  {
+    "value": 6,
+    "name": "Popconfirm"
   }
 ]

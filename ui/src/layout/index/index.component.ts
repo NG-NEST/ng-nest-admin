@@ -10,27 +10,8 @@ import { ConfigService } from 'src/services/config.service';
   encapsulation: ViewEncapsulation.None
 })
 export class IndexComponent implements OnInit {
-  data: any = {
-    stage: '1'
-  };
-
-  colors: any = {
-    '0': '#f90',
-    '1': '#19be6b',
-    '2': '#ed4012'
-  };
-
-  // 菜单展开缩起的样式绑定
   @HostBinding('class.sider-shrink') get siderShrink() {
     return this.indexService.local.siderShrink;
-  }
-
-  @HostBinding('class.light') get light() {
-    return !this.config.dark;
-  }
-
-  @HostBinding('class.dark') get dark() {
-    return this.config.dark;
   }
 
   constructor(private indexService: IndexService, private nav: NavService, private config: ConfigService) {

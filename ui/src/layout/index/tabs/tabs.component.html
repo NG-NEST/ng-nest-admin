@@ -11,8 +11,9 @@
 
 <div class="nav">
   <a href="https://github.com/NG-NEST/ng-nest-admin" target="_blank"><x-link icon="ado-github" title="github"></x-link></a>
-  <x-link [icon]="!config.dark ? 'fto-moon' : 'fto-sun'" (click)="theme()" [title]="!config.dark ? '暗黑风格' : '默认风格'"></x-link>
+  <!-- <x-link [icon]="!config.dark ? 'fto-moon' : 'fto-sun'" (click)="theme()" [title]="!config.dark ? '暗黑风格' : '默认风格'"></x-link> -->
   <x-link icon="ado-user" [title]="auth.user.name"></x-link>
+  <x-link icon="ado-setting" title="设置" (click)="settingVisible = true"></x-link>
   <x-link icon="ado-logout" title="退出" *ngIf="auth.user.name" (click)="logout()"></x-link>
 </div>
 
@@ -25,3 +26,7 @@
     </div>
   </div>
 </ng-template>
+
+<x-drawer title="设置" size="38rem" [visible]="settingVisible" (close)="settingVisible = false">
+  <x-theme showDark [(dark)]="settingDark" (darkChange)="darkChange($event)" (defaultClick)="defaultClick($event)"></x-theme>
+</x-drawer>

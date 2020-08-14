@@ -6,6 +6,15 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
+  // private _primary: string = getComputedStyle(this.doc.documentElement).getPropertyValue('--x-primary').trim();
+  // public get primary(): string {
+  //   return this._primary;
+  // }
+  // public set primary(value: string) {
+  //   this._primary = value;
+  //   this.doc.documentElement.style.setProperty('--x-primary', value, 'important');
+  // }
+
   private _dark = Boolean(this.settingService.getLocal('Dark')) || false;
   public get dark() {
     return this._dark;
@@ -30,6 +39,10 @@ export class ConfigService {
   init() {
     this.dark = this._dark;
     this.setBodyClass();
+
+    // console.log(this.primary);
+
+    // this.primary = 'red';
   }
 
   setTheme() {

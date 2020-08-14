@@ -8,6 +8,9 @@ import { ReuseStrategyService } from 'src/services/reuse-strategy.service';
 import { NavService } from 'src/services/nav.service';
 import { AuthService } from 'src/services/auth.service';
 import { ConfigService } from 'src/services/config.service';
+import { FormGroup } from '@angular/forms';
+import { XControl } from '@ng-nest/ui/form';
+import { XColorsTheme } from '@ng-nest/ui/core';
 
 @Component({
   selector: 'app-tabs',
@@ -29,6 +32,17 @@ export class TabsComponent implements OnInit {
     return this.indexService.session.tabsPage ? this.indexService.session.tabsPage : [];
   }
 
+  settingVisible = false;
+
+  settingDark = false;
+
+  settingForm = new FormGroup({});
+
+  settingControls: XControl[] = [
+    { id: 'primary', control: 'color-picker', label: '主色' },
+    { id: 'dark', control: 'switch', label: '暗黑模式' }
+  ];
+
   constructor(
     public indexService: IndexService,
     private router: Router,
@@ -38,7 +52,11 @@ export class TabsComponent implements OnInit {
     public config: ConfigService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.settingDark = this.config.dark;
+  }
+
+  ngAfterViewInit() {}
 
   /**
    * tab点击事件
@@ -121,7 +139,12 @@ export class TabsComponent implements OnInit {
     });
   }
 
-  theme() {
-    this.config.dark = !this.config.dark;
+  defaultClick(theme: XColorsTheme) {
+    this.config.dark = false;
+  }
+
+  darkChange(dark: boolean) {
+    console.log(dark);
+    this.config.dark = dark;
   }
 }

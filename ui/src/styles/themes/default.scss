@@ -1,6 +1,206 @@
 @import '~@ng-nest/ui/style/params/primary';
 
 $prefix: 'ad';
-/*
- * 颜色参数
- */
+
+// 明亮模式
+.x-light {
+  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
+  $--x-border-base: 1px solid rgba(0, 0, 0, 0.08);
+  $background-color: white;
+  $tabs-background-color: #f1f3f5;
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .x-button:not(.x-button-closable),
+  .x-table,
+  .x-card,
+  .x-tag {
+    box-shadow: $--x-box-shadow-light;
+  }
+
+  .x-table {
+    border: none;
+    background-color: $background-color;
+    > thead > tr > th {
+      background-color: $background-color;
+      border-bottom: $--x-border-base;
+    }
+    > tbody tr > td {
+      background-color: $background-color;
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-card {
+    border: none;
+    background-color: $background-color;
+    .x-card-header {
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-dialog x-alert .x-alert,
+  .x-message-box x-alert .x-alert,
+  .x-message x-alert .x-alert,
+  .x-notification x-alert .x-alert,
+  .x-drawer {
+    background-color: $background-color;
+    box-shadow: $--x-box-shadow-light;
+    border: none;
+  }
+
+  app-index {
+    > app-tabs {
+      background-color: $tabs-background-color;
+      .x-slider-scroll > ul > li.x-slider-highlight {
+        background-color: $background-color;
+      }
+      .tab {
+        border-right: 1px solid rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    > app-crumb {
+      background-color: $background-color;
+    }
+
+    > app-sider {
+      border-right: $--x-border-base;
+      > .silder-image {
+        &:after {
+          background-color: $background-color;
+        }
+      }
+    }
+
+    .#{$prefix} {
+      &-panel {
+        background-color: $background-color;
+        box-shadow: $--x-box-shadow-light;
+        > h4 {
+          border-bottom: $--x-border-base;
+        }
+      }
+      &-tree-left {
+        x-tree {
+          background-color: $background-color;
+        }
+      }
+      &-form-right {
+        x-form {
+          background-color: $background-color;
+        }
+      }
+    }
+  }
+  app-float-node {
+    > ul {
+      background-color: $background-color;
+    }
+  }
+}
+
+// 暗黑模式
+.x-dark {
+  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.5);
+  $--x-border-base: 1px solid rgba(0, 0, 0, 0.4);
+  $background-color: #1e1e1f;
+  $background-color-light: #272727;
+  $background-color-light-100: #2f2f2f;
+
+  .x-button:not(.x-button-closable),
+  .x-table,
+  .x-card,
+  .x-tag {
+    box-shadow: $--x-box-shadow-light;
+  }
+
+  .x-table {
+    border: none;
+    background-color: $background-color-light;
+    > thead > tr > th {
+      background-color: $background-color-light;
+      border-bottom: $--x-border-base;
+    }
+    > tbody tr > td {
+      background-color: $background-color-light;
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-card {
+    border: none;
+    background-color: $background-color-light;
+    .x-card-header {
+      border-bottom: $--x-border-base;
+    }
+  }
+
+  .x-dialog x-alert .x-alert,
+  .x-message-box x-alert .x-alert,
+  .x-message x-alert .x-alert,
+  .x-notification x-alert .x-alert,
+  .x-drawer {
+    background-color: $background-color-light;
+    box-shadow: $--x-box-shadow-light;
+    border: none;
+  }
+
+  app-index {
+    background-color: $background-color;
+    > app-tabs {
+      background-color: $background-color;
+      .x-slider-scroll > ul > li.x-slider-highlight {
+        background-color: $background-color-light-100;
+      }
+      .tab {
+        border-right: $--x-border-base;
+      }
+    }
+
+    > app-crumb {
+      background-color: $background-color-light-100;
+    }
+
+    > app-sider {
+      border-right: $--x-border-base;
+      > .silder-image {
+        &:after {
+          background-color: #1d1d1d;
+        }
+      }
+    }
+
+    .#{$prefix} {
+      &-panel {
+        background-color: $background-color-light;
+        box-shadow: $--x-box-shadow-light;
+        > h4 {
+          border-bottom: $--x-border-base;
+        }
+      }
+      &-tree-left {
+        x-tree {
+          background-color: $background-color-light;
+        }
+      }
+      &-form-right {
+        x-form {
+          background-color: $background-color-light;
+        }
+      }
+    }
+  }
+  app-float-node {
+    > ul {
+      background-color: $background-color-light-100;
+      box-shadow: $--x-box-shadow-light;
+    }
+  }
+}

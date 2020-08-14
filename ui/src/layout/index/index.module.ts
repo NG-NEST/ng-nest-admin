@@ -16,6 +16,9 @@ import { XPortalModule } from '@ng-nest/ui/portal';
 import { XCrumbModule } from '@ng-nest/ui/crumb';
 import { XSliderModule } from '@ng-nest/ui/slider';
 import { XLinkModule } from '@ng-nest/ui/link';
+import { XDrawerModule } from '@ng-nest/ui/drawer';
+import { XFormModule } from '@ng-nest/ui/form';
+import { XThemeModule } from '@ng-nest/ui/theme';
 
 // 声明模块中拥有的视图类
 const components = [
@@ -30,7 +33,19 @@ const components = [
   ToggleComponent
 ];
 
-const modules = [CommonModule, ShareModule, IndexRoutesModule, XIconModule, XPortalModule, XCrumbModule, XSliderModule, XLinkModule];
+const modules = [
+  CommonModule,
+  ShareModule,
+  IndexRoutesModule,
+  XIconModule,
+  XPortalModule,
+  XCrumbModule,
+  XSliderModule,
+  XLinkModule,
+  XDrawerModule,
+  XThemeModule,
+  XFormModule
+];
 
 @NgModule({
   imports: [...modules],
