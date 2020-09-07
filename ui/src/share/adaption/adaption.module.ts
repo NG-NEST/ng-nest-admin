@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { AdAdaptionDirective } from './adaption.directive';
+import { AuAdaptionDirective } from './adaption.directive';
 
 @NgModule({
-  declarations: [AdAdaptionDirective],
-  exports: [AdAdaptionDirective]
+  declarations: [AuAdaptionDirective],
+  exports: [AuAdaptionDirective]
 })
-export class AdAdaptionModule {}
+export class AuAdaptionModule {}

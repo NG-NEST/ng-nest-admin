@@ -5,9 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
-  selector: '[ad-adaption]'
+  selector: '[au-adaption]'
 })
-export class AdAdaptionDirective implements AfterViewInit, OnDestroy {
+export class AuAdaptionDirective implements AfterViewInit, OnDestroy {
   @Input() outerHeight: number = 0;
   @Input() container: HTMLElement;
 

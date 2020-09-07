@@ -1,9 +1,9 @@
-<x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left" [x-loading]="treeLoading">
+<x-inner class="au-inner">
+  <div class="au-panel au-tree-left" [x-loading]="treeLoading">
     <h4>组织机构</h4>
     <x-tree
       #treeCom
-      ad-adaption
+      au-adaption
       [outerHeight]="131"
       [data]="treeData"
       expandedLevel="0"
@@ -12,10 +12,10 @@
     >
     </x-tree>
   </div>
-  <div class="ad-table-right">
-    <ad-tool top>
+  <div class="au-table-right">
+    <au-tool top>
       <x-button type="primary" icon="fto-plus" [disabled]="!auth['add']" (click)="auth['add'] && action('add')">新增</x-button>
-    </ad-tool>
+    </au-tool>
     <x-table
       #tableCom
       [columns]="columns"
@@ -34,7 +34,7 @@
 </x-inner>
 
 <ng-template #actionsTpl let-column="$column" let-row="$row">
-  <div class="ad-table-actions">
+  <div class="au-table-actions">
     <x-link icon="fto-eye" [disabled]="!auth['info']" (click)="auth['info'] && action('info', row)" title="查看"></x-link>
     <x-link icon="fto-edit" [disabled]="!auth['edit']" (click)="auth['edit'] && action('edit', row)" title="修改"></x-link>
     <x-link

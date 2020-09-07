@@ -3,10 +3,10 @@ import { AuthService } from 'src/services/auth.service';
 import { IndexService } from 'src/layout/index/index.service';
 
 @Directive({
-  selector: '[ad-auth]'
+  selector: '[au-auth]'
 })
-export class AdAuthDirective {
-  @Input('ad-auth')
+export class AuAuthDirective {
+  @Input('au-auth')
   auth: string;
 
   @Input()

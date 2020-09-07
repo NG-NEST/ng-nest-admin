@@ -4,8 +4,8 @@ import { UsersRoutesModule } from './users-routes.module';
 import { UsersComponent } from './users.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ShareModule } from 'src/share/share.module';
-import { AdToolModule } from 'src/share/tool/tool.module';
-import { AdAdaptionModule } from 'src/share/adaption/adaption.module';
+import { AuToolModule } from 'src/share/tool/tool.module';
+import { AuAdaptionModule } from 'src/share/adaption/adaption.module';
 import { NgNestModule } from 'src/share/ng-nest.module';
 
 @NgModule({
@@ -13,8 +13,8 @@ import { NgNestModule } from 'src/share/ng-nest.module';
     CommonModule,
     ShareModule,
     NgNestModule,
-    AdToolModule,
-    AdAdaptionModule,
+    AuToolModule,
+    AuAdaptionModule,
     UsersRoutesModule
   ],
   declarations: [UsersComponent, UserDetailComponent]

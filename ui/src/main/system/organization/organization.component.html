@@ -1,5 +1,5 @@
-<x-inner class="ad-inner">
-  <div class="ad-panel ad-tree-left" [x-loading]="treeLoading" style="width: 22rem;">
+<x-inner class="au-inner">
+  <div class="au-panel au-tree-left" [x-loading]="treeLoading" style="width: 22rem;">
     <h4>
       <span>组织机构</span>
       <x-link
@@ -11,7 +11,7 @@
     </h4>
     <x-tree
       #treeCom
-      ad-adaption
+      au-adaption
       [outerHeight]="131"
       [data]="data"
       expandedLevel="0"
@@ -22,8 +22,8 @@
     >
     </x-tree>
   </div>
-  <div class="ad-form-right">
-    <ad-tool top>
+  <div class="au-form-right">
+    <au-tool top>
       <x-buttons [space]="0.5">
         <x-button
           icon="fto-save"
@@ -34,10 +34,10 @@
           保存
         </x-button>
       </x-buttons>
-    </ad-tool>
+    </au-tool>
     <x-form
-      class="ad-panel ad-overflow-auto"
-      ad-adaption
+      class="au-panel au-overflow-auto"
+      au-adaption
       [outerHeight]="138"
       [formGroup]="formGroup"
       [controls]="controls"

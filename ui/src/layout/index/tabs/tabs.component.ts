@@ -10,7 +10,7 @@ import { AuthService } from 'src/services/auth.service';
 import { ConfigService } from 'src/services/config.service';
 import { FormGroup } from '@angular/forms';
 import { XControl } from '@ng-nest/ui/form';
-import { XColorsTheme } from '@ng-nest/ui/core';
+import { XColorsTheme, XBoolean } from '@ng-nest/ui/core';
 
 @Component({
   selector: 'app-tabs',
@@ -34,7 +34,7 @@ export class TabsComponent implements OnInit {
 
   settingVisible = false;
 
-  settingDark = false;
+  settingDark: XBoolean = false;
 
   settingForm = new FormGroup({});
 
@@ -143,8 +143,7 @@ export class TabsComponent implements OnInit {
     this.config.dark = false;
   }
 
-  darkChange(dark: boolean) {
-    console.log(dark);
-    this.config.dark = dark;
+  darkChange(dark: XBoolean) {
+    this.config.dark = dark as boolean;
   }
 }

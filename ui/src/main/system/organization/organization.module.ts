@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { OrganizationRoutesModule } from './organization-routes.module';
 import { OrganizationComponent } from './organization.component';
 import { ShareModule } from 'src/share/share.module';
-import { AdToolModule } from 'src/share/tool/tool.module';
-import { AdAdaptionModule } from 'src/share/adaption/adaption.module';
+import { AuToolModule } from 'src/share/tool/tool.module';
+import { AuAdaptionModule } from 'src/share/adaption/adaption.module';
 import { NgNestModule } from 'src/share/ng-nest.module';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { NgNestModule } from 'src/share/ng-nest.module';
     CommonModule,
     ShareModule,
     NgNestModule,
-    AdToolModule,
-    AdAdaptionModule,
+    AuToolModule,
+    AuAdaptionModule,
     OrganizationRoutesModule
   ],
   declarations: [OrganizationComponent]

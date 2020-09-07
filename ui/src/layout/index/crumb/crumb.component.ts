@@ -9,6 +9,8 @@ import { XCrumbNodeClick } from '@ng-nest/ui/crumb';
 import { FloatNodeComponent } from '../sider/float-node/float-node.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { FLOAT_NODE_OPTION } from '../sider/float-node/float-node.type';
+import { HttpClient } from '@angular/common/http';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-crumb',
@@ -22,6 +24,7 @@ export class CrumbComponent implements OnInit {
     public nav: NavService,
     public portal: XPortalService,
     public viewContainerRef: ViewContainerRef,
+    public http: HttpClient,
     public overlay: Overlay
   ) {}
 
