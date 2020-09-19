@@ -98,7 +98,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
               break;
             default:
               // '%'
-              rep.andWhere(`entity.${x.field} like %:param${index}%`);
+              rep.andWhere(`entity.${x.field} like concat('%',:param${index},'%')`);
               break;
           }
         }
