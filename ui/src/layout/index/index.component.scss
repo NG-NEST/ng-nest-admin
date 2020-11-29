@@ -143,7 +143,7 @@ app-index {
   > app-tabs {
     width: calc(100% - #{$sider-width});
     height: $tabs-height;
-    padding-right: $tabs-height * $nav-num + $--x-padding-medium * 2;
+    padding-right: calc(#{$tabs-height} * #{$nav-num} + calc(#{$--x-padding-medium} * 2));
     position: fixed;
     top: 0;
     left: $sider-width;
