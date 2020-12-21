@@ -7,10 +7,11 @@ import { PreloadingStrategyService } from "./../services/preloading-strategy.ser
 @NgModule({
   imports: [
     RouterModule.forRoot(mainRoutes, {
-      enableTracing: false,
-      anchorScrolling: "enabled",
-      preloadingStrategy: PreloadingStrategyService
-    })
+    enableTracing: false,
+    anchorScrolling: "enabled",
+    preloadingStrategy: PreloadingStrategyService,
+    relativeLinkResolution: 'legacy'
+})
   ],
   exports: [RouterModule],
   providers: [
