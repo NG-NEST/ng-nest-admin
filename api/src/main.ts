@@ -17,6 +17,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  const server = await app.listen(3000, 'localhost', () => {
+    global['host'] = `http://${server.address().address}:${server.address().port}`;
+  });
 }
 bootstrap();

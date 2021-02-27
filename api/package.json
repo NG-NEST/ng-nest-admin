@@ -21,12 +21,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^7.0.0",
-    "@nestjs/core": "^7.0.0",
-    "@nestjs/passport": "^7.0.0",
-    "@nestjs/platform-express": "^7.0.0",
-    "@nestjs/swagger": "^4.5.5",
-    "@nestjs/typeorm": "^7.0.0",
+    "@nestjs/common": "^7.6.13",
+    "@nestjs/core": "^7.6.13",
+    "@nestjs/passport": "^7.1.5",
+    "@nestjs/platform-express": "^7.6.13",
+    "@nestjs/swagger": "^4.7.15",
+    "@nestjs/typeorm": "^7.1.5",
     "fs-extra": "^9.0.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
