@@ -17,17 +17,17 @@ import { RolesService } from '../roles.service';
   templateUrl: 'role-permission.component.html'
 })
 export class RolePermissionComponent implements OnInit {
-  @ViewChild('treeCom') treeCom: XTreeComponent;
-  @ViewChild('tableCom') tableCom: XTableComponent;
+  @ViewChild('treeCom') treeCom!: XTreeComponent;
+  @ViewChild('tableCom') tableCom!: XTableComponent;
   get disabled() {
     return typeof this.selected === 'undefined';
   }
 
-  id: string | null;
+  id!: string | null;
   type = 'info';
   manual = false;
-  selected: Menu;
-  activatedId: string;
+  selected!: Menu;
+  activatedId!: string;
   activatedTemp: Action[] = [];
   checkedRow: { [prop: string]: any[] } = {};
   index = 1;

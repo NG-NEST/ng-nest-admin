@@ -9,10 +9,10 @@ import { DOCUMENT } from '@angular/common';
 })
 export class AuAdaptionDirective implements AfterViewInit, OnDestroy {
   @Input() outerHeight: number = 0;
-  @Input() container: HTMLElement;
+  @Input() container!: HTMLElement;
 
   private _unSubject = new Subject<void>();
-  private _resizeObserver: ResizeObserver;
+  private _resizeObserver!: ResizeObserver;
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) public doc: any) {}
 
   ngAfterViewInit() {

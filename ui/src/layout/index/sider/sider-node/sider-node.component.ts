@@ -18,7 +18,7 @@ export class SiderNodeComponent implements OnInit {
   @Input() option: Menu = {};
 
   // 输入-当前层级
-  @Input() level: number;
+  @Input() level!: number;
 
   // 输入-浮动菜单
   @Input() float: boolean = false;

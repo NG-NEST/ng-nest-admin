@@ -16,7 +16,7 @@ import { IndexService } from 'src/layout/index/index.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrganizationComponent extends PageBase {
-  @ViewChild('treeCom') treeCom: XTreeComponent;
+  @ViewChild('treeCom') treeCom!: XTreeComponent;
   formGroup = new FormGroup({});
 
   get disabled() {
@@ -25,9 +25,9 @@ export class OrganizationComponent extends PageBase {
 
   type = 'info';
 
-  selected: Organization;
+  selected!: Organization;
 
-  activatedId: string;
+  activatedId!: string;
 
   treeLoading = true;
 

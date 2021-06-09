@@ -16,7 +16,7 @@ import { NavService } from 'src/services/nav.service';
 export class MenuActionsComponent implements OnInit {
   index = 1;
   query: XQuery = { filter: [], sort: [{ field: 'sort', value: 'asc' }] };
-  menuId: string;
+  menuId!: string;
   data = (index: number, size: number, query: any) =>
     this.service.getList(index, size, query).pipe((x: any) => {
       return x;
@@ -30,7 +30,7 @@ export class MenuActionsComponent implements OnInit {
     { id: 'sort', label: '顺序', flex: 1, sort: true }
   ];
 
-  @ViewChild('tableCom') tableCom: XTableComponent;
+  @ViewChild('tableCom') tableCom!: XTableComponent;
 
   constructor(
     public service: ActionsService,

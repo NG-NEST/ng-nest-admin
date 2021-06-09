@@ -17,7 +17,7 @@ import { IndexService } from 'src/layout/index/index.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenusComponent extends PageBase {
-  @ViewChild('treeCom') treeCom: XTreeComponent;
+  @ViewChild('treeCom') treeCom!: XTreeComponent;
   formGroup = new FormGroup({});
 
   get disabled() {
@@ -26,9 +26,9 @@ export class MenusComponent extends PageBase {
 
   type = 'info';
 
-  selected: Menu;
+  selected!: Menu;
 
-  activatedId: string;
+  activatedId!: string;
 
   treeLoading = true;
 

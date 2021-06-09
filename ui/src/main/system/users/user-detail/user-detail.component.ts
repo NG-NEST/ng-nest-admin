@@ -16,9 +16,9 @@ import { XQuery } from '@ng-nest/ui/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDetailComponent implements OnInit {
-  id: string | null;
-  type: string | null;
-  selected: Organization;
+  id!: string | null;
+  type!: string | null;
+  selected!: Organization;
   config = {
     labelWidth: '6rem'
   };
@@ -80,7 +80,7 @@ export class UserDetailComponent implements OnInit {
     { control: 'input', id: 'id', hidden: true, value: this.setting.guid() }
   ];
 
-  @ViewChild('form') form: XFormComponent;
+  @ViewChild('form') form!: XFormComponent;
 
   get formInvalid() {
     return this.form?.formGroup?.invalid;

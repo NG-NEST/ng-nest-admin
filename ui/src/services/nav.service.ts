@@ -12,11 +12,11 @@ export class NavService {
 
   history: NavigationEnd[] = [];
 
-  first: NavigationEnd;
+  first!: NavigationEnd;
 
-  last: NavigationEnd;
+  last!: NavigationEnd;
 
-  now: NavigationEnd;
+  now!: NavigationEnd;
 
   disabledBack: boolean = true;
 
@@ -31,18 +31,20 @@ export class NavService {
       this.destroy();
     } else {
       this.subscriptions = [
-        this.router.events.pipe(filter((x) => x instanceof NavigationStart)).subscribe((x: NavigationStart) => {
+        this.router.events.pipe(filter((x) => x instanceof NavigationStart)).subscribe((x) => {
+          let nav = x as NavigationStart;
           if (this.clearTo) {
-            ReuseStrategyService.deleteRouteSnapshot(x.url);
+            ReuseStrategyService.deleteRouteSnapshot(nav.url);
             this.clearTo = false;
           }
         }),
-        this.router.events.pipe(filter((x) => x instanceof NavigationEnd)).subscribe((x: NavigationEnd) => {
-          if (x.url === x.urlAfterRedirects) {
-            this.history.unshift(x);
+        this.router.events.pipe(filter((x) => x instanceof NavigationEnd)).subscribe((x) => {
+          let nav = x as NavigationEnd;
+          if (nav.url === nav.urlAfterRedirects) {
+            this.history.unshift(nav);
             this.first = _.first(this.history) as NavigationEnd;
             this.last = _.last(this.history) as NavigationEnd;
-            this.now = x;
+            this.now = nav;
           }
         })
       ];

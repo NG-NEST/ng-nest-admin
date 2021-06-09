@@ -13,9 +13,9 @@ import { XMessageService } from '@ng-nest/ui/message';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionDetailComponent implements OnInit {
-  id: string | null;
-  type: string | null;
-  menuId: string | null;
+  id!: string | null;
+  type!: string | null;
+  menuId!: string | null;
   controls: XControl[] = [
     { control: 'input', id: 'name', label: '名称', required: true },
     { control: 'input', id: 'code', label: '编码', required: true },
@@ -25,7 +25,7 @@ export class ActionDetailComponent implements OnInit {
     { control: 'input', id: 'menuId', hidden: true }
   ];
 
-  @ViewChild('form') form: XFormComponent;
+  @ViewChild('form') form!: XFormComponent;
 
   get formInvalid() {
     return this.form?.formGroup?.invalid;

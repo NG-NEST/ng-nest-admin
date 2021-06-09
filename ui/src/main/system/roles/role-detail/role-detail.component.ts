@@ -14,9 +14,9 @@ import { XMessageService } from '@ng-nest/ui/message';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoleDetailComponent implements OnInit {
-  id: string | null;
-  type: string | null;
-  selected: Organization;
+  id!: string | null;
+  type!: string | null;
+  selected!: Organization;
   config = {
     labelWidth: '6rem'
   };
@@ -32,7 +32,7 @@ export class RoleDetailComponent implements OnInit {
     { control: 'input', id: 'id', hidden: true, value: this.setting.guid() }
   ];
 
-  @ViewChild('form') form: XFormComponent;
+  @ViewChild('form') form!: XFormComponent;
 
   get formInvalid() {
     return this.form?.formGroup?.invalid;

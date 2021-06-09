@@ -7,13 +7,13 @@ import { IndexService } from 'src/layout/index/index.service';
 })
 export class AuAuthDirective {
   @Input('au-auth')
-  auth: string;
+  auth!: string;
 
   @Input()
-  and: boolean;
+  and!: boolean;
 
   @Input()
-  or: boolean;
+  or!: boolean;
 
   @Input()
   hidden: boolean = true;

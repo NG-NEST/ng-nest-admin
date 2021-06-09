@@ -22,10 +22,10 @@ export class IndexService {
   crumbData: XCrumbNode[] = [];
 
   // 弹出菜单的节点
-  floatNode: Menu;
+  floatNode!: Menu;
 
   // 弹出菜单
-  portal: XPortalOverlayRef<FloatNodeComponent>;
+  portal!: XPortalOverlayRef<FloatNodeComponent>;
 
   // 当前菜单改变事件
   menuChange = new Subject<{ previous: string; current: string }>();
@@ -36,10 +36,10 @@ export class IndexService {
   }
 
   // 本地长期存储
-  private _local: Local;
+  private _local!: Local;
 
   // 当前会话存储
-  private _session: Session;
+  private _session!: Session;
 
   constructor(
     public auth: AuthService,
@@ -155,7 +155,7 @@ export class IndexService {
    */
   listenerRouter() {
     this.removeSession();
-    this.router.events.pipe(filter((x) => x instanceof NavigationEnd)).subscribe((x: NavigationEnd) => {
+    this.router.events.pipe(filter((x) => x instanceof NavigationEnd)).subscribe(() => {
       this.setTabs();
       this.setCrumb();
     });

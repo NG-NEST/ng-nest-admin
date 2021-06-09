@@ -15,7 +15,7 @@ import { XMessageBoxService } from '@ng-nest/ui/message-box';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-  api: string;
+  api!: string;
   constructor(
     public http: HttpClient,
     public setting: SettingService,

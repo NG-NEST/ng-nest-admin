@@ -27,7 +27,7 @@ export class UsersComponent extends PageBase {
       tap(() => (this.treeLoading = false)),
       map((x) => x.list)
     );
-  selected: Organization;
+  selected!: Organization;
   columns: XTableColumn[] = [
     { id: 'index', label: '序号', width: 80, left: 0, type: 'index' },
     { id: 'actions', label: '操作', width: 100, left: 80 },
@@ -37,7 +37,7 @@ export class UsersComponent extends PageBase {
     { id: 'phone', label: '电话', flex: 1 }
   ];
 
-  @ViewChild('tableCom') tableCom: XTableComponent;
+  @ViewChild('tableCom') tableCom!: XTableComponent;
 
   constructor(
     public service: UsersService,
