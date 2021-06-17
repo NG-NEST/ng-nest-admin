@@ -1,9 +1,9 @@
 {
   "type": "mysql",
-  "host": "47.93.183.122",
+  "host": "localhost",
   "port": 3306,
   "username": "root",
-  "password": "123qwe",
+  "password": "123456",
   "database": "ng-nest-admin",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true,
