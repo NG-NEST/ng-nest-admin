@@ -27,11 +27,11 @@ $sider-width: 15rem;
 // 内容区域的内边距
 $content-padding: $--x-padding-large;
 // 悬停背景色
-$sider-node-hover-background-color: rgba(0, 0, 0, 0.06);
+$sider-node-hover-background-color: rgba(0, 0, 0, 0.02);
 // 悬停文字颜色
 $sider-node-hover-color: $--x-text;
 // 选中背景颜色
-$selected-background-color: rgba(0, 0, 0, 0.06);
+$selected-background-color: rgba(0, 0, 0, 0.03);
 // 选中文字颜色
 $selected-color: $--x-primary;
 // 动画时间
@@ -60,6 +60,7 @@ $transition-duration: 0.3s;
       font-size: 0.875rem;
       color: $font-color;
       user-select: none;
+      position: relative;
       span {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -398,6 +399,11 @@ app-index {
           color: $--x-primary;
         }
       }
+    }
+    &-table-left {
+      width: 18rem;
+      display: block;
+      margin-right: $--x-padding-large;
     }
     &-tree-node {
       flex: 1;

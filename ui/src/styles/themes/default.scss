@@ -92,6 +92,11 @@ $prefix: 'au';
           background-color: $background-color;
         }
       }
+      &-table-left {
+        x-table {
+          background-color: $background-color;
+        }
+      }
       &-form-right {
         x-form {
           background-color: $background-color;

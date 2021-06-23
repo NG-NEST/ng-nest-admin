@@ -7,18 +7,12 @@ export const shareRoutes: Routes = [
   // 没有权限的显示模块
   {
     path: 'no-auth',
-    loadChildren: () => import('../main/no-auth/no-auth.module').then((x) => x.NoAuthModule),
-    data: {
-      animation: 'no-auth'
-    }
+    loadChildren: () => import('../main/no-auth/no-auth.module').then((x) => x.NoAuthModule)
   },
   // 错误的路由或不存在的路由指向的模块
   {
     path: '**',
-    loadChildren: () => import('../main/exception/404.module').then((x) => x.Exception404Module),
-    data: {
-      animation: '404'
-    }
+    loadChildren: () => import('../main/exception/404.module').then((x) => x.Exception404Module)
   }
 ];
 
@@ -50,28 +44,19 @@ export const layoutRoutes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('../main/home/home.module').then((x) => x.HomeModule),
-    canLoad: [AuthGuard],
-    data: {
-      animation: 'home'
-    }
+    canLoad: [AuthGuard]
   },
   // 仪表盘
   {
     path: 'dashboard',
     loadChildren: () => import('../main/dashboard/dashboard.module').then((x) => x.DashboardModule),
-    canLoad: [AuthGuard],
-    data: {
-      animation: 'dashboard'
-    }
+    canLoad: [AuthGuard]
   },
   // 用户管理
   {
     path: 'users',
     loadChildren: () => import('../main/system/users/users.module').then((x) => x.UsersModule),
-    canLoad: [AuthGuard],
-    data: {
-      animation: 'users'
-    }
+    canLoad: [AuthGuard]
   },
   // 角色管理
   {
@@ -86,19 +71,19 @@ export const layoutRoutes: Routes = [
   {
     path: 'organization',
     loadChildren: () => import('../main/system/organization/organization.module').then((x) => x.OrganizationModule),
-    canLoad: [AuthGuard],
-    data: {
-      animation: 'organization'
-    }
+    canLoad: [AuthGuard]
   },
   // 菜单管理
   {
     path: 'menus',
     loadChildren: () => import('../main/system/menus/menus.module').then((x) => x.MenusModule),
-    canLoad: [AuthGuard],
-    data: {
-      animation: 'menus'
-    }
+    canLoad: [AuthGuard]
+  },
+  // 模块设计
+  {
+    path: 'module-design',
+    loadChildren: () => import('../main/module-design/module-design.module').then((x) => x.ModuleDesignModule),
+    canLoad: [AuthGuard]
   },
 
   // 示例功能
