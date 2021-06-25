@@ -17,4 +17,4 @@ import { Table } from './entities/table.entity';
   controllers: [ModuleController, PageController, TableController],
   providers: [ModuleService, PageService, TableService]
 })
-export class ModuleDesignModule {}
+export class DesignModule {}

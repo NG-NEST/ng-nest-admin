@@ -31,7 +31,7 @@ export class Page {
     page => page
   )
   @JoinTable({
-    name: 'system_page_relation',
+    name: 'design_page_relation',
     joinColumn: { name: 'fromPageId' },
     inverseJoinColumn: { name: 'toPageId' }
   })
@@ -42,7 +42,7 @@ export class Page {
     page => page
   )
   @JoinTable({
-    name: 'system_page_relation',
+    name: 'design_page_relation',
     joinColumn: { name: 'toPageId' },
     inverseJoinColumn: { name: 'fromPageId' }
   })
