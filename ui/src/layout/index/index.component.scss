@@ -1,8 +1,5 @@
-@import 'index';
-
-$--x-box-shadow-light: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-$--x-box-shadow-light-right: 0 2px 2px -6px rgba(0, 0, 0, 0.56), 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-$--x-box-shadow-light-bottom: 0 2px 2px -6px rgba(0, 0, 0, 0.56), 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 2px 2px -6px rgba(0, 0, 0, 0.12);
+@import '~@ng-nest/ui/style/params/primary';
+@import 'core/prefix';
 
 // 字体颜色
 $font-color: $--x-text;
@@ -248,7 +245,6 @@ app-index {
     display: flex;
     align-items: center;
     padding: 0 $content-padding/2;
-    box-shadow: $--x-box-shadow-light-bottom;
     .crumb-operation {
       .x-icon {
         font-size: 1.125rem;
@@ -265,13 +261,12 @@ app-index {
       }
     }
     .x-crumb {
-      margin-left: 1rem;
+      margin-left: $--x-padding-medium;
     }
   }
   > app-sider {
     height: 100%;
     width: $sider-width;
-    box-shadow: $--x-box-shadow-light-right;
     position: fixed;
     top: 0;
     left: 0;
@@ -357,7 +352,7 @@ app-index {
     &-inner {
       &.x-inner {
         display: flex;
-        padding: 0.875rem !important;
+        padding: 0 !important;
         overflow: auto;
       }
     }
@@ -366,8 +361,8 @@ app-index {
       > h4 {
         margin: 0;
         position: relative;
-        padding: 0 $--x-padding-large;
-        height: 35px;
+        padding: 0 $--x-padding-medium;
+        height: 2rem;
         font-weight: 600;
         display: flex;
         align-items: center;
@@ -385,13 +380,24 @@ app-index {
     &-column {
       flex-direction: column;
     }
+    &-header {
+      display: flex;
+      align-items: center;
+      height: 5rem;
+    }
+    &-form {
+      padding: $--x-padding-medium 0;
+    }
+    &-table {
+      flex: 1;
+      margin: 0 $--x-padding-medium;
+    }
     &-tree-left {
       width: 18rem;
       display: block;
-      margin-right: $--x-padding-large;
+      margin-right: $--x-padding-medium;
       x-tree {
         display: block;
-        padding: $--x-padding-large;
         overflow-y: auto;
       }
       .x-tree-node-content {
@@ -403,7 +409,7 @@ app-index {
     &-table-left {
       width: 18rem;
       display: block;
-      margin-right: $--x-padding-large;
+      margin-right: $--x-padding-medium;
     }
     &-tree-node {
       flex: 1;
@@ -416,9 +422,11 @@ app-index {
     }
     &-form-right {
       flex: 1;
+      margin-right: $--x-padding-medium;
     }
     &-table-right {
       flex: 1;
+      margin-right: $--x-padding-medium;
     }
     &-table-actions {
       display: flex;

@@ -1,10 +1,10 @@
+@import '~@ng-nest/ui/style/params/primary';
+
 au-tool {
   display: flex;
   justify-content: space-between;
-  &[top] {
-    margin-bottom: 0.875rem;
-  }
-  &[bottom] {
-    margin-top: 0.875rem;
+  margin: $--x-padding-medium 0;
+  &[padding] {
+    padding: 0 $--x-padding-medium;
   }
 }

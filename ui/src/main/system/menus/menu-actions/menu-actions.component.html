@@ -1,6 +1,6 @@
 <x-inner class="au-inner">
-  <div class="au-table-right">
-    <au-tool top>
+  <div class="au-table">
+    <au-tool>
       <x-buttons [space]="0.5">
         <x-button icon="fto-chevron-left" (click)="action('cancel')">返回</x-button>
         <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
@@ -16,7 +16,7 @@
       [query]="query"
       [bodyHeight]="100"
       [bodyColumnTpl]="{ actions: actionsTpl, icon: iconTpl }"
-      [adaptionHeight]="138"
+      [adaptionHeight]="128"
       virtualScroll
       loading
     ></x-table>

@@ -1,0 +1,32 @@
+<x-inner class="au-inner au-column">
+  <div class="au-panel au-header">查询条件</div>
+  <div >
+    <div class="au-table-left">
+      <x-table
+        [columns]="columns"
+        [data]="data"
+        [rowHeight]="0"
+        [bodyHeight]="100"
+        [bodyColumnTpl]="{ name: nameTpl }"
+        [adaptionHeight]="138"
+        virtualScroll
+        loading
+        hiddenBorder
+        showEllipsis="false"
+        showTotal="false"
+        showHeader="false"
+      >
+      </x-table>
+    </div>
+    <div class="au-panel au-form-right"></div>
+  </div>
+</x-inner>
+
+<ng-template #nameTpl let-column="$column" let-row="$row" let-index="$index">
+  <div class="design-td">
+    <x-avatar icon="fto-user"></x-avatar>
+    <div class="design-td-inner">
+      <span class="design-td-name">{{ row.name }}</span>
+    </div>
+  </div>
+</ng-template>

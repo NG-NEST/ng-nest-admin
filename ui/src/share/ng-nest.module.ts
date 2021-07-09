@@ -13,11 +13,14 @@ import { XLayoutModule } from '@ng-nest/ui/layout';
 import { XDocModule } from '@ng-nest/ui/doc';
 import { XCardModule } from '@ng-nest/ui/card';
 import { XStatisticModule } from '@ng-nest/ui/statistic';
+import { XContainerModule } from '@ng-nest/ui/container';
+import { XAvatarModule } from '@ng-nest/ui/avatar';
 
 // 模块
 const modules = [
   XButtonModule,
   XInnerModule,
+  XContainerModule,
   XTableModule,
   XFormModule,
   XTreeModule,
@@ -27,6 +30,7 @@ const modules = [
   XDocModule,
   XCardModule,
   XStatisticModule,
+  XAvatarModule,
   XMessageModule,
   XMessageBoxModule,
   XLoadingModule

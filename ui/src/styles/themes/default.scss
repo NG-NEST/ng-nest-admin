@@ -1,13 +1,13 @@
 @import '~@ng-nest/ui/style/params/primary';
-
-$prefix: 'au';
+@import 'core/prefix';
 
 // 明亮模式
 .x-light {
-  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
-  $--x-border-base: 1px solid rgba(0, 0, 0, 0.08);
+  $--x-border-base: 1px solid rgba(0, 0, 0, 0.07);
+  $--x-border-light: 1px solid rgba(0, 0, 0, 0.04);
   $background-color: white;
-  $tabs-background-color: #f1f3f5;
+  $tabs-background-color: #f5f5f5;
+  $crumb-background-color: #fdfdfd;
 
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.1);
@@ -17,15 +17,8 @@ $prefix: 'au';
     background-color: rgba(0, 0, 0, 0.05);
   }
 
-  .x-button:not(.x-button-closable),
-  .x-table,
-  .x-card,
-  .x-tag {
-    box-shadow: $--x-box-shadow-light;
-  }
-
   .x-table {
-    border: none;
+    border: $--x-border-base;
     background-color: $background-color;
     > thead > tr > th {
       background-color: $background-color;
@@ -45,21 +38,11 @@ $prefix: 'au';
     }
   }
 
-  .x-dialog x-alert .x-alert,
-  .x-message-box x-alert .x-alert,
-  .x-message x-alert .x-alert,
-  .x-notification x-alert .x-alert,
-  .x-drawer {
-    background-color: $background-color;
-    box-shadow: $--x-box-shadow-light;
-    border: none;
-  }
-
   app-index {
     > app-tabs {
       background-color: $tabs-background-color;
       .x-slider-scroll > ul > li.x-slider-highlight {
-        background-color: $background-color;
+        background-color: $crumb-background-color;
       }
       .tab {
         border-right: 1px solid rgba(0, 0, 0, 0.04);
@@ -67,7 +50,8 @@ $prefix: 'au';
     }
 
     > app-crumb {
-      background-color: $background-color;
+      background-color: $crumb-background-color;
+      border-bottom: $--x-border-light;
     }
 
     > app-sider {
@@ -82,12 +66,12 @@ $prefix: 'au';
     .#{$prefix} {
       &-panel {
         background-color: $background-color;
-        box-shadow: $--x-box-shadow-light;
         > h4 {
           border-bottom: $--x-border-base;
         }
       }
       &-tree-left {
+        border-right: $--x-border-base;
         x-tree {
           background-color: $background-color;
         }
@@ -113,18 +97,10 @@ $prefix: 'au';
 
 // 暗黑模式
 .x-dark {
-  $--x-box-shadow-light: 0 1px 8px 0 rgba(0, 0, 0, 0.5);
   $--x-border-base: 1px solid rgba(0, 0, 0, 0.4);
   $background-color: #1e1e1f;
   $background-color-light: #272727;
   $background-color-light-100: #2f2f2f;
-
-  .x-button:not(.x-button-closable),
-  .x-table,
-  .x-card,
-  .x-tag {
-    box-shadow: $--x-box-shadow-light;
-  }
 
   .x-table {
     border: none;
@@ -147,16 +123,6 @@ $prefix: 'au';
     }
   }
 
-  .x-dialog x-alert .x-alert,
-  .x-message-box x-alert .x-alert,
-  .x-message x-alert .x-alert,
-  .x-notification x-alert .x-alert,
-  .x-drawer {
-    background-color: $background-color-light;
-    box-shadow: $--x-box-shadow-light;
-    border: none;
-  }
-
   app-index {
     background-color: $background-color;
     > app-tabs {
@@ -171,6 +137,7 @@ $prefix: 'au';
 
     > app-crumb {
       background-color: $background-color-light-100;
+      border-bottom: $--x-border-base;
     }
 
     > app-sider {
@@ -185,12 +152,12 @@ $prefix: 'au';
     .#{$prefix} {
       &-panel {
         background-color: $background-color-light;
-        box-shadow: $--x-box-shadow-light;
         > h4 {
           border-bottom: $--x-border-base;
         }
       }
       &-tree-left {
+        border-right: $--x-border-base;
         x-tree {
           background-color: $background-color-light;
         }
@@ -205,7 +172,6 @@ $prefix: 'au';
   app-float-node {
     > ul {
       background-color: $background-color-light-100;
-      box-shadow: $--x-box-shadow-light;
     }
   }
 }

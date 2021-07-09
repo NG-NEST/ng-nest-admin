@@ -1,0 +1,18 @@
+:host {
+  .design-td {
+    display: flex;
+    align-items: center;
+  }
+  .design-td x-icon {
+    font-size: 4rem;
+    padding: 1rem;
+  }
+  .design-td-inner {
+    margin-left: 0.875rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .design-td-name {
+    font-weight: 600;
+  }
+}

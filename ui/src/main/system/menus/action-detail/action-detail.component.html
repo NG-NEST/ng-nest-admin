@@ -1,5 +1,5 @@
 <x-inner class="au-inner au-column">
-  <au-tool top>
+  <au-tool padding>
     <x-buttons [space]="0.5">
       <x-button (click)="action('cancel')" icon="fto-chevron-left">返回</x-button>
       <x-button icon="fto-save" type="primary" (click)="!formInvalid && action('save')" [disabled]="formInvalid || disabled">

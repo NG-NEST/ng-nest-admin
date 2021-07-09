@@ -6,12 +6,10 @@
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
   border-radius: 0.125rem;
-  // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: $--x-text-500;
 }
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
-  // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 0.125rem;
   background: $--x-background;
 }

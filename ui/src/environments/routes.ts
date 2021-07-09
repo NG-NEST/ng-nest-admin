@@ -81,8 +81,8 @@ export const layoutRoutes: Routes = [
   },
   // 模块设计
   {
-    path: 'module-design',
-    loadChildren: () => import('../main/module-design/module-design.module').then((x) => x.ModuleDesignModule),
+    path: 'design',
+    loadChildren: () => import('../main/design/design.module').then((x) => x.DesignModule),
     canLoad: [AuthGuard]
   },
 

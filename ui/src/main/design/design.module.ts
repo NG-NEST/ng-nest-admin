@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModuleDesignRoutesModule } from './module-design-routes.module';
-import { ModuleDesignComponent } from './module-design.component';
+import { DesignRoutesModule } from './design-routes.module';
+import { DesignComponent } from './design.component';
 import { ShareModule } from 'src/share/share.module';
 import { AuToolModule } from 'src/share/tool/tool.module';
 import { AuAdaptionModule } from 'src/share/adaption/adaption.module';
@@ -14,8 +14,8 @@ import { NgNestModule } from 'src/share/ng-nest.module';
     NgNestModule,
     AuToolModule,
     AuAdaptionModule,
-    ModuleDesignRoutesModule
+    DesignRoutesModule
   ],
-  declarations: [ModuleDesignComponent]
+  declarations: [DesignComponent]
 })
-export class ModuleDesignModule {}
+export class DesignModule {}
