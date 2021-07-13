@@ -1,0 +1,8 @@
+:host {
+  ::ng-deep {
+    .x-tabs .x-slider-scroll > ul > li.x-slider-highlight {
+      border-radius: 0;
+      border: none;
+    }
+  }
+}

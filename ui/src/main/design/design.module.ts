@@ -6,16 +6,10 @@ import { ShareModule } from 'src/share/share.module';
 import { AuToolModule } from 'src/share/tool/tool.module';
 import { AuAdaptionModule } from 'src/share/adaption/adaption.module';
 import { NgNestModule } from 'src/share/ng-nest.module';
+import { DesignDetailComponent } from './design-detail/design-detail.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ShareModule,
-    NgNestModule,
-    AuToolModule,
-    AuAdaptionModule,
-    DesignRoutesModule
-  ],
-  declarations: [DesignComponent]
+  imports: [CommonModule, ShareModule, NgNestModule, AuToolModule, AuAdaptionModule, DesignRoutesModule],
+  declarations: [DesignComponent, DesignDetailComponent]
 })
 export class DesignModule {}

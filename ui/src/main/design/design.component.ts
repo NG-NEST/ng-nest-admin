@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ModuleService } from './module.service';
+import { Module, ModuleService } from './module.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
 import { IndexService } from 'src/layout/index/index.service';
 import { PageBase } from 'src/share/base/base-page';
-import { XTableColumn } from '@ng-nest/ui/table';
+import { XTableColumn, XTableRow } from '@ng-nest/ui/table';
 
 @Component({
   selector: 'app-design',
@@ -19,6 +19,8 @@ export class DesignComponent extends PageBase {
     });
 
   columns: XTableColumn[] = [{ id: 'name', label: '模块', flex: 1, sort: true }];
+
+  activatedRow!: Module;
 
   constructor(
     public service: ModuleService,
@@ -36,5 +38,9 @@ export class DesignComponent extends PageBase {
       case 'add':
         break;
     }
+  }
+
+  activatedRowChange(row: XTableRow | Module) {
+    this.activatedRow = row as Module;
   }
 }

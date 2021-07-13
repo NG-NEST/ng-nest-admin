@@ -15,6 +15,7 @@ import { XCardModule } from '@ng-nest/ui/card';
 import { XStatisticModule } from '@ng-nest/ui/statistic';
 import { XContainerModule } from '@ng-nest/ui/container';
 import { XAvatarModule } from '@ng-nest/ui/avatar';
+import { XTabsModule } from '@ng-nest/ui/tabs';
 
 // 模块
 const modules = [
@@ -33,7 +34,8 @@ const modules = [
   XAvatarModule,
   XMessageModule,
   XMessageBoxModule,
-  XLoadingModule
+  XLoadingModule,
+  XTabsModule
 ];
 
 /**

@@ -1,14 +1,17 @@
 <x-inner class="au-inner au-column">
-  <div class="au-panel au-header">查询条件</div>
-  <div >
-    <div class="au-table-left">
+  <au-tool padding>
+    <x-button>查询</x-button>
+  </au-tool>
+  <div class="au-table-form">
+    <div class="au-table-left au-table-single">
       <x-table
         [columns]="columns"
         [data]="data"
         [rowHeight]="0"
         [bodyHeight]="100"
         [bodyColumnTpl]="{ name: nameTpl }"
-        [adaptionHeight]="138"
+        [adaptionHeight]="126"
+        (activatedRowChange)="activatedRowChange($event)"
         virtualScroll
         loading
         hiddenBorder
@@ -18,7 +21,9 @@
       >
       </x-table>
     </div>
-    <div class="au-panel au-form-right"></div>
+    <div class="au-panel au-form-right">
+      <app-design-detail [detail]="this.activatedRow"></app-design-detail>
+    </div>
   </div>
 </x-inner>
 

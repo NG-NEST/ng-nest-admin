@@ -51,7 +51,7 @@
 
     > app-crumb {
       background-color: $crumb-background-color;
-      border-bottom: $--x-border-light;
+      border-bottom: $--x-border-base;
     }
 
     > app-sider {
@@ -69,6 +69,12 @@
         > h4 {
           border-bottom: $--x-border-base;
         }
+      }
+      &-table-form {
+        border-top: $--x-border-base;
+      }
+      &-table-single {
+        border-right: $--x-border-base;
       }
       &-tree-left {
         border-right: $--x-border-base;

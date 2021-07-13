@@ -392,6 +392,17 @@ app-index {
       flex: 1;
       margin: 0 $--x-padding-medium;
     }
+    &-table-form {
+      display: flex;
+      .#{$prefix} {
+        &-table-left {
+          margin-right: 0;
+        }
+        &-form-right {
+          margin-right: 0;
+        }
+      }
+    }
     &-tree-left {
       width: 18rem;
       display: block;
@@ -436,6 +447,12 @@ app-index {
       }
       .x-icon {
         font-size: 1rem;
+      }
+    }
+    &-table-single {
+      padding-bottom: calc(var(--x-font-size) / 2);
+      .x-table {
+        border: none;
       }
     }
     &-overflow-auto {
