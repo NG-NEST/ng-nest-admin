@@ -1,0 +1,129 @@
+.#{$prefix} {
+  &-inner {
+    &.x-inner {
+      display: flex;
+      padding: 0 !important;
+      overflow: auto;
+    }
+  }
+  &-panel {
+    border-radius: $--x-border-radius;
+    > h4 {
+      margin: 0;
+      position: relative;
+      padding: 0 $--x-padding-medium;
+      height: 2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: $--x-text-300;
+      > x-link {
+        margin-left: 0.25rem;
+      }
+    }
+  }
+  &-content {
+    padding: $--x-padding-large;
+    overflow: auto;
+  }
+  &-column {
+    flex-direction: column;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    height: 5rem;
+  }
+  &-form {
+    padding: $--x-padding-medium 0;
+  }
+  &-table {
+    flex: 1;
+    margin: 0 $--x-padding-medium;
+  }
+  &-table-form {
+    display: flex;
+    .#{$prefix} {
+      &-table-left {
+        margin-right: 0;
+      }
+      &-form-right {
+        margin-right: 0;
+      }
+    }
+  }
+  &-tree-left {
+    width: 18rem;
+    display: block;
+    margin-right: $--x-padding-medium;
+    x-tree {
+      display: block;
+      overflow-y: auto;
+    }
+    .x-tree-node-content {
+      &.x-activated {
+        color: $--x-primary;
+      }
+    }
+  }
+  &-table-left {
+    width: 18rem;
+    display: block;
+    margin-right: $--x-padding-medium;
+  }
+  &-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  &-tree-btn {
+    margin-left: 2rem;
+    display: none;
+  }
+  &-form-right {
+    flex: 1;
+    margin-right: $--x-padding-medium;
+  }
+  &-table-right {
+    flex: 1;
+    margin-right: $--x-padding-medium;
+  }
+  &-table-actions {
+    display: flex;
+    align-items: center;
+    x-link:not(:first-child) {
+      margin-left: 0.5rem;
+    }
+    .x-icon {
+      font-size: 1rem;
+    }
+  }
+  &-table-single {
+    x-table {
+      .x-table {
+        border: none;
+      }
+      .x-pagination {
+        display: flex;
+        justify-content: center;
+        padding: calc(var(--x-font-size) / 4) 0;
+      }
+    }
+  }
+  &-tabs {
+    .x-tabs .x-slider-scroll > ul > li.x-slider-highlight {
+      border-radius: 0;
+      border: none;
+    }
+  }
+  &-overflow-auto {
+    overflow: auto;
+  }
+  &-overflow-x {
+    overflow-x: auto;
+  }
+  &-overflow-y {
+    overflow-y: auto;
+  }
+}

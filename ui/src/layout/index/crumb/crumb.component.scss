@@ -1,0 +1,33 @@
+@import '../index.param';
+
+app-crumb {
+  width: calc(100% - #{$sider-width});
+  height: $crumb-height;
+  position: fixed;
+  top: $tabs-height;
+  left: $sider-width;
+  z-index: 12;
+  transition: left $transition-duration, width $transition-duration;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0 $content-padding/2;
+  .crumb-operation {
+    .x-icon {
+      font-size: 1.125rem;
+      padding: 0.25rem;
+      transition: background-color $transition-duration;
+      border-radius: 0.125rem;
+      &:hover {
+        background-color: $--x-background-a100;
+      }
+      &.disabled {
+        color: $--x-primary-500;
+        pointer-events: none;
+      }
+    }
+  }
+  .x-crumb {
+    margin-left: $--x-padding-medium;
+  }
+}

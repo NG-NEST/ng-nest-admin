@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Module, ModuleService } from '../module.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XMessageBoxService } from '@ng-nest/ui/message-box';
@@ -10,7 +10,7 @@ import { XIsChange } from '@ng-nest/ui/core';
 @Component({
   selector: 'app-design-detail',
   templateUrl: 'design-detail.component.html',
-  styleUrls: ['./design-detail.component.scss']
+  encapsulation: ViewEncapsulation.None
 })
 export class DesignDetailComponent extends PageBase {
   @Input() detail!: Module;
@@ -29,7 +29,5 @@ export class DesignDetailComponent extends PageBase {
     XIsChange(simple.detail) && this.getData();
   }
 
-  getData() {
-
-  }
+  getData() {}
 }

@@ -1,0 +1,97 @@
+@import '../index.param';
+
+app-tabs {
+  width: calc(100% - #{$sider-width});
+  height: $tabs-height;
+  padding-right: calc(#{$tabs-height} * #{$nav-num} + calc(#{$--x-padding-medium} * 2));
+  position: fixed;
+  top: 0;
+  left: $sider-width;
+  z-index: 13;
+  transition: left $transition-duration, width $transition-duration;
+  font-size: 0.875rem;
+  .x-slider-scroll > ul > li x-link.x-size-big {
+    padding: 0;
+  }
+  .x-slider-scroll > ul > li.x-slider-highlight {
+    border: none;
+    border-radius: 0;
+  }
+  .toggle {
+    float: left;
+    .x-link {
+      width: $tabs-height;
+      height: $tabs-height;
+      .x-icon {
+        font-size: $--x-font-size-large;
+      }
+    }
+  }
+
+  .nav {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 $--x-padding-medium;
+    .x-link {
+      width: $tabs-height;
+      height: $tabs-height;
+      .x-icon {
+        font-size: $--x-font-size-large;
+      }
+    }
+  }
+
+  .tab {
+    min-width: 5.625rem;
+    max-width: 11.25rem;
+    padding: 0 1.875rem 0 0.875rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    transition: background-color $transition-duration;
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-left: 0.375rem;
+      flex: 1;
+    }
+    .close {
+      margin-right: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      right: 0;
+      .x-icon {
+        font-weight: bold;
+        opacity: 0;
+        transition: color $transition-duration;
+        padding: 0.125rem;
+      }
+    }
+    &.active {
+      background-color: $--x-background;
+      span {
+        color: $--x-text;
+      }
+    }
+    &.active,
+    &:hover {
+      .close {
+        .x-icon {
+          color: $--x-text-100;
+          opacity: 1;
+          &:hover {
+            color: $--x-text;
+          }
+        }
+      }
+    }
+  }
+}

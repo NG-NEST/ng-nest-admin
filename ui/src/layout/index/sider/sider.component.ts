@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-sider',
   templateUrl: './sider.component.html',
+  styleUrls: ['./sider.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class SiderComponent implements OnInit {

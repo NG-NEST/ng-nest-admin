@@ -15,6 +15,7 @@ import { mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-crumb',
   templateUrl: './crumb.component.html',
+  styleUrls: ['./crumb.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CrumbComponent implements OnInit {
