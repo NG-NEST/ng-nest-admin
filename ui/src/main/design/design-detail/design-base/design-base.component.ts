@@ -1,12 +1,12 @@
 import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { Module, ModuleService } from '../module.service';
+import { Module, ModuleService } from '../../module.service';
 import { IndexService } from 'src/layout/index/index.service';
 import { PageBase } from 'src/share/base/base-page';
 import { XIsChange } from '@ng-nest/ui/core';
 
 @Component({
-  selector: 'app-design-detail',
-  templateUrl: 'design-detail.component.html',
+  selector: 'app-design-base',
+  templateUrl: 'design-base.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class DesignDetailComponent extends PageBase {
