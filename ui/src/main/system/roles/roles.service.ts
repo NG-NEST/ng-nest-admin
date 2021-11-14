@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RolesService extends RepositoryService<Role> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'roles' } });
   }
 

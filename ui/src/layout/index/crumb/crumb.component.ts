@@ -10,7 +10,6 @@ import { FloatNodeComponent } from '../sider/float-node/float-node.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { FLOAT_NODE_OPTION } from '../sider/float-node/float-node.type';
 import { HttpClient } from '@angular/common/http';
-import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-crumb',
@@ -39,15 +38,12 @@ export class CrumbComponent implements OnInit {
         hasBackdrop: true,
         positionStrategy: this.overlay
           .position()
-          .connectedTo(
-            new ElementRef(event.event.srcElement),
-            { originX: 'start', originY: 'bottom' },
-            { overlayX: 'start', overlayY: 'top' }
-          ),
+          .flexibleConnectedTo(new ElementRef(event.event.srcElement))
+          .withPositions([{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }]),
         backdropClass: ''
       },
       injector: this.portal.createInjector(
-        this.indexService.floatChild(this.indexService.menus.filter((x) => x.pid === event.node.data.id)),
+        this.indexService.floatChild(this.indexService.menus.filter((x) => x.pid === event.node['data'].id)),
         FLOAT_NODE_OPTION
       )
     });

@@ -11,12 +11,13 @@ import { XIsChange } from '@ng-nest/ui/core';
 })
 export class DesignDetailComponent extends PageBase {
   @Input() detail!: Module;
-  constructor(public service: ModuleService, public indexService: IndexService) {
+  constructor(public service: ModuleService, public override indexService: IndexService) {
     super(indexService);
   }
 
-  ngOnChanges(simple: SimpleChanges) {
-    XIsChange(simple.detail) && this.getData();
+  ngOnChanges(simples: SimpleChanges) {
+    const { detail } = simples;
+    XIsChange(detail) && this.getData();
   }
 
   getData() {}

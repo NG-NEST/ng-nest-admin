@@ -29,10 +29,9 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["node_modules/@ng-nest/ui/style/core/index.css", "src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
+              "includePaths": ["src/styles", "node_modules"]
             },
-            "scripts": [],
-            "allowedCommonJsDependencies": ["lodash"]
+            "scripts": []
           },
           "configurations": {
             "production": {

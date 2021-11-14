@@ -4,7 +4,7 @@ import { HttpService } from 'src/services/http.service';
 
 @Injectable({ providedIn: 'root' })
 export class ModuleService extends RepositoryService<Module> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'modules' } });
   }
 }

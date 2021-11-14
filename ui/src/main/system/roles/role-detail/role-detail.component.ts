@@ -84,12 +84,12 @@ export class RoleDetailComponent implements OnInit {
         break;
       case 'save':
         if (this.type === 'add') {
-          this.service.post(this.setForm(this.form.formGroup.value)).subscribe((x) => {
+          this.service.post(this.setForm(this.form.formGroup.value)).subscribe(() => {
             this.message.success('新增成功！');
             this.nav.back(true);
           });
         } else if (this.type === 'edit') {
-          this.service.put(this.setForm(this.form.formGroup.value)).subscribe((x) => {
+          this.service.put(this.setForm(this.form.formGroup.value)).subscribe(() => {
             this.message.success('修改成功！');
             this.nav.back(true);
           });

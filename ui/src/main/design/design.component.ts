@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { Module, ModuleService } from './module.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { XMessageBoxService } from '@ng-nest/ui/message-box';
-import { XMessageService } from '@ng-nest/ui/message';
 import { IndexService } from 'src/layout/index/index.service';
 import { PageBase } from 'src/share/base/base-page';
 import { XTableColumn, XTableRow } from '@ng-nest/ui/table';
@@ -22,14 +19,7 @@ export class DesignComponent extends PageBase {
 
   activatedRow!: Module;
 
-  constructor(
-    public service: ModuleService,
-    public indexService: IndexService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private message: XMessageService,
-    private msgBox: XMessageBoxService
-  ) {
+  constructor(public service: ModuleService, public override indexService: IndexService) {
     super(indexService);
   }
 

@@ -1,7 +1,6 @@
-import { Component, OnInit, HostBinding, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewEncapsulation } from '@angular/core';
 import { IndexService } from './index.service';
 import { NavService } from './../../services/nav.service';
-import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: 'app-index',
@@ -14,11 +13,9 @@ export class IndexComponent implements OnInit {
     return this.indexService.local.siderShrink;
   }
 
-  constructor(private indexService: IndexService, private nav: NavService, private config: ConfigService) {
+  constructor(private indexService: IndexService, private nav: NavService) {
     this.nav.init();
   }
 
   ngOnInit() {}
-
-  ngOnChanges(changes: SimpleChanges) {}
 }

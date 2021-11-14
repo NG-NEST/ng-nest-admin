@@ -22,11 +22,11 @@ export class ReuseStrategyService implements RouteReuseStrategy {
   /**
    * 表示对所有路由允许复用 如果你有路由不想利用可以在这加一些业务逻辑判断
    *
-   * @param {ActivatedRouteSnapshot} route
+   * @param {ActivatedRouteSnapshot} _route
    * @returns {boolean}
    * @memberof ReuseStrategyService
    */
-  public shouldDetach(route: ActivatedRouteSnapshot): boolean {
+  public shouldDetach(_route: ActivatedRouteSnapshot): boolean {
     return true;
   }
 
@@ -97,6 +97,7 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    */
   private getRouteUrl(route: ActivatedRouteSnapshot) {
     let url = (route as any)['_routerState'].url.replace(/\//g, '_');
+    console.log(url)
     // if (!route.routeConfig.loadChildren) {
     //     url += `${route.routeConfig.component.toString().split('(')[0].split(' ')[1]}`
     // }

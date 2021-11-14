@@ -111,7 +111,7 @@ export class OrganizationComponent extends PageBase {
   ];
   constructor(
     private service: OrganizationService,
-    public indexService: IndexService,
+    public override indexService: IndexService,
     private message: XMessageService,
     private msgBox: XMessageBoxService
   ) {
@@ -163,7 +163,7 @@ export class OrganizationComponent extends PageBase {
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
-              this.service.delete(node.id).subscribe((x) => {
+              this.service.delete(node.id).subscribe(() => {
                 this.treeCom.removeNode(node);
                 this.formGroup.reset();
                 this.message.success('删除成功！');
@@ -179,7 +179,7 @@ export class OrganizationComponent extends PageBase {
             this.message.success('新增成功！');
           });
         } else if (this.type === 'edit') {
-          this.service.put(this.formGroup.value).subscribe((x) => {
+          this.service.put(this.formGroup.value).subscribe(() => {
             this.type = 'info';
             this.treeCom.updateNode(node, this.formGroup.value);
             this.message.success('修改成功！');

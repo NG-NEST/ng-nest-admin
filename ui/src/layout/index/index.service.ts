@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { SettingService } from '../../services/setting.service';
 import { environment } from '../../environments/environment';
-import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { AuthService, Menu as AuthMenu } from '../../services/auth.service';
@@ -272,6 +272,10 @@ export interface Session {
 export interface Menu extends AuthMenu {
   // 子路由页面
   subPage?: string;
+  // 浮动显示
+  floatShow?: boolean;
+  // 子菜单显示
+  childrenShow?: boolean;
   // 参数
   param?: { [property: string]: any };
 }

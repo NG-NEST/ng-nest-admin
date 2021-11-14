@@ -6,7 +6,7 @@ import { Role } from '../roles/roles.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService extends RepositoryService<User> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'users' } });
   }
 }

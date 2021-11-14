@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { XFormComponent, XControl } from '@ng-nest/ui/form';
 import { SettingService } from 'src/services/setting.service';
-import { ActionsService, Menu } from '../menus.service';
+import { ActionsService } from '../menus.service';
 import { NavService } from 'src/services/nav.service';
-import { map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { XMessageService } from '@ng-nest/ui/message';
 
@@ -74,12 +73,12 @@ export class ActionDetailComponent implements OnInit {
         break;
       case 'save':
         if (this.type === 'add') {
-          this.service.post(this.setForm(this.form.formGroup.value)).subscribe((x) => {
+          this.service.post(this.setForm(this.form.formGroup.value)).subscribe(() => {
             this.message.success('新增成功！');
             this.nav.back(true);
           });
         } else if (this.type === 'edit') {
-          this.service.put(this.setForm(this.form.formGroup.value)).subscribe((x) => {
+          this.service.put(this.setForm(this.form.formGroup.value)).subscribe(() => {
             this.message.success('修改成功！');
             this.nav.back(true);
           });

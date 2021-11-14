@@ -7,7 +7,7 @@ export class PageBase {
   auth: { [code: string]: boolean } = {};
 
   constructor(public indexService: IndexService) {
-    let menuSub$ = this.indexService.menuChange.subscribe((x) => {
+    let menuSub$ = this.indexService.menuChange.subscribe(() => {
       this.baseInit();
       menuSub$.unsubscribe();
     });

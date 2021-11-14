@@ -6,14 +6,14 @@ import { XId } from '@ng-nest/ui/core';
 
 @Injectable({ providedIn: 'root' })
 export class MenusService extends RepositoryService<Menu> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'menus' } });
   }
 }
 
 @Injectable({ providedIn: 'root' })
 export class ActionsService extends RepositoryService<Action> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'actions' } });
   }
 }

@@ -110,7 +110,7 @@ export class MenusComponent extends PageBase {
   ];
   constructor(
     private service: MenusService,
-    public indexService: IndexService,
+    public override indexService: IndexService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private message: XMessageService,
@@ -164,7 +164,7 @@ export class MenusComponent extends PageBase {
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
-              this.service.delete(node.id).subscribe((x) => {
+              this.service.delete(node.id).subscribe(() => {
                 this.treeCom.removeNode(node);
                 this.formGroup.reset();
                 this.message.success('删除成功！');
@@ -180,7 +180,7 @@ export class MenusComponent extends PageBase {
             this.message.success('新增成功！');
           });
         } else if (this.type === 'edit') {
-          this.service.put(this.formGroup.value).subscribe((x) => {
+          this.service.put(this.formGroup.value).subscribe(() => {
             this.type = 'info';
             this.treeCom.updateNode(node, this.formGroup.value);
             this.message.success('修改成功！');

@@ -1,2 +1,7 @@
 <!-- 一级路由，指向框架页 -->
-<router-outlet></router-outlet>
+<router-outlet
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+  (attach)="onAttach($event)"
+  (detach)="onDetach($event)"
+></router-outlet>

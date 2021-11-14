@@ -41,7 +41,7 @@ export class UsersComponent extends PageBase {
 
   constructor(
     public service: UsersService,
-    public indexService: IndexService,
+    public override indexService: IndexService,
     private organization: OrganizationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -73,7 +73,7 @@ export class UsersComponent extends PageBase {
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
-              this.service.delete(item.id).subscribe((x) => {
+              this.service.delete(item.id).subscribe(() => {
                 this.tableCom.change(this.index);
                 this.message.success('删除成功！');
               });

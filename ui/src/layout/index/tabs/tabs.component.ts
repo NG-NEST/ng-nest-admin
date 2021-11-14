@@ -65,7 +65,7 @@ export class TabsComponent implements OnInit {
    * @memberof TabsComponent
    */
   tab(index: number) {
-    const tab = this.indexService.session.tabsPage?.find((x, i) => i === index);
+    const tab = this.indexService.session.tabsPage?.find((_x, i) => i === index);
     if (tab && tab.router) {
       let page = tab.router;
       let subRoot = tab.subPage;
@@ -140,7 +140,7 @@ export class TabsComponent implements OnInit {
     });
   }
 
-  defaultClick(theme: XColorsTheme) {
+  defaultClick(_theme: XColorsTheme) {
     this.config.dark = false;
   }
 

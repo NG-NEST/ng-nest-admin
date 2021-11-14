@@ -68,7 +68,8 @@ export class SiderNodeComponent implements OnInit {
           hasBackdrop: true,
           positionStrategy: this.overlay
             .position()
-            .connectedTo(this.elementRef, { originX: 'end', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
+            .flexibleConnectedTo(this.elementRef)
+            .withPositions([{ originX: 'end', originY: 'top', overlayX: 'start', overlayY: 'top' }]),
           backdropClass: ''
         },
         injector: this.portal.createInjector(this.indexService.floatChild(this.child), FLOAT_NODE_OPTION)

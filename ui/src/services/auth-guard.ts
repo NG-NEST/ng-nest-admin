@@ -16,7 +16,7 @@ import { find } from 'lodash';
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(public authService: AuthService, public router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.checkLogin(state.url);
   }
 

@@ -5,7 +5,7 @@ import { XTreeNode } from '@ng-nest/ui/tree';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService extends RepositoryService<Organization> {
-  constructor(public http: HttpService) {
+  constructor(public override http: HttpService) {
     super(http, { controller: { name: 'organization' } });
   }
 }

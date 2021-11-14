@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/
 import { XQuery } from '@ng-nest/ui/core';
 import { ActionsService } from '../menus.service';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
-import { Menu } from 'src/services/auth.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
@@ -66,7 +65,7 @@ export class MenuActionsComponent implements OnInit {
           type: 'warning',
           callback: (action: XMessageBoxAction) => {
             action === 'confirm' &&
-              this.service.delete(item.id).subscribe((x) => {
+              this.service.delete(item.id).subscribe(() => {
                 this.tableCom.change(this.index);
                 this.message.success('删除成功！');
               });

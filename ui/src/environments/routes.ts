@@ -18,8 +18,6 @@ export const shareRoutes: Routes = [
 
 // 顶级路由，指向框架页
 export const mainRoutes: Routes = [
-  // 如果路由为空就指向 index
-  { path: '', redirectTo: environment.layout, pathMatch: 'full' },
   // 登录页
   {
     path: 'login',
@@ -33,30 +31,40 @@ export const mainRoutes: Routes = [
     canLoad: [AuthGuard]
   },
 
+  // 如果路由为空就指向 index
+  { path: '', redirectTo: environment.layout, pathMatch: 'full' },
+
   ...shareRoutes
 ];
 
 // 框架页中对应的路由，指向具体的页面，框架页面中的路由都会带上顶级路由 index 如：/index/workplace
 export const layoutRoutes: Routes = [
-  // 如果路由为空就指向配置的默认首页
-  { path: '', redirectTo: environment.defaultPage, pathMatch: 'full' },
   // 首页
   {
     path: 'home',
     loadChildren: () => import('../main/home/home.module').then((x) => x.HomeModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
   // 仪表盘
   {
     path: 'dashboard',
     loadChildren: () => import('../main/dashboard/dashboard.module').then((x) => x.DashboardModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
   // 用户管理
   {
     path: 'users',
     loadChildren: () => import('../main/system/users/users.module').then((x) => x.UsersModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
   // 角色管理
   {
@@ -64,26 +72,35 @@ export const layoutRoutes: Routes = [
     loadChildren: () => import('../main/system/roles/roles.module').then((x) => x.RolesModule),
     canLoad: [AuthGuard],
     data: {
-      animation: 'roles'
+      shouldReuse: true
     }
   },
   // 组织管理
   {
     path: 'organization',
     loadChildren: () => import('../main/system/organization/organization.module').then((x) => x.OrganizationModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
   // 菜单管理
   {
     path: 'menus',
     loadChildren: () => import('../main/system/menus/menus.module').then((x) => x.MenusModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
   // 模块设计
   {
     path: 'design',
     loadChildren: () => import('../main/design/design.module').then((x) => x.DesignModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      shouldReuse: true
+    }
   },
 
   // 示例功能
@@ -102,6 +119,9 @@ export const layoutRoutes: Routes = [
   // { path: 'organization', loadChildren: 'src/main/system/organization/organization.module#OrganizationModule', canLoad: [AuthGuard] },
   // // 模块设计
   // { path: 'module', loadChildren: 'src/main/module/module.module#ModuleModule', canLoad: [AuthGuard] },
+
+  // 如果路由为空就指向配置的默认首页
+  { path: '', redirectTo: environment.defaultPage, pathMatch: 'full' },
 
   ...shareRoutes
 ];

@@ -1,12 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { XFormRow } from '@ng-nest/ui/form';
-import { FormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
-import { guid, XQuery } from '@ng-nest/ui/core';
-import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
-import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { XQuery } from '@ng-nest/ui/core';
+import { XTreeComponent } from '@ng-nest/ui/tree';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Menu, MenusService, ActionsService, Action } from '../../menus/menus.service';
 import { XTableColumn, XTableComponent, XTableRow } from '@ng-nest/ui/table';
 import { NavService } from 'src/services/nav.service';
@@ -65,10 +62,8 @@ export class RolePermissionComponent implements OnInit {
     private roles: RolesService,
     private menus: MenusService,
     private actions: ActionsService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     private message: XMessageService,
-    private msgBox: XMessageBoxService,
     private nav: NavService
   ) {
     this.activatedRoute.paramMap.subscribe((x: ParamMap) => {
@@ -103,7 +98,7 @@ export class RolePermissionComponent implements OnInit {
         this.action('actions', node);
         break;
       case 'save':
-        this.roles.putActions(this.id as string, this.selected?.id, this.activatedTemp).subscribe((x) => {
+        this.roles.putActions(this.id as string, this.selected?.id, this.activatedTemp).subscribe(() => {
           this.message.success('保存成功！');
         });
         break;
