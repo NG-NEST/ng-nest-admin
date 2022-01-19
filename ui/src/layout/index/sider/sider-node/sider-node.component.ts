@@ -72,7 +72,12 @@ export class SiderNodeComponent implements OnInit {
             .withPositions([{ originX: 'end', originY: 'top', overlayX: 'start', overlayY: 'top' }]),
           backdropClass: ''
         },
-        injector: this.portal.createInjector(this.indexService.floatChild(this.child), FLOAT_NODE_OPTION)
+        injector: this.portal.createInjector([
+          {
+            provide: FLOAT_NODE_OPTION,
+            useValue: this.indexService.floatChild(this.child)
+          }
+        ])
       });
       this.indexService.floatNode = this.option;
       this.option.floatShow = true;

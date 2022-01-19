@@ -42,10 +42,12 @@ export class CrumbComponent implements OnInit {
           .withPositions([{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }]),
         backdropClass: ''
       },
-      injector: this.portal.createInjector(
-        this.indexService.floatChild(this.indexService.menus.filter((x) => x.pid === event.node['data'].id)),
-        FLOAT_NODE_OPTION
-      )
+      injector: this.portal.createInjector([
+        {
+          provide: FLOAT_NODE_OPTION,
+          useValue: this.indexService.floatChild(this.indexService.menus.filter((x) => x.pid === event.node['data'].id))
+        }
+      ])
     });
     this.indexService.portal.overlayRef?.backdropClick().subscribe(() => {
       this.indexService.portal.overlayRef?.detach();
