@@ -1,9 +1,9 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 // import { environment } from '../../environments/environment';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   // 登录的loding
   loading: boolean = false;
 
-  userForm: FormGroup = this.formBuilder.group({
+  userForm: UntypedFormGroup = this.formBuilder.group({
     account: ['admin'],
     password: ['123qwe']
   });
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public router: Router,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public message: XMessageService,
     public activatedRoute: ActivatedRoute
   ) {}

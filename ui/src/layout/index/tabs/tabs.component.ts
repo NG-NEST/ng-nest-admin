@@ -8,7 +8,7 @@ import { ReuseStrategyService } from 'src/services/reuse-strategy.service';
 import { NavService } from 'src/services/nav.service';
 import { AuthService } from 'src/services/auth.service';
 import { ConfigService } from 'src/services/config.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { XControl } from '@ng-nest/ui/form';
 import { XColorsTheme, XBoolean } from '@ng-nest/ui/core';
 
@@ -37,7 +37,7 @@ export class TabsComponent implements OnInit {
 
   settingDark: XBoolean = false;
 
-  settingForm = new FormGroup({});
+  settingForm = new UntypedFormGroup({});
 
   settingControls: XControl[] = [
     { id: 'primary', control: 'color-picker', label: '主色' },

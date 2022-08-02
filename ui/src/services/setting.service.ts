@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 
 /**
@@ -82,7 +82,7 @@ export class SettingService {
    * @param key
    * @param value
    */
-  setFormValue(form: FormGroup, key: string, value: any) {
+  setFormValue(form: UntypedFormGroup, key: string, value: any) {
     let formValue: { [prop: string]: any } = {};
     formValue[key] = value;
     form.patchValue(formValue);

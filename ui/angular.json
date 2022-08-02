@@ -121,7 +121,6 @@
       }
     }
   },
-  "defaultProject": "ng-nest-admin-ui",
   "cli": {
     "analytics": "0266ced1-815d-4bf4-8e1d-b058d41533b5"
   }

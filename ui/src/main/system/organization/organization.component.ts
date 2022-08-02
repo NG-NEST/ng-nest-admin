@@ -2,7 +2,7 @@ import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationService, Organization } from './organization.service';
 import { map, tap } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { guid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
@@ -17,7 +17,7 @@ import { IndexService } from 'src/layout/index/index.service';
 })
 export class OrganizationComponent extends PageBase {
   @ViewChild('treeCom') treeCom!: XTreeComponent;
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
 
   get disabled() {
     return !['edit', 'add', 'add-root'].includes(this.type);
