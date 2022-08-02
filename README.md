@@ -15,7 +15,7 @@
 
 ### 支持环境
 
-- Angular ^13.0.0
+- Angular ^14.0.0
 - Nestjs ^7.0.0
 
 Chrome Microsoft Edge Firefox Safari
