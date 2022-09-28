@@ -56,7 +56,13 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    * @memberof ReuseStrategyService
    */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return !!_.find(ReuseStrategyService.storages, (x) => x.key == this.getRouteUrl(route));
+    const url = this.getRouteUrl(route);
+    const rt = _.find(ReuseStrategyService.storages, (x) => x.key == url);
+    if (rt) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -70,7 +76,8 @@ export class ReuseStrategyService implements RouteReuseStrategy {
     if (!route.routeConfig) {
       return null;
     }
-    let stroage = _.find(ReuseStrategyService.storages, (x) => x.key == this.getRouteUrl(route));
+    const url = this.getRouteUrl(route);
+    const stroage = _.find(ReuseStrategyService.storages, (x) => x.key === url);
     return stroage ? stroage.handle : null;
   }
 
@@ -97,7 +104,6 @@ export class ReuseStrategyService implements RouteReuseStrategy {
    */
   private getRouteUrl(route: ActivatedRouteSnapshot) {
     let url = (route as any)['_routerState'].url.replace(/\//g, '_');
-    console.log(url)
     // if (!route.routeConfig.loadChildren) {
     //     url += `${route.routeConfig.component.toString().split('(')[0].split(' ')[1]}`
     // }

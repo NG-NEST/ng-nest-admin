@@ -31,11 +31,11 @@ export class AuthService {
   }
 
   async validateAccount(payload: JwtPayload): Promise<any> {
-    return this.userRepository.findOne(payload.id);
+    return this.userRepository.findOneBy({ id: payload.id });
   }
 
   async finduserByAccount(account: string): Promise<User> {
-    return this.userRepository.findOne({ account: account });
+    return this.userRepository.findOneBy({ account: account });
   }
 
   async menus(): Promise<Menu[]> {
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   async login(account: string, password: string): Promise<any> {
-    this.user = await this.userRepository.findOne({ account: account }, { relations: ['roles'] });
+    this.user = await this.userRepository.findOne({ where: { account: account }, relations: ['roles'] });
     if (this.user != undefined && this.user.password == password) {
       let permissions = await this.getPermissions(this.user);
       return new Promise((x, y) => {

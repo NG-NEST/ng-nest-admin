@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { mainRoutes } from '../environments/routes';
-// import { ReuseStrategyService } from "./../services/reuse-strategy.service";
+// import { ReuseStrategyService } from './../services/reuse-strategy.service';
 import { PreloadingStrategyService } from './../services/preloading-strategy.service';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { PreloadingStrategyService } from './../services/preloading-strategy.ser
   ],
   exports: [RouterModule],
   providers: [
-    PreloadingStrategyService,
+    PreloadingStrategyService
     // { provide: RouteReuseStrategy, useClass: ReuseStrategyService }
   ]
 })

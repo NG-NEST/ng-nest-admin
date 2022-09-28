@@ -14,6 +14,6 @@ export class UsersService extends XRepositoryService<User, XQuery> {
   }
 
   async get(id: XIdType): Promise<User> {
-    return await this.usersRepository.findOne(id, { relations: ['roles', 'organizations'] });
+    return await this.usersRepository.findOne({ where: { id }, relations: ['roles', 'organizations'] });
   }
 }

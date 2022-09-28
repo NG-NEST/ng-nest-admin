@@ -18,7 +18,7 @@ export class RolesService extends XRepositoryService<Role, XQuery> {
   }
 
   async get(id: XIdType): Promise<Role> {
-    return await this.roleRepository.findOne(id, { relations: ['organization'] });
+    return await this.roleRepository.findOne({ where: { id }, relations: ['organization'] });
   }
 
   async getActions(id: XIdType, menuId: XIdType): Promise<Action[]> {
@@ -38,7 +38,7 @@ export class RolesService extends XRepositoryService<Role, XQuery> {
   }
 
   async putActions(id: XIdType, menuId: XIdType, actions: Action[]): Promise<any> {
-    let role = await this.roleRepository.findOne(id, { relations: ['actions'] });
+    let role = await this.roleRepository.findOne({ where: { id }, relations: ['actions'] });
     remove(role.actions, y => !find(actions, z => z.id === y.id) && y.menuId === menuId);
     role.actions = [...role.actions, ...filter(actions, y => !find(role.actions, z => y.id === z.id))];
     await this.roleRepository.save(role);

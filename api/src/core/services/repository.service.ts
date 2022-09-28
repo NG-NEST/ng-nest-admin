@@ -43,7 +43,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async get(id: XIdType): Promise<Entity> {
-    return await this.repository.findOne(id);
+    return await this.repository.findOneBy({ id: id as any });
   }
 
   async post(entity: any): Promise<Entity> {
@@ -51,7 +51,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async put(entity: Entity): Promise<Entity> {
-    let index = await this.repository.findOne(entity.id);
+    let index = await this.repository.findOneBy({ id: entity.id as any });
     if (index) {
       Object.assign(index, entity);
       await getManager().transaction(async transactionalEntityManager => {
@@ -63,7 +63,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async delete(id: XIdType): Promise<Entity> {
-    let entity = await this.repository.findOne(id);
+    let entity = await this.repository.findOneBy({ id: id as any });
     return await this.repository.remove(entity);
   }
 
