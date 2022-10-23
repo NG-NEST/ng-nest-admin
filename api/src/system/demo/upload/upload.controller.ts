@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, UploadedFiles, Body, Get, Param, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFiles, Body, Get, Param, Headers, Res, HttpStatus } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { Response } from 'express';
@@ -12,7 +12,7 @@ export class UploadController {
 
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
-  async upload(@UploadedFiles() files, @Body() body): Promise<string[]> {
+  async upload(@UploadedFiles() files, @Body() body, @Headers() headers): Promise<string[]> {
     let fileUrls = [];
     for (const file of files) {
       let filename = `${Date.now()}-${file.originalname}`;

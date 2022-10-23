@@ -31,11 +31,11 @@ export class AuthService {
   }
 
   async validateAccount(payload: JwtPayload): Promise<any> {
-    return this.userRepository.findOneBy({ id: payload.id });
+    return this.userRepository.findOne({ id: payload.id });
   }
 
   async finduserByAccount(account: string): Promise<User> {
-    return this.userRepository.findOneBy({ account: account });
+    return this.userRepository.findOne({ account: account });
   }
 
   async menus(): Promise<Menu[]> {

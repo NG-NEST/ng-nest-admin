@@ -18,12 +18,12 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
   }
 
   async get(id: XIdType): Promise<Menu> {
-    return await this.menuRepository.findOneBy({ id });
+    return await this.menuRepository.findOne({ id });
   }
 
   async post(entity: Menu): Promise<Menu> {
     let parent = null;
-    if (entity.pid !== null) parent = await this.menuRepository.findOneBy({ pid: entity.pid });
+    if (entity.pid !== null) parent = await this.menuRepository.findOne({ pid: entity.pid });
     return await getManager().transaction<Menu>(async x => {
       entity.path = parent ? `${parent.path}.${entity.id}` : `${entity.id}`;
       let result = await this.menuRepository.save(entity);
@@ -43,7 +43,7 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
   }
 
   async delete(id: XIdType): Promise<Menu> {
-    let remove = await this.menuRepository.findOneBy({ id });
+    let remove = await this.menuRepository.findOne({ id });
     let moves = await this.menuRepository.find({ where: { path: Like(`${remove.path}%`) } });
     moves = orderBy(moves, x => -x.path.length);
     for (let move of moves) {
