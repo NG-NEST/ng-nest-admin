@@ -4,7 +4,7 @@ import { map, tap } from 'rxjs/operators';
 import { XFormRow } from '@ng-nest/ui/form';
 import { UntypedFormGroup } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
-import { guid } from '@ng-nest/ui/core';
+import { XGuid } from '@ng-nest/ui/core';
 import { XTreeAction, XTreeComponent } from '@ng-nest/ui/tree';
 import { XMessageBoxService, XMessageBoxAction } from '@ng-nest/ui/message-box';
 import { PageBase } from 'src/share/base/base-page';
@@ -136,7 +136,7 @@ export class OrganizationComponent extends PageBase {
         this.selected = node;
         this.formGroup.reset();
         this.formGroup.patchValue({
-          id: guid(),
+          id: XGuid(),
           pid: node.id,
           type: 'department'
         });
@@ -145,7 +145,7 @@ export class OrganizationComponent extends PageBase {
         this.type = type;
         this.formGroup.reset();
         this.formGroup.patchValue({
-          id: guid(),
+          id: XGuid(),
           pid: null,
           type: ''
         });

@@ -24,17 +24,17 @@ export class AuAuthDirective {
 
   ngOnInit() {
     if (!this.auth) return;
-    let isAuth;
+    let isAuth: boolean = false;
     let menu = this.authService.user.permissions?.menus?.find((x) => x.router == this.index.session.activatedPage);
     if (menu) {
-      isAuth = this.authService.user.permissions?.actions?.find((x) => x.menuId == menu?.id && x.code == this.auth);
+      isAuth = this.authService.user.permissions?.actions?.some((x) => x.menuId == menu?.id && x.code == this.auth)!;
     }
     if (this.and != null) {
       this.isGrant = (isAuth && this.and) as boolean;
     } else if (this.or != null) {
       this.isGrant = (isAuth || this.or) as boolean;
     } else {
-      this.isGrant = isAuth as boolean;
+      this.isGrant = isAuth! as boolean;
     }
     if (!this.isGrant) {
       if (this.hidden) {
