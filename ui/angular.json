@@ -26,6 +26,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": ["lodash"],
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["node_modules/@ng-nest/ui/style/core/index.css", "src/styles.scss"],
             "stylePreprocessorOptions": {

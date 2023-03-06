@@ -8,7 +8,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   constructor(private repository: Repository<Entity>) {}
 
   async getList(index: number, size: number, query: Query): Promise<XResultList<Entity | XGroupItem>> {
-    return new Promise<XResultList<Entity | XGroupItem>>(async x => {
+    return new Promise<XResultList<Entity | XGroupItem>>(async (x) => {
       let qb = this.repository.createQueryBuilder('entity');
       let list: Entity[] | XGroupItem[] = [];
       let total: number = 0;
@@ -43,7 +43,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async get(id: XIdType): Promise<Entity> {
-    return await this.repository.findOne({ id: id as any });
+    return await this.repository.findOne(id as any);
   }
 
   async post(entity: any): Promise<Entity> {
@@ -51,10 +51,10 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async put(entity: Entity): Promise<Entity> {
-    let index = await this.repository.findOne({ id: entity.id as any });
+    let index = await this.repository.findOne(entity.id as any);
     if (index) {
       Object.assign(index, entity);
-      await getManager().transaction(async transactionalEntityManager => {
+      await getManager().transaction(async (transactionalEntityManager) => {
         await transactionalEntityManager.save(index);
       });
 
@@ -63,7 +63,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async delete(id: XIdType): Promise<Entity> {
-    let entity = await this.repository.findOne({ id: id as any });
+    let entity = await this.repository.findOne(id as any);
     return await this.repository.remove(entity);
   }
 
@@ -115,7 +115,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
           .groupBy(`entity.${group}`)
           .select([`entity.${group}`, `count(entity.${group}) as count`])
           .getRawMany()
-      ).map(y => {
+      ).map((y) => {
         let mapTo = {};
         mapTo[group] = y[`entity_${group}`];
         mapTo['count'] = parseInt(y.count);
@@ -135,7 +135,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   private transformSort(sort: XSort[], entity = 'entity'): any {
     let condition: { [prop: string]: 'ASC' | 'DESC' } = {};
     if (sort && sort.length > 0) {
-      sort.forEach(x => {
+      sort.forEach((x) => {
         const order: 'ASC' | 'DESC' = x.value.toUpperCase() as 'ASC' | 'DESC';
         const field = x.field;
         if (entity !== '') {

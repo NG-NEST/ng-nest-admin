@@ -31,11 +31,11 @@ export class AuthService {
   }
 
   async validateAccount(payload: JwtPayload): Promise<any> {
-    return this.userRepository.findOne({ id: payload.id });
+    return this.userRepository.findOneBy({ id: payload.id });
   }
 
   async finduserByAccount(account: string): Promise<User> {
-    return this.userRepository.findOne({ account: account });
+    return this.userRepository.findOneBy({ account: account });
   }
 
   async menus(): Promise<Menu[]> {
@@ -48,8 +48,8 @@ export class AuthService {
       let permissions = await this.getPermissions(this.user);
       return new Promise((x, y) => {
         this.createToken(this.user.id)
-          .then(z => x({ name: this.user.name, token: z, permissions: permissions }))
-          .catch(z => y(z));
+          .then((z) => x({ name: this.user.name, token: z, permissions: permissions }))
+          .catch((z) => y(z));
       });
     } else {
       throw new HttpException(XApiExceptionCode.USER_ACCOUNT_PASSWORD_INVALID, HttpStatus.BAD_REQUEST);
@@ -60,23 +60,23 @@ export class AuthService {
     let actions = await this.actionRepository
       .createQueryBuilder('action')
       .innerJoin('action.roles', 'role')
-      .where('role.id IN (' + map(user.roles, x => `"${x.id}"`).join(',') + ')')
+      .where('role.id IN (' + map(user.roles, (x) => `"${x.id}"`).join(',') + ')')
       .getMany();
     let menuIds = map(
-      uniqBy(actions, x => x.menuId),
-      x => x.menuId
+      uniqBy(actions, (x) => x.menuId),
+      (x) => x.menuId
     );
     let paths = await this.menuRepository
       .createQueryBuilder('menu')
       .select('menu.path')
-      .where('menu.id IN (' + map(menuIds, x => `"${x}"`).join(',') + ')')
+      .where('menu.id IN (' + map(menuIds, (x) => `"${x}"`).join(',') + ')')
       .getMany();
-    let ids = union(map(paths, x => split(x.path, '.')));
+    let ids = union(map(paths, (x) => split(x.path, '.')));
     let idss = [];
-    ids.forEach(x => (idss = union(idss, x)));
+    ids.forEach((x) => (idss = union(idss, x)));
     let menus = await this.menuRepository
       .createQueryBuilder('menu')
-      .where('menu.id IN (' + map(idss, x => `"${x}"`).join(',') + ')')
+      .where('menu.id IN (' + map(idss, (x) => `"${x}"`).join(',') + ')')
       .orderBy({
         'menu.pid': 'ASC',
         'menu.sort': 'ASC'

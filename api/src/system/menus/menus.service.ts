@@ -18,13 +18,13 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
   }
 
   async get(id: XIdType): Promise<Menu> {
-    return await this.menuRepository.findOne({ id });
+    return await this.menuRepository.findOneBy({ id: id });
   }
 
   async post(entity: Menu): Promise<Menu> {
     let parent = null;
-    if (entity.pid !== null) parent = await this.menuRepository.findOne({ pid: entity.pid });
-    return await getManager().transaction<Menu>(async x => {
+    if (entity.pid !== null) parent = await this.menuRepository.findOneBy({ pid: entity.pid });
+    return await getManager().transaction<Menu>(async (x) => {
       entity.path = parent ? `${parent.path}.${entity.id}` : `${entity.id}`;
       let result = await this.menuRepository.save(entity);
       return result;
@@ -34,7 +34,7 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
   async put(entity: Menu): Promise<Menu> {
     let menu = await this.menuRepository.findOne({ where: { id: entity.id }, relations: ['actions'] });
     if (menu) {
-      return await getManager().transaction(async x => {
+      return await getManager().transaction(async (x) => {
         Object.assign(menu, entity);
         let result = await this.menuRepository.save(menu);
         return result;
@@ -43,9 +43,9 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
   }
 
   async delete(id: XIdType): Promise<Menu> {
-    let remove = await this.menuRepository.findOne({ id });
+    let remove = await this.menuRepository.findOneBy({ id });
     let moves = await this.menuRepository.find({ where: { path: Like(`${remove.path}%`) } });
-    moves = orderBy(moves, x => -x.path.length);
+    moves = orderBy(moves, (x) => -x.path.length);
     for (let move of moves) {
       await this.menuRepository.remove(move);
     }
