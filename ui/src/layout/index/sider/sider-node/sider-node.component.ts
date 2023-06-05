@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewEncapsulation, ViewContainerRef, ElementRef, HostBinding, Input } from '@angular/core';
 import { IndexService, Menu } from '../../index.service';
-import { ReuseStrategyService } from '../../../../services/reuse-strategy.service';
 import { environment } from 'src/environments/environment';
 import { XPortalService } from '@ng-nest/ui/portal';
 import { FloatNodeComponent } from '../float-node/float-node.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { find } from 'lodash';
 import { FLOAT_NODE_OPTION } from '../float-node/float-node.type';
+import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: '[app-sider-node]',
@@ -42,7 +42,8 @@ export class SiderNodeComponent implements OnInit {
     public portal: XPortalService,
     public viewContainerRef: ViewContainerRef,
     public overlay: Overlay,
-    public elementRef: ElementRef
+    public elementRef: ElementRef,
+    private config: ConfigService
   ) {}
 
   ngOnInit() {
@@ -93,7 +94,7 @@ export class SiderNodeComponent implements OnInit {
   sider(option: Menu) {
     let tab = find(this.indexService.session.tabsPage, (x) => x.router == option.router);
     if (tab && tab.subPage) {
-      ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${option.router}`);
+      this.config.deleteRouteSnapshot(`/${environment.layout}/${option.router}`);
     }
     if (this.indexService.portal) {
       if (this.indexService.floatNode) this.indexService.floatNode.floatShow = false;

@@ -1,10 +1,10 @@
-import { ReuseStrategyService } from './reuse-strategy.service';
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
+import { ConfigService } from './config.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavService {
@@ -24,7 +24,7 @@ export class NavService {
 
   subscriptions: Subscription[] = [];
 
-  constructor(private router: Router, private location: Location) {}
+  constructor(private router: Router, private location: Location, private config: ConfigService) {}
 
   init() {
     if (this.subscriptions.length > 0) {
@@ -34,7 +34,7 @@ export class NavService {
         this.router.events.pipe(filter((x) => x instanceof NavigationStart)).subscribe((x) => {
           let nav = x as NavigationStart;
           if (this.clearTo) {
-            ReuseStrategyService.deleteRouteSnapshot(nav.url);
+            this.config.deleteRouteSnapshot(nav.url);
             this.clearTo = false;
           }
         }),
@@ -95,7 +95,7 @@ export class NavService {
 
   removeThis() {
     let url = this.location.path();
-    ReuseStrategyService.deleteRouteSnapshot(url);
+    this.config.deleteRouteSnapshot(url);
   }
 
   getUrl(path: string): { path: string; param: any } {

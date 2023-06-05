@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
-import { ReuseStrategyService } from 'src/services/reuse-strategy.service';
 import { NavService } from 'src/services/nav.service';
 import { AuthService } from 'src/services/auth.service';
 import { ConfigService } from 'src/services/config.service';
@@ -91,7 +90,7 @@ export class TabsComponent implements OnInit {
       if (x.router === tab.router) deleteIndex = index;
       return x.router === tab.router;
     });
-    ReuseStrategyService.deleteRouteSnapshot(`/${environment.layout}/${tab.router}`);
+    this.config.deleteRouteSnapshot(`/${environment.layout}/${tab.router}`);
     this.indexService.session = { tabsPage: tabsPage };
     this.indexService.session.tabsPage = [...tabsPage];
 
@@ -133,8 +132,8 @@ export class TabsComponent implements OnInit {
         this.indexService.removeSession();
         this.indexService.session = { tabsPage: [] };
         this.nav.destroy();
-        ReuseStrategyService.deleteRouteSnapshot();
-        ReuseStrategyService.deleteRouteSnapshot(this.location.path());
+        this.config.deleteRouteSnapshot();
+        this.config.deleteRouteSnapshot(this.location.path());
         this.router.navigate(['/login']);
       }
     });

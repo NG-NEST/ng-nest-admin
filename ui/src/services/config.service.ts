@@ -3,6 +3,7 @@ import { XConfigService, X_THEME_DARK_COLORS, X_THEME_COLORS } from '@ng-nest/ui
 import { SettingService } from './setting.service';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import { DetachedRouteHandle } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
@@ -14,6 +15,9 @@ export class ConfigService {
   //   this._primary = value;
   //   this.doc.documentElement.style.setProperty('--x-primary', value, 'important');
   // }
+
+  handlers: { [key: string]: DetachedRouteHandle } = {};
+  waitDelete?: string | null;
 
   private _dark = Boolean(this.settingService.getLocal('Dark')) || false;
   public get dark() {
@@ -39,10 +43,6 @@ export class ConfigService {
   init() {
     this.dark = this._dark;
     this.setBodyClass();
-
-    // console.log(this.primary);
-
-    // this.primary = 'red';
   }
 
   setTheme() {
@@ -60,6 +60,18 @@ export class ConfigService {
     } else {
       this.renderer.removeClass(this.doc.documentElement, 'x-dark');
       this.renderer.addClass(this.doc.documentElement, 'x-light');
+    }
+  }
+
+  public deleteRouteSnapshot(name?: string): void {
+    if (name) {
+      let key = name.replace(/\//g, '_');
+      delete this.handlers[key];
+      this.waitDelete = key;
+    } else {
+      for (let key in this.handlers) {
+        delete this.handlers[key];
+      }
     }
   }
 }

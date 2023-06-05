@@ -45,7 +45,7 @@ export const layoutRoutes: Routes = [
     loadChildren: () => import('../main/home/home.module').then((x) => x.HomeModule),
     canLoad: [AuthGuard],
     data: {
-      shouldReuse: true
+      title: 'home'
     }
   },
   // 仪表盘
@@ -54,7 +54,7 @@ export const layoutRoutes: Routes = [
     loadChildren: () => import('../main/dashboard/dashboard.module').then((x) => x.DashboardModule),
     canLoad: [AuthGuard],
     data: {
-      shouldReuse: true
+      title: 'dashboard'
     }
   },
   // 用户管理
@@ -63,7 +63,7 @@ export const layoutRoutes: Routes = [
     loadChildren: () => import('../main/system/users/users.module').then((x) => x.UsersModule),
     canLoad: [AuthGuard],
     data: {
-      shouldReuse: true
+      title: 'users'
     }
   },
   // 角色管理

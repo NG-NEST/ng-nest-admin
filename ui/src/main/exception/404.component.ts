@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReuseStrategyService } from '../../services/reuse-strategy.service';
+import { ConfigService } from 'src/services/config.service';
 
 /**
  * 404异常页面
@@ -18,7 +18,7 @@ import { ReuseStrategyService } from '../../services/reuse-strategy.service';
   encapsulation: ViewEncapsulation.None
 })
 export class Exception404Component {
-  constructor(private router: Router) {
-    ReuseStrategyService.deleteRouteSnapshot(this.router.url);
+  constructor(private router: Router, private config: ConfigService) {
+    this.config.deleteRouteSnapshot(this.router.url);
   }
 }

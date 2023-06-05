@@ -16,6 +16,7 @@ import { XStatisticModule } from '@ng-nest/ui/statistic';
 import { XContainerModule } from '@ng-nest/ui/container';
 import { XAvatarModule } from '@ng-nest/ui/avatar';
 import { XTabsModule } from '@ng-nest/ui/tabs';
+import { XSelectModule } from '@ng-nest/ui/select';
 
 // 模块
 const modules = [
@@ -35,7 +36,8 @@ const modules = [
   XMessageModule,
   XMessageBoxModule,
   XLoadingModule,
-  XTabsModule
+  XTabsModule,
+  XSelectModule
 ];
 
 /**

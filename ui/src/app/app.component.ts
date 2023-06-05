@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { ConfigService } from 'src/services/config.service';
 
 @Component({
@@ -10,12 +9,10 @@ import { ConfigService } from 'src/services/config.service';
 })
 export class AppComponent {
   title = 'ng-nest-admin-ui';
-  constructor(private config: ConfigService, public router: Router) {
-    this.config.init();
+  constructor(private config: ConfigService) {}
 
-    this.router.events.subscribe((x) => {
-      console.log(x);
-    });
+  ngOnInit() {
+    this.config.init();
   }
 
   onActivate(event: any) {

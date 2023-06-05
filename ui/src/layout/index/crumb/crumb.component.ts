@@ -1,4 +1,3 @@
-import { ReuseStrategyService } from './../../../services/reuse-strategy.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation, ViewContainerRef, ElementRef } from '@angular/core';
 import { IndexService } from '../index.service';
@@ -10,6 +9,7 @@ import { FloatNodeComponent } from '../sider/float-node/float-node.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { FLOAT_NODE_OPTION } from '../sider/float-node/float-node.type';
 import { HttpClient } from '@angular/common/http';
+import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: 'app-crumb',
@@ -25,7 +25,8 @@ export class CrumbComponent implements OnInit {
     public portal: XPortalService,
     public viewContainerRef: ViewContainerRef,
     public http: HttpClient,
-    public overlay: Overlay
+    public overlay: Overlay,
+    private config: ConfigService
   ) {}
 
   ngOnInit() {}
@@ -57,7 +58,7 @@ export class CrumbComponent implements OnInit {
   reload() {
     let url = this.nav.getUrl(this.router.url);
     url.param.timestamp = new Date().getTime();
-    ReuseStrategyService.deleteRouteSnapshot(url.path);
+    this.config.deleteRouteSnapshot(url.path);
     _.remove(this.nav.history, _.first(this.nav.history));
     this.router.navigate([url.path, url.param]);
   }
