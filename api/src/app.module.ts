@@ -9,10 +9,10 @@ import { DemoModule } from './system/demo/demo.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '47.93.183.122',
+      host: '101.42.251.5',
       port: 3306,
-      username: 'root',
-      password: '123ewq',
+      username: 'ng-nest-admin',
+      password: '8TZBSd3xrYpBwZzH',
       database: 'ng-nest-admin',
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,

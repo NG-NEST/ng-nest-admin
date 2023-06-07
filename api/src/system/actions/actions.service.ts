@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { XRepositoryService, XQuery } from '@ng-nest/api/core';
 import { Action } from './entities/action.entity';
 
@@ -8,8 +8,9 @@ import { Action } from './entities/action.entity';
 export class ActionsService extends XRepositoryService<Action, XQuery> {
   constructor(
     @InjectRepository(Action)
-    private readonly entityRepository: Repository<Action>
+    private readonly entityRepository: Repository<Action>,
+    private dataSource: DataSource
   ) {
-    super(entityRepository);
+    super(entityRepository, dataSource);
   }
 }

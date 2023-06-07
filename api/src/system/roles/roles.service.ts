@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ObjectID } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { XRepositoryService, XQuery, XIdType } from '@ng-nest/api/core';
 import { Role } from './entities/role.entity';
 import { Action } from '../actions/entities/action.entity';
@@ -12,9 +12,10 @@ export class RolesService extends XRepositoryService<Role, XQuery> {
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
     @InjectRepository(Action)
-    private readonly actionRepository: Repository<Action>
+    private readonly actionRepository: Repository<Action>,
+    private dataSource: DataSource
   ) {
-    super(roleRepository);
+    super(roleRepository, dataSource);
   }
 
   async get(id: XIdType): Promise<Role> {
@@ -39,8 +40,8 @@ export class RolesService extends XRepositoryService<Role, XQuery> {
 
   async putActions(id: XIdType, menuId: XIdType, actions: Action[]): Promise<any> {
     let role = await this.roleRepository.findOne({ where: { id }, relations: ['actions'] });
-    remove(role.actions, y => !find(actions, z => z.id === y.id) && y.menuId === menuId);
-    role.actions = [...role.actions, ...filter(actions, y => !find(role.actions, z => y.id === z.id))];
+    remove(role.actions, (y) => !find(actions, (z) => z.id === y.id) && y.menuId === menuId);
+    role.actions = [...role.actions, ...filter(actions, (y) => !find(role.actions, (z) => y.id === z.id))];
     await this.roleRepository.save(role);
   }
 }

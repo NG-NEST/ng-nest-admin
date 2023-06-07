@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, getManager, SelectQueryBuilder } from 'typeorm';
+import { DataSource, Repository, SelectQueryBuilder, getConnection } from 'typeorm';
 import { XQuery, XFilter, XGroupItem, XSort, XId, XResultList, XIdType } from '../interfaces';
 import { orderBy, slice, map } from 'lodash';
 
 @Injectable()
 export class XRepositoryService<Entity extends XId, Query extends XQuery> {
-  constructor(private repository: Repository<Entity>) {}
+  constructor(private repository: Repository<Entity>, private dataSouce: DataSource) {}
 
   async getList(index: number, size: number, query: Query): Promise<XResultList<Entity | XGroupItem>> {
     return new Promise<XResultList<Entity | XGroupItem>>(async (x) => {
@@ -43,7 +43,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async get(id: XIdType): Promise<Entity> {
-    return await this.repository.findOne(id as any);
+    return await this.repository.findOneBy({ id });
   }
 
   async post(entity: any): Promise<Entity> {
@@ -51,10 +51,10 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async put(entity: Entity): Promise<Entity> {
-    let index = await this.repository.findOne(entity.id as any);
+    let index = await this.repository.findOneBy({ id: entity.id });
     if (index) {
       Object.assign(index, entity);
-      await getManager().transaction(async (transactionalEntityManager) => {
+      await this.dataSouce.manager.transaction(async (transactionalEntityManager) => {
         await transactionalEntityManager.save(index);
       });
 
@@ -63,7 +63,7 @@ export class XRepositoryService<Entity extends XId, Query extends XQuery> {
   }
 
   async delete(id: XIdType): Promise<Entity> {
-    let entity = await this.repository.findOne(id as any);
+    let entity = await this.repository.findOneBy({ id });
     return await this.repository.remove(entity);
   }
 

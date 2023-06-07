@@ -1,6 +1,7 @@
 import { Injectable, Get, Param, Post, Body, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { XRepositoryService } from './repository.service';
 import { XId, XResultList, XGroupItem, XQuery, XIdType } from '../interfaces';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class XControllerService<Entity extends XId, Query extends XQuery> {

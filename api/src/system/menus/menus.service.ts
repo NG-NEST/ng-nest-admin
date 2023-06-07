@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getManager, Like, ObjectID } from 'typeorm';
+import { Repository, getManager, Like, DataSource } from 'typeorm';
 import { XRepositoryService, XQuery, XIdType } from '@ng-nest/api/core';
 import { Menu } from './entities/menu.entity';
 import { Action } from '../../system/actions/entities/action.entity';
@@ -12,9 +12,10 @@ export class MenusService extends XRepositoryService<Menu, XQuery> {
     @InjectRepository(Menu)
     private readonly menuRepository: Repository<Menu>,
     @InjectRepository(Action)
-    private readonly actionRepository: Repository<Action>
+    private readonly actionRepository: Repository<Action>,
+    private dataSource: DataSource
   ) {
-    super(menuRepository);
+    super(menuRepository, dataSource);
   }
 
   async get(id: XIdType): Promise<Menu> {

@@ -29,6 +29,7 @@
     "@nestjs/typeorm": "^9.0.0",
     "fs-extra": "^9.0.0",
     "mysql": "^2.18.1",
+    "mysql2": "^3.3.3",
     "passport": "^0.6.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
@@ -36,7 +37,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.5.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

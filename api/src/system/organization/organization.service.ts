@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getManager, Like } from 'typeorm';
+import { Repository, getManager, Like, DataSource } from 'typeorm';
 import { XRepositoryService, XQuery, XIdType } from '@ng-nest/api/core';
 import { Organization } from './entities/organization.entity';
 import { orderBy } from 'lodash';
@@ -9,9 +9,10 @@ import { orderBy } from 'lodash';
 export class OrganizationService extends XRepositoryService<Organization, XQuery> {
   constructor(
     @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>
+    private readonly organizationRepository: Repository<Organization>,
+    private dataSource: DataSource
   ) {
-    super(organizationRepository);
+    super(organizationRepository, dataSource);
   }
 
   async get(id: XIdType): Promise<Organization> {

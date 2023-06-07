@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { XRepositoryService, XQuery, XIdType } from '@ng-nest/api/core';
 import { User } from './entities/user.entity';
 
@@ -8,9 +8,10 @@ import { User } from './entities/user.entity';
 export class UsersService extends XRepositoryService<User, XQuery> {
   constructor(
     @InjectRepository(User)
-    public readonly usersRepository: Repository<User>
+    public readonly usersRepository: Repository<User>,
+    private dataSource: DataSource
   ) {
-    super(usersRepository);
+    super(usersRepository, dataSource);
   }
 
   async get(id: XIdType): Promise<User> {
