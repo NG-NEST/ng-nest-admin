@@ -11,7 +11,6 @@ export class User extends BaseModel {
   @Field({ description: UserDescription.Account })
   account: string;
 
-  @Field({ description: UserDescription.Password })
   @HideField()
   password: string;
 

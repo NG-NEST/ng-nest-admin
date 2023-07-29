@@ -1,6 +1,7 @@
 api/node_modules
 api/dist
 api/logs
+api/.env
 ui/node_modules
 ui/dist
 ui/.angular/cache

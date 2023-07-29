@@ -97,9 +97,6 @@ type User {
   """用户名称"""
   name: String!
 
-  """用户密码"""
-  password: String!
-
   """用户手机号"""
   phone: String
 
