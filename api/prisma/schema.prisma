@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String         @id @default(uuid())
+  name     String         @unique
+  account  String         @unique
+  password String
+  email    String
+  phone    String?        @unique
+  roles    UsersOnRoles[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sys-user")
+}
+
+model Role {
+  id    String         @id @default(uuid())
+  name  String         @unique
+  code  String
+  users UsersOnRoles[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sys-role")
+}
+
+model UsersOnRoles {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, roleId])
+  @@map("sys-user-role")
+}
+
+model Permission {
+  id         String   @id @default(uuid())
+  name       String
+  code       String
+  sort       Int
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sys-permission")
+}
+
+model Resource {
+  id         String       @id @default(uuid())
+  pid        String
+  name       String
+  code       String
+  subject    String
+  Permission Permission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sys-resource")
+}

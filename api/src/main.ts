@@ -1,27 +1,18 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { XHttpExceptionFilter } from './core/filters/http-exception.filter';
+import { HttpExceptionFilter, PrismaClientExceptionFilter, TransformInterceptor, logger } from '@api/core';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalFilters(new XHttpExceptionFilter());
+  app.use(logger);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new HttpExceptionFilter(), new PrismaClientExceptionFilter(httpAdapter));
+
+  app.useGlobalInterceptors(new TransformInterceptor());
   app.enableCors();
-
-  const options = new DocumentBuilder()
-    .setTitle('ng-nest-admin-api')
-    .setDescription('The ng-nest-admin-api description')
-    .setVersion('1.0')
-    .addTag('ng-nest-admin-api')
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
-
-  const host = 'localhost';
-  const port = 3000;
-
-  await app.listen(port, host);
-
-  global['host'] = `http://${host}:${port}`;
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();

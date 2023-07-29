@@ -5,46 +5,6 @@
     NG-NEST-ADMIN
 </h1>
 
-基于 Angular 和 Nestjs 构建的开源后台管理系统。[Demo 地址](http://adminui.ngnest.com)
+新版本后端 `nestjs` 将使用 GraphQL + Prisma 来开发，目前处于开发中。
 
-> - 提供基本的系统管理模块（用户、角色、组织和菜单）
-> - 基于 RBAC 的权限管理
-> - 使用对应的 @ng-nest/ui 组件库
-
----
-
-### 支持环境
-
-- Angular ^15.0.0
-- Nestjs ^9.0.0
-
-Chrome Microsoft Edge Firefox Safari
-最新 2 个版本 最新 2 个版本 最新 2 个版本 最新 2 个版本
-
-### 2. 目录说明
-
-| 目录 | 说明                     |
-| ---- | ------------------------ |
-| api  | Nestjs 后台 API 接口项目 |
-| ui   | Angular 前端项目         |
-
-### 3. 开始--后台
-
-demo 使用 `TypeORM` 连接的 `MySql` 数据库，运行前请在 `api/ormconfig.json` 文件中配置好数据库连接。  
-`MySql` 数据库文件 `api/ng-nest-admin.sql` ，新建一个数据库直接执行导入。 
-
-```bash
-$ cd api
-$ npm install
-$ npm run start:dev
-```
-
-### 4. 开始--前端
-
-```bash
-$ cd ui
-$ npm install
-$ ng serve -o
-```
-<img style="border: 1px solid #fefefe" src="https://ngnest.com/static/docs/course/rbac/1-introduction/demo/1__ng-nest-admin/light.png" />
-<img style="border: 1px solid #fefefe" src="https://ngnest.com/static/docs/course/rbac/1-introduction/demo/1__ng-nest-admin/dark.png" />
+之前的版本可以切换分支到 `16.0.x` 中查看 [Demo 地址](http://adminui.ngnest.com)

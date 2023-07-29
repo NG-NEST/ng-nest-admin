@@ -1,1 +1,0 @@
-export const FLOAT_NODE_OPTION = 'FLOAT_NODE_OPTION';

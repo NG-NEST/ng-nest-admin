@@ -1,0 +1,156 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateUserInput {
+  """用户账号"""
+  account: String!
+
+  """用户邮箱"""
+  email: String!
+
+  """用户名称"""
+  name: String!
+
+  """用户密码"""
+  password: String!
+
+  """用户手机号"""
+  phone: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  """创建用户"""
+  createUser(createUser: CreateUserInput!): User!
+
+  """删除用户"""
+  deleteUser(
+    """编码"""
+    id: ID!
+  ): User!
+
+  """更新用户"""
+  updateUser(
+    """编码"""
+    id: ID!
+    updateUser: UpdateUserInput!
+  ): User!
+}
+
+type Query {
+  """用户详情"""
+  user(
+    """编码"""
+    id: ID!
+  ): User
+
+  """用户列表"""
+  users(
+    """排序规则"""
+    orderBy: [UserOrderInput!]
+
+    """索引开始位置，默认从 0 开始"""
+    skip: Int = 0
+
+    """查询的数据条数，默认 10 条数据"""
+    take: Int = 10
+
+    """查询条件"""
+    where: UserWhereInput
+  ): UserPaginationOutput!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input UpdateUserInput {
+  """用户邮箱"""
+  email: String
+
+  """用户名称"""
+  name: String
+
+  """用户手机号"""
+  phone: String
+}
+
+type User {
+  """用户账号"""
+  account: String!
+
+  """创建时间"""
+  createdAt: DateTime
+
+  """用户邮箱"""
+  email: String!
+
+  """编码"""
+  id: ID!
+
+  """用户名称"""
+  name: String!
+
+  """用户密码"""
+  password: String!
+
+  """用户手机号"""
+  phone: String
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
+input UserOrderInput {
+  """用户账号"""
+  account: SortOrder
+
+  """创建时间"""
+  createdAt: SortOrder
+
+  """用户邮箱"""
+  email: SortOrder
+
+  """用户名称"""
+  name: SortOrder
+
+  """用户手机号"""
+  phone: SortOrder
+
+  """更新时间"""
+  updatedAt: SortOrder
+}
+
+type UserPaginationOutput {
+  """总数"""
+  count: Int
+
+  """数据集合"""
+  data: [User!]!
+}
+
+input UserWhere {
+  """用户账号"""
+  account: String
+
+  """用户邮箱"""
+  email: String
+
+  """用户名称"""
+  name: String
+
+  """用户手机号"""
+  phone: String
+}
+
+input UserWhereInput {
+  AND: [UserWhere!]
+  NOT: [UserWhere!]
+  OR: [UserWhere!]
+}
