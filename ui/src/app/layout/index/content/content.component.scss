@@ -1,0 +1,10 @@
+@import 'params';
+
+:host {
+  height: 100%;
+  width: 100%;
+  padding-top: 4.25rem;
+  padding-left: 15rem;
+  transition: padding 0.3s;
+  display: block;
+}

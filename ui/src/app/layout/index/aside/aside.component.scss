@@ -1,0 +1,11 @@
+@import 'params';
+
+:host {
+  position: fixed;
+  height: 100%;
+  width: 15rem;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  transition: width $--x-animation-duration-slow, background-color $--x-animation-duration-slow;
+}
