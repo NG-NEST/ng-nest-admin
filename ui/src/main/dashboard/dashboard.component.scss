@@ -1,0 +1,11 @@
+app-dashboard {
+  x-card {
+    display: block;
+    margin-bottom: 1rem;
+    &.graph {
+      .x-card-body {
+        padding: 0;
+      }
+    }
+  }
+}

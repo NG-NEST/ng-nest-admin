@@ -1,0 +1,10 @@
+@import '@ng-nest/ui/style/params/primary';
+
+au-tool {
+  display: flex;
+  justify-content: space-between;
+  margin: $--x-padding-medium 0;
+  &[padding] {
+    padding: 0 $--x-padding-medium;
+  }
+}

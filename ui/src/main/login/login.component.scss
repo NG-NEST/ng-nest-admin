@@ -1,0 +1,54 @@
+@import '@ng-nest/ui/style/params/primary';
+
+app-login {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > form {
+    border: $--x-border-base;
+    border-radius: $--x-border-radius;
+  }
+  ul {
+    padding: 50px 80px;
+    border-radius: 2px;
+    > li {
+      margin: 5px;
+      > x-input > p {
+        > input {
+          border-radius: 3px;
+          font-size: 14px;
+          padding: 10px;
+        }
+        > span[class*='icon-'] {
+          padding: 11px;
+        }
+      }
+      x-input.icon-left > p > input {
+        padding-left: 33px;
+      }
+      &.login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-direction: column;
+        span {
+          margin-top: 10px;
+          font-size: 20px;
+          letter-spacing: 2px;
+        }
+      }
+      &.submit {
+        margin-top: 1rem;
+        x-button {
+          display: flex;
+          .x-button {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}

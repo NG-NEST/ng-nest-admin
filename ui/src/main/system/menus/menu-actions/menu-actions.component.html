@@ -1,0 +1,36 @@
+<x-inner class="au-inner">
+  <div class="au-table">
+    <au-tool>
+      <x-buttons [space]="0.5">
+        <x-button icon="fto-chevron-left" (click)="action('cancel')">返回</x-button>
+        <x-button type="primary" icon="fto-plus" (click)="action('add')">新增</x-button>
+      </x-buttons>
+    </au-tool>
+    <x-table
+      #tableCom
+      [columns]="columns"
+      [rowHeight]="35"
+      [data]="data"
+      [size]="20"
+      [(index)]="index"
+      [query]="query"
+      [bodyHeight]="100"
+      [bodyColumnTpl]="{ actions: actionsTpl, icon: iconTpl }"
+      [adaptionHeight]="128"
+      virtualScroll
+      loading
+    ></x-table>
+  </div>
+</x-inner>
+
+<ng-template #actionsTpl let-column="$column" let-row="$row">
+  <div class="au-table-actions">
+    <x-link icon="fto-eye" (click)="action('info', row)" title="查看"></x-link>
+    <x-link icon="fto-edit" (click)="action('edit', row)" title="修改"></x-link>
+    <x-link icon="fto-trash-2" (click)="action('delete', row)" title="删除"></x-link>
+  </div>
+</ng-template>
+
+<ng-template #iconTpl let-column="$column" let-row="$row">
+  <x-icon *ngIf="row.icon" [type]="row.icon"></x-icon>
+</ng-template>

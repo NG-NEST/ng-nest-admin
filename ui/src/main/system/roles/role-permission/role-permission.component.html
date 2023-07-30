@@ -1,0 +1,46 @@
+<x-inner class="au-inner">
+  <div class="au-panel au-tree-left" [x-loading]="treeLoading">
+    <h4>菜单树</h4>
+    <x-tree
+      #treeCom
+      au-adaption
+      [outerHeight]="100"
+      [data]="treeData"
+      expandedLevel="0"
+      [activatedId]="activatedId"
+      [nodeHeight]="1.875"
+      (activatedChange)="action('menu-actions', $event)"
+    >
+    </x-tree>
+  </div>
+  <div class="au-table-right">
+    <au-tool>
+      <x-buttons space="0.5">
+        <x-button icon="fto-chevron-left" (click)="action('cancel', selected)">返回</x-button>
+        <x-button type="primary" icon="fto-plus" (click)="!disabled && action('save', selected)" [disabled]="disabled">保存</x-button>
+      </x-buttons>
+    </au-tool>
+    <x-table
+      #tableCom
+      [(manual)]="manual"
+      [columns]="columns"
+      [rowHeight]="35"
+      [checkedRow]="checkedRow"
+      (activatedRowChange)="action('activated-row-change', $event)"
+      [allowSelectRow]="false"
+      [data]="tableData"
+      [size]="20"
+      [(index)]="index"
+      [query]="query"
+      [bodyHeight]="100"
+      [bodyColumnTpl]="{ icon: iconTpl }"
+      [adaptionHeight]="128"
+      virtualScroll
+      loading
+    ></x-table>
+  </div>
+</x-inner>
+
+<ng-template #iconTpl let-column="$column" let-row="$row">
+  <x-icon *ngIf="row.icon" [type]="row.icon"></x-icon>
+</ng-template>

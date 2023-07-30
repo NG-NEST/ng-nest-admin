@@ -1,0 +1,19 @@
+<div class="crumb-operation">
+  <!-- <x-icon
+    [class.disabled]="nav.disabledBack"
+    [xType]="'ado-left'"
+    (click)="back()"
+    title="点击可后退，按住可以查看历史记录"
+  ></x-icon>
+  <x-icon
+    [class.disabled]="nav.disabledForward"
+    [xType]="'ado-right'"
+    (click)="forward()"
+    title="点击可前进，按住可以查看历史记录"
+  ></x-icon>
+  <x-icon type="ado-reload" (click)="reload()" title="重新加载此标签页"></x-icon> -->
+</div>
+<x-crumb [data]="indexService.crumbData" (nodeClick)="nodeClick($event)" [separator]="separatorTpl"></x-crumb>
+<ng-template #separatorTpl>
+  <x-icon type="fto-chevron-right"></x-icon>
+</ng-template>

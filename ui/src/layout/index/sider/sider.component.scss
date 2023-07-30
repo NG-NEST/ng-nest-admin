@@ -1,0 +1,83 @@
+@import '../index.param';
+
+app-sider {
+  height: 100%;
+  width: $sider-width;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  transition: width $transition-duration, background-color $transition-duration;
+  @include silder;
+  > ul {
+    overflow-y: auto;
+    height: calc(100% - #{$header-height});
+    position: relative;
+    z-index: 10;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+  > app-header {
+    // background-color: $header-background-color;
+    color: $header-color;
+    height: $header-height;
+    overflow: hidden;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+    > .logo {
+      display: flex;
+      align-items: center;
+      img {
+        width: 2rem;
+        transition: width $transition-duration, padding $transition-duration;
+      }
+      .title {
+        font-size: $--x-font-size-big;
+        margin-left: 0.625rem;
+        visibility: inherit;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: visibility $transition-duration, opacity $transition-duration;
+      }
+    }
+  }
+  > .silder-image {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    display: block;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: 50%;
+    background-image: url(/assets/img/sider/sider-1.jpg);
+    &:after {
+      position: absolute;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      content: '';
+      display: block;
+      opacity: 0.93;
+    }
+  }
+}
+
+app-float-node {
+  > ul {
+    padding: 0.5rem 0;
+    max-width: $sider-width;
+    min-width: $sider-width - 2rem;
+    box-shadow: $--x-box-shadow-light;
+  }
+  @include silder;
+}

@@ -1,0 +1,48 @@
+<x-inner class="au-inner">
+  <div class="au-panel au-tree-left" [x-loading]="treeLoading">
+    <h4>组织机构</h4>
+    <x-tree
+      #treeCom
+      au-adaption
+      [outerHeight]="100"
+      [data]="treeData"
+      expandedLevel="0"
+      [nodeHeight]="1.875"
+      (activatedChange)="action('tree-info', $event)"
+    >
+    </x-tree>
+  </div>
+  <div class="au-table-right">
+    <au-tool>
+      <x-button type="primary" icon="fto-plus" [disabled]="!auth['add']" (click)="auth['add'] && action('add')">新增</x-button>
+    </au-tool>
+    <x-table
+      #tableCom
+      [columns]="columns"
+      [rowHeight]="35"
+      [data]="data"
+      [size]="20"
+      [(index)]="index"
+      [query]="query"
+      [bodyHeight]="100"
+      [bodyColumnTpl]="{ actions: actionsTpl }"
+      [adaptionHeight]="128"
+      virtualScroll
+      loading
+    ></x-table>
+  </div>
+</x-inner>
+
+<ng-template #actionsTpl let-column="$column" let-row="$row">
+  <div class="au-table-actions">
+    <x-link icon="fto-eye" [disabled]="!auth['info']" (click)="auth['info'] && action('info', row)" title="查看"></x-link>
+    <x-link icon="fto-edit" [disabled]="!auth['edit']" (click)="auth['edit'] && action('edit', row)" title="修改"></x-link>
+    <x-link
+      icon="fto-list"
+      [disabled]="!auth['permission']"
+      (click)="auth['permission'] && action('permission', row)"
+      title="权限设置"
+    ></x-link>
+    <x-link icon="fto-trash-2" [disabled]="!auth['delete']" (click)="auth['delete'] && action('delete', row)" title="删除"></x-link>
+  </div>
+</ng-template>

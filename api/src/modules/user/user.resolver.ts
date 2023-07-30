@@ -12,9 +12,10 @@ export class UserResolver {
   constructor(private prisma: PrismaService) {}
 
   @Query(() => UserPaginationOutput, { description: UserResolverName.Users })
-  async users(@Args() { skip, take, orderBy, where }: UserPaginationInput): Promise<UserPaginationOutput> {
+  async users(@Args() input: UserPaginationInput): Promise<UserPaginationOutput> {
+    const { where } = input;
     return {
-      data: await this.prisma.user.findMany({ skip, take, orderBy, where }),
+      data: await this.prisma.user.findMany(input),
       count: await this.prisma.user.count({ where })
     };
   }

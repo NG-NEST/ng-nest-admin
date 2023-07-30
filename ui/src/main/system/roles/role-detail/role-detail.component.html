@@ -1,0 +1,25 @@
+<x-inner class="au-inner au-column">
+  <au-tool padding>
+    <x-buttons [space]="0.5">
+      <x-button (click)="action('cancel')" icon="fto-chevron-left">返回</x-button>
+      <x-button icon="fto-save" type="primary" (click)="!formInvalid && action('save')" [disabled]="formInvalid || disabled">
+        保存
+      </x-button>
+    </x-buttons>
+  </au-tool>
+  <x-form
+    #form
+    class="au-panel au-overflow-auto"
+    au-adaption
+    [outerHeight]="84"
+    [disabled]="disabled"
+    [controls]="controls"
+    direction="row"
+    labelSuffix=":"
+    labelWidth="6rem"
+    width="30rem"
+    labelAlign="end"
+    span="20"
+    space="2"
+  ></x-form>
+</x-inner>

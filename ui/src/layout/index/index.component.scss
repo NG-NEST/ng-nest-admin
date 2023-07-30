@@ -1,0 +1,50 @@
+@import 'index.param';
+
+// 框架页样式
+app-index {
+  color: $font-color;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// 框架页中缩起菜单栏后的样式
+app-index.sider-shrink {
+  > app-tabs,
+  > app-crumb {
+    left: $tabs-height + 0.625rem;
+    width: calc(100% - #{$tabs-height + 0.625rem});
+  }
+  > app-content {
+    padding-left: $tabs-height + 0.625rem;
+  }
+  > app-sider {
+    width: $tabs-height + 0.625rem;
+    > app-header {
+      padding: 0.75rem;
+      > .logo {
+        img {
+          width: 1.5rem;
+        }
+        .title {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+    }
+    li {
+      a {
+        span,
+        .sider-arrow {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+      ul {
+        visibility: hidden;
+        height: 0;
+        opacity: 0;
+      }
+    }
+  }
+}

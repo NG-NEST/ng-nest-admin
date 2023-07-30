@@ -1,0 +1,99 @@
+@import '@ng-nest/ui/style/params/primary';
+
+// 字体颜色
+$font-color: $--x-text;
+// 头部背景色
+$header-background-color: rgba(0, 0, 0, 0.8);
+// 头部文字颜色
+$header-color: $--x-text;
+// 菜单栏背景色
+$sider-background-color: rgba(0, 0, 0, 0.8);
+// 顶部右侧菜单个数
+$nav-num: 5;
+// 正文背景色
+$content-background-color: $--x-background;
+// 头部高度
+$header-height: 3.25rem;
+// 标签页高度
+$tabs-height: 2.25rem;
+// 面包屑导航高度
+$crumb-height: 2rem;
+// 菜单栏宽度
+$sider-width: 15rem;
+// 内容区域的内边距
+$content-padding: $--x-padding-large;
+// 悬停背景色
+$sider-node-hover-background-color: rgba(0, 0, 0, 0.02);
+// 悬停文字颜色
+$sider-node-hover-color: $--x-text;
+// 选中背景颜色
+$selected-background-color: rgba(0, 0, 0, 0.03);
+// 选中文字颜色
+$selected-color: $--x-primary;
+// 动画时间
+$transition-duration: 0.3s;
+@mixin hover {
+  color: $selected-color;
+  background-color: $sider-node-hover-background-color;
+}
+
+// 选中效果
+@mixin activated {
+  color: $selected-color;
+  background-color: $selected-background-color;
+  border-right: 0.125rem solid $selected-color;
+}
+
+// 菜单样式
+@mixin silder {
+  li {
+    a {
+      padding: 0 0.875rem;
+      transition: background-color $transition-duration, border-color $transition-duration;
+      display: flex;
+      align-items: center;
+      height: $tabs-height;
+      font-size: 0.875rem;
+      color: $font-color;
+      user-select: none;
+      position: relative;
+      span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 0 0.375rem;
+        transition: visibility $transition-duration, opacity $transition-duration;
+        flex: 1;
+      }
+      .x-icon {
+        font-size: 1.125rem;
+        &.sider-arrow {
+          font-size: 0.875rem;
+          transition: visibility $transition-duration, opacity $transition-duration, transform $transition-duration;
+          &.show {
+            transform: rotate(90deg);
+          }
+        }
+      }
+      &:hover {
+        @include hover;
+      }
+      &.active {
+        @include activated;
+        &:hover {
+          @include activated;
+        }
+      }
+    }
+    &.childrenShow {
+      > a {
+        background-color: $selected-background-color;
+      }
+    }
+    &.floatShow {
+      > a {
+        @include hover;
+      }
+    }
+  }
+}
