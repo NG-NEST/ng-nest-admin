@@ -8,4 +8,58 @@
   left: 0;
   z-index: 11;
   transition: width $--x-animation-duration-slow, background-color $--x-animation-duration-slow;
+
+  .aside {
+    &-image {
+      position: absolute;
+      z-index: 1;
+      height: 100%;
+      width: 100%;
+      display: block;
+      top: 0;
+      left: 0;
+      background-size: cover;
+      background-position: 50%;
+      background-image: url(/assets/img/sider/sider-1.jpg);
+      &::after {
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        content: '';
+        display: block;
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    &-logo {
+      color: var(--x-text);
+      height: 3.25rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+      > img {
+        width: 2rem;
+        transition: width $--x-animation-duration-slow, padding $--x-animation-duration-slow;
+      }
+      > span {
+        font-size: $--x-font-size-big;
+        margin-left: 0.625rem;
+        visibility: inherit;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: visibility $--x-animation-duration-slow, opacity $--x-animation-duration-slow;
+      }
+    }
+    &-menus {
+      position: relative;
+      z-index: 10;
+      ::ng-deep .x-menu-nodes .x-menu-node {
+        border-right: none;
+      }
+    }
+  }
 }
