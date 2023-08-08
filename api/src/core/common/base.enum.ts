@@ -27,4 +27,15 @@ export enum BaseDescription {
   UpdatedAt = '更新时间'
 }
 
+export enum WhereDescription {
+  Equals = '等于',
+  Not = '不等于',
+  In = '在给定的值当中',
+  NotIn = '不在给定的值当中',
+  Lt = '小于给定的值',
+  Lte = '小于等于给定的值',
+  Gt = '大于给定的值',
+  Contains = '包含给定的值'
+}
+
 export const BaseID = { type: () => ID, description: BaseDescription.Id };

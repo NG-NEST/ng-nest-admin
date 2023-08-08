@@ -1,5 +1,5 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BaseDescription, BaseID, PrismaService } from '@api/core';
+import { BaseID, PrismaService } from '@api/core';
 import { UpdateUserInput } from './dto/update.input';
 import { User } from './dto/user.model';
 import { CreateUserInput } from './dto/create.input';

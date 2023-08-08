@@ -70,6 +70,20 @@ enum SortOrder {
   desc
 }
 
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
+}
+
 input UpdateUserInput {
   """用户邮箱"""
   email: String
@@ -134,20 +148,32 @@ type UserPaginationOutput {
 
 input UserWhere {
   """用户账号"""
-  account: String
+  account: StringFilter
 
   """用户邮箱"""
-  email: String
+  email: StringFilter
 
   """用户名称"""
-  name: String
+  name: StringFilter
 
   """用户手机号"""
-  phone: String
+  phone: StringFilter
 }
 
 input UserWhereInput {
   AND: [UserWhere!]
   NOT: [UserWhere!]
   OR: [UserWhere!]
+
+  """用户账号"""
+  account: StringFilter
+
+  """用户邮箱"""
+  email: StringFilter
+
+  """用户名称"""
+  name: StringFilter
+
+  """用户手机号"""
+  phone: StringFilter
 }
