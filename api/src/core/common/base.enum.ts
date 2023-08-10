@@ -12,6 +12,7 @@ export enum PaginationDescription {
   Take = '查询的数据条数，默认 10 条数据',
   OrderBy = '排序规则',
   Where = '查询条件',
+  Include = '包含关联对象',
 
   Count = '总数',
   Data = '数据集合'
@@ -28,14 +29,22 @@ export enum BaseDescription {
 }
 
 export enum WhereDescription {
-  Equals = '等于',
-  Not = '不等于',
+  AND = '与关系，所有的条件都返回 true',
+  OR = '或关系，满足一个或多个条件就返回 true',
+  NOT = '非关系，所有的条件都返回 false',
+
+  Equals = '等于给定的值',
   In = '在给定的值当中',
   NotIn = '不在给定的值当中',
   Lt = '小于给定的值',
   Lte = '小于等于给定的值',
   Gt = '大于给定的值',
-  Contains = '包含给定的值'
+  Gte = '大于等于给定的值',
+  Not = '不等于给定的值',
+
+  Contains = '包含给定的值',
+  StartsWith = '开始字符包含给定值',
+  EndsWith = '结束字符包含给定值'
 }
 
 export const BaseID = { type: () => ID, description: BaseDescription.Id };

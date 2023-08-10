@@ -1,7 +1,17 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { UserDescription } from './user.enum';
-import { ValidatorDescription } from '@api/core';
+import { BaseCreateWithoutInput, ValidatorDescription } from '@api/core';
+import { CreateWithoutRoleInput, RoleDescription } from 'src/modules/role';
+
+@InputType()
+export class CreateRole {
+  @Field(() => CreateWithoutRoleInput, { description: RoleDescription.Role })
+  role: CreateWithoutRoleInput;
+}
+
+@InputType()
+export class CreateUserRole extends BaseCreateWithoutInput(CreateRole) {}
 
 @InputType()
 export class CreateUserInput {
@@ -24,4 +34,8 @@ export class CreateUserInput {
   @Field({ description: UserDescription.Phone, nullable: true })
   @IsOptional()
   phone?: string;
+
+  @Field(() => CreateUserRole, { description: RoleDescription.Role })
+  @IsOptional()
+  roles?: CreateUserRole;
 }

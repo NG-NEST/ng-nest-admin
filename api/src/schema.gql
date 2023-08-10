@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateRole {
+  """角色"""
+  role: CreateWithoutRoleInput!
+}
+
+input CreateRoleInput {
+  """角色编码"""
+  code: String!
+
+  """角色名称"""
+  name: String!
+}
+
 input CreateUserInput {
   """用户账号"""
   account: String!
@@ -17,6 +30,17 @@ input CreateUserInput {
 
   """用户手机号"""
   phone: String
+
+  """角色"""
+  roles: CreateUserRole
+}
+
+input CreateUserRole {
+  create: [CreateRole!]
+}
+
+input CreateWithoutRoleInput {
+  create: CreateRoleInput!
 }
 
 """
@@ -25,14 +49,30 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
+  """创建角色"""
+  createRole(createRole: CreateRoleInput!): Role!
+
   """创建用户"""
   createUser(createUser: CreateUserInput!): User!
+
+  """删除角色"""
+  deleteRole(
+    """编码"""
+    id: ID!
+  ): Role!
 
   """删除用户"""
   deleteUser(
     """编码"""
     id: ID!
   ): User!
+
+  """更新角色"""
+  updateRole(
+    """编码"""
+    id: ID!
+    updateRole: UpdateRoleInput!
+  ): Role!
 
   """更新用户"""
   updateUser(
@@ -43,6 +83,30 @@ type Mutation {
 }
 
 type Query {
+  """角色详情"""
+  role(
+    """编码"""
+    id: ID!
+  ): Role
+
+  """角色列表"""
+  roles(
+    """包含关联对象"""
+    include: RoleIncludeInput
+
+    """排序规则"""
+    orderBy: [RoleOrderInput!]
+
+    """索引开始位置，默认从 0 开始"""
+    skip: Int = 0
+
+    """查询的数据条数，默认 10 条数据"""
+    take: Int = 10
+
+    """查询条件"""
+    where: RoleWhereInput
+  ): RolePaginationOutput!
+
   """用户详情"""
   user(
     """编码"""
@@ -51,6 +115,9 @@ type Query {
 
   """用户列表"""
   users(
+    """包含关联对象"""
+    include: UserIncludeInput
+
     """排序规则"""
     orderBy: [UserOrderInput!]
 
@@ -65,23 +132,120 @@ type Query {
   ): UserPaginationOutput!
 }
 
+type Role {
+  """角色编码"""
+  code: String!
+
+  """创建时间"""
+  createdAt: DateTime
+
+  """编码"""
+  id: ID!
+
+  """角色名称"""
+  name: String!
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
+input RoleIncludeInput {
+  users: Boolean
+}
+
+input RoleOrderInput {
+  """角色编码"""
+  code: SortOrder
+
+  """创建时间"""
+  createdAt: SortOrder
+
+  """角色名称"""
+  name: SortOrder
+
+  """更新时间"""
+  updatedAt: SortOrder
+}
+
+type RolePaginationOutput {
+  """总数"""
+  count: Int
+
+  """数据集合"""
+  data: [Role!]!
+}
+
+input RoleWhere {
+  """角色编码"""
+  code: StringFilter
+
+  """角色名称"""
+  name: StringFilter
+}
+
+input RoleWhereInput {
+  """与关系，所有的条件都返回 true"""
+  AND: [RoleWhere!]
+
+  """非关系，所有的条件都返回 false"""
+  NOT: [RoleWhere!]
+
+  """或关系，满足一个或多个条件就返回 true"""
+  OR: [RoleWhere!]
+
+  """角色编码"""
+  code: StringFilter
+
+  """角色名称"""
+  name: StringFilter
+}
+
 enum SortOrder {
   asc
   desc
 }
 
 input StringFilter {
+  """包含给定的值"""
   contains: String
+
+  """结束字符包含给定值"""
   endsWith: String
+
+  """等于给定的值"""
   equals: String
+
+  """大于给定的值"""
   gt: String
+
+  """大于等于给定的值"""
   gte: String
+
+  """在给定的值当中"""
   in: [String!]
+
+  """小于给定的值"""
   lt: String
+
+  """小于等于给定的值"""
   lte: String
+
+  """不等于给定的值"""
   not: String
+
+  """不在给定的值当中"""
   notIn: [String!]
+
+  """开始字符包含给定值"""
   startsWith: String
+}
+
+input UpdateRoleInput {
+  """角色编码"""
+  code: String
+
+  """角色名称"""
+  name: String
 }
 
 input UpdateUserInput {
@@ -116,6 +280,10 @@ type User {
 
   """更新时间"""
   updatedAt: DateTime
+}
+
+input UserIncludeInput {
+  roles: Boolean
 }
 
 input UserOrderInput {
@@ -161,8 +329,13 @@ input UserWhere {
 }
 
 input UserWhereInput {
+  """与关系，所有的条件都返回 true"""
   AND: [UserWhere!]
+
+  """非关系，所有的条件都返回 false"""
   NOT: [UserWhere!]
+
+  """或关系，满足一个或多个条件就返回 true"""
   OR: [UserWhere!]
 
   """用户账号"""

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from '@api/modules';
+import { RoleModule, UserModule } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -15,7 +15,8 @@ import { join } from 'path';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    UserModule
+    UserModule,
+    RoleModule
   ]
 })
 export class AppModule {}

@@ -1,4 +1,6 @@
 export enum UserDescription {
+  User = '用户',
+
   Name = '用户名称',
   Account = '用户账号',
   Password = '用户密码',

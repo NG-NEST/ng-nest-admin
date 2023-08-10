@@ -26,5 +26,12 @@ export class UserOrderInput extends BaseOrder {
 @InputType()
 export class UserWhereInput extends BaseWhere(UserWhere) {}
 
+@InputType()
+export class UserIncludeInput {
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  roles?: boolean;
+}
+
 @ArgsType()
-export class UserPaginationInput extends BasePaginationInput(UserOrderInput, UserWhereInput) {}
+export class UserPaginationInput extends BasePaginationInput(UserWhereInput, UserOrderInput, UserIncludeInput) {}

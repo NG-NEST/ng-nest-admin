@@ -1,40 +1,78 @@
 import { ArgsType, Field, InputType, Int } from '@nestjs/graphql';
-import { SortOrder } from './base.enum';
+import { SortOrder, WhereDescription } from './base.enum';
 import { IsOptional, Max, Min } from 'class-validator';
 import { BaseDescription, PaginationDescription } from './base.enum';
 import { Type } from '@nestjs/common';
 
-export interface Constructor<T> {
-  new (): T;
-}
-
 @InputType()
 export class StringFilter {
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Equals })
   equals?: string;
-  @Field(() => [String])
+  @Field(() => [String], { description: WhereDescription.In })
   in?: string[];
-  @Field(() => [String])
+  @Field(() => [String], { description: WhereDescription.NotIn })
   notIn?: string[];
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Lt })
   lt?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Lte })
   lte?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Gt })
   gt?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Gte })
   gte?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Contains })
   contains?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.StartsWith })
   startsWith?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.EndsWith })
   endsWith?: string;
-  @Field(() => String)
+  @Field(() => String, { description: WhereDescription.Not })
   not?: string;
 }
 
-export const BaseString: Type<StringFilter> = StringFilter;
+@InputType()
+export class DateTimeFilter {
+  @Field(() => Date, { description: WhereDescription.Equals })
+  equals?: Date;
+  @Field(() => [Date], { description: WhereDescription.In })
+  in?: Date[];
+  @Field(() => [Date], { description: WhereDescription.NotIn })
+  notIn?: Date[];
+  @Field(() => Date, { description: WhereDescription.Lt })
+  lt?: Date;
+  @Field(() => Date, { description: WhereDescription.Lte })
+  lte?: Date;
+  @Field(() => Date, { description: WhereDescription.Gt })
+  gt?: Date;
+  @Field(() => Date, { description: WhereDescription.Gte })
+  gte?: Date;
+  @Field(() => Date, { description: WhereDescription.Not })
+  not?: Date;
+}
+
+@InputType()
+export class NumberFilter {
+  @Field(() => Number, { description: WhereDescription.Equals })
+  equals?: number;
+  @Field(() => [Number], { description: WhereDescription.In })
+  in?: number[];
+  @Field(() => [Number], { description: WhereDescription.NotIn })
+  notIn?: number[];
+  @Field(() => Number, { description: WhereDescription.Lt })
+  lt?: number;
+  @Field(() => Number, { description: WhereDescription.Lte })
+  lte?: number;
+  @Field(() => Number, { description: WhereDescription.Gt })
+  gt?: number;
+  @Field(() => Number, { description: WhereDescription.Gte })
+  gte?: number;
+  @Field(() => Number, { description: WhereDescription.Not })
+  not?: number;
+}
+
+export const BaseStringFilter: Type<StringFilter> = StringFilter;
+export const BaseDateTimeFilter: Type<DateTimeFilter> = DateTimeFilter;
+export const BaseNumberFilter: Type<NumberFilter> = NumberFilter;
 
 @InputType()
 export class BaseOrder {
@@ -47,16 +85,16 @@ export class BaseOrder {
   updatedAt?: SortOrder;
 }
 
-export function BaseWhere<Where>(TWhere: Type<Where> | Constructor<Where>) {
+export function BaseWhere<Where>(TWhere: Type<Where> | ObjectConstructor) {
   @InputType()
-  class Input extends TWhere {
-    @Field(() => [TWhere], { nullable: true })
+  abstract class Input extends TWhere {
+    @Field(() => [TWhere], { description: WhereDescription.AND, nullable: true })
     @IsOptional()
     AND?: Where[];
-    @Field(() => [TWhere], { nullable: true })
+    @Field(() => [TWhere], { description: WhereDescription.OR, nullable: true })
     @IsOptional()
     OR?: Where[];
-    @Field(() => [TWhere], { nullable: true })
+    @Field(() => [TWhere], { description: WhereDescription.NOT, nullable: true })
     @IsOptional()
     NOT?: Where[];
   }
@@ -64,9 +102,9 @@ export function BaseWhere<Where>(TWhere: Type<Where> | Constructor<Where>) {
   return Input;
 }
 
-export function BasePaginationInput<OrderBy, Where>(TOrderBy: Type<OrderBy>, TWhere: Type<Where>) {
+export function BasePaginationInput<OrderBy, Where, Include>(TWhere: Type<Where>, TOrderBy: Type<OrderBy>, TInclude: Type<Include>) {
   @ArgsType()
-  class Input {
+  abstract class Input {
     @Field(() => Int, { description: PaginationDescription.Skip, nullable: true, defaultValue: 0 })
     @IsOptional()
     @Min(0)
@@ -85,6 +123,21 @@ export function BasePaginationInput<OrderBy, Where>(TOrderBy: Type<OrderBy>, TWh
     @Field(() => TWhere, { description: PaginationDescription.Where, nullable: true })
     @IsOptional()
     where?: Where;
+
+    @Field(() => TInclude, { description: PaginationDescription.Include, nullable: true })
+    @IsOptional()
+    include?: Include;
   }
+  return Input;
+}
+
+export function BaseCreateWithoutInput<CreateWithout>(TCreateWithout: Type<CreateWithout>) {
+  @InputType()
+  abstract class Input {
+    @Field(() => [TCreateWithout], { nullable: true })
+    @IsOptional()
+    create?: CreateWithout[];
+  }
+
   return Input;
 }
