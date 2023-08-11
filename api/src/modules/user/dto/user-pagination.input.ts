@@ -1,37 +1,8 @@
-import { BaseOrder, BasePaginationInput, BaseWhere, SortOrder } from '@api/core';
-import { InputType, Field, ArgsType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
-import { UserDescription } from './user.enum';
-import { UserWhere } from './user-where';
-
-@InputType()
-export class UserOrderInput extends BaseOrder {
-  @Field(() => SortOrder, { description: UserDescription.Name, nullable: true })
-  @IsOptional()
-  name?: SortOrder;
-
-  @Field(() => SortOrder, { description: UserDescription.Account, nullable: true })
-  @IsOptional()
-  account?: SortOrder;
-
-  @Field(() => SortOrder, { description: UserDescription.Email, nullable: true })
-  @IsOptional()
-  email?: SortOrder;
-
-  @Field(() => SortOrder, { description: UserDescription.Phone, nullable: true })
-  @IsOptional()
-  phone?: SortOrder;
-}
-
-@InputType()
-export class UserWhereInput extends BaseWhere(UserWhere) {}
-
-@InputType()
-export class UserIncludeInput {
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  roles?: boolean;
-}
+import { BasePaginationInput } from '@api/core';
+import { ArgsType } from '@nestjs/graphql';
+import { UserWhereInput } from './user-where';
+import { UserOrderInput } from './user-order';
+import { UserIncludeInput } from './user-include';
 
 @ArgsType()
 export class UserPaginationInput extends BasePaginationInput(UserWhereInput, UserOrderInput, UserIncludeInput) {}

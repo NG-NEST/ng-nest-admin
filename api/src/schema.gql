@@ -91,9 +91,6 @@ type Query {
 
   """角色列表"""
   roles(
-    """包含关联对象"""
-    include: RoleIncludeInput
-
     """排序规则"""
     orderBy: [RoleOrderInput!]
 
@@ -147,10 +144,6 @@ type Role {
 
   """更新时间"""
   updatedAt: DateTime
-}
-
-input RoleIncludeInput {
-  users: Boolean
 }
 
 input RoleOrderInput {
@@ -277,13 +270,18 @@ type User {
 
   """用户手机号"""
   phone: String
+  roles: [UserRole!]
 
   """更新时间"""
   updatedAt: DateTime
 }
 
+input UserInclude {
+  role: Boolean
+}
+
 input UserIncludeInput {
-  roles: Boolean
+  roles: UserRoleInclude
 }
 
 input UserOrderInput {
@@ -312,6 +310,20 @@ type UserPaginationOutput {
 
   """数据集合"""
   data: [User!]!
+}
+
+type UserRole {
+  """创建时间"""
+  createdAt: DateTime
+  role: Role
+  roleId: ID
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
+input UserRoleInclude {
+  include: UserInclude
 }
 
 input UserWhere {

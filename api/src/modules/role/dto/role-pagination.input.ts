@@ -1,4 +1,4 @@
-import { BaseOrder, BasePaginationInput, BaseWhere, SortOrder } from '@api/core';
+import { BaseOrder, BasePaginationInput, BaseWhereInput, SortOrder } from '@api/core';
 import { InputType, Field, ArgsType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { RoleDescription } from './role.enum';
@@ -16,7 +16,7 @@ export class RoleOrderInput extends BaseOrder {
 }
 
 @InputType()
-export class RoleWhereInput extends BaseWhere(RoleWhere) {}
+export class RoleWhereInput extends BaseWhereInput(RoleWhere) {}
 
 @InputType()
 export class RoleIncludeInput {
@@ -26,4 +26,4 @@ export class RoleIncludeInput {
 }
 
 @ArgsType()
-export class RolePaginationInput extends BasePaginationInput(RoleWhereInput, RoleOrderInput, RoleIncludeInput) {}
+export class RolePaginationInput extends BasePaginationInput(RoleWhereInput, RoleOrderInput) {}

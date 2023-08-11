@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { UserDescription } from './user.enum';
-import { BaseStringFilter, StringFilter } from '@api/core';
+import { BaseStringFilter, BaseWhereInput, StringFilter } from '@api/core';
 
 @InputType()
 export class UserWhere {
@@ -21,3 +21,6 @@ export class UserWhere {
   @IsOptional()
   phone?: StringFilter;
 }
+
+@InputType()
+export class UserWhereInput extends BaseWhereInput(UserWhere) {}

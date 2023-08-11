@@ -3,6 +3,7 @@ import { SortOrder, WhereDescription } from './base.enum';
 import { IsOptional, Max, Min } from 'class-validator';
 import { BaseDescription, PaginationDescription } from './base.enum';
 import { Type } from '@nestjs/common';
+import { el } from 'date-fns/locale';
 
 @InputType()
 export class StringFilter {
@@ -85,9 +86,9 @@ export class BaseOrder {
   updatedAt?: SortOrder;
 }
 
-export function BaseWhere<Where>(TWhere: Type<Where> | ObjectConstructor) {
+export function BaseWhereInput<Where>(TWhere: Type<Where> | ObjectConstructor) {
   @InputType()
-  abstract class Input extends TWhere {
+  class Input extends TWhere {
     @Field(() => [TWhere], { description: WhereDescription.AND, nullable: true })
     @IsOptional()
     AND?: Where[];
@@ -102,38 +103,87 @@ export function BaseWhere<Where>(TWhere: Type<Where> | ObjectConstructor) {
   return Input;
 }
 
-export function BasePaginationInput<OrderBy, Where, Include>(TWhere: Type<Where>, TOrderBy: Type<OrderBy>, TInclude: Type<Include>) {
+@ArgsType()
+export class Pagination {
+  @Field(() => Int, { description: PaginationDescription.Skip, nullable: true, defaultValue: 0 })
+  @IsOptional()
+  @Min(0)
+  skip?: number;
+
+  @Field(() => Int, { description: PaginationDescription.Take, nullable: true, defaultValue: 10 })
+  @IsOptional()
+  @Min(1)
+  @Max(100)
+  take?: number;
+}
+
+export class PaginationWhere<Where> extends Pagination {
+  where?: Where;
+}
+
+export class PaginationWhereOrder<Where, OrderBy> extends PaginationWhere<Where> {
+  orderBy?: OrderBy[];
+}
+
+export class PaginationWhereOrderInclude<Where, OrderBy, Include> extends PaginationWhereOrder<Where, OrderBy> {
+  include?: Include;
+}
+
+export function BasePaginationInput(): typeof Pagination;
+export function BasePaginationInput<Where>(TWhere?: Type<Where>): typeof PaginationWhere<Where>;
+export function BasePaginationInput<Where, OrderBy>(
+  TWhere?: Type<Where>,
+  TOrderBy?: Type<OrderBy>
+): typeof PaginationWhereOrder<Where, OrderBy>;
+export function BasePaginationInput<Where, OrderBy, Include>(
+  TWhere?: Type<Where>,
+  TOrderBy?: Type<OrderBy>,
+  TInclude?: Type<Include>
+): typeof PaginationWhereOrderInclude<Where, OrderBy, Include>;
+export function BasePaginationInput<Where, OrderBy, Include>(
+  TWhere?: Type<Where>,
+  TOrderBy?: Type<OrderBy>,
+  TInclude?: Type<Include>
+):
+  | typeof Pagination
+  | typeof PaginationWhere<Where>
+  | typeof PaginationWhereOrder<Where, OrderBy>
+  | typeof PaginationWhereOrderInclude<Where, OrderBy, Include> {
   @ArgsType()
-  abstract class Input {
-    @Field(() => Int, { description: PaginationDescription.Skip, nullable: true, defaultValue: 0 })
-    @IsOptional()
-    @Min(0)
-    skip?: number;
-
-    @Field(() => Int, { description: PaginationDescription.Take, nullable: true, defaultValue: 10 })
-    @IsOptional()
-    @Min(1)
-    @Max(100)
-    take?: number;
-
-    @Field(() => [TOrderBy], { description: PaginationDescription.OrderBy, nullable: true })
-    @IsOptional()
-    orderBy?: OrderBy[];
-
+  class PaginationWhere extends Pagination {
     @Field(() => TWhere, { description: PaginationDescription.Where, nullable: true })
     @IsOptional()
     where?: Where;
+  }
 
+  @ArgsType()
+  class PaginationWhereOrder extends PaginationWhere {
+    @Field(() => [TOrderBy], { description: PaginationDescription.OrderBy, nullable: true })
+    @IsOptional()
+    orderBy?: OrderBy[];
+  }
+
+  @ArgsType()
+  class PaginationWhereOrderInclude extends PaginationWhereOrder {
     @Field(() => TInclude, { description: PaginationDescription.Include, nullable: true })
     @IsOptional()
     include?: Include;
   }
-  return Input;
+
+  if (!TWhere && !TOrderBy && !TInclude) {
+    return Pagination;
+  } else if (TWhere && !TOrderBy && !TInclude) {
+    return PaginationWhere;
+  } else if (TWhere && TOrderBy && !TInclude) {
+    return PaginationWhereOrder;
+  } else if (TWhere && TOrderBy && TInclude) {
+    return PaginationWhereOrderInclude;
+  }
 }
 
 export function BaseCreateWithoutInput<CreateWithout>(TCreateWithout: Type<CreateWithout>) {
   @InputType()
-  abstract class Input {
+  class Input {
     @Field(() => [TCreateWithout], { nullable: true })
     @IsOptional()
     create?: CreateWithout[];
