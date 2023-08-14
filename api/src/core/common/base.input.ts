@@ -1,9 +1,8 @@
 import { ArgsType, Field, InputType, Int } from '@nestjs/graphql';
-import { SortOrder, WhereDescription } from './base.enum';
+import { IncludeDescription, SortOrder, WhereDescription } from './base.enum';
 import { IsOptional, Max, Min } from 'class-validator';
 import { BaseDescription, PaginationDescription } from './base.enum';
 import { Type } from '@nestjs/common';
-import { el } from 'date-fns/locale';
 
 @InputType()
 export class StringFilter {
@@ -84,6 +83,17 @@ export class BaseOrder {
   @Field(() => SortOrder, { description: BaseDescription.UpdatedAt, nullable: true })
   @IsOptional()
   updatedAt?: SortOrder;
+}
+
+export function BaseInclude<Include>(TInclude: Type<Include>) {
+  @InputType()
+  class Input {
+    @Field(() => TInclude, { description: IncludeDescription.Include, nullable: true })
+    @IsOptional()
+    include?: Include;
+  }
+
+  return Input;
 }
 
 export function BaseWhereInput<Where>(TWhere: Type<Where> | ObjectConstructor) {

@@ -270,6 +270,8 @@ type User {
 
   """用户手机号"""
   phone: String
+
+  """用户角色"""
   roles: [UserRole!]
 
   """更新时间"""
@@ -277,10 +279,12 @@ type User {
 }
 
 input UserInclude {
+  """用户角色"""
   role: Boolean
 }
 
 input UserIncludeInput {
+  """用户角色"""
   roles: UserRoleInclude
 }
 
@@ -315,6 +319,8 @@ type UserPaginationOutput {
 type UserRole {
   """创建时间"""
   createdAt: DateTime
+
+  """用户角色"""
   role: Role
   roleId: ID
 
@@ -323,6 +329,7 @@ type UserRole {
 }
 
 input UserRoleInclude {
+  """关联对象"""
   include: UserInclude
 }
 

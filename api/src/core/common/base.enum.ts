@@ -28,6 +28,10 @@ export enum BaseDescription {
   UpdatedAt = '更新时间'
 }
 
+export enum IncludeDescription {
+  Include = '关联对象'
+}
+
 export enum WhereDescription {
   AND = '与关系，所有的条件都返回 true',
   OR = '或关系，满足一个或多个条件就返回 true',

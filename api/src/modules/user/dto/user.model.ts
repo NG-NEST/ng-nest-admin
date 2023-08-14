@@ -1,15 +1,17 @@
 import { Field, HideField, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit, BaseModel } from '@api/core';
 import { IsOptional } from 'class-validator';
-import { UserDescription } from './user.enum';
+import { UserDescription, UserIncludeDescription } from './user.enum';
 import { Role } from '@api/modules';
 
 @ObjectType()
 export class UserRole extends BaseAudit {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
+  @IsOptional()
   roleId?: string;
 
-  @Field(() => Role)
+  @Field(() => Role, { description: UserIncludeDescription.UserRole, nullable: true })
+  @IsOptional()
   role?: Role;
 }
 
@@ -31,7 +33,7 @@ export class User extends BaseModel {
   @IsOptional()
   phone?: string;
 
-  @Field(() => [UserRole], { nullable: true })
+  @Field(() => [UserRole], { description: UserIncludeDescription.UserRole, nullable: true })
   @IsOptional()
   roles?: UserRole[];
 }
