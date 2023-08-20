@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BaseModel, BaseOrder, BasePaginationInput, BasePaginationOutput, BaseWhere, SortOrder } from '@ui/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
+import { BasePagination } from '@ui/core';
+import { User } from './user.model';
+import { UserPaginationInput } from './user-pagination.input';
+import { CreateUserInput } from './create.input';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -28,9 +31,9 @@ export class UserService {
       .valueChanges.pipe(map((x) => x.data?.user));
   }
 
-  users(input: UserPaginationInput): Observable<BasePaginationOutput<User>> {
+  users(input: UserPaginationInput): Observable<BasePagination<User>> {
     return this.apollo
-      .watchQuery<{ users: BasePaginationOutput<User> }>({
+      .watchQuery<{ users: BasePagination<User> }>({
         variables: input,
         query: gql`
           query data($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
@@ -72,36 +75,3 @@ export class UserService {
       .pipe(map((x) => x.data?.user!));
   }
 }
-
-export interface User extends BaseModel {
-  name?: string;
-  account?: string;
-  email?: string;
-  phone?: string;
-}
-
-export interface CreateUserInput {
-  name: string;
-  account: string;
-  password: string;
-  email: string;
-  phone?: string;
-}
-
-export interface UserOrderInput extends BaseOrder {
-  name?: SortOrder;
-  account?: SortOrder;
-  email?: SortOrder;
-  phone?: SortOrder;
-}
-
-export interface UserWhere {
-  name?: string;
-  account?: string;
-  email?: string;
-  phone?: string;
-}
-
-export interface UserWhereInput extends BaseWhere<UserWhere> {}
-
-export interface UserPaginationInput extends BasePaginationInput<UserOrderInput, UserWhereInput> {}

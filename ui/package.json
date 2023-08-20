@@ -20,6 +20,7 @@
     "@angular/router": "^16.1.0",
     "@ng-nest/ui": "^16.0.7",
     "apollo-angular": "^5.0.0",
+    "node-fetch": "^3.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

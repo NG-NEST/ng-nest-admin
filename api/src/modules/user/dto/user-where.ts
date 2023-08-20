@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { UserDescription } from './user.enum';
-import { BaseStringFilter, BaseWhereInput, StringFilter } from '@api/core';
+import { BaseDateTimeFilter, BaseDescription, BaseStringFilter, BaseWhereInput, DateTimeFilter, StringFilter } from '@api/core';
 
 @InputType()
 export class UserWhere {
@@ -20,6 +20,14 @@ export class UserWhere {
   @Field(() => BaseStringFilter, { description: UserDescription.Phone, nullable: true })
   @IsOptional()
   phone?: StringFilter;
+
+  @Field(() => BaseDateTimeFilter, { description: BaseDescription.CreatedAt, nullable: true })
+  @IsOptional()
+  createdAt?: DateTimeFilter;
+
+  @Field(() => BaseDateTimeFilter, { description: BaseDescription.UpdatedAt, nullable: true })
+  @IsOptional()
+  updatedAt?: DateTimeFilter;
 }
 
 @InputType()

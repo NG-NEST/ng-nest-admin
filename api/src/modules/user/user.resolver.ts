@@ -1,18 +1,23 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BaseID, PrismaService } from '@api/core';
-import { UpdateUserInput } from './dto/update.input';
-import { User } from './dto/user.model';
-import { CreateUserInput } from './dto/create.input';
-import { UserPaginationOutput } from './dto/user.output';
-import { UserPaginationInput } from './dto/user-pagination.input';
-import { UserResolverName } from './dto/user.enum';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { BaseID, PrismaSelect, PrismaService } from '@api/core';
+import {
+  CreateUserInput,
+  UpdateUserInput,
+  User,
+  UserPaginationInput,
+  UserPaginationOutput,
+  UserResolverName
+} from './dto';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(private prisma: PrismaService) {}
 
   @Query(() => UserPaginationOutput, { description: UserResolverName.Users })
-  async users(@Args() input: UserPaginationInput): Promise<UserPaginationOutput> {
+  async users(
+    @Args() input: UserPaginationInput,
+    @PrismaSelect() data: any
+  ): Promise<UserPaginationOutput> {
     const { where } = input;
     return {
       data: await this.prisma.user.findMany(input),

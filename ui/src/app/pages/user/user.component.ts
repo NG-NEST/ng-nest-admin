@@ -1,23 +1,40 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@ui/api';
+import { ActivatedRoute } from '@angular/router';
+import { XTableColumn } from '@ng-nest/ui/table';
+import { User, UserDescription } from '@ui/api';
+import { BaseDescription, BasePagination } from '@ui/core';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
+  providers: [DatePipe]
 })
 export class UserComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  columns: XTableColumn[] = [
+    { id: 'name', label: UserDescription.Name },
+    { id: 'account', label: UserDescription.Account },
+    { id: 'email', label: UserDescription.Email },
+    { id: 'phone', label: UserDescription.Phone },
+    { id: 'createdAt', label: BaseDescription.CreatedAt },
+    { id: 'updatedAt', label: BaseDescription.UpdatedAt }
+  ];
+
+  list: User[] = [];
+  count = 0;
+  loading = true;
+
+  constructor(private activatedRoute: ActivatedRoute, private date: DatePipe) {}
   ngOnInit(): void {
-    this.userService.user('22fb3481-5872-4697-8a0a-1e6d30aba46554').subscribe((x) => {
-      console.log(x);
-    });
-
-    this.userService.users({ skip: 0, take: 10, orderBy: { name: 'desc' }, where: { AND: { account: 'admin' } } }).subscribe((x) => {
-      console.log(x);
-    });
-
-    this.userService.createUser({ name: 'ÕÔÁù', account: 'zhaoliu', email: 'zhaoliu@zhaoliu.com', password: '123456' }).subscribe((x) => {
-      console.log(x);
+    this.activatedRoute.data.pipe(map(({ users }) => (users as BasePagination<User>) || {})).subscribe(({ data, count }) => {
+      this.list = (data ?? []).map((x) => {
+        x = { ...x };
+        x.createdAt = this.date.transform(x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
+        x.updatedAt = this.date.transform(x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
+        return x;
+      });
+      this.count = count ?? 0;
     });
   }
 }
