@@ -85,6 +85,12 @@ export class BaseOrder {
   updatedAt?: SortOrder;
 }
 
+export interface BaseSelect {
+  id?: true;
+  createdAt?: true;
+  updatedAt?: true;
+}
+
 export function BaseInclude<Include>(TInclude: Type<Include>) {
   @InputType()
   class Input {

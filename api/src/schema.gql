@@ -48,12 +48,38 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input DateTimeFilter {
+  """等于给定的值"""
+  equals: DateTime
+
+  """大于给定的值"""
+  gt: DateTime
+
+  """大于等于给定的值"""
+  gte: DateTime
+
+  """在给定的值当中"""
+  in: [DateTime!]
+
+  """小于给定的值"""
+  lt: DateTime
+
+  """小于等于给定的值"""
+  lte: DateTime
+
+  """不等于给定的值"""
+  not: DateTime
+
+  """不在给定的值当中"""
+  notIn: [DateTime!]
+}
+
 type Mutation {
   """创建角色"""
   createRole(createRole: CreateRoleInput!): Role!
 
   """创建用户"""
-  createUser(createUser: CreateUserInput!): User!
+  createUser(user: CreateUserInput!): User!
 
   """删除角色"""
   deleteRole(
@@ -78,7 +104,7 @@ type Mutation {
   updateUser(
     """编码"""
     id: ID!
-    updateUser: UpdateUserInput!
+    user: UpdateUserInput!
   ): User!
 }
 
@@ -337,6 +363,9 @@ input UserWhere {
   """用户账号"""
   account: StringFilter
 
+  """创建时间"""
+  createdAt: DateTimeFilter
+
   """用户邮箱"""
   email: StringFilter
 
@@ -345,6 +374,9 @@ input UserWhere {
 
   """用户手机号"""
   phone: StringFilter
+
+  """更新时间"""
+  updatedAt: DateTimeFilter
 }
 
 input UserWhereInput {
@@ -360,6 +392,9 @@ input UserWhereInput {
   """用户账号"""
   account: StringFilter
 
+  """创建时间"""
+  createdAt: DateTimeFilter
+
   """用户邮箱"""
   email: StringFilter
 
@@ -368,4 +403,7 @@ input UserWhereInput {
 
   """用户手机号"""
   phone: StringFilter
+
+  """更新时间"""
+  updatedAt: DateTimeFilter
 }
