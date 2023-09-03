@@ -5,6 +5,7 @@ import { BasePagination } from '@ui/core';
 import { User } from './user.model';
 import { UserPaginationInput } from './user-pagination.input';
 import { CreateUserInput } from './create.input';
+import { cloneDeep } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
   user(id: string): Observable<User> {
     return this.apollo
       .watchQuery<{ user: User }>({
+        fetchPolicy: 'network-only',
         variables: { id },
         query: gql`
           query data($id: ID!) {
@@ -34,6 +36,7 @@ export class UserService {
   users(input: UserPaginationInput): Observable<BasePagination<User>> {
     return this.apollo
       .watchQuery<{ users: BasePagination<User> }>({
+        fetchPolicy: 'network-only',
         variables: input,
         query: gql`
           query data($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
@@ -52,7 +55,7 @@ export class UserService {
           }
         `
       })
-      .valueChanges.pipe(map((x) => x.data?.users!));
+      .valueChanges.pipe(map((x) => cloneDeep(x.data?.users!)));
   }
 
   createUser(createUser: CreateUserInput): Observable<User> {

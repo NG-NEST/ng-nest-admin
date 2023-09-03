@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { XQuery } from '@ng-nest/ui/core';
 import { XTableColumn } from '@ng-nest/ui/table';
-import { User, UserDescription } from '@ui/api';
+import { User, UserDescription, UserService } from '@ui/api';
 import { BaseDescription, BasePagination } from '@ui/core';
 import { map } from 'rxjs';
 
@@ -11,30 +11,43 @@ import { map } from 'rxjs';
   templateUrl: './user.component.html',
   providers: [DatePipe]
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   columns: XTableColumn[] = [
-    { id: 'name', label: UserDescription.Name },
-    { id: 'account', label: UserDescription.Account },
-    { id: 'email', label: UserDescription.Email },
-    { id: 'phone', label: UserDescription.Phone },
-    { id: 'createdAt', label: BaseDescription.CreatedAt },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt }
+    { id: 'name', label: UserDescription.Name, sort: true },
+    { id: 'account', label: UserDescription.Account, sort: true },
+    { id: 'email', label: UserDescription.Email, sort: true },
+    { id: 'phone', label: UserDescription.Phone, sort: true },
+    { id: 'createdAt', label: BaseDescription.CreatedAt, sort: true },
+    { id: 'updatedAt', label: BaseDescription.UpdatedAt, sort: true }
   ];
 
   list: User[] = [];
-  count = 0;
+  total = 0;
   loading = true;
+  data = (index: number, size: number, query: XQuery) =>
+    this.userService.users(this.paramsConvert(index, size, query)).pipe(map((x) => this.resultConvert(x)));
 
-  constructor(private activatedRoute: ActivatedRoute, private date: DatePipe) {}
-  ngOnInit(): void {
-    this.activatedRoute.data.pipe(map(({ users }) => (users as BasePagination<User>) || {})).subscribe(({ data, count }) => {
-      this.list = (data ?? []).map((x) => {
-        x = { ...x };
-        x.createdAt = this.date.transform(x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
-        x.updatedAt = this.date.transform(x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
-        return x;
-      });
-      this.count = count ?? 0;
+  constructor(private datePipe: DatePipe, private userService: UserService) {}
+
+  paramsConvert(index: number, size: number, query: XQuery) {
+    const { sort } = query;
+    const orderBy = sort ? sort.map(({ field, value }) => ({ [`${field}`]: value })) : [];
+
+    return {
+      skip: (index - 1) * size,
+      take: size,
+      orderBy
+    };
+  }
+
+  resultConvert(body: BasePagination<User>) {
+    const { data, count } = body;
+    const list = data.map((x) => {
+      x.createdAt = this.datePipe.transform(x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
+      x.updatedAt = this.datePipe.transform(x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
+      return x;
     });
+
+    return { list, total: count };
   }
 }

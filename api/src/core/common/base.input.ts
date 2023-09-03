@@ -86,9 +86,7 @@ export class BaseOrder {
 }
 
 export interface BaseSelect {
-  id?: true;
-  createdAt?: true;
-  updatedAt?: true;
+  select?: { [property: string]: true };
 }
 
 export function BaseInclude<Include>(TInclude: Type<Include>) {

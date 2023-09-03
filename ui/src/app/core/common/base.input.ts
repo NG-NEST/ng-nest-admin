@@ -53,6 +53,9 @@ export class Pagination {
   take?: number;
 }
 
+export const BASE_SKIP = 0;
+export const BASE_TAKE = 10;
+
 export class PaginationWhere<Where> extends Pagination {
   where?: Where;
 }

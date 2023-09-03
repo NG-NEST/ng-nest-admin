@@ -138,9 +138,6 @@ type Query {
 
   """用户列表"""
   users(
-    """包含关联对象"""
-    include: UserIncludeInput
-
     """排序规则"""
     orderBy: [UserOrderInput!]
 
@@ -304,16 +301,6 @@ type User {
   updatedAt: DateTime
 }
 
-input UserInclude {
-  """用户角色"""
-  role: Boolean
-}
-
-input UserIncludeInput {
-  """用户角色"""
-  roles: UserRoleInclude
-}
-
 input UserOrderInput {
   """用户账号"""
   account: SortOrder
@@ -352,11 +339,6 @@ type UserRole {
 
   """更新时间"""
   updatedAt: DateTime
-}
-
-input UserRoleInclude {
-  """关联对象"""
-  include: UserInclude
 }
 
 input UserWhere {
