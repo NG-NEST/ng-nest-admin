@@ -1,6 +1,6 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter, PrismaClientExceptionFilter, TransformInterceptor, logger } from '@api/core';
+import { AllExceptionsFilter, HttpExceptionFilter, TransformInterceptor, logger } from '@api/core';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new HttpExceptionFilter(), new PrismaClientExceptionFilter(httpAdapter));
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
   app.useGlobalInterceptors(new TransformInterceptor());
   app.enableCors();

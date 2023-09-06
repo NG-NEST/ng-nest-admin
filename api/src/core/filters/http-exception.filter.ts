@@ -1,9 +1,13 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Logger as Log4js } from '../common';
+import { GqlArgumentsHost } from '@nestjs/graphql';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: HttpException, host: ExecutionContextHost) {
+    console.log(host.getArgs()[1]);
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -14,16 +18,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const msg = {
       statusCode: status,
       timestamp: new Date(),
-      path: request.url,
+      path: request?.url,
       message: '请求异常',
       data: message
     };
 
     Logger.error('Error', msg, 'HttpExceptionFilter');
 
-    const logFormat = ` [Request original url]: ${request.originalUrl}
-  [Method]: ${request.method}
-  [IP]: ${request.ip}
+    const logFormat = ` [Request original url]: ${request?.originalUrl}
+  [Method]: ${request?.method}
+  [IP]: ${request?.ip}
   [Status code]: ${status}
   [Response]: ${exception.toString()}`;
 

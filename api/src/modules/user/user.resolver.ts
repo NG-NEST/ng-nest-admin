@@ -1,40 +1,34 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BaseID, BaseSelect, PrismaSelect, PrismaService } from '@api/core';
+import { BaseID, BaseSelect, PrismaSelect } from '@api/core';
 import { CreateUserInput, UpdateUserInput, User, UserPaginationInput, UserPaginationOutput, UserResolverName } from './dto';
+import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(private userService: UserService) {}
 
   @Query(() => UserPaginationOutput, { description: UserResolverName.Users })
   async users(@Args() input: UserPaginationInput, @PrismaSelect('data') select: BaseSelect): Promise<UserPaginationOutput> {
-    const { where } = input;
-    return {
-      data: (await this.prisma.user.findMany({ ...input, ...select })) as User[],
-      count: await this.prisma.user.count({ where })
-    };
+    return await this.userService.users(input, select);
   }
 
   @Query(() => User, { description: UserResolverName.User, nullable: true })
   async user(@Args('id', BaseID) id: string, @PrismaSelect('data') select: BaseSelect): Promise<User> {
-    return (await this.prisma.user.findUnique({ where: { id }, ...select })) as User;
+    return await this.userService.user(id, select);
   }
 
   @Mutation(() => User, { description: UserResolverName.UpdateUser })
   async updateUser(@Args('id', BaseID) id: string, @Args('user') data: UpdateUserInput) {
-    return await this.prisma.user.update({
-      data,
-      where: { id }
-    });
+    return await this.userService.updateUser(id, data);
   }
 
   @Mutation(() => User, { description: UserResolverName.CreateUser })
   async createUser(@Args('user') data: CreateUserInput) {
-    return await this.prisma.user.create({ data });
+    return await this.userService.createUser(data);
   }
 
   @Mutation(() => User, { description: UserResolverName.DeleteUser })
   async deleteUser(@Args('id', BaseID) id: string) {
-    return await this.prisma.user.delete({ where: { id } });
+    return await this.userService.deleteUser(id);
   }
 }
