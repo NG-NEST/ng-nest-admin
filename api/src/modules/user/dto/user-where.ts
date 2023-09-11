@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { UserDescription } from './user.enum';
+import { UserDescription } from '../enum';
 import { BaseDateTimeFilter, BaseDescription, BaseStringFilter, BaseWhereInput, DateTimeFilter, StringFilter } from '@api/core';
 
 @InputType()

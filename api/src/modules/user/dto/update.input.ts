@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { UserDescription } from './user.enum';
+import { UserDescription } from '../enum';
 import { ValidatorDescription } from '@api/core';
 
 @InputType()

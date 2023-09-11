@@ -1,7 +1,7 @@
 import { Field, HideField, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit, BaseModel } from '@api/core';
 import { IsOptional } from 'class-validator';
-import { UserDescription, UserIncludeDescription } from './user.enum';
+import { UserDescription, UserIncludeDescription } from '../enum';
 import { Role } from '@api/modules';
 
 @ObjectType()

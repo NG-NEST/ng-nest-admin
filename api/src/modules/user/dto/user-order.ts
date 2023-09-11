@@ -1,7 +1,7 @@
 import { BaseOrder, SortOrder } from '@api/core';
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { UserDescription } from './user.enum';
+import { UserDescription } from '../enum';
 
 @InputType()
 export class UserOrderInput extends BaseOrder {

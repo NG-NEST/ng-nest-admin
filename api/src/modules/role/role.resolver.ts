@@ -1,11 +1,11 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BaseID, PrismaService } from '@api/core';
 import { UpdateRoleInput } from './dto/update.input';
-import { Role } from './dto/role.model';
+import { Role } from './model/role.model';
 import { CreateRoleInput } from './dto/create.input';
 import { RolePaginationOutput } from './dto/role.output';
 import { RolePaginationInput } from './dto/role-pagination.input';
-import { RoleResolverName } from './dto/role.enum';
+import { RoleResolverName } from './enum/role.enum';
 
 @Resolver(() => Role)
 export class RoleResolver {

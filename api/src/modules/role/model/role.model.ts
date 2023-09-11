@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from '@api/core';
-import { RoleDescription } from './role.enum';
+import { RoleDescription } from '../enum';
 
 @ObjectType()
 export class Role extends BaseModel {

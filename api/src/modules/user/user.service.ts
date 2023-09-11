@@ -1,6 +1,7 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { CreateUserInput, UpdateUserInput, User, UserPaginationInput } from './dto';
+import { CreateUserInput, UpdateUserInput, UserPaginationInput } from './dto';
+import { User } from './model';
 
 @Injectable()
 export class UserService {

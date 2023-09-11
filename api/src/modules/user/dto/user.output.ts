@@ -1,5 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
-import { User } from './user.model';
+import { User } from '../model';
 import { BasePaginationOutput } from '@api/core';
 
 @ObjectType()

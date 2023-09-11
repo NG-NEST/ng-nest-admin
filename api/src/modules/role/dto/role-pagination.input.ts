@@ -1,7 +1,7 @@
 import { BaseOrder, BasePaginationInput, BaseWhereInput, SortOrder } from '@api/core';
 import { InputType, Field, ArgsType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { RoleDescription } from './role.enum';
+import { RoleDescription } from '../enum';
 import { RoleWhere } from './role-where';
 
 @InputType()

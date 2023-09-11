@@ -1,7 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BaseID, BaseSelect, PrismaSelect } from '@api/core';
-import { CreateUserInput, UpdateUserInput, User, UserPaginationInput, UserPaginationOutput, UserResolverName } from './dto';
+import { CreateUserInput, UpdateUserInput, UserPaginationInput, UserPaginationOutput } from './dto';
 import { UserService } from './user.service';
+import { User } from './model';
+import { UserResolverName } from './enum';
 
 @Resolver(() => User)
 export class UserResolver {
