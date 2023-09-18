@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Auth {
+  """JWT访问令牌"""
+  accessToken: JWT!
+
+  """JWT刷新令牌"""
+  refreshToken: JWT!
+}
+
 input CreateRole {
   """角色"""
   role: CreateWithoutRoleInput!
@@ -74,6 +82,19 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  """用户账号"""
+  account: String!
+
+  """用户密码"""
+  password: String!
+}
+
 type Mutation {
   """创建角色"""
   createRole(createRole: CreateRoleInput!): Role!
@@ -92,6 +113,12 @@ type Mutation {
     """编码"""
     id: ID!
   ): User!
+
+  """登录"""
+  login(login: LoginInput!): Auth!
+
+  """刷新令牌"""
+  refreshToken(token: JWT!): Auth!
 
   """更新角色"""
   updateRole(

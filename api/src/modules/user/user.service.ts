@@ -1,11 +1,11 @@
-import { BaseSelect, PrismaService } from '@api/core';
+import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, UserPaginationInput } from './dto';
 import { User } from './model';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private encrypt: EncryptService) {}
 
   async users(input: UserPaginationInput, select: BaseSelect) {
     const { where } = input;
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   async createUser(data: CreateUserInput) {
-    this.prisma.user.findFirst();
+    data.password = this.encrypt.hash(data.password);
     return await this.prisma.user.create({ data });
   }
 

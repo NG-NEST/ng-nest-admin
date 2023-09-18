@@ -1,8 +1,12 @@
-import { ObjectType } from "@nestjs/graphql";
-import { Token } from "./token.model";
-import { User } from "@api/modules";
+import { Field, ObjectType } from '@nestjs/graphql';
+import { GraphQLJWT } from 'graphql-scalars';
+import { AuthDescription } from '../enum';
 
 @ObjectType()
-export class Auth extends Token {
-  user: User;
+export class Auth {
+  @Field(() => GraphQLJWT, { description: AuthDescription.AccessToken })
+  accessToken: string;
+
+  @Field(() => GraphQLJWT, { description: AuthDescription.RefreshToken })
+  refreshToken: string;
 }

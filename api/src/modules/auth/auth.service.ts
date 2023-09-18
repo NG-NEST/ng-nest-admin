@@ -20,7 +20,7 @@ export class AuthService {
 
   async login(user: LoginInput) {
     const { account } = user;
-    const findUser = await this.prisma.user.findFirst({ where: { account } });
+    const findUser = await this.prisma.user.findFirst({ select: { id: true, password: true }, where: { account } });
     let userId = '';
     if (findUser === null) {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
@@ -32,30 +32,36 @@ export class AuthService {
     if (userId === '') {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
     } else {
+      const payload = { userId };
       return {
-        accessToken: this.jwtService.sign(
-          { userId },
-          {
-            secret: jwtConstants.secret,
-            expiresIn: jwtConstants.expiresIn
-          }
-        ),
-        refreshToken: this.jwtService.sign(
-          { userId },
-          {
-            secret: jwtConstants.secret,
-            expiresIn: jwtConstants.refreshIn
-          }
-        )
+        accessToken: this.jwtService.sign(payload),
+        refreshToken: this.jwtService.sign(payload, {
+          secret: jwtConstants.refreshSecret,
+          expiresIn: jwtConstants.refreshSecret
+        })
       };
     }
   }
 
-  getUser(token: string) {
-    const user: any = this.jwtService.decode(token.replace('Bearer ', ''), {
+  async getUserFromToken(token: string) {
+    const { userId } = this.jwtService.decode(token, {
       json: true
-    });
-    const { exp, iat, ...result } = user;
+    }) as { userId: string };
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const { password, ...result } = user;
+
     return result;
+  }
+
+  refreshToken(token: string) {
+    try {
+      const { userId } = this.jwtService.verify(token, {
+        secret: jwtConstants.refreshSecret
+      });
+
+      return this.jwtService.sign({ userId });
+    } catch (e) {
+      throw new UnauthorizedException(AuthUnauthorized.TokenFailureOrValidationFailure);
+    }
   }
 }

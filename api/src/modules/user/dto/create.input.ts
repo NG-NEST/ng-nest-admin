@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { UserDescription } from '../enum';
 import { BaseCreateWithoutInput, IsExist, ValidatorDescription } from '@api/core';
-import { CreateWithoutRoleInput, RoleDescription } from '@api/modules';
+import { CreateWithoutRoleInput, RoleDescription } from '../../role';
 
 @InputType()
 export class CreateRole {
@@ -17,11 +17,12 @@ export class CreateUserRole extends BaseCreateWithoutInput(CreateRole) {}
 export class CreateUserInput {
   @Field({ description: UserDescription.Name })
   @IsNotEmpty({ message: `${UserDescription.Name}${ValidatorDescription.NotEmpty}` })
-  @IsExist('user', { message: `${UserDescription.Name}已存在！` })
+  @IsExist('user', { message: `${UserDescription.Name}${ValidatorDescription.IsExist}` })
   name: string;
 
   @Field({ description: UserDescription.Account })
   @IsNotEmpty({ message: `${UserDescription.Account}${ValidatorDescription.NotEmpty}` })
+  @IsExist('user', { message: `${UserDescription.Account}${ValidatorDescription.IsExist}` })
   account: string;
 
   @Field({ description: UserDescription.Password })
@@ -30,10 +31,12 @@ export class CreateUserInput {
 
   @Field({ description: UserDescription.Email })
   @IsNotEmpty({ message: `${UserDescription.Email}${ValidatorDescription.NotEmpty}` })
+  @IsExist('user', { message: `${UserDescription.Email}${ValidatorDescription.IsExist}` })
   email: string;
 
   @Field({ description: UserDescription.Phone, nullable: true })
   @IsOptional()
+  @IsExist('user', { message: `${UserDescription.Phone}${ValidatorDescription.IsExist}` })
   phone?: string;
 
   @Field(() => CreateUserRole, { description: RoleDescription.Role })
