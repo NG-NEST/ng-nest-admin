@@ -3,7 +3,8 @@ import { Auth } from './model';
 import { LoginInput, RefreshTokenInput } from './dto';
 import { AuthService } from './auth.service';
 import { AuthResolverName } from './enum';
-// import { User } from '@api/modules';
+import { User } from '@api/modules';
+import { BaseSelect, PrismaSelect } from '@api/core';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -15,7 +16,12 @@ export class AuthResolver {
   }
 
   @Mutation(() => Auth, { description: AuthResolverName.RefreshToken })
-  refreshToken(@Args() { token }: RefreshTokenInput) {
-    return this.auth.refreshToken(token);
+  refreshToken(@Args() { refreshToken }: RefreshTokenInput) {
+    return this.auth.refreshToken(refreshToken);
+  }
+
+  @ResolveField('user', () => User)
+  async user(@Parent() auth: Auth, @PrismaSelect() select: BaseSelect) {
+    return await this.auth.getUserFromToken(auth.accessToken, select);
   }
 }

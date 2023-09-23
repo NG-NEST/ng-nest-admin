@@ -8,6 +8,7 @@ type Auth {
 
   """JWT刷新令牌"""
   refreshToken: JWT!
+  user: User!
 }
 
 input CreateRole {
@@ -117,8 +118,11 @@ type Mutation {
   """登录"""
   login(login: LoginInput!): Auth!
 
-  """刷新令牌"""
-  refreshToken(token: JWT!): Auth!
+  """刷新JWT令牌"""
+  refreshToken(
+    """JWT刷新令牌"""
+    refreshToken: JWT!
+  ): Auth!
 
   """更新角色"""
   updateRole(

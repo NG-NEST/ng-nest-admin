@@ -10,6 +10,6 @@ export enum AuthUnauthorized {
 
 export enum AuthResolverName {
   Login = '登录',
-  RefreshToken = '刷新令牌',
+  RefreshToken = '刷新JWT令牌',
   User = '用户信息'
 }

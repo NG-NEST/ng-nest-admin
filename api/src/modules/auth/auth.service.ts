@@ -1,9 +1,10 @@
-import { EncryptService, PrismaService } from '@api/core';
+import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginInput } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { AuthUnauthorized } from './enum';
+import { Auth } from './model';
 
 @Injectable()
 export class AuthService {
@@ -32,36 +33,39 @@ export class AuthService {
     if (userId === '') {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
     } else {
-      const payload = { userId };
-      return {
-        accessToken: this.jwtService.sign(payload),
-        refreshToken: this.jwtService.sign(payload, {
-          secret: jwtConstants.refreshSecret,
-          expiresIn: jwtConstants.refreshSecret
-        })
-      };
+      return this.createTokens({ userId });
     }
   }
 
-  async getUserFromToken(token: string) {
+  async getUserFromToken(token: string, select: BaseSelect) {
     const { userId } = this.jwtService.decode(token, {
       json: true
     }) as { userId: string };
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId }, ...select });
     const { password, ...result } = user;
 
     return result;
   }
 
-  refreshToken(token: string) {
+  refreshToken(refreshToken: string) {
     try {
-      const { userId } = this.jwtService.verify(token, {
+      const { userId } = this.jwtService.verify(refreshToken, {
         secret: jwtConstants.refreshSecret
       });
 
-      return this.jwtService.sign({ userId });
+      return this.createTokens({ userId });
     } catch (e) {
       throw new UnauthorizedException(AuthUnauthorized.TokenFailureOrValidationFailure);
     }
+  }
+
+  private createTokens(payload: { userId: string }): Auth {
+    return {
+      accessToken: this.jwtService.sign(payload),
+      refreshToken: this.jwtService.sign(payload, {
+        secret: jwtConstants.refreshSecret,
+        expiresIn: jwtConstants.refreshExpiresIn
+      })
+    };
   }
 }
