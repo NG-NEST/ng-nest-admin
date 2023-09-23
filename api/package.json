@@ -36,7 +36,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "date-fns": "^2.30.0",
-    "graphql": "^16.7.1",
+    "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.2",
     "log4js": "^6.9.1",
     "passport": "^0.6.0",
