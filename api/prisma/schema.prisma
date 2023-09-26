@@ -26,10 +26,10 @@ model User {
 }
 
 model Role {
-  id    String         @id @default(uuid())
-  name  String         @unique
-  code  String
-  users UsersOnRoles[]
+  id          String         @id @default(uuid())
+  name        String         @unique
+  description String
+  users       UsersOnRoles[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,15 +65,25 @@ model Permission {
 }
 
 model Resource {
-  id         String       @id @default(uuid())
-  pid        String
-  name       String
-  code       String
-  subject    String
-  Permission Permission[]
+  id          String       @id @default(uuid())
+  pid         String
+  name        String
+  code        String
+  subject     Subject      @relation(fields: [subjectId], references: [id])
+  subjectId   String
+  Permissions Permission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("sys-resource")
+}
+
+model Subject {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  Resources   Resource[]
+
+  @@map("sys-subject")
 }
