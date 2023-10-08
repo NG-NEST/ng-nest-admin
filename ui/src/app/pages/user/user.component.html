@@ -1,3 +1,6 @@
 <div class="app-inner">
-  <x-table [data]="data" [columns]="columns" [total]="total" [loading]="loading" bordered></x-table>
+  <div class="app-tools">
+    <x-button>新增</x-button>
+  </div>
+  <x-table [data]="data" [columns]="columns" [total]="total" [loading]="loading" [showEmpty]="!loading" bordered></x-table>
 </div>

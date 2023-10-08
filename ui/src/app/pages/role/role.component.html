@@ -1,0 +1,22 @@
+<div class="app-inner">
+  <div class="app-tools">
+    <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
+      <div class="list">
+        <div class="item">
+          <label>角色名称：</label>
+          <x-input formControlName="name" placeholder="请输入角色名称"></x-input>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>
+          <x-button type="primary" icon="fto-search" attrType="submit" (click)="action('search')">搜索</x-button>
+          <x-button icon="fto-refresh-cw" attrType="button" (click)="action('reset')">重置</x-button>
+        </div>
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')">新增</x-button>
+      </div>
+    </form>
+  </div>
+  <div class="app-table">
+    <x-table #tableCom [data]="data" [columns]="columns" [total]="total" [loading]="loading" [showEmpty]="!loading"></x-table>
+  </div>
+</div>

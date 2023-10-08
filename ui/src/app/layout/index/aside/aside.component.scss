@@ -32,7 +32,7 @@
       }
     }
     &-logo {
-      color: var(--x-text);
+      color: $--x-text;
       height: 3.25rem;
       overflow: hidden;
       display: flex;
@@ -59,6 +59,16 @@
       z-index: 10;
       ::ng-deep .x-menu-nodes .x-menu-node {
         border-right: none;
+
+        x-menu-node > a {
+          color: $--x-text;
+        }
+        &.x-activated {
+          background-color: $--x-primary-900;
+          x-menu-node > a {
+            color: $--x-primary;
+          }
+        }
       }
     }
   }

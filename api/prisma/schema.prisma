@@ -28,7 +28,7 @@ model User {
 model Role {
   id          String         @id @default(uuid())
   name        String         @unique
-  description String
+  description String?
   users       UsersOnRoles[]
 
   createdAt DateTime @default(now())
@@ -82,7 +82,7 @@ model Resource {
 model Subject {
   id          String     @id @default(uuid())
   name        String
-  description String
+  description String?
   Resources   Resource[]
 
   @@map("sys-subject")

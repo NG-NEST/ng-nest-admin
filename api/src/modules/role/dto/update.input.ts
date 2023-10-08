@@ -10,8 +10,7 @@ export class UpdateRoleInput {
   @IsNotEmpty({ message: `${RoleDescription.Name}${ValidatorDescription.NotEmpty}` })
   name?: string;
 
-  @Field({ description: RoleDescription.Code, nullable: true })
+  @Field({ description: RoleDescription.Description, nullable: true })
   @IsOptional()
-  @IsNotEmpty({ message: `${RoleDescription.Code}${ValidatorDescription.NotEmpty}` })
-  code?: string;
+  description?: string;
 }

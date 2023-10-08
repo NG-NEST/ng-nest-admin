@@ -3,11 +3,14 @@
 :host {
   width: calc(100% - 15rem);
   height: 2.25rem;
-  padding-right: calc(2.25rem * 5 + calc($--x-padding-medium * 2));
+  padding-left: 1rem;
   position: fixed;
+  display: flex;
+  align-items: center;
   top: 0;
   left: 15rem;
   z-index: 13;
   transition: left $--x-animation-duration-slow, width $--x-animation-duration-slow;
   font-size: 0.875rem;
+  background-color: rgba(255, 255, 255);
 }

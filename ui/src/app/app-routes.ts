@@ -12,6 +12,11 @@ export const AppRoutes: Routes = [
     loadChildren: () => import('./pages/user/user.module').then((x) => x.UserModule),
     canActivate: [AppCanActivate]
   },
+  {
+    path: 'role',
+    loadChildren: () => import('./pages/role/role.module').then((x) => x.RoleModule),
+    canActivate: [AppCanActivate]
+  },
 
-  { path: '', redirectTo: 'user', pathMatch: 'full' }
+  { path: '', redirectTo: 'overview', pathMatch: 'full' }
 ];

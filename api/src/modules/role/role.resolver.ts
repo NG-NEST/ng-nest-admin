@@ -1,42 +1,36 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BaseID, PrismaService } from '@api/core';
+import { BaseID, BaseSelect, PrismaSelect } from '@api/core';
+import { CreateRoleInput, UpdateRoleInput, RolePaginationInput, RolePaginationOutput } from './dto';
+import { RoleService } from './role.service';
 import { Role } from './model';
-import { RolePaginationOutput, RolePaginationInput, CreateRoleInput, UpdateRoleInput } from './dto';
 import { RoleResolverName } from './enum';
 
 @Resolver(() => Role)
 export class RoleResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(private roleService: RoleService) {}
 
   @Query(() => RolePaginationOutput, { description: RoleResolverName.Roles })
-  async roles(@Args() input: RolePaginationInput): Promise<RolePaginationOutput> {
-    const { where } = input;
-    return {
-      data: await this.prisma.role.findMany(input),
-      count: await this.prisma.role.count({ where })
-    };
+  async roles(@Args() input: RolePaginationInput, @PrismaSelect('data') select: BaseSelect): Promise<RolePaginationOutput> {
+    return await this.roleService.roles(input, select);
   }
 
   @Query(() => Role, { description: RoleResolverName.Role, nullable: true })
-  async role(@Args('id', BaseID) id: string): Promise<Role> {
-    return await this.prisma.role.findUnique({ where: { id } });
+  async role(@Args('id', BaseID) id: string, @PrismaSelect('data') select: BaseSelect): Promise<Role> {
+    return await this.roleService.role(id, select);
   }
 
   @Mutation(() => Role, { description: RoleResolverName.UpdateRole })
-  async updateRole(@Args('id', BaseID) id: string, @Args('updateRole') data: UpdateRoleInput) {
-    return await this.prisma.role.update({
-      data,
-      where: { id }
-    });
+  async updateRole(@Args('id', BaseID) id: string, @Args('role') data: UpdateRoleInput) {
+    return await this.roleService.updateRole(id, data);
   }
 
   @Mutation(() => Role, { description: RoleResolverName.CreateRole })
-  async createRole(@Args('createRole') data: CreateRoleInput) {
-    return await this.prisma.role.create({ data });
+  async createRole(@Args('role') data: CreateRoleInput) {
+    return await this.roleService.createRole(data);
   }
 
   @Mutation(() => Role, { description: RoleResolverName.DeleteRole })
   async deleteRole(@Args('id', BaseID) id: string) {
-    return await this.prisma.role.delete({ where: { id } });
+    return await this.roleService.deleteRole(id);
   }
 }

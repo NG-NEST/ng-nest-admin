@@ -2,6 +2,7 @@ import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, UserPaginationInput } from './dto';
 import { User } from './model';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class UserService {

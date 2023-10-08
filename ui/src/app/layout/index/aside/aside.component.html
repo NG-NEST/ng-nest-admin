@@ -1,6 +1,15 @@
 <div class="aside-image"></div>
 <div class="aside-logo">
-  <img src="assets/img/logo/logo-48x48.png" />
-  <span (click)="collapsed = !collapsed">NG-NEST-ADMIN</span>
+  <!-- <img src="assets/img/logo/logo-48x48.png" />
+  <span (click)="collapsed = !collapsed">NG-NEST-ADMIN</span> -->
 </div>
-<x-menu [collapsed]="collapsed" class="aside-menus" [data]="menus" layout="column" [width]="'100%'" [portalMinWidth]="'10rem'"> </x-menu>
+<x-menu
+  [collapsed]="collapsed"
+  [activatedId]="config.menuActivatedId"
+  class="aside-menus"
+  [data]="config.menus"
+  layout="column"
+  [width]="'100%'"
+  [portalMinWidth]="'10rem'"
+>
+</x-menu>

@@ -1,9 +1,10 @@
 @import 'params';
 
 :host {
-  height: 100%;
+  min-height: 100vh;
+  background-color: #f1f1f1;
   width: 100%;
-  padding-top: 4.25rem;
+  padding-top: 2.25rem;
   padding-left: 15rem;
   transition: padding 0.3s;
   display: block;

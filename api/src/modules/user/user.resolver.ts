@@ -24,7 +24,7 @@ export class UserResolver {
     return await this.userService.updateUser(id, data);
   }
 
-  @Mutation(() => User, { description: UserResolverName.CreateUser })
+  @Mutation(() => User, { name: 'CreateUser', description: UserResolverName.CreateUser })
   async createUser(@Args('user') data: CreateUserInput) {
     return await this.userService.createUser(data);
   }

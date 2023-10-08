@@ -1,17 +1,18 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { RoleDescription } from '../enum';
-import { ValidatorDescription } from '@api/core';
+import { IsExist, ValidatorDescription } from '@api/core';
 
 @InputType()
 export class CreateRoleInput {
   @Field({ description: RoleDescription.Name })
   @IsNotEmpty({ message: `${RoleDescription.Name}${ValidatorDescription.NotEmpty}` })
+  @IsExist('role', { message: `${RoleDescription.Name}${ValidatorDescription.IsExist}` })
   name: string;
 
-  @Field({ description: RoleDescription.Code })
-  @IsNotEmpty({ message: `${RoleDescription.Code}${ValidatorDescription.NotEmpty}` })
-  code: string;
+  @Field({ description: RoleDescription.Description })
+  @IsOptional()
+  description?: string;
 }
 
 @InputType()

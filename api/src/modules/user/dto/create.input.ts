@@ -2,12 +2,12 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { UserDescription } from '../enum';
 import { BaseCreateWithoutInput, IsExist, ValidatorDescription } from '@api/core';
-import { CreateWithoutRoleInput, RoleDescription } from '../../role';
+import { RoleDescription } from '../../role';
 
 @InputType()
 export class CreateRole {
-  @Field(() => CreateWithoutRoleInput, { description: RoleDescription.Role })
-  role: CreateWithoutRoleInput;
+  @Field(() => String, { description: RoleDescription.Role })
+  roleId: string;
 }
 
 @InputType()

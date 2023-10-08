@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
+import { X_CONFIG } from '@ng-nest/ui/core';
+import { NgNestConfig } from './ng-nest.config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +19,8 @@ import { GraphQLModule } from './graphql.module';
       deps: [AppAuthService],
       useFactory: AppInitializer,
       multi: true
-    }
+    },
+    { provide: X_CONFIG, useValue: NgNestConfig }
   ],
   bootstrap: [AppComponent]
 })

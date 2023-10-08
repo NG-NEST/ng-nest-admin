@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { RoleDescription } from '../enum';
-import { BaseStringFilter, StringFilter } from '@api/core';
+import { BaseStringFilter, BaseWhereInput, StringFilter } from '@api/core';
 
 @InputType()
 export class RoleWhere {
@@ -9,7 +9,10 @@ export class RoleWhere {
   @IsOptional()
   name?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: RoleDescription.Code, nullable: true })
+  @Field(() => BaseStringFilter, { description: RoleDescription.Description, nullable: true })
   @IsOptional()
-  code?: StringFilter;
+  description?: StringFilter;
 }
+
+@InputType()
+export class RoleWhereInput extends BaseWhereInput(RoleWhere) {}

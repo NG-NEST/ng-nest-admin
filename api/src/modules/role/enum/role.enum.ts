@@ -2,7 +2,11 @@ export enum RoleDescription {
   Role = '角色',
 
   Name = '角色名称',
-  Code = '角色编码'
+  Description = '角色描述'
+}
+
+export enum RoleIncludeDescription {
+  RoleUser = '角色用户'
 }
 
 export enum RoleResolverName {

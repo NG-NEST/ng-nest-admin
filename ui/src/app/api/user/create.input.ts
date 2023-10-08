@@ -12,5 +12,5 @@ export class CreateUserInput {
 export class CreateUserRole extends BaseCreateWithoutInput<CreateRole> {}
 
 export class CreateRole {
-  role: any;
+  roleId!: string;
 }

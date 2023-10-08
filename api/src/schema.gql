@@ -13,12 +13,12 @@ type Auth {
 
 input CreateRole {
   """角色"""
-  role: CreateWithoutRoleInput!
+  roleId: String!
 }
 
 input CreateRoleInput {
-  """角色编码"""
-  code: String!
+  """角色描述"""
+  description: String
 
   """角色名称"""
   name: String!
@@ -46,10 +46,6 @@ input CreateUserInput {
 
 input CreateUserRole {
   create: [CreateRole!]
-}
-
-input CreateWithoutRoleInput {
-  create: CreateRoleInput!
 }
 
 """
@@ -97,11 +93,11 @@ input LoginInput {
 }
 
 type Mutation {
-  """创建角色"""
-  createRole(createRole: CreateRoleInput!): Role!
-
   """创建用户"""
-  createUser(user: CreateUserInput!): User!
+  CreateUser(user: CreateUserInput!): User!
+
+  """创建角色"""
+  createRole(role: CreateRoleInput!): Role!
 
   """删除角色"""
   deleteRole(
@@ -128,7 +124,7 @@ type Mutation {
   updateRole(
     """编码"""
     id: ID!
-    updateRole: UpdateRoleInput!
+    role: UpdateRoleInput!
   ): Role!
 
   """更新用户"""
@@ -184,11 +180,11 @@ type Query {
 }
 
 type Role {
-  """角色编码"""
-  code: String!
-
   """创建时间"""
   createdAt: DateTime
+
+  """角色描述"""
+  description: String
 
   """编码"""
   id: ID!
@@ -198,14 +194,17 @@ type Role {
 
   """更新时间"""
   updatedAt: DateTime
+
+  """角色用户"""
+  users: [RoleUser!]
 }
 
 input RoleOrderInput {
-  """角色编码"""
-  code: SortOrder
-
   """创建时间"""
   createdAt: SortOrder
+
+  """角色描述"""
+  description: SortOrder
 
   """角色名称"""
   name: SortOrder
@@ -222,9 +221,21 @@ type RolePaginationOutput {
   data: [Role!]!
 }
 
+type RoleUser {
+  """创建时间"""
+  createdAt: DateTime
+
+  """更新时间"""
+  updatedAt: DateTime
+
+  """角色用户"""
+  user: User
+  userId: ID
+}
+
 input RoleWhere {
-  """角色编码"""
-  code: StringFilter
+  """角色描述"""
+  description: StringFilter
 
   """角色名称"""
   name: StringFilter
@@ -240,8 +251,8 @@ input RoleWhereInput {
   """或关系，满足一个或多个条件就返回 true"""
   OR: [RoleWhere!]
 
-  """角色编码"""
-  code: StringFilter
+  """角色描述"""
+  description: StringFilter
 
   """角色名称"""
   name: StringFilter
@@ -288,8 +299,8 @@ input StringFilter {
 }
 
 input UpdateRoleInput {
-  """角色编码"""
-  code: String
+  """角色描述"""
+  description: String
 
   """角色名称"""
   name: String

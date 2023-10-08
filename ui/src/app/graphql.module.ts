@@ -3,14 +3,16 @@ import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 
-const uri = 'http://localhost:8081/graphql';
+const uri = '/graphql';
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'network-only'
+      }
+    },
     link: httpLink.create({ uri }),
-    cache: new InMemoryCache(),
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
+    cache: new InMemoryCache()
   };
 }
 
