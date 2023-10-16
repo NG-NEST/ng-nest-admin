@@ -7,6 +7,9 @@ export const NgNestConfig: XConfig = {
     },
     table: {
       rowHeight: 38
+    },
+    dialog: {
+      width: '28rem'
     }
   },
   theme: {

@@ -6,6 +6,8 @@ import { Role } from './role.model';
 import { RolePaginationInput } from './role-pagination.input';
 import { CreateRoleInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
+import { RoleMessage } from './role.enum';
+import { UpdateRoleInput } from './update.input';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -18,11 +20,9 @@ export class RoleService {
         query: gql`
           query data($id: ID!) {
             role(id: $id) {
-              createdAt
-              description
               id
+              description
               name
-              updatedAt
             }
           }
         `
@@ -52,19 +52,48 @@ export class RoleService {
       .valueChanges.pipe(map((x) => cloneDeep(x.data?.roles!)));
   }
 
-  createRole(createRole: CreateRoleInput): Observable<Role> {
+  createRole(createRole: CreateRoleInput): Observable<string> {
     return this.apollo
       .mutate<{ role: Role }>({
         variables: { createRole },
         mutation: gql`
           mutation data($createRole: CreateRoleInput!) {
-            createRole(createRole: $createRole) {
-              description
-              name
+            createRole(role: $createRole) {
+              id
             }
           }
         `
       })
-      .pipe(map((x) => x.data?.role!));
+      .pipe(map(() => RoleMessage.CreatedSuccess));
+  }
+
+  updateRole(id: string, updateRole: UpdateRoleInput): Observable<string> {
+    return this.apollo
+      .mutate<{ role: Role }>({
+        variables: { id, updateRole },
+        mutation: gql`
+          mutation data($id: ID!, $updateRole: UpdateRoleInput!) {
+            updateRole(id: $id, role: $updateRole) {
+              id
+            }
+          }
+        `
+      })
+      .pipe(map(() => RoleMessage.UpdatedSuccess));
+  }
+
+  deleteRole(id: string): Observable<string> {
+    return this.apollo
+      .mutate<{ role: Role }>({
+        variables: { id },
+        mutation: gql`
+          mutation data($id: ID!) {
+            deleteRole(id: $id) {
+              id
+            }
+          }
+        `
+      })
+      .pipe(map(() => RoleMessage.DeletedSuccess));
   }
 }

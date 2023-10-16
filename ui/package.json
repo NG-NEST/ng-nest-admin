@@ -18,7 +18,7 @@
     "@angular/platform-browser": "^16.1.0",
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
-    "@ng-nest/ui": "^16.0.7",
+    "@ng-nest/ui": "^16.0.8",
     "apollo-angular": "^5.0.0",
     "lodash-es": "^4.17.21",
     "node-fetch": "^3.3.2",

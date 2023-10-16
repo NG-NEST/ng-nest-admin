@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 
-import { catchError, delay, Observable, of, timeout } from 'rxjs';
+import { catchError, Observable, of, timeout } from 'rxjs';
 
 @Injectable()
 export class AppNoopInterceptor implements HttpInterceptor {
@@ -16,8 +16,7 @@ export class AppNoopInterceptor implements HttpInterceptor {
       setHeaders: headers
     });
     return next.handle(req).pipe(
-      timeout(5000),
-      delay(100),
+      timeout(10000),
       catchError((x: HttpErrorResponse) => this.verifyAuth(x, req))
     );
   }

@@ -19,7 +19,8 @@ export enum BaseDescription {
   Id = '编码',
   Index = '序号',
   CreatedAt = '创建时间',
-  UpdatedAt = '更新时间'
+  UpdatedAt = '更新时间',
+  Operate = '操作'
 }
 
 export enum WhereDescription {

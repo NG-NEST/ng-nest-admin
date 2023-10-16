@@ -12,3 +12,9 @@ export enum RoleResolverName {
   UpdateRole = '更新角色',
   DeleteRole = '删除角色'
 }
+
+export enum RoleMessage {
+  CreatedSuccess = '新增角色成功！',
+  UpdatedSuccess = '更新角色成功！',
+  DeletedSuccess = '删除角色成功！'
+}
