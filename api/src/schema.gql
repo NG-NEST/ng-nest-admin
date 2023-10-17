@@ -93,11 +93,11 @@ input LoginInput {
 }
 
 type Mutation {
-  """创建用户"""
-  CreateUser(user: CreateUserInput!): User!
-
   """创建角色"""
   createRole(role: CreateRoleInput!): Role!
+
+  """创建用户"""
+  createUser(user: CreateUserInput!): User!
 
   """删除角色"""
   deleteRole(
@@ -142,6 +142,9 @@ type Query {
     id: ID!
   ): Role
 
+  """角色查询（没有分页）"""
+  roleSelect: [RoleSelectOutput!]!
+
   """角色列表"""
   roles(
     """排序规则"""
@@ -162,6 +165,9 @@ type Query {
     """编码"""
     id: ID!
   ): User
+
+  """用户查询（没有分页）"""
+  userSelect: [UserSelectOutput!]!
 
   """用户列表"""
   users(
@@ -219,6 +225,17 @@ type RolePaginationOutput {
 
   """数据集合"""
   data: [Role!]!
+}
+
+type RoleSelectOutput {
+  """角色描述"""
+  description: String
+
+  """编码"""
+  id: ID!
+
+  """角色名称"""
+  name: String!
 }
 
 type RoleUser {
@@ -381,6 +398,23 @@ type UserRole {
 
   """更新时间"""
   updatedAt: DateTime
+}
+
+type UserSelectOutput {
+  """用户账号"""
+  account: String!
+
+  """用户邮箱"""
+  email: String!
+
+  """编码"""
+  id: ID!
+
+  """用户名称"""
+  name: String!
+
+  """用户手机号"""
+  phone: String
 }
 
 input UserWhere {

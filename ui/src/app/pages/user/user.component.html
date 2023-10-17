@@ -1,6 +1,43 @@
 <div class="app-inner">
   <div class="app-tools">
-    <x-button>新增</x-button>
+    <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
+      <div class="list">
+        <div class="item">
+          <label>用户名称：</label>
+          <x-input formControlName="name" placeholder="请输入用户名称"></x-input>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>
+          <x-button type="primary" icon="fto-search" attrType="submit" [loading]="searchLoading">搜索</x-button>
+          <x-button icon="fto-refresh-cw" attrType="button" (click)="action('reset')" [loading]="resetLoading">重置</x-button>
+        </div>
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')">新增</x-button>
+      </div>
+    </form>
   </div>
-  <x-table [data]="data" [columns]="columns" [total]="total" [loading]="loading" [showEmpty]="!loading" bordered></x-table>
+  <div class="app-table" [x-loading]="tableLoading">
+    <x-table
+      #tableCom
+      [data]="data"
+      [columns]="columns"
+      [(index)]="index"
+      [(size)]="size"
+      [total]="total"
+      [showSize]="true"
+      [showEmpty]="!tableLoading"
+      [sizeData]="[10, 50, 100]"
+      [showJump]="true"
+      [scroll]="{ x: 800, y: 400 }"
+      [virtualScroll]="true"
+      [bodyColumnTpl]="{ operate: this.operateTpl }"
+      (indexChange)="getTableData()"
+    ></x-table>
+    <ng-template #operateTpl let-column="$column" let-row="$row">
+      <div class="operate">
+        <x-link type="primary" icon="fto-edit" (click)="action('edit', row)">修改</x-link>
+        <x-link type="danger" icon="fto-trash-2" (click)="action('delete', row)">删除</x-link>
+      </div>
+    </ng-template>
+  </div>
 </div>

@@ -15,6 +15,7 @@ export enum UserIncludeDescription {
 export enum UserResolverName {
   User = '用户详情',
   Users = '用户列表',
+  UserSelect = '用户查询（没有分页）',
   CreateUser = '创建用户',
   UpdateUser = '更新用户',
   DeleteUser = '删除用户'

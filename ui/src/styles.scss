@@ -14,7 +14,6 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .app-inner {
@@ -59,14 +58,24 @@ body {
   .list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem 0;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
     .item {
       display: flex;
       align-items: center;
       label {
         width: 8.625rem;
         text-align: right;
+      }
+      &.required {
+        label::before {
+          display: inline-block;
+          margin-right: 0.25rem;
+          color: $--x-danger;
+          line-height: 1;
+          font-size: $--x-font-size-small;
+          content: '*';
+        }
       }
     }
   }

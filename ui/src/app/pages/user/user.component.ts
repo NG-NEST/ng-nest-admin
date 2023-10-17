@@ -1,10 +1,15 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { XQuery } from '@ng-nest/ui/core';
-import { XTableColumn } from '@ng-nest/ui/table';
-import { User, UserDescription, UserService } from '@ui/api';
-import { BaseDescription, BasePagination } from '@ui/core';
-import { map } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { XIsEmpty } from '@ng-nest/ui/core';
+import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
+import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
+import { RoleService, User, UserDescription, UserService, UserWhereInput } from '@ui/api';
+import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
+import { delay, tap } from 'rxjs';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { FormBuilder } from '@angular/forms';
+import { XDialogService } from '@ng-nest/ui/dialog';
+import { XMessageService } from '@ng-nest/ui/message';
 
 @Component({
   selector: 'app-user',
@@ -12,31 +17,79 @@ import { map } from 'rxjs';
   providers: [DatePipe]
 })
 export class UserComponent {
+  searchForm = this.fb.group({
+    name: [null]
+  });
+
   columns: XTableColumn[] = [
-    { id: 'name', label: UserDescription.Name, sort: true },
-    { id: 'account', label: UserDescription.Account, sort: true },
-    { id: 'email', label: UserDescription.Email, sort: true },
-    { id: 'phone', label: UserDescription.Phone, sort: true },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, sort: true },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, sort: true }
+    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+    { id: 'name', label: UserDescription.Name },
+    { id: 'account', label: UserDescription.Name },
+    { id: 'email', label: UserDescription.Name },
+    { id: 'phone', label: UserDescription.Name },
+
+    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 160 },
+    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 160 },
+    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
   ];
 
-  list: User[] = [];
   total = 0;
-  loading = true;
-  data = (index: number, size: number, query: XQuery) =>
-    this.userService.users(this.paramsConvert(index, size, query)).pipe(map((x) => this.resultConvert(x)));
+  index = 1;
+  size = 10;
+  tableLoading = false;
+  resetLoading = false;
+  searchLoading = false;
+  data: User[] = [];
 
-  constructor(private datePipe: DatePipe, private userService: UserService) {}
+  @ViewChild('tableCom') tableCom!: XTableComponent;
 
-  paramsConvert(index: number, size: number, query: XQuery) {
-    const { sort } = query;
-    const orderBy = sort ? sort.map(({ field, value }) => ({ [`${field}`]: value })) : [];
+  constructor(
+    private datePipe: DatePipe,
+    private userService: UserService,
+    private roleService: RoleService,
+    private fb: FormBuilder,
+    private dialog: XDialogService,
+    private message: XMessageService,
+    private messageBox: XMessageBoxService
+  ) {}
+
+  ngOnInit() {
+    this.getTableData();
+  }
+
+  getTableData() {
+    this.tableLoading = true;
+    this.roleService.roleSelect().subscribe((x) => {
+      console.log(x)
+    });
+    this.userService
+      .users(this.setParams(this.index, this.size))
+      .pipe(
+        delay(300),
+        tap((x) => {
+          return this.resultConvert(x);
+        }),
+        tap(() => {
+          this.tableLoading = false;
+          this.resetLoading = false;
+          this.searchLoading = false;
+        })
+      )
+      .subscribe();
+  }
+
+  setParams(index: number, size: number) {
+    const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
+    const where: UserWhereInput = {};
+    const { name } = this.searchForm.value;
+    this.index = index;
+    if (!XIsEmpty(name)) where.name = { contains: name! };
 
     return {
       skip: (index - 1) * size,
       take: size,
-      orderBy
+      orderBy,
+      where
     };
   }
 
@@ -48,6 +101,61 @@ export class UserComponent {
       return x;
     });
 
-    return { list, total: count };
+    this.total = count!;
+    this.data = list;
+  }
+
+  action(type: string, user?: User) {
+    switch (type) {
+      case 'search':
+        this.searchLoading = true;
+        this.index = 1;
+        this.getTableData();
+        break;
+      case 'reset':
+        this.resetLoading = true;
+        this.index = 1;
+        this.searchForm.reset();
+        this.getTableData();
+        break;
+      case 'add':
+        this.dialog.create(UserDetailComponent, {
+          data: {
+            saveSuccess: () => {
+              this.searchForm.reset();
+              this.index = 1;
+              this.getTableData();
+            }
+          }
+        });
+        break;
+      case 'edit':
+        this.dialog.create(UserDetailComponent, {
+          data: {
+            id: user?.id,
+            saveSuccess: () => {
+              this.getTableData();
+            }
+          }
+        });
+        break;
+      case 'delete':
+        if (!user) return;
+        this.messageBox.confirm({
+          title: '删除用户',
+          content: `确认删除此用户吗？ [${user.name}]`,
+          type: 'warning',
+          callback: (data: XMessageBoxAction) => {
+            if (data !== 'confirm') return;
+            this.userService.deleteUser(user.id).subscribe((x) => {
+              this.message.success(x);
+              if (this.data.length === 1 && this.index > 1) {
+                this.index--;
+              }
+              this.getTableData();
+            });
+          }
+        });
+    }
   }
 }

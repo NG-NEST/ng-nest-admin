@@ -6,6 +6,8 @@ import { User } from './user.model';
 import { UserPaginationInput } from './user-pagination.input';
 import { CreateUserInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
+import { UserMessage } from './user.enum';
+import { UpdateUserInput } from './update.input';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -14,18 +16,15 @@ export class UserService {
   user(id: string): Observable<User> {
     return this.apollo
       .watchQuery<{ user: User }>({
-        fetchPolicy: 'network-only',
         variables: { id },
         query: gql`
           query data($id: ID!) {
             user(id: $id) {
               account
-              createdAt
               email
               id
               name
               phone
-              updatedAt
             }
           }
         `
@@ -36,7 +35,6 @@ export class UserService {
   users(input: UserPaginationInput): Observable<BasePagination<User>> {
     return this.apollo
       .watchQuery<{ users: BasePagination<User> }>({
-        fetchPolicy: 'network-only',
         variables: input,
         query: gql`
           query data($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
@@ -58,23 +56,48 @@ export class UserService {
       .valueChanges.pipe(map((x) => cloneDeep(x.data?.users!)));
   }
 
-  createUser(createUser: CreateUserInput): Observable<User> {
+  createUser(createUser: CreateUserInput): Observable<string> {
     return this.apollo
       .mutate<{ user: User }>({
         variables: { createUser },
         mutation: gql`
           mutation data($createUser: CreateUserInput!) {
-            createUser(createUser: $createUser) {
-              account
-              createdAt
+            createUser(user: $createUser) {
               id
-              name
-              phone
-              updatedAt
             }
           }
         `
       })
-      .pipe(map((x) => x.data?.user!));
+      .pipe(map(() => UserMessage.CreatedSuccess));
+  }
+
+  updateUser(id: string, updateUser: UpdateUserInput): Observable<string> {
+    return this.apollo
+      .mutate<{ role: User }>({
+        variables: { id, updateUser },
+        mutation: gql`
+          mutation data($id: ID!, $updateUser: UpdateUserInput!) {
+            updateUser(id: $id, role: $updateUser) {
+              id
+            }
+          }
+        `
+      })
+      .pipe(map(() => UserMessage.UpdatedSuccess));
+  }
+
+  deleteUser(id: string): Observable<string> {
+    return this.apollo
+      .mutate<{ role: User }>({
+        variables: { id },
+        mutation: gql`
+          mutation data($id: ID!) {
+            deleteUser(id: $id) {
+              id
+            }
+          }
+        `
+      })
+      .pipe(map(() => UserMessage.DeletedSuccess));
   }
 }

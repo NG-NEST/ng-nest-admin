@@ -12,6 +12,7 @@ export enum RoleIncludeDescription {
 export enum RoleResolverName {
   Role = '角色详情',
   Roles = '角色列表',
+  RoleSelect = '角色查询（没有分页）',
   CreateRole = '创建角色',
   UpdateRole = '更新角色',
   DeleteRole = '删除角色'

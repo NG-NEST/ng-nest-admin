@@ -1,0 +1,42 @@
+<form [x-loading]="formLoading" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+  <h4 x-dialog-title>{{ id ? '修改用户' : '新增用户' }}</h4>
+  <div x-dialog-content>
+    <div class="list">
+      <div class="item required">
+        <label>用户账号：</label>
+        <x-input formControlName="account" placeholder="请输入用户账号" required></x-input>
+      </div>
+      <div class="item required">
+        <label>用户密码：</label>
+        <x-input formControlName="password" type="password" placeholder="请输入用户密码" required></x-input>
+      </div>
+      <div class="item required">
+        <label>确认密码：</label>
+        <x-input
+          formControlName="checkPassword"
+          type="password"
+          placeholder="请再次输入用户密码"
+          required
+          message="密码不一致"
+          [inputValidator]="passwordCheck"
+        ></x-input>
+      </div>
+      <div class="item required">
+        <label>用户名称：</label>
+        <x-input formControlName="name" placeholder="请输入用户名称" required></x-input>
+      </div>
+      <div class="item required">
+        <label>用户邮箱：</label>
+        <x-input formControlName="email" placeholder="请输入用户邮箱" required></x-input>
+      </div>
+      <div class="item">
+        <label>手机号：</label>
+        <x-input formControlName="email" placeholder="请输入用户手机号"></x-input>
+      </div>
+    </div>
+  </div>
+  <div x-dialog-actions align="center">
+    <x-button icon="fto-x" attrType="button" x-dialog-close>取消</x-button>
+    <x-button icon="fto-save" type="primary" attrType="submit" [loading]="saveLoading" [disabled]="!form.valid">保存</x-button>
+  </div>
+</form>

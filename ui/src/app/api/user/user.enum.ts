@@ -15,3 +15,9 @@ export enum UserResolverName {
   UpdateUser = '更新用户',
   DeleteUser = '删除用户'
 }
+
+export enum UserMessage {
+  CreatedSuccess = '新增用户成功！',
+  UpdatedSuccess = '更新用户成功！',
+  DeletedSuccess = '删除用户成功！'
+}

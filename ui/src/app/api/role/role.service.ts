@@ -8,6 +8,7 @@ import { CreateRoleInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { RoleMessage } from './role.enum';
 import { UpdateRoleInput } from './update.input';
+import { RoleSelect } from './role-select.output';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -50,6 +51,21 @@ export class RoleService {
         `
       })
       .valueChanges.pipe(map((x) => cloneDeep(x.data?.roles!)));
+  }
+
+  roleSelect(): Observable<RoleSelect[]> {
+    return this.apollo
+      .watchQuery<{ roleSelect: RoleSelect[] }>({
+        query: gql`
+          query data {
+            roleSelect {
+              id
+              name
+            }
+          }
+        `
+      })
+      .valueChanges.pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
   }
 
   createRole(createRole: CreateRoleInput): Observable<string> {

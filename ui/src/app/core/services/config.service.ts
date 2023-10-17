@@ -20,8 +20,8 @@ export class AppConfigService {
   getCrumbs(url: string) {
     const arr = url.split('/');
     const list: XCrumbNode[] = [];
-    if (arr.length > 2) {
-      let menu = this.menus.find((x) => x.routerLink === `./${arr[2]}`);
+    const setList = (route: string) => {
+      let menu = this.menus.find((x) => x.routerLink === `./${route}`);
       if (menu) {
         list.push(menu);
         this.menuActivatedId = menu.id;
@@ -32,7 +32,13 @@ export class AppConfigService {
           }
         }
       }
+    };
+    if (arr.length > 2) {
+      setList(arr[2]);
+    } else if (arr.length === 2 && arr[1] === '') {
+      setList('overview');
     }
+
     this.crumbs = list.map((x, index) => {
       if (index > 0) {
         const { icon, ...menu } = x;

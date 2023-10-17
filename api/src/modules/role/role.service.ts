@@ -15,6 +15,10 @@ export class RoleService {
     };
   }
 
+  async roleSelect(select: BaseSelect) {
+    return await this.prisma.role.findMany({ ...select });
+  }
+
   async role(id: string, select: BaseSelect) {
     return (await this.prisma.role.findUnique({ where: { id }, ...select })) as Role;
   }

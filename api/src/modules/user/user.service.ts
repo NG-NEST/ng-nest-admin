@@ -2,7 +2,6 @@ import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, UserPaginationInput } from './dto';
 import { User } from './model';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -14,6 +13,10 @@ export class UserService {
       data: (await this.prisma.user.findMany({ ...input, ...select })) as User[],
       count: await this.prisma.user.count({ where })
     };
+  }
+
+  async userSelect(select: BaseSelect) {
+    return await this.prisma.user.findMany({ ...select });
   }
 
   async user(id: string, select: BaseSelect) {
