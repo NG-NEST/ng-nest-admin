@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { XCrumbNode } from '@ng-nest/ui/crumb';
-import { XMenuNode } from '@ng-nest/ui/menu';
 import { filter } from 'rxjs';
 import { AppMenus } from 'src/app/app-menus';
 
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
-  menus: XMenuNode[] = AppMenus;
-  crumbs: XCrumbNode[] = [];
-  menuActivatedId = '';
+  readonly menus = signal(AppMenus);
+  readonly crumbs: WritableSignal<XCrumbNode[]> = signal([]);
+  readonly menuActivatedId = signal('');
 
   constructor(private router: Router) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
@@ -21,12 +20,12 @@ export class AppConfigService {
     const arr = url.split('/');
     const list: XCrumbNode[] = [];
     const setList = (route: string) => {
-      let menu = this.menus.find((x) => x.routerLink === `./${route}`);
+      let menu = this.menus().find((x) => x.routerLink === `./${route}`);
       if (menu) {
         list.push(menu);
-        this.menuActivatedId = menu.id;
+        this.menuActivatedId.set(menu.id);
         while (menu && menu.pid) {
-          menu = this.menus.find((x) => x.id === menu!.pid);
+          menu = this.menus().find((x) => x.id === menu!.pid);
           if (menu) {
             list.unshift(menu);
           }
@@ -39,13 +38,15 @@ export class AppConfigService {
       setList('overview');
     }
 
-    this.crumbs = list.map((x, index) => {
-      if (index > 0) {
-        const { icon, ...menu } = x;
-        return menu;
-      } else {
-        return x;
-      }
-    });
+    this.crumbs.set(
+      list.map((x, index) => {
+        if (index > 0) {
+          const { icon, ...menu } = x;
+          return menu;
+        } else {
+          return x;
+        }
+      })
+    );
   }
 }

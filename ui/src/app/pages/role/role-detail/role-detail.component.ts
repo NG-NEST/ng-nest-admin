@@ -1,12 +1,17 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { XMessageService } from '@ng-nest/ui';
-import { XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { XButtonComponent } from '@ng-nest/ui/button';
+import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
+import { XInputComponent } from '@ng-nest/ui/input';
+import { XLoadingComponent } from '@ng-nest/ui/loading';
+import { XMessageService } from '@ng-nest/ui/message';
 import { RoleService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-role-detail',
+  standalone: true,
+  imports: [ReactiveFormsModule, XLoadingComponent, XInputComponent, XButtonComponent, XDialogModule],
   templateUrl: './role-detail.component.html'
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {

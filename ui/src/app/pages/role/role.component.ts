@@ -5,14 +5,20 @@ import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Role, RoleDescription, RoleService, RoleWhereInput } from '@ui/api';
 import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, tap } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { RoleDetailComponent } from './role-detail/role-detail.component';
 import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
+import { XInputComponent } from '@ng-nest/ui/input';
+import { XButtonComponent } from '@ng-nest/ui/button';
+import { XLoadingComponent } from '@ng-nest/ui/loading';
+import { XLinkComponent } from '@ng-nest/ui/link';
 
 @Component({
   selector: 'app-role',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, XInputComponent, XButtonComponent, XLoadingComponent, XTableComponent, XLinkComponent],
   templateUrl: './role.component.html',
   providers: [DatePipe]
 })

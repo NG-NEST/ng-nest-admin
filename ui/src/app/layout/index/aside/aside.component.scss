@@ -28,7 +28,7 @@
         height: 100%;
         content: '';
         display: block;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(0, 0, 0, 0.95);
       }
     }
     &-logo {
@@ -59,14 +59,22 @@
       z-index: 10;
       ::ng-deep .x-menu-nodes .x-menu-node {
         border-right: none;
+        color: $--x-primary-900;
 
         x-menu-node > a {
-          color: $--x-text;
+          color: $--x-primary-900;
+        }
+        &:hover {
+          background-color: rgba(50, 50, 50, 0.5);
         }
         &.x-activated {
-          background-color: $--x-primary-900;
+          background-color: rgba(50, 50, 50, 0.9);
           x-menu-node > a {
             color: $--x-primary;
+          }
+          &::after {
+            right: 0;
+            border-right-width: 0.25rem;
           }
         }
       }

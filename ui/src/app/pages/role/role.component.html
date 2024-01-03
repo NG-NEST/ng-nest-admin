@@ -18,6 +18,7 @@
   </div>
   <div class="app-table" [x-loading]="tableLoading">
     <x-table
+      ngSkipHydration
       #tableCom
       [data]="data"
       [columns]="columns"
@@ -31,7 +32,6 @@
       [scroll]="{ x: 800, y: 400 }"
       [virtualScroll]="true"
       [bodyColumnTpl]="{ operate: this.operateTpl }"
-      
     ></x-table>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">

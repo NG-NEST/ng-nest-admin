@@ -5,9 +5,9 @@
 </div>
 <x-menu
   [collapsed]="collapsed"
-  [activatedId]="config.menuActivatedId"
+  [activatedId]="config.menuActivatedId()"
   class="aside-menus"
-  [data]="config.menus"
+  [data]="config.menus()"
   layout="column"
   [width]="'100%'"
   [portalMinWidth]="'10rem'"

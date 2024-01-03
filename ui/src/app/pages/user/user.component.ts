@@ -7,12 +7,18 @@ import { RoleService, User, UserDescription, UserService, UserWhereInput } from 
 import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, tap } from 'rxjs';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { XMessageService } from '@ng-nest/ui/message';
+import { XInputComponent } from '@ng-nest/ui/input';
+import { XButtonComponent } from '@ng-nest/ui/button';
+import { XLoadingComponent } from '@ng-nest/ui/loading';
+import { XLinkComponent } from '@ng-nest/ui/link';
 
 @Component({
   selector: 'app-user',
+  standalone: true,
+  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XLoadingComponent, XTableComponent, XLinkComponent],
   templateUrl: './user.component.html',
   providers: [DatePipe]
 })
@@ -60,7 +66,7 @@ export class UserComponent {
   getTableData() {
     this.tableLoading = true;
     this.roleService.roleSelect().subscribe((x) => {
-      console.log(x)
+      console.log(x);
     });
     this.userService
       .users(this.setParams(this.index, this.size))

@@ -18,6 +18,7 @@
   </div>
   <div class="app-table" [x-loading]="tableLoading">
     <x-table
+      ngSkipHydration
       #tableCom
       [data]="data"
       [columns]="columns"

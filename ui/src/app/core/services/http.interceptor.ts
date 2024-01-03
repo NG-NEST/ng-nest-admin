@@ -1,27 +1,27 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-
+import { HttpEvent, HttpRequest, HttpErrorResponse, HttpInterceptorFn, HttpHandlerFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { XStorageService } from '@ng-nest/ui/core';
 import { catchError, Observable, of, timeout } from 'rxjs';
 
-@Injectable()
-export class AppNoopInterceptor implements HttpInterceptor {
-  constructor() {}
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let headers: { [key: string]: string } = {};
-    let accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      headers['Authorization'] = `Bearer ${accessToken}`;
-    }
-    req = req.clone({
-      setHeaders: headers
-    });
-    return next.handle(req).pipe(
-      timeout(10000),
-      catchError((x: HttpErrorResponse) => this.verifyAuth(x, req))
-    );
-  }
-
-  verifyAuth(_x: HttpErrorResponse, _req: HttpRequest<any>) {
-    return of();
-  }
+function VerifyAuth(_x: HttpErrorResponse, _req: HttpRequest<any>) {
+  return of();
 }
+
+export const AppNoopInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
+  const storage = inject(XStorageService);
+  let headers: { [key: string]: string } = {};
+  let accessToken = storage.getLocal('accessToken');
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+  request = request.clone({
+    setHeaders: headers
+  });
+  return next(request).pipe(
+    timeout(10000),
+    catchError((x: HttpErrorResponse) => VerifyAuth(x, request))
+  );
+};

@@ -15,11 +15,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/ui",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -28,7 +28,12 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src", "node_modules"]
             },
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "prerender": false,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -44,15 +49,13 @@
                   "maximumError": "4kb"
                 }
               ],
+              "serviceWorker": "ngsw-config.json",
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -64,10 +67,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "ui:build:production"
+              "buildTarget": "ui:build:production"
             },
             "development": {
-              "browserTarget": "ui:build:development"
+              "buildTarget": "ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ui:build"
+            "buildTarget": "ui:build"
           }
         },
         "test": {
