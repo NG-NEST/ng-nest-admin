@@ -1,7 +1,8 @@
 import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { CreateUserInput, UpdateUserInput, UserPaginationInput } from './dto';
+import { CreateUserInput, ResetPasswordInput, UpdateUserInput, UserPaginationInput } from './dto';
 import { User } from './model';
+import { uid } from 'uid';
 
 @Injectable()
 export class UserService {
@@ -23,19 +24,37 @@ export class UserService {
     return (await this.prisma.user.findUnique({ where: { id }, ...select })) as User;
   }
 
-  async updateUser(id: string, data: UpdateUserInput) {
-    return await this.prisma.user.update({
-      data,
-      where: { id }
+  async updateUser(input: UpdateUserInput) {
+    const { id, roleIds, ...data } = input;
+
+    const deleteRoles = this.prisma.usersOnRoles.deleteMany({ where: { userId: id } });
+    const updateUser = this.prisma.user.update({
+      data: { ...data, roles: { create: roleIds.map((y) => ({ roleId: y })) } },
+      where: { id },
+      select: { id: true }
     });
+
+    return await this.prisma.$transaction([deleteRoles, updateUser]);
   }
 
-  async createUser(data: CreateUserInput) {
+  async createUser(input: CreateUserInput) {
+    const { roleIds, ...data } = input;
     data.password = this.encrypt.hash(data.password);
-    return await this.prisma.user.create({ data });
+    return await this.prisma.user.create({
+      data: { ...data, roles: { create: roleIds.map((y) => ({ roleId: y })) } }
+    });
   }
 
   async deleteUser(id: string) {
     return await this.prisma.user.delete({ where: { id } });
+  }
+
+  async resetPassword(id: string, data: ResetPasswordInput) {
+    data.password = this.encrypt.hash(data.password);
+    return await this.prisma.user.update({
+      data,
+      where: { id },
+      select: { id: true }
+    });
   }
 }

@@ -8,14 +8,19 @@ import { CreateUserInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { UserMessage } from './user.enum';
 import { UpdateUserInput } from './update.input';
+import { HttpClient } from '@angular/common/http';
+import { ResetPasswordInput } from './reset-password.input';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apollo: Apollo) {}
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient
+  ) {}
 
   user(id: string): Observable<User> {
     return this.apollo
-      .watchQuery<{ user: User }>({
+      .query<{ user: User }>({
         variables: { id },
         query: gql`
           query data($id: ID!) {
@@ -25,16 +30,19 @@ export class UserService {
               id
               name
               phone
+              roles {
+                roleId
+              }
             }
           }
         `
       })
-      .valueChanges.pipe(map((x) => x.data?.user));
+      .pipe(map((x) => cloneDeep(x.data?.user)));
   }
 
   users(input: UserPaginationInput): Observable<BasePagination<User>> {
     return this.apollo
-      .watchQuery<{ users: BasePagination<User> }>({
+      .query<{ users: BasePagination<User> }>({
         variables: input,
         query: gql`
           query data($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
@@ -48,56 +56,33 @@ export class UserService {
                 name
                 phone
                 updatedAt
+                roles {
+                  role {
+                    id
+                    name
+                  }
+                }
               }
             }
           }
         `
       })
-      .valueChanges.pipe(map((x) => cloneDeep(x.data?.users!)));
+      .pipe(map((x) => cloneDeep(x.data?.users!)));
   }
 
   createUser(createUser: CreateUserInput): Observable<string> {
-    return this.apollo
-      .mutate<{ user: User }>({
-        variables: { createUser },
-        mutation: gql`
-          mutation data($createUser: CreateUserInput!) {
-            createUser(user: $createUser) {
-              id
-            }
-          }
-        `
-      })
-      .pipe(map(() => UserMessage.CreatedSuccess));
+    return this.http.post('/api/user', createUser).pipe(map(() => UserMessage.CreatedSuccess));
   }
 
-  updateUser(id: string, updateUser: UpdateUserInput): Observable<string> {
-    return this.apollo
-      .mutate<{ role: User }>({
-        variables: { id, updateUser },
-        mutation: gql`
-          mutation data($id: ID!, $updateUser: UpdateUserInput!) {
-            updateUser(id: $id, role: $updateUser) {
-              id
-            }
-          }
-        `
-      })
-      .pipe(map(() => UserMessage.UpdatedSuccess));
+  updateUser(updateUser: UpdateUserInput): Observable<string> {
+    return this.http.put('/api/user', updateUser).pipe(map(() => UserMessage.UpdatedSuccess));
   }
 
   deleteUser(id: string): Observable<string> {
-    return this.apollo
-      .mutate<{ role: User }>({
-        variables: { id },
-        mutation: gql`
-          mutation data($id: ID!) {
-            deleteUser(id: $id) {
-              id
-            }
-          }
-        `
-      })
-      .pipe(map(() => UserMessage.DeletedSuccess));
+    return this.http.delete(`/api/user/${id}`).pipe(map(() => UserMessage.DeletedSuccess));
+  }
+
+  resetPassword(id: string, resetPassword: ResetPasswordInput): Observable<string> {
+    return this.http.put(`/api/user/${id}/reset-password`, resetPassword).pipe(map(() => UserMessage.PasswordResetSuccess));
   }
 }

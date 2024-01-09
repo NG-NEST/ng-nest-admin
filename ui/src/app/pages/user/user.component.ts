@@ -3,9 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
-import { RoleService, User, UserDescription, UserService, UserWhereInput } from '@ui/api';
+import { RoleDescription, User, UserDescription, UserService, UserWhereInput } from '@ui/api';
 import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
-import { delay, tap } from 'rxjs';
+import { delay, finalize, tap } from 'rxjs';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
@@ -14,12 +14,15 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
+import { XTagComponent } from '@ng-nest/ui/tag';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XLoadingComponent, XTableComponent, XLinkComponent],
+  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XLoadingComponent, XTableComponent, XLinkComponent, XTagComponent],
   templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss'],
   providers: [DatePipe]
 })
 export class UserComponent {
@@ -29,14 +32,15 @@ export class UserComponent {
 
   columns: XTableColumn[] = [
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: UserDescription.Name },
-    { id: 'account', label: UserDescription.Name },
-    { id: 'email', label: UserDescription.Name },
-    { id: 'phone', label: UserDescription.Name },
+    { id: 'name', label: UserDescription.Name, width: 120 },
+    { id: 'account', label: UserDescription.Account, width: 120 },
+    { id: 'roles', label: RoleDescription.Role },
+    { id: 'email', label: UserDescription.Email },
+    { id: 'phone', label: UserDescription.Phone, width: 160 },
 
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 160 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 160 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    { id: 'operate', label: BaseDescription.Operate, width: 200, right: 0 }
   ];
 
   total = 0;
@@ -52,7 +56,6 @@ export class UserComponent {
   constructor(
     private datePipe: DatePipe,
     private userService: UserService,
-    private roleService: RoleService,
     private fb: FormBuilder,
     private dialog: XDialogService,
     private message: XMessageService,
@@ -63,11 +66,17 @@ export class UserComponent {
     this.getTableData();
   }
 
+  indexChange() {
+    this.getTableData();
+  }
+
+  sizeChange() {
+    this.index = 1;
+    this.getTableData();
+  }
+
   getTableData() {
     this.tableLoading = true;
-    this.roleService.roleSelect().subscribe((x) => {
-      console.log(x);
-    });
     this.userService
       .users(this.setParams(this.index, this.size))
       .pipe(
@@ -75,7 +84,7 @@ export class UserComponent {
         tap((x) => {
           return this.resultConvert(x);
         }),
-        tap(() => {
+        finalize(() => {
           this.tableLoading = false;
           this.resetLoading = false;
           this.searchLoading = false;
@@ -162,6 +171,14 @@ export class UserComponent {
             });
           }
         });
+        break;
+      case 'reset-password':
+        this.dialog.create(ResetPasswordComponent, {
+          data: {
+            id: user?.id
+          }
+        });
+        break;
     }
   }
 }

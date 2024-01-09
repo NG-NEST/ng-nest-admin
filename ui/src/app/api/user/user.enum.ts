@@ -19,5 +19,6 @@ export enum UserResolverName {
 export enum UserMessage {
   CreatedSuccess = '新增用户成功！',
   UpdatedSuccess = '更新用户成功！',
-  DeletedSuccess = '删除用户成功！'
+  DeletedSuccess = '删除用户成功！',
+  PasswordResetSuccess = '重置用户密码成功！'
 }

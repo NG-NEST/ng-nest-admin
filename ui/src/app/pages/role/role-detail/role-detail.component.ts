@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -6,7 +6,7 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { RoleService } from '@ui/api';
-import { Observable, Subject, finalize, tap } from 'rxjs';
+import { Observable, Subject, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-role-detail',
@@ -25,7 +25,12 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-  constructor(private role: RoleService, private fb: FormBuilder, private message: XMessageService) {}
+  constructor(
+    private role: RoleService,
+    private fb: FormBuilder,
+    private message: XMessageService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -38,7 +43,7 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
       this.formLoading = true;
       this.role
         .role(this.id)
-        .pipe(tap(() => (this.formLoading = false)))
+        .pipe(finalize(() => (this.formLoading = false)))
         .subscribe((x) => {
           this.form.patchValue(x);
         });
@@ -55,10 +60,15 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
     if (!this.id) {
       rq = this.role.createRole(this.form.value);
     } else {
-      rq = this.role.updateRole(this.id, this.form.value);
+      rq = this.role.updateRole({ id: this.id, ...this.form.value });
     }
     this.saveLoading = true;
-    rq.pipe(finalize(() => (this.saveLoading = false))).subscribe((x) => {
+    rq.pipe(
+      finalize(() => {
+        this.saveLoading = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe((x) => {
       this.message.success(x);
       this.dialogRef.close();
       this.data.saveSuccess();

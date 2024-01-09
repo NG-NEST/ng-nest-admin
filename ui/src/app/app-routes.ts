@@ -8,6 +8,10 @@ export const LayoutRoutes: Routes = [
     canActivateChild: [AppCanActivate],
     canLoad: [AppCanActivate]
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login-routing.module').then((x) => x.LoginRoutes)
+  },
 
   { path: '', redirectTo: 'index', pathMatch: 'full' }
 ];

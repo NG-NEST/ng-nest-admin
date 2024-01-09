@@ -26,6 +26,7 @@
     "express": "^4.18.2",
     "lodash-es": "^4.17.21",
     "node-fetch": "^3.3.2",
+    "prismjs": "^1.29.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -43,6 +44,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.1.1",
     "typescript": "~5.2.2"
   }
 }

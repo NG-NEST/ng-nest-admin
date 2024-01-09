@@ -4,7 +4,7 @@ import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Role, RoleDescription, RoleService, RoleWhereInput } from '@ui/api';
 import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
-import { delay, tap } from 'rxjs';
+import { delay, finalize, tap } from 'rxjs';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { RoleDetailComponent } from './role-detail/role-detail.component';
@@ -59,6 +59,15 @@ export class RoleComponent {
     this.getTableData();
   }
 
+  indexChange() {
+    this.getTableData();
+  }
+
+  sizeChange() {
+    this.index = 1;
+    this.getTableData();
+  }
+
   getTableData() {
     this.tableLoading = true;
     this.roleService
@@ -68,7 +77,7 @@ export class RoleComponent {
         tap((x) => {
           return this.resultConvert(x);
         }),
-        tap(() => {
+        finalize(() => {
           this.tableLoading = false;
           this.resetLoading = false;
           this.searchLoading = false;

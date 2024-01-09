@@ -11,43 +11,6 @@ type Auth {
   user: User!
 }
 
-input CreateRole {
-  """角色"""
-  roleId: String!
-}
-
-input CreateRoleInput {
-  """角色描述"""
-  description: String
-
-  """角色名称"""
-  name: String!
-}
-
-input CreateUserInput {
-  """用户账号"""
-  account: String!
-
-  """用户邮箱"""
-  email: String!
-
-  """用户名称"""
-  name: String!
-
-  """用户密码"""
-  password: String!
-
-  """用户手机号"""
-  phone: String
-
-  """角色"""
-  roles: CreateUserRole
-}
-
-input CreateUserRole {
-  create: [CreateRole!]
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -93,24 +56,6 @@ input LoginInput {
 }
 
 type Mutation {
-  """创建角色"""
-  createRole(role: CreateRoleInput!): Role!
-
-  """创建用户"""
-  createUser(user: CreateUserInput!): User!
-
-  """删除角色"""
-  deleteRole(
-    """编码"""
-    id: ID!
-  ): Role!
-
-  """删除用户"""
-  deleteUser(
-    """编码"""
-    id: ID!
-  ): User!
-
   """登录"""
   login(login: LoginInput!): Auth!
 
@@ -119,20 +64,6 @@ type Mutation {
     """JWT刷新令牌"""
     refreshToken: JWT!
   ): Auth!
-
-  """更新角色"""
-  updateRole(
-    """编码"""
-    id: ID!
-    role: UpdateRoleInput!
-  ): Role!
-
-  """更新用户"""
-  updateUser(
-    """编码"""
-    id: ID!
-    user: UpdateUserInput!
-  ): User!
 }
 
 type Query {
@@ -313,25 +244,6 @@ input StringFilter {
 
   """开始字符包含给定值"""
   startsWith: String
-}
-
-input UpdateRoleInput {
-  """角色描述"""
-  description: String
-
-  """角色名称"""
-  name: String
-}
-
-input UpdateUserInput {
-  """用户邮箱"""
-  email: String
-
-  """用户名称"""
-  name: String
-
-  """用户手机号"""
-  phone: String
 }
 
 type User {

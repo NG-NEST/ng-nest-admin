@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
 
-export const IsExist = (property: string, options?: ValidationOptions) => {
+export function IsExist(property: string, options?: ValidationOptions) {
   return (object: Record<string, any>, propertyName: string) => {
     registerDecorator({
       name: 'isExist',
@@ -12,17 +12,22 @@ export const IsExist = (property: string, options?: ValidationOptions) => {
       validator: {
         async validate(value: any, args: ValidationArguments) {
           const prisma = new PrismaClient();
+          const { id } = args.object as any;
+          const where = {
+            [propertyName]: value
+          };
+          if (id) {
+            where.NOT = { id };
+          }
           const entity = await prisma[property].findFirst({
             select: {
               [propertyName]: true
             },
-            where: {
-              [propertyName]: value
-            }
+            where
           });
           return !Boolean(entity);
         }
       }
     });
   };
-};
+}

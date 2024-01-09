@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { HttpStatus, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule, UserModule, AuthModule } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { GlobalServiceModule } from '@api/core';
+import { GlobalServiceModule, StatusCode } from '@api/core';
+import { GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
@@ -13,6 +14,14 @@ import { GlobalServiceModule } from '@api/core';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      formatError(error: GraphQLFormattedError) {
+        let {
+          message,
+          extensions: { code }
+        } = error;
+        code = StatusCode(code as string);
+        return { code, message, timestamp: new Date().toISOString() };
+      }
     }),
     ConfigModule.forRoot({
       isGlobal: true

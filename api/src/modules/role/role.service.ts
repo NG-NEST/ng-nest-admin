@@ -23,7 +23,8 @@ export class RoleService {
     return (await this.prisma.role.findUnique({ where: { id }, ...select })) as Role;
   }
 
-  async updateRole(id: string, data: UpdateRoleInput) {
+  async updateRole(input: UpdateRoleInput) {
+    const { id, ...data } = input;
     return await this.prisma.role.update({
       data,
       where: { id }

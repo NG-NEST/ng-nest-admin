@@ -5,7 +5,6 @@ import { PrismaSelect as PalJSPrismaSelect } from '@paljs/plugins';
 export const PrismaSelect = createParamDecorator((property: string, context: ExecutionContext) => {
   const gqlContext = GqlExecutionContext.create(context);
   const info = gqlContext.getInfo();
-
   const art = new PalJSPrismaSelect(info);
 
   if (property) {

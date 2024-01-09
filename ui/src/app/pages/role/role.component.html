@@ -32,6 +32,8 @@
       [scroll]="{ x: 800, y: 400 }"
       [virtualScroll]="true"
       [bodyColumnTpl]="{ operate: this.operateTpl }"
+      (indexChange)="indexChange()"
+      (sizeChange)="sizeChange()"
     ></x-table>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">

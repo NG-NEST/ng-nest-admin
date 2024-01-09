@@ -5,5 +5,15 @@
     "ws": true,
     "changeOrigin": true,
     "secure": false
+  },
+  "/api": {
+    "target": "http://localhost:8081",
+    "logLevel": "debug",
+    "ws": true,
+    "changeOrigin": true,
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    }
   }
 }
