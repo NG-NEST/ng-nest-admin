@@ -4,7 +4,10 @@ import { UserPaginationInput, UserPaginationOutput, UserSelectOutput } from './d
 import { UserService } from './user.service';
 import { User } from './model';
 import { UserResolverName } from './enum';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth';
 
+@UseGuards(GqlAuthGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private userService: UserService) {}

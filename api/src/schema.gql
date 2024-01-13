@@ -8,7 +8,6 @@ type Auth {
 
   """JWT刷新令牌"""
   refreshToken: JWT!
-  user: User!
 }
 
 """
@@ -47,18 +46,7 @@ A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
 scalar JWT
 
-input LoginInput {
-  """用户账号"""
-  account: String!
-
-  """用户密码"""
-  password: String!
-}
-
 type Mutation {
-  """登录"""
-  login(login: LoginInput!): Auth!
-
   """刷新JWT令牌"""
   refreshToken(
     """JWT刷新令牌"""
@@ -91,11 +79,38 @@ type Query {
     where: RoleWhereInput
   ): RolePaginationOutput!
 
+  """主体详情"""
+  subject(
+    """编码"""
+    id: ID!
+  ): Subject
+
+  """主体查询（没有分页）"""
+  subjectSelect: [SubjectSelectOutput!]!
+
+  """主体列表"""
+  subjects(
+    """排序规则"""
+    orderBy: [SubjectOrderInput!]
+
+    """索引开始位置，默认从 0 开始"""
+    skip: Int = 0
+
+    """查询的数据条数，默认 10 条数据"""
+    take: Int = 10
+
+    """查询条件"""
+    where: SubjectWhereInput
+  ): SubjectPaginationOutput!
+
   """用户详情"""
   user(
     """编码"""
     id: ID!
   ): User
+
+  """用户信息"""
+  userInfo: User!
 
   """用户查询（没有分页）"""
   userSelect: [UserSelectOutput!]!
@@ -131,9 +146,6 @@ type Role {
 
   """更新时间"""
   updatedAt: DateTime
-
-  """角色用户"""
-  users: [RoleUser!]
 }
 
 input RoleOrderInput {
@@ -167,18 +179,6 @@ type RoleSelectOutput {
 
   """角色名称"""
   name: String!
-}
-
-type RoleUser {
-  """创建时间"""
-  createdAt: DateTime
-
-  """更新时间"""
-  updatedAt: DateTime
-
-  """角色用户"""
-  user: User
-  userId: ID
 }
 
 input RoleWhere {
@@ -244,6 +244,81 @@ input StringFilter {
 
   """开始字符包含给定值"""
   startsWith: String
+}
+
+type Subject {
+  """创建时间"""
+  createdAt: DateTime
+
+  """主体描述"""
+  description: String
+
+  """编码"""
+  id: ID!
+
+  """主体名称"""
+  name: String!
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
+input SubjectOrderInput {
+  """创建时间"""
+  createdAt: SortOrder
+
+  """主体描述"""
+  description: SortOrder
+
+  """主体名称"""
+  name: SortOrder
+
+  """更新时间"""
+  updatedAt: SortOrder
+}
+
+type SubjectPaginationOutput {
+  """总数"""
+  count: Int
+
+  """数据集合"""
+  data: [Subject!]!
+}
+
+type SubjectSelectOutput {
+  """主体描述"""
+  description: String
+
+  """编码"""
+  id: ID!
+
+  """主体名称"""
+  name: String!
+}
+
+input SubjectWhere {
+  """主体描述"""
+  description: StringFilter
+
+  """主体名称"""
+  name: StringFilter
+}
+
+input SubjectWhereInput {
+  """与关系，所有的条件都返回 true"""
+  AND: [SubjectWhere!]
+
+  """非关系，所有的条件都返回 false"""
+  NOT: [SubjectWhere!]
+
+  """或关系，满足一个或多个条件就返回 true"""
+  OR: [SubjectWhere!]
+
+  """主体描述"""
+  description: StringFilter
+
+  """主体名称"""
+  name: StringFilter
 }
 
 type User {

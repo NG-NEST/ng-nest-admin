@@ -8,9 +8,13 @@ export class AppAuthService {
   router = inject(Router);
   localStorage = inject(XStorageService);
   accessToken = signal(this.localStorage.getLocal('accessToken'));
+  refreshToken = signal(this.localStorage.getLocal('refreshToken'));
   constructor() {
     effect(() => {
       this.localStorage.setLocal('accessToken', this.accessToken());
+    });
+    effect(() => {
+      this.localStorage.setLocal('refreshToken', this.refreshToken());
     });
   }
 

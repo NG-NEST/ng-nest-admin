@@ -1,1 +1,22 @@
-<p>login</p>
+<div class="login">
+  <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="list">
+      <div class="item">
+        <div class="logo"></div>
+      </div>
+      <div class="item">
+        <label>账号：</label>
+        <x-input size="large" formControlName="account" placeholder="请输入账号" required></x-input>
+      </div>
+      <div class="item">
+        <label>密码：</label>
+        <x-input size="large" formControlName="password" type="password" placeholder="请输入密码" required></x-input>
+      </div>
+      <div class="item">
+        <x-button width="100%" attrType="submit" type="primary" size="large" [loading]="loginLoading()">{{
+          loginLoading() ? '' : '登 录'
+        }}</x-button>
+      </div>
+    </div>
+  </form>
+</div>

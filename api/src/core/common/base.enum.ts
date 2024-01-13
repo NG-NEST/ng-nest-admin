@@ -20,7 +20,8 @@ export enum PaginationDescription {
 
 export enum ValidatorDescription {
   NotEmpty = '不能为空',
-  IsExist = '已存在'
+  IsExist = '已存在',
+  IsNotExist = '不存在'
 }
 
 export enum BaseDescription {

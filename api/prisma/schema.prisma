@@ -52,8 +52,8 @@ model UsersOnRoles {
 
 model Permission {
   id         String   @id @default(uuid())
-  name       String
-  code       String
+  name       String   @unique
+  code       String   @unique
   sort       Int
   resource   Resource @relation(fields: [resourceId], references: [id])
   resourceId String
@@ -66,9 +66,9 @@ model Permission {
 
 model Resource {
   id          String       @id @default(uuid())
-  pid         String
-  name        String
-  code        String
+  pid         String?
+  name        String       @unique
+  code        String       @unique
   subject     Subject      @relation(fields: [subjectId], references: [id])
   subjectId   String
   Permissions Permission[]
@@ -81,9 +81,12 @@ model Resource {
 
 model Subject {
   id          String     @id @default(uuid())
-  name        String
+  name        String     @unique
   description String?
   Resources   Resource[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sys-subject")
 }

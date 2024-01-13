@@ -22,26 +22,22 @@ export class AuthService {
   async login(user: LoginInput) {
     const { account } = user;
     const findUser = await this.prisma.user.findFirst({ select: { id: true, password: true }, where: { account } });
-    let userId = '';
+    let id = '';
     if (findUser === null) {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
     }
     if (this.encryptService.compare(user.password, findUser.password)) {
-      const { id } = findUser;
-      userId = id;
+      id = findUser.id;
     }
-    if (userId === '') {
+    if (id === '') {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
     } else {
-      return this.createTokens({ userId });
+      return this.createTokens({ id });
     }
   }
 
-  async getUserFromToken(token: string, select: BaseSelect) {
-    const { userId } = this.jwtService.decode(token, {
-      json: true
-    }) as { userId: string };
-    const user = await this.prisma.user.findUnique({ where: { id: userId }, ...select });
+  async getUserFromToken(id: string, select: BaseSelect) {
+    const user = await this.prisma.user.findUnique({ where: { id }, ...select });
     const { password, ...result } = user;
 
     return result;
@@ -49,17 +45,17 @@ export class AuthService {
 
   refreshToken(refreshToken: string) {
     try {
-      const { userId } = this.jwtService.verify(refreshToken, {
+      const { id } = this.jwtService.verify(refreshToken, {
         secret: jwtConstants.refreshSecret
       });
 
-      return this.createTokens({ userId });
+      return this.createTokens({ id });
     } catch (e) {
       throw new UnauthorizedException(AuthUnauthorized.TokenFailureOrValidationFailure);
     }
   }
 
-  private createTokens(payload: { userId: string }): Auth {
+  private createTokens(payload: { id: string }): Auth {
     return {
       accessToken: this.jwtService.sign(payload),
       refreshToken: this.jwtService.sign(payload, {

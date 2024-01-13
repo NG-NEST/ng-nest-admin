@@ -1,26 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable, map } from 'rxjs';
 import { LoginInput } from './login.input';
 import { LoginOutput } from './login.output';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private apollo: Apollo) {}
+  constructor(private http: HttpClient) {}
 
-  login(loginInput: LoginInput): Observable<LoginOutput> {
-    return this.apollo
-      .mutate<{ login: LoginOutput }>({
-        variables: { loginInput },
-        mutation: gql`
-          mutation Login($loginInput: LoginInput!) {
-            login(login: $loginInput) {
-              accessToken
-              refreshToken
-            }
-          }
-        `
-      })
-      .pipe(map((x) => x.data?.login!));
+  login(loginInput: LoginInput) {
+    return this.http.post<LoginOutput>('/api/auth/login', loginInput);
   }
 }

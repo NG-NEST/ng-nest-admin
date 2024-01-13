@@ -1,11 +1,11 @@
-import { BaseSelect, EncryptService, PrismaService } from '@api/core';
+import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { CreateRoleInput, UpdateRoleInput, RolePaginationInput } from './dto';
 import { Role } from './model';
 
 @Injectable()
 export class RoleService {
-  constructor(private prisma: PrismaService, private encrypt: EncryptService) {}
+  constructor(private prisma: PrismaService) {}
 
   async roles(input: RolePaginationInput, select: BaseSelect) {
     const { where } = input;

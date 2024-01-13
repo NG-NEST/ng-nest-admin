@@ -8,6 +8,11 @@ export enum AuthUnauthorized {
   TokenFailureOrValidationFailure = 'JWT令牌失效或验证失败'
 }
 
+export enum LoginDescription {
+  Account = '账号',
+  Password = '密码'
+}
+
 export enum AuthResolverName {
   Login = '登录',
   RefreshToken = '刷新JWT令牌',

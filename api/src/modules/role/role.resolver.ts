@@ -4,7 +4,10 @@ import { RolePaginationInput, RolePaginationOutput, RoleSelectOutput } from './d
 import { RoleService } from './role.service';
 import { Role } from './model';
 import { RoleResolverName } from './enum';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth';
 
+@UseGuards(GqlAuthGuard)
 @Resolver(() => Role)
 export class RoleResolver {
   constructor(private roleService: RoleService) {}

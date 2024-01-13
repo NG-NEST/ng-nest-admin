@@ -4,7 +4,7 @@
   <span (click)="collapsed = !collapsed">NG-NEST-ADMIN</span> -->
 </div>
 <x-menu
-  [collapsed]="collapsed"
+  [collapsed]="collapsed()"
   [activatedId]="config.menuActivatedId()"
   class="aside-menus"
   [data]="config.menus()"

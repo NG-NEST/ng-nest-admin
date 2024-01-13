@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.02);
+
+  .login-form {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22rem;
+    height: 22rem;
+    box-shadow: 0.125rem 0.125rem 1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3rem;
+      width: 100%;
+      &:not(:first-child) {
+        margin-top: 1rem;
+      }
+      label {
+        margin-right: 0.125rem;
+        white-space: nowrap;
+      }
+      x-input {
+        flex: 1;
+      }
+
+      x-button {
+        margin-top: 1rem;
+        flex: 1;
+        ::ng-deep .x-button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .logo {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 3rem;
+    background: rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+  }
+}

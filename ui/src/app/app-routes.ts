@@ -32,6 +32,11 @@ export const AppRoutes: Routes = [
     loadChildren: () => import('./pages/role/role-routing.module').then((x) => x.RoleRoutes),
     canActivate: [AppCanActivate]
   },
+  {
+    path: 'subject',
+    loadChildren: () => import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes),
+    canActivate: [AppCanActivate]
+  },
 
   { path: '', redirectTo: 'overview', pathMatch: 'full' }
 ];

@@ -74,52 +74,13 @@ export class RoleService {
 
   createRole(createRole: CreateRoleInput): Observable<string> {
     return this.http.post('/api/role', createRole).pipe(map(() => RoleMessage.CreatedSuccess));
-
-    // return this.apollo
-    //   .mutate<{ role: Role }>({
-    //     variables: { createRole },
-    //     mutation: gql`
-    //       mutation data($createRole: CreateRoleInput!) {
-    //         createRole(role: $createRole) {
-    //           id
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .pipe(map(() => RoleMessage.CreatedSuccess));
   }
 
   updateRole(updateRole: UpdateRoleInput): Observable<string> {
     return this.http.put(`/api/role`, updateRole).pipe(map(() => RoleMessage.UpdatedSuccess));
-
-    // return this.apollo
-    //   .mutate<{ role: Role }>({
-    //     variables: { id, updateRole },
-    //     mutation: gql`
-    //       mutation data($id: ID!, $updateRole: UpdateRoleInput!) {
-    //         updateRole(id: $id, role: $updateRole) {
-    //           id
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .pipe(map(() => RoleMessage.UpdatedSuccess));
   }
 
   deleteRole(id: string): Observable<string> {
     return this.http.delete(`/api/role/${id}`).pipe(map(() => RoleMessage.DeletedSuccess));
-
-    // return this.apollo
-    //   .mutate<{ role: Role }>({
-    //     variables: { id },
-    //     mutation: gql`
-    //       mutation data($id: ID!) {
-    //         deleteRole(id: $id) {
-    //           id
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .pipe(map(() => RoleMessage.DeletedSuccess));
   }
 }

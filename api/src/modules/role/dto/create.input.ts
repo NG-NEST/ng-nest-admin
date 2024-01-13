@@ -14,9 +14,3 @@ export class CreateRoleInput {
   @IsOptional()
   description?: string;
 }
-
-@InputType()
-export class CreateWithoutRoleInput {
-  @Field(() => CreateRoleInput)
-  create: CreateRoleInput;
-}
