@@ -10,12 +10,23 @@
       </div>
       <div class="item">
         <label>密码：</label>
-        <x-input size="large" formControlName="password" type="password" placeholder="请输入密码" required></x-input>
+        <x-input
+          size="large"
+          formControlName="password"
+          type="password"
+          placeholder="请输入密码"
+          required
+        ></x-input>
       </div>
       <div class="item">
-        <x-button width="100%" attrType="submit" type="primary" size="large" [loading]="loginLoading()">{{
-          loginLoading() ? '' : '登 录'
-        }}</x-button>
+        <x-button
+          width="100%"
+          attrType="submit"
+          type="primary"
+          size="large"
+          [loading]="loginLoading()"
+          >{{ loginLoading() ? '' : '登 录' }}</x-button
+        >
       </div>
     </div>
   </form>

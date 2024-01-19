@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { AppAuthService } from './auth.service';
+import { inject } from '@angular/core';
 
-export function AppInitializer(auth: AppAuthService): () => Observable<any> {
-  return () => {
-    return auth.check();
-  };
+export function AppInitializer(): () => Observable<boolean> {
+  const auth = inject(AppAuthService);
+  return () => auth.check();
 }

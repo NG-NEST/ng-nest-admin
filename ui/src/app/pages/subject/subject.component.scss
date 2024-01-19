@@ -1,0 +1,44 @@
+@import 'params';
+
+:host {
+  .app-inner {
+    display: flex;
+  }
+
+  .subject-table {
+    margin-top: 0;
+    width: 16rem;
+
+    ::ng-deep .x-table > thead > tr > th > a {
+      width: 100%;
+    }
+  }
+
+  .name-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .name-body {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .name {
+      display: flex;
+      flex-direction: column;
+      span {
+        color: $--x-text-500;
+      }
+    }
+
+    .operator {
+      x-link:not(:first-child) {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}

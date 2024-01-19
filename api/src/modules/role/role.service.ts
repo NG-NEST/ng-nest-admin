@@ -1,7 +1,6 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { CreateRoleInput, UpdateRoleInput, RolePaginationInput } from './dto';
-import { Role } from './model';
+import { CreateRoleInput, UpdateRoleInput, RolePaginationInput, Role } from '@api/dto';
 
 @Injectable()
 export class RoleService {

@@ -6,7 +6,9 @@
     "start": "ng serve --hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "prettier": "prettier --write \"./src/**/*.{ts,html,scss}\"",
+    "analyze": "esbuild-visualizer --open=true --metadata ./dist/ui/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +40,7 @@
     "@types/express": "^4.17.21",
     "@types/jasmine": "~4.3.0",
     "@types/lodash-es": "^4.17.9",
+    "esbuild-visualizer": "^0.6.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -45,6 +48,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.1.1",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "webpack-bundle-analyzer": "^4.10.1"
   }
 }

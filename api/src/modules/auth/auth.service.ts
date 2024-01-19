@@ -1,14 +1,16 @@
 import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginInput } from './dto';
+import { Auth, AuthUnauthorized, LoginInput } from '@api/dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { AuthUnauthorized } from './enum';
-import { Auth } from './model';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private encryptService: EncryptService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private encryptService: EncryptService,
+    private jwtService: JwtService
+  ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
     const user = await this.prisma.user.findFirst({ where: { account } });
@@ -21,7 +23,10 @@ export class AuthService {
 
   async login(user: LoginInput) {
     const { account } = user;
-    const findUser = await this.prisma.user.findFirst({ select: { id: true, password: true }, where: { account } });
+    const findUser = await this.prisma.user.findFirst({
+      select: { id: true, password: true },
+      where: { account }
+    });
     let id = '';
     if (findUser === null) {
       throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);

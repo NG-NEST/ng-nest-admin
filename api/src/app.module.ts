@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { RoleModule, UserModule, AuthModule, SubjectModule } from '@api/modules';
+import { RoleModule, UserModule, AuthModule, SubjectModule, ResourceModule } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -29,7 +29,8 @@ import { GraphQLFormattedError } from 'graphql';
     AuthModule,
     UserModule,
     RoleModule,
-    SubjectModule
+    SubjectModule,
+    ResourceModule
   ]
 })
 export class AppModule {}

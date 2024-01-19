@@ -55,11 +55,38 @@ type Mutation {
 }
 
 type Query {
+  """资源详情"""
+  resource(
+    """资源编码"""
+    id: ID!
+  ): Resource!
+
+  """资源查询（没有分页）"""
+  resourceSelect(
+    """主体编码"""
+    subjectId: ID!
+  ): [ResourceSelectOutput!]!
+
+  """资源列表"""
+  resources(
+    """排序规则"""
+    orderBy: [ResourceOrderInput!]
+
+    """索引开始位置，默认从 0 开始"""
+    skip: Int = 0
+
+    """查询的数据条数，默认 10 条数据"""
+    take: Int = 10
+
+    """查询条件"""
+    where: ResourceWhereInput
+  ): ResourcePaginationOutput!
+
   """角色详情"""
   role(
-    """编码"""
+    """角色编码"""
     id: ID!
-  ): Role
+  ): Role!
 
   """角色查询（没有分页）"""
   roleSelect: [RoleSelectOutput!]!
@@ -81,9 +108,15 @@ type Query {
 
   """主体详情"""
   subject(
-    """编码"""
+    """主体编码"""
     id: ID!
-  ): Subject
+  ): Subject!
+
+  """主体对应的资源（没有分页）"""
+  subjectResources(
+    """主体标识"""
+    code: String!
+  ): [SubjectResourceOutput!]!
 
   """主体查询（没有分页）"""
   subjectSelect: [SubjectSelectOutput!]!
@@ -105,9 +138,9 @@ type Query {
 
   """用户详情"""
   user(
-    """编码"""
+    """用户编码"""
     id: ID!
-  ): User
+  ): User!
 
   """用户信息"""
   userInfo: User!
@@ -131,6 +164,114 @@ type Query {
   ): UserPaginationOutput!
 }
 
+type Resource {
+  """子资源集合"""
+  children: [Resource!]
+
+  """资源标识"""
+  code: String!
+
+  """创建时间"""
+  createdAt: DateTime
+
+  """资源编码"""
+  id: ID!
+
+  """资源名称"""
+  name: String!
+
+  """父资源"""
+  parent: Resource
+
+  """父节点编码"""
+  pid: ID
+
+  """主体"""
+  subject: Subject!
+
+  """主体编码"""
+  subjectId: String!
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
+input ResourceOrderInput {
+  """资源标识"""
+  code: SortOrder
+
+  """创建时间"""
+  createdAt: SortOrder
+
+  """资源名称"""
+  name: SortOrder
+
+  """主体编码"""
+  subjectId: SortOrder
+
+  """更新时间"""
+  updatedAt: SortOrder
+}
+
+type ResourcePaginationOutput {
+  """总数"""
+  count: Int
+
+  """数据集合"""
+  data: [Resource!]!
+}
+
+type ResourceSelectOutput {
+  """资源标识"""
+  code: String!
+
+  """资源编码"""
+  id: ID!
+
+  """资源名称"""
+  name: String!
+
+  """父节点编码"""
+  pid: ID
+}
+
+input ResourceWhere {
+  """资源标识"""
+  code: StringFilter
+
+  """资源名称"""
+  name: StringFilter
+
+  """父节点编码"""
+  pid: StringFilter
+
+  """主体编码"""
+  subjectId: StringFilter
+}
+
+input ResourceWhereInput {
+  """与关系，所有的条件都返回 true"""
+  AND: [ResourceWhere!]
+
+  """非关系，所有的条件都返回 false"""
+  NOT: [ResourceWhere!]
+
+  """或关系，满足一个或多个条件就返回 true"""
+  OR: [ResourceWhere!]
+
+  """资源标识"""
+  code: StringFilter
+
+  """资源名称"""
+  name: StringFilter
+
+  """父节点编码"""
+  pid: StringFilter
+
+  """主体编码"""
+  subjectId: StringFilter
+}
+
 type Role {
   """创建时间"""
   createdAt: DateTime
@@ -138,7 +279,7 @@ type Role {
   """角色描述"""
   description: String
 
-  """编码"""
+  """角色编码"""
   id: ID!
 
   """角色名称"""
@@ -174,7 +315,7 @@ type RoleSelectOutput {
   """角色描述"""
   description: String
 
-  """编码"""
+  """角色编码"""
   id: ID!
 
   """角色名称"""
@@ -247,13 +388,16 @@ input StringFilter {
 }
 
 type Subject {
+  """主体标识"""
+  code: String!
+
   """创建时间"""
   createdAt: DateTime
 
   """主体描述"""
   description: String
 
-  """编码"""
+  """主体编码"""
   id: ID!
 
   """主体名称"""
@@ -264,6 +408,9 @@ type Subject {
 }
 
 input SubjectOrderInput {
+  """主体标识"""
+  code: SortOrder
+
   """创建时间"""
   createdAt: SortOrder
 
@@ -285,11 +432,25 @@ type SubjectPaginationOutput {
   data: [Subject!]!
 }
 
-type SubjectSelectOutput {
-  """主体描述"""
-  description: String
+type SubjectResourceOutput {
+  """资源标识"""
+  code: String!
 
-  """编码"""
+  """资源编码"""
+  id: ID!
+
+  """资源名称"""
+  name: String!
+
+  """父节点编码"""
+  pid: ID
+}
+
+type SubjectSelectOutput {
+  """主体标识"""
+  code: String!
+
+  """主体编码"""
   id: ID!
 
   """主体名称"""
@@ -297,6 +458,9 @@ type SubjectSelectOutput {
 }
 
 input SubjectWhere {
+  """主体标识"""
+  code: StringFilter
+
   """主体描述"""
   description: StringFilter
 
@@ -313,6 +477,9 @@ input SubjectWhereInput {
 
   """或关系，满足一个或多个条件就返回 true"""
   OR: [SubjectWhere!]
+
+  """主体标识"""
+  code: StringFilter
 
   """主体描述"""
   description: StringFilter
@@ -331,7 +498,7 @@ type User {
   """用户邮箱"""
   email: String!
 
-  """编码"""
+  """用户编码"""
   id: ID!
 
   """用户名称"""
@@ -376,15 +543,9 @@ type UserPaginationOutput {
 }
 
 type UserRole {
-  """创建时间"""
-  createdAt: DateTime
-
   """用户角色"""
   role: Role
   roleId: ID
-
-  """更新时间"""
-  updatedAt: DateTime
 }
 
 type UserSelectOutput {
@@ -394,7 +555,7 @@ type UserSelectOutput {
   """用户邮箱"""
   email: String!
 
-  """编码"""
+  """用户编码"""
   id: ID!
 
   """用户名称"""

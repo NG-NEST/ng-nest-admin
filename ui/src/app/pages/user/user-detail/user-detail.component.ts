@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -13,7 +19,14 @@ import { XData } from '@ng-nest/ui/core';
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [ReactiveFormsModule, XLoadingComponent, XInputComponent, XButtonComponent, XSelectComponent, XDialogModule],
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XSelectComponent,
+    XDialogModule
+  ],
   templateUrl: './user-detail.component.html'
 })
 export class UserDetailComponent implements OnInit, OnDestroy {

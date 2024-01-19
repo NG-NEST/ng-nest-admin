@@ -11,13 +11,20 @@ import { Observable, Subject, finalize } from 'rxjs';
 @Component({
   selector: 'app-subject-detail',
   standalone: true,
-  imports: [ReactiveFormsModule, XLoadingComponent, XInputComponent, XButtonComponent, XDialogModule],
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XDialogModule
+  ],
   templateUrl: './subject-detail.component.html'
 })
 export class SubjectDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<SubjectDetailComponent>);
-  data = inject(X_DIALOG_DATA) as { id: string; saveSuccess: () => void };
+  data = inject(X_DIALOG_DATA) as { id: string; title: string; saveSuccess: () => void };
   id = '';
+  title = '';
 
   formLoading = false;
   saveLoading = false;
@@ -35,10 +42,12 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
+      code: [null, [Validators.required]],
       description: [null]
     });
-    const { id } = this.data;
+    const { id, title } = this.data;
     this.id = id;
+    this.title = title;
     if (this.id) {
       this.formLoading = true;
       this.subject

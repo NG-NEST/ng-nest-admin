@@ -11,7 +11,13 @@ import { Observable, Subject, finalize } from 'rxjs';
 @Component({
   selector: 'app-role-detail',
   standalone: true,
-  imports: [ReactiveFormsModule, XLoadingComponent, XInputComponent, XButtonComponent, XDialogModule],
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XDialogModule
+  ],
   templateUrl: './role-detail.component.html'
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {

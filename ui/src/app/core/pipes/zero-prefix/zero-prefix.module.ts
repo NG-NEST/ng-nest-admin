@@ -3,6 +3,6 @@ import { AppZeroPrefixPipe } from './zero-prefix.pipe';
 
 @NgModule({
   declarations: [AppZeroPrefixPipe],
-  exports: [AppZeroPrefixPipe],
+  exports: [AppZeroPrefixPipe]
 })
 export class AppZeroPrefixModule {}

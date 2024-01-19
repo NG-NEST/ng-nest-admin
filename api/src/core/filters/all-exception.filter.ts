@@ -1,4 +1,11 @@
-import { ExceptionFilter, Catch, HttpException, HttpStatus, Logger, BadRequestException } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  HttpException,
+  HttpStatus,
+  Logger,
+  BadRequestException
+} from '@nestjs/common';
 import { AbstractHttpAdapter } from '@nestjs/core';
 import { Logger as Log4js } from '../common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
@@ -17,7 +24,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     const hostType = host.getType<HostType>();
 
-    const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     let message = '';
     if (hostType === 'graphql') {
     } else if (hostType === 'http') {

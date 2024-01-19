@@ -23,11 +23,12 @@ export class SubjectService {
       .query<{ subject: Subject }>({
         variables: { id },
         query: gql`
-          query data($id: ID!) {
+          query Subject($id: ID!) {
             subject(id: $id) {
               id
               description
               name
+              code
             }
           }
         `
@@ -40,15 +41,18 @@ export class SubjectService {
       .query<{ subjects: BasePagination<Subject> }>({
         variables: input,
         query: gql`
-          query data($skip: Int, $take: Int, $where: SubjectWhereInput, $orderBy: [SubjectOrderInput!]) {
+          query Subjects(
+            $skip: Int
+            $take: Int
+            $where: SubjectWhereInput
+            $orderBy: [SubjectOrderInput!]
+          ) {
             subjects(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
-                createdAt
-                description
                 id
                 name
-                updatedAt
+                code
               }
             }
           }
@@ -59,25 +63,30 @@ export class SubjectService {
 
   subjectSelect(): Observable<SubjectSelect[]> {
     return this.apollo
-      .watchQuery<{ subjectSelect: SubjectSelect[] }>({
+      .query<{ subjectSelect: SubjectSelect[] }>({
         query: gql`
-          query data {
+          query SubjectSelect {
             subjectSelect {
               id
               name
+              code
             }
           }
         `
       })
-      .valueChanges.pipe(map((x) => cloneDeep(x.data?.subjectSelect!)));
+      .pipe(map((x) => cloneDeep(x.data?.subjectSelect!)));
   }
 
   createSubject(createSubject: CreateSubjectInput): Observable<string> {
-    return this.http.post('/api/subject', createSubject).pipe(map(() => SubjectMessage.CreatedSuccess));
+    return this.http
+      .post('/api/subject', createSubject)
+      .pipe(map(() => SubjectMessage.CreatedSuccess));
   }
 
   updateSubject(updateSubject: UpdateSubjectInput): Observable<string> {
-    return this.http.put(`/api/subject`, updateSubject).pipe(map(() => SubjectMessage.UpdatedSuccess));
+    return this.http
+      .put(`/api/subject`, updateSubject)
+      .pipe(map(() => SubjectMessage.UpdatedSuccess));
   }
 
   deleteSubject(id: string): Observable<string> {

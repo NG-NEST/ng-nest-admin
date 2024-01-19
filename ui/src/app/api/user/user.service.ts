@@ -23,7 +23,7 @@ export class UserService {
       .query<{ user: User }>({
         variables: { id },
         query: gql`
-          query data($id: ID!) {
+          query User($id: ID!) {
             user(id: $id) {
               account
               email
@@ -45,7 +45,7 @@ export class UserService {
       .query<{ users: BasePagination<User> }>({
         variables: input,
         query: gql`
-          query data($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
+          query Users($skip: Int, $take: Int, $where: UserWhereInput, $orderBy: [UserOrderInput!]) {
             users(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
@@ -83,6 +83,8 @@ export class UserService {
   }
 
   resetPassword(id: string, resetPassword: ResetPasswordInput): Observable<string> {
-    return this.http.put(`/api/user/${id}/reset-password`, resetPassword).pipe(map(() => UserMessage.PasswordResetSuccess));
+    return this.http
+      .put(`/api/user/${id}/reset-password`, resetPassword)
+      .pipe(map(() => UserMessage.PasswordResetSuccess));
   }
 }

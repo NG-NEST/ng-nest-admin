@@ -25,7 +25,7 @@ export function IsNotExist(property: string, options?: ValidationOptions) {
             },
             where
           });
-          return !Boolean(entity);
+          return Boolean(entity);
         }
       }
     });

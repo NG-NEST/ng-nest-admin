@@ -1,7 +1,9 @@
 export enum SubjectDescription {
   Subject = '主体',
 
+  Id = '主体编码',
   Name = '主体名称',
+  Code = '主体标识',
   Description = '主体描述'
 }
 

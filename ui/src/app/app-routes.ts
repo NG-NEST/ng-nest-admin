@@ -19,7 +19,8 @@ export const LayoutRoutes: Routes = [
 export const AppRoutes: Routes = [
   {
     path: 'overview',
-    loadChildren: () => import('./pages/overview/overview-routing.module').then((x) => x.OverviewRoutes),
+    loadChildren: () =>
+      import('./pages/overview/overview-routing.module').then((x) => x.OverviewRoutes),
     canActivate: [AppCanActivate]
   },
   {
@@ -34,7 +35,8 @@ export const AppRoutes: Routes = [
   },
   {
     path: 'subject',
-    loadChildren: () => import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes),
+    loadChildren: () =>
+      import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes),
     canActivate: [AppCanActivate]
   },
 

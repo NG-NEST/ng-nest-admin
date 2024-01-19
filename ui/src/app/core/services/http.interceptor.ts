@@ -1,19 +1,30 @@
-import { HttpEvent, HttpRequest, HttpErrorResponse, HttpHandlerFn, HttpResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpRequest,
+  HttpErrorResponse,
+  HttpHandlerFn,
+  HttpResponse
+} from '@angular/common/http';
 import { inject } from '@angular/core';
-import { XStorageService } from '@ng-nest/ui/core';
+import { Router } from '@angular/router';
 import { XMessageRef, XMessageService } from '@ng-nest/ui/message';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
+import { AppAuthService } from './auth.service';
 
 let messageRef: XMessageRef;
 
-export function AppNoopInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-  const storage = inject(XStorageService);
+export function AppNoopInterceptor(
+  request: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> {
   const message = inject(XMessageService);
+  const router = inject(Router);
+  const auth = inject(AppAuthService);
   let headers: { [key: string]: string } = {};
   let addTokens = ['graphql', 'api'];
   let spt = request.url.split('/');
   if (spt.length > 1 && addTokens.includes(spt[1])) {
-    let accessToken = storage.getLocal('accessToken');
+    let accessToken = auth.accessToken();
     if (accessToken) {
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -27,7 +38,12 @@ export function AppNoopInterceptor(request: HttpRequest<unknown>, next: HttpHand
       if (x instanceof HttpResponse) {
         const body: any = x.body;
         if (body.data === null && body.errors.length > 0) {
-          let msg = body.errors.map((y: any) => y.message).join('\n');
+          let msg = body.errors.map((y: any) => y.message);
+          if (msg.includes('Unauthorized')) {
+            router.navigateByUrl('/login').then(() => {
+              auth.accessToken.set(null);
+            });
+          }
           if (!Boolean(messageRef?.opened())) {
             messageRef = message.error({ content: msg });
           }
@@ -45,6 +61,11 @@ export function AppNoopInterceptor(request: HttpRequest<unknown>, next: HttpHand
         } else {
           msg = x.error.message;
         }
+      }
+      if (x.status === 401) {
+        router.navigateByUrl('/login').then(() => {
+          auth.accessToken.set(null);
+        });
       }
       if (!Boolean(messageRef?.opened())) {
         messageRef = message.error({ content: msg });

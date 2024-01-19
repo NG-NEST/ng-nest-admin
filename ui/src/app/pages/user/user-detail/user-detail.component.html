@@ -6,26 +6,37 @@
         <label>用户账号：</label>
         <x-input formControlName="account" placeholder="请输入用户账号" required></x-input>
       </div>
-      @if(!id) {
-      <div class="item required">
-        <label>用户密码：</label>
-        <x-input formControlName="password" type="password" placeholder="请输入用户密码" required></x-input>
-      </div>
-      <div class="item required">
-        <label>确认密码：</label>
-        <x-input
-          formControlName="checkPassword"
-          type="password"
-          placeholder="请再次输入用户密码"
-          required
-          message="密码不一致"
-          [inputValidator]="passwordCheck"
-        ></x-input>
-      </div>
+      @if (!id) {
+        <div class="item required">
+          <label>用户密码：</label>
+          <x-input
+            formControlName="password"
+            type="password"
+            placeholder="请输入用户密码"
+            required
+          ></x-input>
+        </div>
+        <div class="item required">
+          <label>确认密码：</label>
+          <x-input
+            formControlName="checkPassword"
+            type="password"
+            placeholder="请再次输入用户密码"
+            required
+            message="密码不一致"
+            [inputValidator]="passwordCheck"
+          ></x-input>
+        </div>
       }
       <div class="item required">
         <label>用户角色：</label>
-        <x-select [data]="roles" formControlName="roleIds" multiple placeholder="请选择用户角色" required></x-select>
+        <x-select
+          [data]="roles"
+          formControlName="roleIds"
+          multiple
+          placeholder="请选择用户角色"
+          required
+        ></x-select>
       </div>
       <div class="item required">
         <label>用户名称：</label>
@@ -43,6 +54,13 @@
   </div>
   <div x-dialog-actions align="center">
     <x-button icon="fto-x" attrType="button" x-dialog-close>取消</x-button>
-    <x-button icon="fto-save" type="primary" attrType="submit" [loading]="saveLoading" [disabled]="!form.valid">保存</x-button>
+    <x-button
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [loading]="saveLoading"
+      [disabled]="!form.valid"
+      >保存</x-button
+    >
   </div>
 </form>

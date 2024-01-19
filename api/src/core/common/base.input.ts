@@ -139,7 +139,10 @@ export class PaginationWhereOrder<Where, OrderBy> extends PaginationWhere<Where>
   orderBy?: OrderBy[];
 }
 
-export class PaginationWhereOrderInclude<Where, OrderBy, Include> extends PaginationWhereOrder<Where, OrderBy> {
+export class PaginationWhereOrderInclude<Where, OrderBy, Include> extends PaginationWhereOrder<
+  Where,
+  OrderBy
+> {
   include?: Include;
 }
 

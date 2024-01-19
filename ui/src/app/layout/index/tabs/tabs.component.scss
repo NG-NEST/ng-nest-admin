@@ -3,14 +3,26 @@
 :host {
   width: calc(100% - 15rem);
   height: 2.25rem;
-  padding-left: 1rem;
+  padding: 0 1rem;
   position: fixed;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   top: 0;
   left: 15rem;
   z-index: 13;
-  transition: left $--x-animation-duration-slow, width $--x-animation-duration-slow;
+  transition:
+    left $--x-animation-duration-slow,
+    width $--x-animation-duration-slow;
   font-size: 0.875rem;
   background-color: rgba(255, 255, 255);
+  box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
+
+  .userinfo {
+    display: flex;
+    align-items: center;
+    > span {
+      margin-left: 0.25rem;
+    }
+  }
 }

@@ -1,12 +1,7 @@
-import { BaseAudit, BaseModel } from '@ui/core';
-import { User } from '../user';
+import { BaseModel } from '@ui/core';
 
 export class Subject extends BaseModel {
   name!: string;
+  code!: string;
   description?: string;
-}
-
-export class SubjectUser extends BaseAudit {
-  userId?: string;
-  user?: User;
 }

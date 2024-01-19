@@ -1,7 +1,11 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { CreateResourceInput, UpdateResourceInput, ResourcePaginationInput } from './dto';
-import { Resource } from './model';
+import {
+  CreateResourceInput,
+  Resource,
+  ResourcePaginationInput,
+  UpdateResourceInput
+} from '@api/dto';
 
 @Injectable()
 export class ResourceService {
@@ -15,8 +19,8 @@ export class ResourceService {
     };
   }
 
-  async resourceSelect(select: BaseSelect) {
-    return await this.prisma.resource.findMany({ ...select });
+  async resourceSelect(subjectId: string, select: BaseSelect) {
+    return await this.prisma.resource.findMany({ where: { subjectId }, ...select });
   }
 
   async resource(id: string, select: BaseSelect) {
@@ -32,8 +36,14 @@ export class ResourceService {
   }
 
   async createResource(input: CreateResourceInput) {
-    const { subjectId, ...data } = input;
-    return await this.prisma.resource.create({ data: { ...data, subject: { connect: { id: subjectId } } } });
+    const { subjectId, pid, ...other } = input;
+    const data = { ...other, subject: { connect: { id: subjectId } }, parent: {} };
+    if (pid) {
+      data.parent = { connect: { id: pid } };
+    }
+    return await this.prisma.resource.create({
+      data
+    });
   }
 
   async deleteResource(id: string) {

@@ -14,6 +14,13 @@
   </div>
   <div x-dialog-actions align="center">
     <x-button icon="fto-x" attrType="button" x-dialog-close>取消</x-button>
-    <x-button icon="fto-save" type="primary" attrType="submit" [loading]="saveLoading" [disabled]="!form.valid">保存</x-button>
+    <x-button
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [loading]="saveLoading"
+      [disabled]="!form.valid"
+      >保存</x-button
+    >
   </div>
 </form>

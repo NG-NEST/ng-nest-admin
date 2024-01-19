@@ -11,9 +11,11 @@ export class AppConfigService {
   readonly menuActivatedId = signal('');
 
   constructor(private router: Router) {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
-      this.getCrumbs(event.url);
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.getCrumbs(event.url);
+      });
   }
 
   getCrumbs(url: string) {

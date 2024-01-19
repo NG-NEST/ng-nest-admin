@@ -1,10 +1,14 @@
 <form [x-loading]="formLoading" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title>新增主体</h4>
+  <h4 x-dialog-title>{{ title }}主体</h4>
   <div x-dialog-content>
     <div class="list">
       <div class="item required">
         <label>主体名称：</label>
         <x-input formControlName="name" placeholder="请输入主体名称"></x-input>
+      </div>
+      <div class="item required">
+        <label>主体标识：</label>
+        <x-input formControlName="code" placeholder="请输入主体标识"></x-input>
       </div>
       <div class="item">
         <label>主体描述：</label>
@@ -14,6 +18,13 @@
   </div>
   <div x-dialog-actions align="center">
     <x-button icon="fto-x" attrType="button" x-dialog-close>取消</x-button>
-    <x-button icon="fto-save" type="primary" attrType="submit" [loading]="saveLoading" [disabled]="!form.valid">保存</x-button>
+    <x-button
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [loading]="saveLoading"
+      [disabled]="!form.valid"
+      >保存</x-button
+    >
   </div>
 </form>

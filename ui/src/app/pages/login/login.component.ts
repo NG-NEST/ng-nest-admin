@@ -48,7 +48,7 @@ export class LoginComponent {
     this.authService
       .login(this.form.value)
       .pipe(
-        delay(5000),
+        delay(1000),
         finalize(() => this.loginLoading.set(false))
       )
       .subscribe((x) => {

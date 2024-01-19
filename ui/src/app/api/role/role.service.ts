@@ -23,7 +23,7 @@ export class RoleService {
       .query<{ role: Role }>({
         variables: { id },
         query: gql`
-          query data($id: ID!) {
+          query Role($id: ID!) {
             role(id: $id) {
               id
               description
@@ -40,7 +40,7 @@ export class RoleService {
       .query<{ roles: BasePagination<Role> }>({
         variables: input,
         query: gql`
-          query data($skip: Int, $take: Int, $where: RoleWhereInput, $orderBy: [RoleOrderInput!]) {
+          query Roles($skip: Int, $take: Int, $where: RoleWhereInput, $orderBy: [RoleOrderInput!]) {
             roles(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
@@ -61,7 +61,7 @@ export class RoleService {
     return this.apollo
       .watchQuery<{ roleSelect: RoleSelect[] }>({
         query: gql`
-          query data {
+          query RoleSelect {
             roleSelect {
               id
               name

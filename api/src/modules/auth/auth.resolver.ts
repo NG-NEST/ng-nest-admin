@@ -1,9 +1,6 @@
 import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
-import { Auth } from './model';
-import { RefreshTokenInput } from './dto';
+import { Auth, AuthResolverName, RefreshTokenInput, User } from '@api/dto';
 import { AuthService } from './auth.service';
-import { AuthResolverName } from './enum';
-import { User } from '@api/modules';
 import { BaseSelect, GqlCurrentUser, PrismaSelect } from '@api/core';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from './gql-auth.guard';

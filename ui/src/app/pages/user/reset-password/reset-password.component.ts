@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { XSelectComponent } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -12,7 +18,14 @@ import { Subject, finalize } from 'rxjs';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [ReactiveFormsModule, XLoadingComponent, XInputComponent, XButtonComponent, XSelectComponent, XDialogModule],
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XSelectComponent,
+    XDialogModule
+  ],
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {

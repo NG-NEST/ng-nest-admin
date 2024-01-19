@@ -67,11 +67,13 @@ model Permission {
 model Resource {
   id          String       @id @default(uuid())
   pid         String?
+  parent      Resource?    @relation("children", fields: [pid], references: [id])
+  children    Resource[]   @relation("children")
   name        String       @unique
   code        String       @unique
   subject     Subject      @relation(fields: [subjectId], references: [id])
   subjectId   String
-  Permissions Permission[]
+  permissions Permission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,6 +84,7 @@ model Resource {
 model Subject {
   id          String     @id @default(uuid())
   name        String     @unique
+  code        String     @unique
   description String?
   Resources   Resource[]
 

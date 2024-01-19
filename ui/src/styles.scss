@@ -3,8 +3,11 @@
 
 @font-face {
   font-family: 'ubuntu';
-  src: url('assets/fonts/ubuntu.eot?#') format('eot'), url('assets/fonts/ubuntu.ttf') format('truetype'),
-    url('assets/fonts/ubuntu.woff') format('woff'), url('assets/fonts/ubuntu.svg#ubuntu') format('svg');
+  src:
+    url('assets/fonts/ubuntu.eot?#') format('eot'),
+    url('assets/fonts/ubuntu.ttf') format('truetype'),
+    url('assets/fonts/ubuntu.woff') format('woff'),
+    url('assets/fonts/ubuntu.svg#ubuntu') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,8 +19,26 @@ body {
   padding: 0;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0.0625rem;
+  background: $--x-text-800;
+}
+::-webkit-scrollbar-track {
+  border-radius: 0.0625rem;
+  background: $--x-background-a300;
+}
+
 .app-inner {
   padding: 1rem;
+}
+
+.app-right {
+  flex: 1;
+  margin-left: 1rem;
 }
 
 .app-tools,
@@ -25,6 +46,7 @@ body {
   padding: 1rem;
   background-color: rgba(255, 255, 255);
   border-radius: $--x-border-radius;
+  box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
 }
 
 .app-table {

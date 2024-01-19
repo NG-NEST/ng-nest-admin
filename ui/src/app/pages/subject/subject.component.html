@@ -1,45 +1,112 @@
 <div class="app-inner">
-  <div class="app-tools">
-    <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
-      <div class="list">
-        <div class="item">
-          <label>角色名称：</label>
-          <x-input formControlName="name" placeholder="请输入角色名称"></x-input>
-        </div>
-      </div>
-      <div class="buttons">
-        <div>
-          <x-button type="primary" icon="fto-search" attrType="submit" [loading]="searchLoading">搜索</x-button>
-          <x-button icon="fto-refresh-cw" attrType="button" (click)="action('reset')" [loading]="resetLoading">重置</x-button>
-        </div>
-        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')">新增</x-button>
-      </div>
-    </form>
-  </div>
-  <div class="app-table" [x-loading]="tableLoading">
+  <div class="app-table subject-table" [x-loading]="tableLoading">
     <x-table
       ngSkipHydration
-      #tableCom
       [data]="data"
       [columns]="columns"
       [index]="index"
       [size]="size"
       [total]="total"
-      [showSize]="true"
+      [rowHeight]="0"
+      [showEllipsis]="false"
+      [showTotal]="false"
       [showEmpty]="!tableLoading"
-      [sizeData]="[10, 50, 100]"
-      [showJump]="true"
-      [scroll]="{ x: 800, y: 400 }"
+      [hiddenPaginationBorder]="true"
+      [scroll]="{ x: 180, y: 300 }"
       [virtualScroll]="true"
-      [bodyColumnTpl]="{ operate: this.operateTpl }"
+      [headColumnTpl]="{ name: this.nameHeadTpl }"
+      [bodyColumnTpl]="{ name: this.nameBodyTpl }"
+      [adaptionHeight]="105"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
+      (activatedRowChange)="activatedRowChange($event)"
     ></x-table>
-    <ng-template #operateTpl let-column="$column" let-row="$row">
-      <div class="operate">
-        <x-link type="primary" (click)="action('edit', row)">修改</x-link>
-        <x-link type="danger" (click)="action('delete', row)">删除</x-link>
+    <ng-template #nameHeadTpl let-column="$column" let-row="$row">
+      <div class="name-header">
+        <span>{{ column.label }}</span>
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')"
+          >新增</x-button
+        >
       </div>
     </ng-template>
+    <ng-template #nameBodyTpl let-column="$column" let-row="$row">
+      <div class="name-body">
+        <div class="name">
+          {{ row.name }}<span>{{ row.code }}</span>
+        </div>
+        <div class="operator">
+          <x-link type="primary" (click)="action('edit', row); $event.stopPropagation()"
+            >修改</x-link
+          >
+          <x-link type="danger" (click)="action('delete', row); $event.stopPropagation()"
+            >删除</x-link
+          >
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="app-right">
+    <div class="app-tools">
+      <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="resourceAction('search')">
+        <div class="list">
+          <div class="item">
+            <label>资源名称：</label>
+            <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
+          </div>
+        </div>
+        <div class="buttons">
+          <div>
+            <x-button
+              type="primary"
+              icon="fto-search"
+              attrType="submit"
+              [loading]="resourceSearchLoading"
+              [disabled]="!enabled"
+              >搜索</x-button
+            >
+            <x-button
+              icon="fto-refresh-cw"
+              attrType="button"
+              (click)="resourceAction('reset')"
+              [loading]="resourceResetLoading"
+              [disabled]="!enabled"
+              >重置</x-button
+            >
+          </div>
+          <x-button
+            type="primary"
+            icon="fto-plus"
+            attrType="button"
+            (click)="resourceAction('add')"
+            [disabled]="!enabled"
+            >新增</x-button
+          >
+        </div>
+      </form>
+    </div>
+    <div class="app-table" [x-loading]="resourceTableLoading">
+      <x-table
+        ngSkipHydration
+        [data]="resourceData"
+        [columns]="resourceColumns"
+        [index]="resourceIndex"
+        [size]="resourceSize"
+        [total]="resourceTotal"
+        [showSize]="true"
+        [sizeData]="[10, 20, 50, 100]"
+        [showJump]="true"
+        [showEmpty]="!resourceTableLoading"
+        [bodyColumnTpl]="{ operate: this.operateTpl }"
+        [adaptionHeight]="105"
+        (indexChange)="resourceIndexChange()"
+        (sizeChange)="resourceSizeChange()"
+      ></x-table>
+      <ng-template #operateTpl let-column="$column" let-row="$row">
+        <div class="operate">
+          <x-link type="primary" (click)="resourceAction('edit', row)">修改</x-link>
+          <x-link type="danger" (click)="resourceAction('delete', row)">删除</x-link>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

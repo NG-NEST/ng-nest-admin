@@ -1,7 +1,6 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { CreateSubjectInput, UpdateSubjectInput, SubjectPaginationInput } from './dto';
-import { Subject } from './model';
+import { Subject, CreateSubjectInput, UpdateSubjectInput, SubjectPaginationInput } from '@api/dto';
 
 @Injectable()
 export class SubjectService {
@@ -17,6 +16,10 @@ export class SubjectService {
 
   async subjectSelect(select: BaseSelect) {
     return await this.prisma.subject.findMany({ ...select });
+  }
+
+  async subjectResources(code: string, select: BaseSelect) {
+    return await this.prisma.resource.findMany({ where: { subject: { code } }, ...select });
   }
 
   async subject(id: string, select: BaseSelect) {

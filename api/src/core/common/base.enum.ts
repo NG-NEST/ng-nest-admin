@@ -52,5 +52,3 @@ export enum WhereDescription {
   StartsWith = '开始字符包含给定值',
   EndsWith = '结束字符包含给定值'
 }
-
-export const BaseID = { type: () => ID, description: BaseDescription.Id };

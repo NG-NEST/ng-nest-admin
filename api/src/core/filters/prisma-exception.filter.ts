@@ -4,7 +4,11 @@ import { GqlArgumentsHost } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 
 // TODO
-@Catch(Prisma.PrismaClientKnownRequestError || Prisma.PrismaClientUnknownRequestError || Prisma.PrismaClientValidationError)
+@Catch(
+  Prisma.PrismaClientKnownRequestError ||
+    Prisma.PrismaClientUnknownRequestError ||
+    Prisma.PrismaClientValidationError
+)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError, host: GqlArgumentsHost) {
     // console.log('-------------------');

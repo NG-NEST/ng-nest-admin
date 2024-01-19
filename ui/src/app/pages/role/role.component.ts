@@ -18,7 +18,15 @@ import { XLinkComponent } from '@ng-nest/ui/link';
 @Component({
   selector: 'app-role',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, XInputComponent, XButtonComponent, XLoadingComponent, XTableComponent, XLinkComponent],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    XInputComponent,
+    XButtonComponent,
+    XLoadingComponent,
+    XTableComponent,
+    XLinkComponent
+  ],
   templateUrl: './role.component.html',
   providers: [DatePipe]
 })
