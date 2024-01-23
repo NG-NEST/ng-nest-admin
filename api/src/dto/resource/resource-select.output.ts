@@ -16,4 +16,12 @@ export class ResourceSelectOutput {
 
   @Field({ description: ResourceDescription.Code })
   code: string;
+
+  @Field({ description: ResourceDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
+  @Field({ description: ResourceDescription.Sort, nullable: true })
+  @IsOptional()
+  description?: string;
 }

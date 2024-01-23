@@ -84,9 +84,10 @@ body {
     padding: 1.25rem 0;
     .item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       label {
         width: 8.625rem;
+        line-height: 1.75rem;
         text-align: right;
       }
       &.required {

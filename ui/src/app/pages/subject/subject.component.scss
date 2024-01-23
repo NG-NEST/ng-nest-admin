@@ -9,8 +9,45 @@
     margin-top: 0;
     width: 16rem;
 
-    ::ng-deep .x-table > thead > tr > th > a {
-      width: 100%;
+    ::ng-deep {
+      .x-table > thead > tr > th > a {
+        width: 100%;
+      }
+      .x-table > tbody tr {
+        cursor: pointer;
+      }
+      .x-table-activated {
+        position: relative;
+        align-items: center;
+        &::before {
+          position: absolute;
+          content: ' ';
+          width: 0.6rem;
+          height: 90%;
+          background: $--x-border-100;
+          background:
+            linear-gradient(-45deg, transparent 0.3rem, $--x-border-100 0) bottom right,
+            linear-gradient(-135deg, transparent 0.3rem, $--x-border-100 0) top right;
+          background-size: 50% 51%;
+          background-repeat: no-repeat;
+          left: -0.3rem;
+          z-index: 1;
+        }
+        &::after {
+          position: absolute;
+          content: ' ';
+          width: 0.6rem;
+          height: 90%;
+          background: $--x-border-100;
+          background:
+            linear-gradient(45deg, transparent 0.3rem, $--x-border-100 0) bottom left,
+            linear-gradient(135deg, transparent 0.3rem, $--x-border-100 0) top left;
+          background-size: 50% 51%;
+          background-repeat: no-repeat;
+          right: -0.3rem;
+          z-index: 1;
+        }
+      }
     }
   }
 

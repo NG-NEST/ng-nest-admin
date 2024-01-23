@@ -14,6 +14,10 @@ export class ResourceOrderInput extends BaseOrder {
   @IsOptional()
   code?: SortOrder;
 
+  @Field(() => SortOrder, { description: ResourceDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: SortOrder;
+
   @Field(() => SortOrder, { description: SubjectDescription.Id, nullable: true })
   @IsOptional()
   subjectId?: SortOrder;

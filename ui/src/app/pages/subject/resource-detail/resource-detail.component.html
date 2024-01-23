@@ -22,6 +22,14 @@
         <label>资源编码：</label>
         <x-input formControlName="code" placeholder="请输入资源编码"></x-input>
       </div>
+      <div class="item required">
+        <label>资源排序：</label>
+        <x-input-number formControlName="sort"></x-input-number>
+      </div>
+      <div class="item">
+        <label>资源描述：</label>
+        <x-textarea formControlName="description" placeholder="请输入资源描述"></x-textarea>
+      </div>
     </div>
   </div>
   <div x-dialog-actions align="center">

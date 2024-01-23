@@ -10,6 +10,8 @@ import { ResourceService, SubjectService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
 import { XData } from '@ng-nest/ui/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
+import { XInputNumberComponent } from '@ng-nest/ui/input-number';
+import { XTextareaComponent } from '@ng-nest/ui/textarea';
 
 @Component({
   selector: 'app-resource-detail',
@@ -21,7 +23,9 @@ import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
     XButtonComponent,
     XSelectComponent,
     XDialogModule,
-    XTreeSelectComponent
+    XTreeSelectComponent,
+    XInputNumberComponent,
+    XTextareaComponent
   ],
   templateUrl: './resource-detail.component.html'
 })
@@ -58,6 +62,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
       pid: [null],
+      sort: [0, [Validators.required]],
+      description: [null],
       subjectId: [null, [Validators.required]]
     });
     const { id, title, subjectId } = this.data;
@@ -67,6 +73,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     if (subjectId) this.form.patchValue({ subjectId });
     const request: Observable<any>[] = [this.getSubjectSelect(), this.getResourceSelect()];
     if (this.id) {
+      this.form.controls['subjectId'].disable();
       request.push(this.getResource());
     }
     this.formLoading = true;

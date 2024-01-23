@@ -27,6 +27,8 @@ export class ResourceService {
             resource(id: $id) {
               name
               code
+              sort
+              description
               id
               pid
               subjectId
@@ -53,6 +55,7 @@ export class ResourceService {
               data {
                 name
                 code
+                sort
                 id
                 subject {
                   name

@@ -4,6 +4,8 @@ export class Resource extends BaseModel {
   pid?: string;
   name!: string;
   code!: string;
+  sort!: number;
+  description?: string;
   subject!: ResourceSubject;
   subjectId!: string;
   subjectName!: string;

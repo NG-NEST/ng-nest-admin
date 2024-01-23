@@ -51,12 +51,13 @@ model UsersOnRoles {
 }
 
 model Permission {
-  id         String   @id @default(uuid())
-  name       String   @unique
-  code       String   @unique
-  sort       Int
-  resource   Resource @relation(fields: [resourceId], references: [id])
-  resourceId String
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  sort        Int      @default(0)
+  description String?
+  resource    Resource @relation(fields: [resourceId], references: [id])
+  resourceId  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,6 +72,8 @@ model Resource {
   children    Resource[]   @relation("children")
   name        String       @unique
   code        String       @unique
+  sort        Int          @default(0)
+  description String?
   subject     Subject      @relation(fields: [subjectId], references: [id])
   subjectId   String
   permissions Permission[]

@@ -5,6 +5,7 @@ import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
+import { XTextareaComponent } from '@ng-nest/ui/textarea';
 import { SubjectService } from '@ui/api';
 import { Observable, Subject, finalize } from 'rxjs';
 
@@ -16,7 +17,8 @@ import { Observable, Subject, finalize } from 'rxjs';
     XLoadingComponent,
     XInputComponent,
     XButtonComponent,
-    XDialogModule
+    XDialogModule,
+    XTextareaComponent
   ],
   templateUrl: './subject-detail.component.html'
 })

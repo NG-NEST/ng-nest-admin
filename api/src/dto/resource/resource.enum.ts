@@ -7,6 +7,8 @@ export enum ResourceDescription {
   Pid = '父节点编码',
   Name = '资源名称',
   Code = '资源标识',
+  Sort = '资源排序',
+  Description = '资源描述',
 
   Parent = '父资源',
   Children = '子资源集合'

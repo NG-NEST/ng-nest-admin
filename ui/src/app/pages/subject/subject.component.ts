@@ -5,6 +5,7 @@ import { XTableColumn, XTableComponent, XTableRow } from '@ng-nest/ui/table';
 import {
   Resource,
   ResourceDescription,
+  ResourceOrderInput,
   ResourceService,
   ResourceWhereInput,
   Subject,
@@ -61,9 +62,9 @@ export class SubjectComponent {
   });
   resourceColumns: XTableColumn[] = [
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-
     { id: 'name', label: ResourceDescription.Name },
     { id: 'code', label: ResourceDescription.Code },
+    { id: 'sort', label: ResourceDescription.Sort },
     { id: 'parentName', label: ResourceDescription.Parent },
     { id: 'subjectName', label: SubjectDescription.Name },
     { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
@@ -181,7 +182,7 @@ export class SubjectComponent {
   }
 
   setResourceParams(index: number, size: number) {
-    const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
+    const orderBy: ResourceOrderInput[] = [{ sort: 'desc' }];
     const where: ResourceWhereInput = {
       subjectId: { equals: this.selectedSubject()!.id }
     };

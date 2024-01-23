@@ -13,11 +13,11 @@ export class Resource extends BaseAudit {
   @IsOptional()
   pid?: string;
 
-  @Field(() => Resource, { description: ResourceDescription.Parent })
+  @Field(() => Resource, { description: ResourceDescription.Parent, nullable: true })
   @IsOptional()
   parent?: Resource;
 
-  @Field(() => [Resource], { description: ResourceDescription.Children })
+  @Field(() => [Resource], { description: ResourceDescription.Children, nullable: true })
   @IsOptional()
   children?: Resource[];
 
@@ -26,6 +26,13 @@ export class Resource extends BaseAudit {
 
   @Field({ description: ResourceDescription.Code })
   code: string;
+
+  @Field({ description: ResourceDescription.Sort })
+  sort: number;
+
+  @Field({ description: ResourceDescription.Description, nullable: true })
+  @IsOptional()
+  description?: string;
 
   @Field({ description: SubjectDescription.Id })
   subjectId: string;

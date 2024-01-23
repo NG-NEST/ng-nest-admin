@@ -3,4 +3,6 @@ export class ResourceSelect {
   pid?: string;
   name!: string;
   code!: string;
+  sort!: number;
+  description?: string;
 }

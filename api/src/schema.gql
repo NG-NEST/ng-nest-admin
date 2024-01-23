@@ -54,6 +54,29 @@ type Mutation {
   ): Auth!
 }
 
+type Permission {
+  """许可标识"""
+  code: String!
+
+  """创建时间"""
+  createdAt: DateTime
+
+  """许可描述"""
+  description: String
+
+  """许可编码"""
+  id: ID!
+
+  """许可名称"""
+  name: String!
+
+  """许可排序"""
+  sort: Float!
+
+  """更新时间"""
+  updatedAt: DateTime
+}
+
 type Query {
   """资源详情"""
   resource(
@@ -174,6 +197,9 @@ type Resource {
   """创建时间"""
   createdAt: DateTime
 
+  """资源描述"""
+  description: String
+
   """资源编码"""
   id: ID!
 
@@ -185,6 +211,9 @@ type Resource {
 
   """父节点编码"""
   pid: ID
+
+  """资源排序"""
+  sort: Float!
 
   """主体"""
   subject: Subject!
@@ -206,6 +235,9 @@ input ResourceOrderInput {
   """资源名称"""
   name: SortOrder
 
+  """资源排序"""
+  sort: SortOrder
+
   """主体编码"""
   subjectId: SortOrder
 
@@ -225,6 +257,9 @@ type ResourceSelectOutput {
   """资源标识"""
   code: String!
 
+  """资源排序"""
+  description: String
+
   """资源编码"""
   id: ID!
 
@@ -233,17 +268,26 @@ type ResourceSelectOutput {
 
   """父节点编码"""
   pid: ID
+
+  """资源排序"""
+  sort: Float
 }
 
 input ResourceWhere {
   """资源标识"""
   code: StringFilter
 
+  """资源描述"""
+  description: StringFilter
+
   """资源名称"""
   name: StringFilter
 
   """父节点编码"""
   pid: StringFilter
+
+  """资源排序"""
+  sort: StringFilter
 
   """主体编码"""
   subjectId: StringFilter
@@ -262,11 +306,17 @@ input ResourceWhereInput {
   """资源标识"""
   code: StringFilter
 
+  """资源描述"""
+  description: StringFilter
+
   """资源名称"""
   name: StringFilter
 
   """父节点编码"""
   pid: StringFilter
+
+  """资源排序"""
+  sort: StringFilter
 
   """主体编码"""
   subjectId: StringFilter
@@ -436,6 +486,9 @@ type SubjectResourceOutput {
   """资源标识"""
   code: String!
 
+  """资源排序"""
+  description: String
+
   """资源编码"""
   id: ID!
 
@@ -444,6 +497,9 @@ type SubjectResourceOutput {
 
   """父节点编码"""
   pid: ID
+
+  """资源排序"""
+  sort: Float
 }
 
 type SubjectSelectOutput {
