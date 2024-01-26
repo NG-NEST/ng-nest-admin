@@ -196,6 +196,7 @@ export function BasePaginationInput<Where, OrderBy, Include>(
   } else if (TWhere && TOrderBy && TInclude) {
     return PaginationWhereOrderInclude;
   }
+  return Pagination;
 }
 
 export function BaseCreateWithoutInput<CreateWithout>(TCreateWithout: Type<CreateWithout>) {

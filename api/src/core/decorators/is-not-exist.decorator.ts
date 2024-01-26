@@ -10,7 +10,7 @@ export function IsNotExist(property: string, options?: ValidationOptions) {
       constraints: [property],
       options: options,
       validator: {
-        async validate(value: any, args: ValidationArguments) {
+        async validate(value: any, _args: ValidationArguments) {
           const prisma = new PrismaClient();
           let prop = propertyName;
           if (options.context?.relation) {
@@ -19,13 +19,16 @@ export function IsNotExist(property: string, options?: ValidationOptions) {
           const where = {
             [prop]: value
           };
-          const entity = await prisma[property].findFirst({
-            select: {
-              [prop]: true
-            },
-            where
-          });
-          return Boolean(entity);
+          if ((prisma as any)[property]) {
+            const entity = await (prisma as any)[property].findFirst({
+              select: {
+                [prop]: true
+              },
+              where
+            });
+            return Boolean(entity);
+          }
+          return false;
         }
       }
     });

@@ -17,15 +17,18 @@ export function IsExist(property: string, options?: ValidationOptions) {
             [propertyName]: value
           };
           if (id) {
-            where.NOT = { id };
+            where['NOT'] = { id };
           }
-          const entity = await prisma[property].findFirst({
-            select: {
-              [propertyName]: true
-            },
-            where
-          });
-          return !Boolean(entity);
+          if ((prisma as any)[property]) {
+            const entity = await (prisma as any)[property].findFirst({
+              select: {
+                [propertyName]: true
+              },
+              where
+            });
+            return !Boolean(entity);
+          }
+          return true;
         }
       }
     });

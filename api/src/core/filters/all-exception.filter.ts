@@ -1,11 +1,4 @@
-import {
-  ExceptionFilter,
-  Catch,
-  HttpException,
-  HttpStatus,
-  Logger,
-  BadRequestException
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { AbstractHttpAdapter } from '@nestjs/core';
 import { Logger as Log4js } from '../common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
@@ -20,7 +13,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError | any, host: ExecutionContextHost): void {
     // In certain situations `httpAdapter` might not be available in the
     // constructor method, thus we should resolve it here.
-    const httpAdapter = this.httpAdapterHost;
+    // const _httpAdapter = this.httpAdapterHost;
+    console.log(this.httpAdapterHost);
 
     const hostType = host.getType<HostType>();
 

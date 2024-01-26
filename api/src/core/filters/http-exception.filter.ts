@@ -1,13 +1,5 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus,
-  Logger
-} from '@nestjs/common';
+import { Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Logger as Log4js } from '../common';
-import { GqlArgumentsHost } from '@nestjs/graphql';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 
 @Catch(HttpException)

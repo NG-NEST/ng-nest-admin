@@ -1,4 +1,4 @@
-import { ID, registerEnumType } from '@nestjs/graphql';
+import { registerEnumType } from '@nestjs/graphql';
 
 export enum SortOrder {
   asc = 'asc',
