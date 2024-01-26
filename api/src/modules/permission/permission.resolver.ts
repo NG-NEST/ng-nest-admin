@@ -1,17 +1,16 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { PermissionService } from './permission.service';
+import { UseGuards } from '@nestjs/common';
 import {
+  GqlAuthGuard,
   Permission,
-  PermissionCode,
   PermissionId,
   PermissionPaginationInput,
   PermissionPaginationOutput,
   PermissionResolverName,
-  PermissionSelectOutput
-} from '@api/dto';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth';
+  PermissionSelectOutput,
+  PermissionService
+} from '@api/services';
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => Permission)

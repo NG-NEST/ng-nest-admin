@@ -1,9 +1,14 @@
 import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
-import { Auth, AuthResolverName, RefreshTokenInput, User } from '@api/dto';
-import { AuthService } from './auth.service';
 import { BaseSelect, GqlCurrentUser, PrismaSelect } from '@api/core';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from './gql-auth.guard';
+import {
+  Auth,
+  AuthResolverName,
+  AuthService,
+  GqlAuthGuard,
+  RefreshTokenInput,
+  User
+} from '@api/services';
 
 @Resolver(() => Auth)
 export class AuthResolver {

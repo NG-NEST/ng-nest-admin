@@ -1,7 +1,10 @@
+import {
+  CreateResourceInput,
+  JwtAuthGuard,
+  ResourceService,
+  UpdateResourceInput
+} from '@api/services';
 import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateResourceInput, UpdateResourceInput } from '@api/dto';
-import { ResourceService } from './resource.service';
-import { JwtAuthGuard } from '../auth';
 
 @UseGuards(JwtAuthGuard)
 @Controller('resource')

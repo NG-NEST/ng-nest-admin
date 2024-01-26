@@ -1,12 +1,10 @@
 import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import {
-  User,
-  CreateUserInput,
-  ResetPasswordInput,
-  UpdateUserInput,
-  UserPaginationInput
-} from '@api/dto';
+import { UserPaginationInput } from './user-pagination.input';
+import { User } from './user.model';
+import { UpdateUserInput } from './update.input';
+import { CreateUserInput } from './create.input';
+import { ResetPasswordInput } from './reset-password.input';
 
 @Injectable()
 export class UserService {

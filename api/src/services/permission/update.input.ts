@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { IsExist, ValidatorDescription } from '@api/core';
+import { ValidatorDescription } from '@api/core';
 import { PermissionDescription } from './permission.enum';
 
 @InputType()

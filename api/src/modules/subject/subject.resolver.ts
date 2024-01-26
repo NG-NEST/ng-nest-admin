@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { SubjectService } from './subject.service';
+import { UseGuards } from '@nestjs/common';
 import {
+  GqlAuthGuard,
   Subject,
   SubjectCode,
   SubjectId,
@@ -9,10 +10,9 @@ import {
   SubjectPaginationOutput,
   SubjectResolverName,
   SubjectResourceOutput,
-  SubjectSelectOutput
-} from '@api/dto';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth';
+  SubjectSelectOutput,
+  SubjectService
+} from '@api/services';
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => Subject)

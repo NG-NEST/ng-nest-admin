@@ -1,7 +1,10 @@
+import {
+  CreatePermissionInput,
+  JwtAuthGuard,
+  PermissionService,
+  UpdatePermissionInput
+} from '@api/services';
 import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreatePermissionInput, UpdatePermissionInput } from '@api/dto';
-import { PermissionService } from './permission.service';
-import { JwtAuthGuard } from '../auth';
 
 @UseGuards(JwtAuthGuard)
 @Controller('permission')

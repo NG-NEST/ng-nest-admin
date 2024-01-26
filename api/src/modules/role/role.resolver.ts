@@ -1,16 +1,16 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
+import { UseGuards } from '@nestjs/common';
 import {
+  GqlAuthGuard,
   Role,
   RoleId,
   RolePaginationInput,
   RolePaginationOutput,
   RoleResolverName,
-  RoleSelectOutput
-} from '@api/dto';
-import { RoleService } from './role.service';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth';
+  RoleSelectOutput,
+  RoleService
+} from '@api/services';
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => Role)

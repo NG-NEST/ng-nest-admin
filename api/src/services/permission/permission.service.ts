@@ -1,11 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import {
-  Permission,
-  CreatePermissionInput,
-  UpdatePermissionInput,
-  PermissionPaginationInput
-} from '@api/dto';
+import { PermissionPaginationInput } from './permission-pagination.input';
+import { CreatePermissionInput } from './create.input';
+import { UpdatePermissionInput } from './update.input';
+import { Permission } from './permission.model';
 
 @Injectable()
 export class PermissionService {

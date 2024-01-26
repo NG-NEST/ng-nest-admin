@@ -1,3 +1,3 @@
 export * from './auth.module';
-export * from './gql-auth.guard';
-export * from './jwt-auth.guard';
+export * from '../../services/auth/gql-auth.guard';
+export * from '../../services/auth/jwt-auth.guard';

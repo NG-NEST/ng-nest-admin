@@ -7,3 +7,4 @@ export * from './resource-pagination.input';
 export * from './resource-where';
 export * from './resource.output';
 export * from './resource-select.output';
+export * from './resource.service';

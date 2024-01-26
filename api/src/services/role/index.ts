@@ -7,3 +7,4 @@ export * from './role-pagination.input';
 export * from './role-where';
 export * from './role.output';
 export * from './role-select.output';
+export * from './role.service';

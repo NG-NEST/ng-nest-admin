@@ -8,3 +8,4 @@ export * from './user-where';
 export * from './user-order';
 export * from './user.output';
 export * from './user-select.output';
+export * from './user.service';

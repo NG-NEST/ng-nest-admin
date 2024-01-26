@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@api/core": ["./src/core"],
-      "@api/dto": ["./src/dto"],
+      "@api/services": ["./src/services"],
       "@api/modules": ["./src/modules"]
     }
   }

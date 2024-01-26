@@ -1,11 +1,10 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import {
-  CreateResourceInput,
-  Resource,
-  ResourcePaginationInput,
-  UpdateResourceInput
-} from '@api/dto';
+import { ResourcePaginationInput } from './resource-pagination.input';
+import { Resource } from './resource.model';
+import { UpdateResourceInput } from './update.input';
+import { CreateResourceInput } from './create.input';
+
 
 @Injectable()
 export class ResourceService {

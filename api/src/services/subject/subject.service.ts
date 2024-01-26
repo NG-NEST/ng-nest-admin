@@ -1,6 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { Subject, CreateSubjectInput, UpdateSubjectInput, SubjectPaginationInput } from '@api/dto';
+import { SubjectPaginationInput } from './subject-pagination.input';
+import { Subject } from './subject.model';
+import { UpdateSubjectInput } from './update.input';
+import { CreateSubjectInput } from './create.input';
 
 @Injectable()
 export class SubjectService {

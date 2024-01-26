@@ -1,8 +1,10 @@
 import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Auth, AuthUnauthorized, LoginInput } from '@api/dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { LoginInput } from './login.input';
+import { AuthUnauthorized } from './auth.enum';
+import { Auth } from './auth.model';
 
 @Injectable()
 export class AuthService {

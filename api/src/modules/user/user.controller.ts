@@ -1,7 +1,11 @@
+import {
+  CreateUserInput,
+  JwtAuthGuard,
+  ResetPasswordInput,
+  UpdateUserInput,
+  UserService
+} from '@api/services';
 import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateUserInput, ResetPasswordInput, UpdateUserInput } from '@api/dto';
-import { UserService } from './user.service';
-import { JwtAuthGuard } from '../auth';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')

@@ -7,3 +7,4 @@ export * from './permission-pagination.input';
 export * from './permission-where';
 export * from './permission.output';
 export * from './permission-select.output';
+export * from './permission.service';

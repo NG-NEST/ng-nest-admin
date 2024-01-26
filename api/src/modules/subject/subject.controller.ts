@@ -1,7 +1,10 @@
+import {
+  CreateSubjectInput,
+  JwtAuthGuard,
+  SubjectService,
+  UpdateSubjectInput
+} from '@api/services';
 import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateSubjectInput, UpdateSubjectInput } from '@api/dto';
-import { SubjectService } from './subject.service';
-import { JwtAuthGuard } from '../auth';
 
 @UseGuards(JwtAuthGuard)
 @Controller('subject')
