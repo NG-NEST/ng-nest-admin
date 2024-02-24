@@ -1,11 +1,15 @@
 import {
   CreateUserInput,
   JwtAuthGuard,
+  // Routes,
   ResetPasswordInput,
+  Route,
+  Routes,
   UpdateUserInput,
-  UserService
+  UserService,
+  // Route,
 } from '@api/services';
-import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -18,7 +22,9 @@ export class UserController {
   }
 
   @Post()
-  async createUser(@Body() data: CreateUserInput) {
+  @Routes(Route.CreateUser)
+  async createUser(@Body() data: CreateUserInput, @Req() req: any) {
+    console.log(req);
     return await this.userService.createUser(data);
   }
 

@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private encryptService: EncryptService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
@@ -27,7 +27,7 @@ export class AuthService {
     const { account } = user;
     const findUser = await this.prisma.user.findFirst({
       select: { id: true, password: true },
-      where: { account }
+      where: { account },
     });
     let id = '';
     if (findUser === null) {
@@ -53,7 +53,7 @@ export class AuthService {
   refreshToken(refreshToken: string) {
     try {
       const { id } = this.jwtService.verify(refreshToken, {
-        secret: jwtConstants.refreshSecret
+        secret: jwtConstants.refreshSecret,
       });
 
       return this.createTokens({ id });
@@ -67,8 +67,8 @@ export class AuthService {
       accessToken: this.jwtService.sign(payload),
       refreshToken: this.jwtService.sign(payload, {
         secret: jwtConstants.refreshSecret,
-        expiresIn: jwtConstants.refreshExpiresIn
-      })
+        expiresIn: jwtConstants.refreshExpiresIn,
+      }),
     };
   }
 }

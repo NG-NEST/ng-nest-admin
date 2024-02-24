@@ -8,13 +8,16 @@ import { ResetPasswordInput } from './reset-password.input';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private encrypt: EncryptService) {}
+  constructor(
+    private prisma: PrismaService,
+    private encrypt: EncryptService,
+  ) {}
 
   async users(input: UserPaginationInput, select: BaseSelect) {
     const { where } = input;
     return {
       data: (await this.prisma.user.findMany({ ...input, ...select })) as User[],
-      count: await this.prisma.user.count({ where })
+      count: await this.prisma.user.count({ where }),
     };
   }
 
@@ -33,7 +36,7 @@ export class UserService {
     const updateUser = this.prisma.user.update({
       data: { ...data, roles: { create: roleIds.map((y) => ({ roleId: y })) } },
       where: { id },
-      select: { id: true }
+      select: { id: true },
     });
 
     return await this.prisma.$transaction([deleteRoles, updateUser]);
@@ -42,9 +45,14 @@ export class UserService {
   async createUser(input: CreateUserInput) {
     const { roleIds, ...data } = input;
     data.password = this.encrypt.hash(data.password);
-    return await this.prisma.user.create({
-      data: { ...data, roles: { create: roleIds.map((y) => ({ roleId: y })) } }
+    const roles = roleIds ? { create: roleIds.map((y) => ({ roleId: y })) } : undefined;
+
+    const user = await this.prisma.user.create({
+      data: { ...data, roles },
     });
+
+    delete user.password;
+    return user;
   }
 
   async deleteUser(id: string) {
@@ -56,7 +64,7 @@ export class UserService {
     return await this.prisma.user.update({
       data,
       where: { id },
-      select: { id: true }
+      select: { id: true },
     });
   }
 }
