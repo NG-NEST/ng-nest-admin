@@ -1,3 +1,3 @@
 export * from './prisma.service';
 export * from './encrypt.service';
-export * from './global-service.module';
+export * from './global.module';

@@ -12,7 +12,10 @@ export enum PaginationDescription {
 }
 
 export enum ValidatorDescription {
-  NotEmpty = '不能为空！'
+  NotEmpty = '不能为空',
+  IsExist = '已存在',
+  IsNotExist = '不存在',
+  IsNotNumber = '不是数字'
 }
 
 export enum BaseDescription {

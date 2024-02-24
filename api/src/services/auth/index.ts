@@ -5,4 +5,5 @@ export * from './refresh-token.input';
 export * from './constants';
 export * from './gql-auth.guard';
 export * from './jwt-auth.guard';
+export * from './routes-auth.guard';
 export * from './auth.service';

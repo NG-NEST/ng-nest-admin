@@ -8,6 +8,6 @@ const services = [PrismaService, EncryptService];
 @Global()
 @Module({
   providers: [...services],
-  exports: [...services]
+  exports: [...services],
 })
-export class GlobalServiceModule {}
+export class GlobalModule {}
