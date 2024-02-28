@@ -3,15 +3,17 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { LoginInput } from './login.input';
-import { AuthUnauthorized } from './auth.enum';
+import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
-    private encryptService: EncryptService,
-    private jwtService: JwtService,
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+    private readonly encryptService: EncryptService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
@@ -24,22 +26,35 @@ export class AuthService {
   }
 
   async login(user: LoginInput) {
+    const lang = I18nContext.current().lang;
     const { account } = user;
     const findUser = await this.prisma.user.findFirst({
-      select: { id: true, password: true },
+      select: {
+        id: true,
+        password: true,
+      },
       where: { account },
     });
     let id = '';
+    const throwMsg = () => {
+      throw new UnauthorizedException(
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.AccountOrPasswordVerificationFailed}`, {
+          lang,
+        }),
+      );
+    };
     if (findUser === null) {
-      throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
+      throwMsg();
+      return null;
     }
     if (this.encryptService.compare(user.password, findUser.password)) {
       id = findUser.id;
     }
     if (id === '') {
-      throw new UnauthorizedException(AuthUnauthorized.AccountOrPasswordVerificationFailed);
+      throwMsg();
+      return null;
     } else {
-      return this.createTokens({ id });
+      return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
     }
   }
 
@@ -50,25 +65,56 @@ export class AuthService {
     return result;
   }
 
-  refreshToken(refreshToken: string) {
+  async refreshToken(refreshToken: string) {
     try {
       const { id } = this.jwtService.verify(refreshToken, {
         secret: jwtConstants.refreshSecret,
       });
 
-      return this.createTokens({ id });
+      return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
     } catch (e) {
-      throw new UnauthorizedException(AuthUnauthorized.TokenFailureOrValidationFailure);
+      const lang = I18nContext.current().lang;
+      throw new UnauthorizedException(
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.TokenFailureOrValidationFailure}`, { lang }),
+      );
     }
   }
 
-  private createTokens(payload: { id: string }): Auth {
+  private createTokens(payload: { id: string; permissions?: string[]; roles?: string[] }): Auth {
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, {
+        secret: jwtConstants.secret,
+        expiresIn: jwtConstants.expiresIn,
+      }),
       refreshToken: this.jwtService.sign(payload, {
         secret: jwtConstants.refreshSecret,
         expiresIn: jwtConstants.refreshExpiresIn,
       }),
     };
+  }
+
+  private async getUserRolesAndPermissions(id: string) {
+    const findUser = await this.prisma.user.findFirst({
+      select: {
+        roles: { select: { roleId: true } },
+      },
+      where: { id },
+    });
+    if (!findUser) {
+      return null;
+    }
+    const rolePermissions = await this.prisma.rolesOnPermissions.findMany({
+      where: {
+        roleId: { in: findUser.roles.map((role) => role.roleId) },
+      },
+      select: {
+        permission: { select: { code: true } },
+      },
+    });
+    const permissions = [
+      ...new Set(rolePermissions.map((permission) => permission.permission.code)),
+    ];
+    const roles = findUser.roles.map((role) => role.roleId);
+    return { permissions, roles };
   }
 }

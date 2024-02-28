@@ -2,14 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """JWT访问令牌"""
-  accessToken: JWT!
-
-  """JWT刷新令牌"""
-  refreshToken: JWT!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -41,56 +33,175 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
-"""
-A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
-"""
-scalar JWT
+input NumberFilter {
+  """等于给定的值"""
+  equals: Float
 
-type Mutation {
-  """刷新JWT令牌"""
-  refreshToken(
-    """JWT刷新令牌"""
-    refreshToken: JWT!
-  ): Auth!
+  """大于给定的值"""
+  gt: Float
+
+  """大于等于给定的值"""
+  gte: Float
+
+  """在给定的值当中"""
+  in: [Float!]
+
+  """小于给定的值"""
+  lt: Float
+
+  """小于等于给定的值"""
+  lte: Float
+
+  """不等于给定的值"""
+  not: Float
+
+  """不在给定的值当中"""
+  notIn: [Float!]
 }
 
 type Permission {
-  """许可标识"""
+  """Code"""
   code: String!
 
   """创建时间"""
   createdAt: DateTime
 
-  """许可描述"""
+  """Description"""
   description: String
 
-  """许可编码"""
+  """Id"""
   id: ID!
 
-  """许可名称"""
+  """Name"""
   name: String!
 
-  """许可排序"""
+  """Sort"""
   sort: Float!
 
   """更新时间"""
   updatedAt: DateTime
 }
 
+input PermissionOrderInput {
+  """Code"""
+  code: SortOrder
+
+  """创建时间"""
+  createdAt: SortOrder
+
+  """Description"""
+  description: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """Sort"""
+  sort: SortOrder
+
+  """更新时间"""
+  updatedAt: SortOrder
+}
+
+type PermissionPaginationOutput {
+  """总数"""
+  count: Int
+
+  """数据集合"""
+  data: [Permission!]!
+}
+
+type PermissionSelectOutput {
+  """Code"""
+  code: String!
+
+  """Sort"""
+  description: String
+
+  """Id"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Sort"""
+  sort: Float
+}
+
+input PermissionWhere {
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Sort"""
+  sort: NumberFilter
+}
+
+input PermissionWhereInput {
+  """与关系，所有的条件都返回 true"""
+  AND: [PermissionWhere!]
+
+  """非关系，所有的条件都返回 false"""
+  NOT: [PermissionWhere!]
+
+  """或关系，满足一个或多个条件就返回 true"""
+  OR: [PermissionWhere!]
+
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Sort"""
+  sort: NumberFilter
+}
+
 type Query {
-  """资源详情"""
+  """Permission"""
+  permission(
+    """Id"""
+    id: ID!
+  ): Permission!
+
+  """PermissionSelect. No Pagination"""
+  permissionSelect: [PermissionSelectOutput!]!
+
+  """Permissions"""
+  permissions(
+    """排序规则"""
+    orderBy: [PermissionOrderInput!]
+
+    """索引开始位置，默认从 0 开始"""
+    skip: Int = 0
+
+    """查询的数据条数，默认 10 条数据"""
+    take: Int = 10
+
+    """查询条件"""
+    where: PermissionWhereInput
+  ): PermissionPaginationOutput!
+
+  """Resource"""
   resource(
-    """资源编码"""
+    """ResourceId"""
     id: ID!
   ): Resource!
 
-  """资源查询（没有分页）"""
+  """ResourceSelect. No Pagination"""
   resourceSelect(
-    """主体编码"""
+    """SubjectId"""
     subjectId: ID!
   ): [ResourceSelectOutput!]!
 
-  """资源列表"""
+  """Resources"""
   resources(
     """排序规则"""
     orderBy: [ResourceOrderInput!]
@@ -129,22 +240,22 @@ type Query {
     where: RoleWhereInput
   ): RolePaginationOutput!
 
-  """主体详情"""
+  """Subject"""
   subject(
-    """主体编码"""
+    """SubjectId"""
     id: ID!
   ): Subject!
 
-  """主体对应的资源（没有分页）"""
+  """SubjectResources. No Pagination"""
   subjectResources(
-    """主体标识"""
+    """Code"""
     code: String!
   ): [SubjectResourceOutput!]!
 
-  """主体查询（没有分页）"""
+  """SubjectSelect. No Pagination"""
   subjectSelect: [SubjectSelectOutput!]!
 
-  """主体列表"""
+  """Subjects"""
   subjects(
     """排序规则"""
     orderBy: [SubjectOrderInput!]
@@ -165,7 +276,7 @@ type Query {
     id: ID!
   ): User!
 
-  """用户信息"""
+  """User"""
   userInfo: User!
 
   """用户查询（没有分页）"""
@@ -188,37 +299,37 @@ type Query {
 }
 
 type Resource {
-  """子资源集合"""
+  """Children"""
   children: [Resource!]
 
-  """资源标识"""
+  """Code"""
   code: String!
 
   """创建时间"""
   createdAt: DateTime
 
-  """资源描述"""
+  """Description"""
   description: String
 
-  """资源编码"""
+  """ResourceId"""
   id: ID!
 
-  """资源名称"""
+  """Name"""
   name: String!
 
-  """父资源"""
+  """Parent"""
   parent: Resource
 
-  """父节点编码"""
+  """Pid"""
   pid: ID
 
-  """资源排序"""
+  """Sort"""
   sort: Float!
 
-  """主体"""
+  """Subject"""
   subject: Subject!
 
-  """主体编码"""
+  """SubjectId"""
   subjectId: String!
 
   """更新时间"""
@@ -226,19 +337,19 @@ type Resource {
 }
 
 input ResourceOrderInput {
-  """资源标识"""
+  """Code"""
   code: SortOrder
 
   """创建时间"""
   createdAt: SortOrder
 
-  """资源名称"""
+  """Name"""
   name: SortOrder
 
-  """资源排序"""
+  """Sort"""
   sort: SortOrder
 
-  """主体编码"""
+  """SubjectId"""
   subjectId: SortOrder
 
   """更新时间"""
@@ -254,42 +365,42 @@ type ResourcePaginationOutput {
 }
 
 type ResourceSelectOutput {
-  """资源标识"""
+  """Code"""
   code: String!
 
-  """资源排序"""
+  """Sort"""
   description: String
 
-  """资源编码"""
+  """ResourceId"""
   id: ID!
 
-  """资源名称"""
+  """Name"""
   name: String!
 
-  """父节点编码"""
+  """Pid"""
   pid: ID
 
-  """资源排序"""
+  """Sort"""
   sort: Float
 }
 
 input ResourceWhere {
-  """资源标识"""
+  """Code"""
   code: StringFilter
 
-  """资源描述"""
+  """Description"""
   description: StringFilter
 
-  """资源名称"""
+  """Name"""
   name: StringFilter
 
-  """父节点编码"""
+  """Pid"""
   pid: StringFilter
 
-  """资源排序"""
+  """Sort"""
   sort: StringFilter
 
-  """主体编码"""
+  """SubjectId"""
   subjectId: StringFilter
 }
 
@@ -303,22 +414,22 @@ input ResourceWhereInput {
   """或关系，满足一个或多个条件就返回 true"""
   OR: [ResourceWhere!]
 
-  """资源标识"""
+  """Code"""
   code: StringFilter
 
-  """资源描述"""
+  """Description"""
   description: StringFilter
 
-  """资源名称"""
+  """Name"""
   name: StringFilter
 
-  """父节点编码"""
+  """Pid"""
   pid: StringFilter
 
-  """资源排序"""
+  """Sort"""
   sort: StringFilter
 
-  """主体编码"""
+  """SubjectId"""
   subjectId: StringFilter
 }
 
@@ -438,19 +549,19 @@ input StringFilter {
 }
 
 type Subject {
-  """主体标识"""
+  """Code"""
   code: String!
 
   """创建时间"""
   createdAt: DateTime
 
-  """主体描述"""
+  """Description"""
   description: String
 
-  """主体编码"""
+  """SubjectId"""
   id: ID!
 
-  """主体名称"""
+  """Name"""
   name: String!
 
   """更新时间"""
@@ -458,16 +569,16 @@ type Subject {
 }
 
 input SubjectOrderInput {
-  """主体标识"""
+  """Code"""
   code: SortOrder
 
   """创建时间"""
   createdAt: SortOrder
 
-  """主体描述"""
+  """Description"""
   description: SortOrder
 
-  """主体名称"""
+  """Name"""
   name: SortOrder
 
   """更新时间"""
@@ -483,44 +594,44 @@ type SubjectPaginationOutput {
 }
 
 type SubjectResourceOutput {
-  """资源标识"""
+  """Code"""
   code: String!
 
-  """资源排序"""
+  """Sort"""
   description: String
 
-  """资源编码"""
+  """ResourceId"""
   id: ID!
 
-  """资源名称"""
+  """Name"""
   name: String!
 
-  """父节点编码"""
+  """Pid"""
   pid: ID
 
-  """资源排序"""
+  """Sort"""
   sort: Float
 }
 
 type SubjectSelectOutput {
-  """主体标识"""
+  """Code"""
   code: String!
 
-  """主体编码"""
+  """SubjectId"""
   id: ID!
 
-  """主体名称"""
+  """Name"""
   name: String!
 }
 
 input SubjectWhere {
-  """主体标识"""
+  """Code"""
   code: StringFilter
 
-  """主体描述"""
+  """Description"""
   description: StringFilter
 
-  """主体名称"""
+  """Name"""
   name: StringFilter
 }
 
@@ -534,13 +645,13 @@ input SubjectWhereInput {
   """或关系，满足一个或多个条件就返回 true"""
   OR: [SubjectWhere!]
 
-  """主体标识"""
+  """Code"""
   code: StringFilter
 
-  """主体描述"""
+  """Description"""
   description: StringFilter
 
-  """主体名称"""
+  """Name"""
   name: StringFilter
 }
 

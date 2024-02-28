@@ -1,26 +1,32 @@
 import { ID } from '@nestjs/graphql';
 
-export enum SubjectDescription {
-  Subject = '主体',
+export enum SubjectAuth {
+  SubjectCreate = 'subject-create',
+  SubjectUpdate = 'subject-update',
+  SubjectDelete = 'subject-delete',
+}
 
-  Id = '主体编码',
-  Name = '主体名称',
-  Code = '主体标识',
-  Description = '主体描述'
+export enum SubjectDescription {
+  Subject = 'Subject',
+
+  Id = 'SubjectId',
+  Name = 'Name',
+  Code = 'Code',
+  Description = 'Description',
 }
 
 export enum SubjectIncludeDescription {
-  SubjectResource = '主体资源'
+  SubjectResource = 'SubjectResource',
 }
 
 export enum SubjectResolverName {
-  Subject = '主体详情',
-  Subjects = '主体列表',
-  SubjectSelect = '主体查询（没有分页）',
-  SubjectResources = '主体对应的资源（没有分页）',
-  CreateSubject = '创建主体',
-  UpdateSubject = '更新主体',
-  DeleteSubject = '删除主体'
+  Subject = 'Subject',
+  Subjects = 'Subjects',
+  SubjectSelect = 'SubjectSelect. No Pagination',
+  SubjectResources = 'SubjectResources. No Pagination',
+  CreateSubject = 'CreateSubject',
+  UpdateSubject = 'UpdateSubject',
+  DeleteSubject = 'DeleteSubject',
 }
 
 export const SubjectId = { type: () => ID, description: SubjectDescription.Id };

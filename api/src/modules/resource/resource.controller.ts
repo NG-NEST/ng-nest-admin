@@ -1,27 +1,30 @@
 import {
   CreateResourceInput,
-  JwtAuthGuard,
+  Authorization,
+  ResourceAuth,
   ResourceService,
-  UpdateResourceInput
+  UpdateResourceInput,
 } from '@api/services';
-import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
-@UseGuards(JwtAuthGuard)
 @Controller('resource')
 export class ResourceController {
   constructor(private resourceService: ResourceService) {}
 
-  @Put()
+  @Patch()
+  @Authorization(ResourceAuth.ResourceUpdate)
   async updateResource(@Body() data: UpdateResourceInput) {
     return await this.resourceService.updateResource(data);
   }
 
   @Post()
+  @Authorization(ResourceAuth.ResourceCreate)
   async createResource(@Body() data: CreateResourceInput) {
     return await this.resourceService.createResource(data);
   }
 
   @Delete(':id')
+  @Authorization(ResourceAuth.ResourceDelete)
   async deleteResource(@Param('id') id: string) {
     return await this.resourceService.deleteResource(id);
   }

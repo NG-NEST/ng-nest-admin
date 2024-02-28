@@ -1,0 +1,11 @@
+{
+  "ResourceIdNotEmpty": "id should not be empty",
+  "NameNotEmpty": "name should not be empty",
+  "NameIsExist": "name already exist",
+  "CodeNotEmpty": "code should not be empty",
+  "CodeIsExist": "code already exist",
+  "SortNotEmpty": "sort should not be empty",
+  "SortIsNotNumber": "sort should be number",
+  "SubjectIdNotEmpty": "subjectId should not be empty",
+  "SubjectIdIsNotExist": "subjectId is not exist"
+}

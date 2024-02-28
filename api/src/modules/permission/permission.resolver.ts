@@ -1,28 +1,25 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { UseGuards } from '@nestjs/common';
 import {
-  GqlAuthGuard,
   Permission,
   PermissionId,
   PermissionPaginationInput,
   PermissionPaginationOutput,
   PermissionResolverName,
   PermissionSelectOutput,
-  PermissionService
+  PermissionService,
 } from '@api/services';
 
-@UseGuards(GqlAuthGuard)
 @Resolver(() => Permission)
 export class PermissionResolver {
   constructor(private permissionService: PermissionService) {}
 
   @Query(() => PermissionPaginationOutput, {
-    description: PermissionResolverName.Permissions
+    description: PermissionResolverName.Permissions,
   })
   async permissions(
     @Args() input: PermissionPaginationInput,
-    @PrismaSelect('data') select: BaseSelect
+    @PrismaSelect('data') select: BaseSelect,
   ): Promise<PermissionPaginationOutput> {
     return await this.permissionService.permissions(input, select);
   }
@@ -30,16 +27,16 @@ export class PermissionResolver {
   @Query(() => Permission, { description: PermissionResolverName.Permission })
   async permission(
     @Args('id', PermissionId) id: string,
-    @PrismaSelect() select: BaseSelect
+    @PrismaSelect() select: BaseSelect,
   ): Promise<Permission> {
     return await this.permissionService.permission(id, select);
   }
 
   @Query(() => [PermissionSelectOutput], {
-    description: PermissionResolverName.PermissionSelect
+    description: PermissionResolverName.PermissionSelect,
   })
   async permissionSelect(
-    @PrismaSelect('data') select: BaseSelect
+    @PrismaSelect('data') select: BaseSelect,
   ): Promise<PermissionSelectOutput[]> {
     return await this.permissionService.permissionSelect(select);
   }

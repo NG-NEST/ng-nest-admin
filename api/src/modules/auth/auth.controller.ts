@@ -1,7 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService, LoginInput } from '@api/services';
+import { AuthService, LoginInput, Public, RefreshTokenInput } from '@api/services';
 
 @Controller('auth')
+@Public()
 export class AuthController {
   constructor(private auth: AuthService) {}
 
@@ -11,7 +12,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-  async refreshToken(@Body('refreshToken') refreshToken: string) {
-    return this.auth.refreshToken(refreshToken);
+  async refreshToken(@Body() token: RefreshTokenInput) {
+    return this.auth.refreshToken(token.refreshToken);
   }
 }

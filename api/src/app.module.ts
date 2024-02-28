@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { RoleModule, UserModule, AuthModule, SubjectModule, ResourceModule } from '@api/modules';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import {
+  RoleModule,
+  UserModule,
+  AuthModule,
+  SubjectModule,
+  ResourceModule,
+  PermissionModule,
+} from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { GlobalModule, StatusCode } from '@api/core';
 import { GraphQLFormattedError } from 'graphql';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 
 @Module({
   imports: [
@@ -23,6 +31,17 @@ import { GraphQLFormattedError } from 'graphql';
         return { code, message, timestamp: new Date().toISOString() };
       },
     }),
+    I18nModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        fallbackLanguage: configService.getOrThrow('LANG'),
+        loaderOptions: {
+          path: join(__dirname, '/i18n/'),
+          watch: true,
+        }
+      }),
+      resolvers: [AcceptLanguageResolver],
+      inject: [ConfigService],
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -31,6 +50,7 @@ import { GraphQLFormattedError } from 'graphql';
     RoleModule,
     SubjectModule,
     ResourceModule,
+    PermissionModule,
   ],
 })
 export class AppModule {}

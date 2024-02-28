@@ -13,7 +13,7 @@ export class RoleService {
     const { where } = input;
     return {
       data: (await this.prisma.role.findMany({ ...input, ...select })) as Role[],
-      count: await this.prisma.role.count({ where })
+      count: await this.prisma.role.count({ where }),
     };
   }
 
@@ -29,7 +29,7 @@ export class RoleService {
     const { id, ...data } = input;
     return await this.prisma.role.update({
       data,
-      where: { id }
+      where: { id },
     });
   }
 
@@ -39,5 +39,16 @@ export class RoleService {
 
   async deleteRole(id: string) {
     return await this.prisma.role.delete({ where: { id } });
+  }
+
+  async createRolePermissions(roleId: string, permissionIds: string[]) {
+    const deleteRolePermissions = this.prisma.rolesOnPermissions.deleteMany({
+      where: { roleId },
+    });
+    const createRolePermissions = this.prisma.rolesOnPermissions.createMany({
+      data: permissionIds.map((permissionId) => ({ roleId, permissionId })),
+    });
+
+    return await this.prisma.$transaction([deleteRolePermissions, createRolePermissions]);
   }
 }

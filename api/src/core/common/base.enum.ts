@@ -2,7 +2,7 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum SortOrder {
   asc = 'asc',
-  desc = 'desc'
+  desc = 'desc',
 }
 
 registerEnumType(SortOrder, { name: 'SortOrder' });
@@ -15,24 +15,25 @@ export enum PaginationDescription {
   Include = '包含关联对象',
 
   Count = '总数',
-  Data = '数据集合'
+  Data = '数据集合',
 }
 
 export enum ValidatorDescription {
-  NotEmpty = '不能为空',
-  IsExist = '已存在',
-  IsNotExist = '不存在',
-  IsNotNumber = '不是数字'
+  NotEmpty = 'NotEmpty',
+  IsExist = 'IsExist',
+  IsNotExist = 'IsNotExist',
+  IsNotNumber = 'IsNotNumber',
+  JwtString = 'JwtString',
 }
 
 export enum BaseDescription {
   Id = '编码',
   CreatedAt = '创建时间',
-  UpdatedAt = '更新时间'
+  UpdatedAt = '更新时间',
 }
 
 export enum IncludeDescription {
-  Include = '关联对象'
+  Include = '关联对象',
 }
 
 export enum WhereDescription {
@@ -51,5 +52,5 @@ export enum WhereDescription {
 
   Contains = '包含给定的值',
   StartsWith = '开始字符包含给定值',
-  EndsWith = '结束字符包含给定值'
+  EndsWith = '结束字符包含给定值',
 }

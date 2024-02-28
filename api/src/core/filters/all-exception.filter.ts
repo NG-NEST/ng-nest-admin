@@ -28,8 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const spt = exception.message.split('\n');
         message = spt[spt.length - 1];
       } else {
-        console.log(exception)
-        message = exception.getResponse()?.message || exception.toString();
+        message = exception?.getResponse()?.message || exception.toString();
       }
 
       const msg = {

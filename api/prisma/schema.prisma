@@ -31,8 +31,9 @@ model Role {
   description String?
   users       UsersOnRoles[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  RolesOnPermissions RolesOnPermissions[]
 
   @@map("sys-role")
 }
@@ -59,8 +60,9 @@ model Permission {
   resource    Resource @relation(fields: [resourceId], references: [id])
   resourceId  String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  RolesOnPermissions RolesOnPermissions[]
 
   @@map("sys-permission")
 }
@@ -95,4 +97,17 @@ model Subject {
   updatedAt DateTime @updatedAt
 
   @@map("sys-subject")
+}
+
+model RolesOnPermissions {
+  role         Role       @relation(fields: [roleId], references: [id])
+  roleId       String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([roleId, permissionId])
+  @@map("sys-role-permission")
 }

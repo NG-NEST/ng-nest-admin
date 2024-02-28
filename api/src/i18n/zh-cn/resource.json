@@ -1,0 +1,11 @@
+{
+  "ResourceIdNotEmpty": "资源编码不能为空",
+  "NameNotEmpty": "资源名称不能为空",
+  "NameIsExist": "资源名称已经存在",
+  "CodeNotEmpty": "资源编码不能为空",
+  "CodeIsExist": "资源编码已经存在",
+  "SortNotEmpty": "资源排序不能为空",
+  "SortIsNotNumber": "资源排序应为数字",
+  "SubjectIdNotEmpty": "主体编码不能为空",
+  "SubjectIdIsNotExist": "主体编码不存在"
+}

@@ -1,8 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { UseGuards } from '@nestjs/common';
 import {
-  GqlAuthGuard,
   Subject,
   SubjectCode,
   SubjectId,
@@ -11,20 +9,19 @@ import {
   SubjectResolverName,
   SubjectResourceOutput,
   SubjectSelectOutput,
-  SubjectService
+  SubjectService,
 } from '@api/services';
 
-@UseGuards(GqlAuthGuard)
 @Resolver(() => Subject)
 export class SubjectResolver {
   constructor(private subjectService: SubjectService) {}
 
   @Query(() => SubjectPaginationOutput, {
-    description: SubjectResolverName.Subjects
+    description: SubjectResolverName.Subjects,
   })
   async subjects(
     @Args() input: SubjectPaginationInput,
-    @PrismaSelect('data') select: BaseSelect
+    @PrismaSelect('data') select: BaseSelect,
   ): Promise<SubjectPaginationOutput> {
     return await this.subjectService.subjects(input, select);
   }
@@ -32,24 +29,24 @@ export class SubjectResolver {
   @Query(() => Subject, { description: SubjectResolverName.Subject })
   async subject(
     @Args('id', SubjectId) id: string,
-    @PrismaSelect() select: BaseSelect
+    @PrismaSelect() select: BaseSelect,
   ): Promise<Subject> {
     return await this.subjectService.subject(id, select);
   }
 
   @Query(() => [SubjectSelectOutput], {
-    description: SubjectResolverName.SubjectSelect
+    description: SubjectResolverName.SubjectSelect,
   })
   async subjectSelect(@PrismaSelect('data') select: BaseSelect): Promise<SubjectSelectOutput[]> {
     return await this.subjectService.subjectSelect(select);
   }
 
   @Query(() => [SubjectResourceOutput], {
-    description: SubjectResolverName.SubjectResources
+    description: SubjectResolverName.SubjectResources,
   })
   async subjectResources(
     @Args('code', SubjectCode) code: string,
-    @PrismaSelect() select: BaseSelect
+    @PrismaSelect() select: BaseSelect,
   ): Promise<SubjectResourceOutput[]> {
     return await this.subjectService.subjectResources(code, select);
   }

@@ -1,18 +1,15 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { UseGuards } from '@nestjs/common';
 import {
-  GqlAuthGuard,
   Role,
   RoleId,
   RolePaginationInput,
   RolePaginationOutput,
   RoleResolverName,
   RoleSelectOutput,
-  RoleService
+  RoleService,
 } from '@api/services';
 
-@UseGuards(GqlAuthGuard)
 @Resolver(() => Role)
 export class RoleResolver {
   constructor(private roleService: RoleService) {}
@@ -20,7 +17,7 @@ export class RoleResolver {
   @Query(() => RolePaginationOutput, { description: RoleResolverName.Roles })
   async roles(
     @Args() input: RolePaginationInput,
-    @PrismaSelect('data') select: BaseSelect
+    @PrismaSelect('data') select: BaseSelect,
   ): Promise<RolePaginationOutput> {
     return await this.roleService.roles(input, select);
   }

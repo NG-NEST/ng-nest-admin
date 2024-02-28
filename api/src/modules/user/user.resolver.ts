@@ -1,18 +1,15 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseSelect, PrismaSelect } from '@api/core';
-import { UseGuards } from '@nestjs/common';
 import {
-  GqlAuthGuard,
   User,
   UserId,
   UserPaginationInput,
   UserPaginationOutput,
   UserResolverName,
   UserSelectOutput,
-  UserService
+  UserService,
 } from '@api/services';
 
-@UseGuards(GqlAuthGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private userService: UserService) {}
@@ -20,7 +17,7 @@ export class UserResolver {
   @Query(() => UserPaginationOutput, { description: UserResolverName.Users })
   async users(
     @Args() input: UserPaginationInput,
-    @PrismaSelect('data') select: BaseSelect
+    @PrismaSelect('data') select: BaseSelect,
   ): Promise<UserPaginationOutput> {
     return await this.userService.users(input, select);
   }
