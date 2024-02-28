@@ -78,7 +78,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
     this.formLoading = true;
     forkJoin(request)
-      .pipe(finalize(() => (this.formLoading = false)))
+      .pipe(
+        finalize(() => {
+          this.formLoading = false;
+          this.cdr.detectChanges();
+        })
+      )
       .subscribe();
   }
 
