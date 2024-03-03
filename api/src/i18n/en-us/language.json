@@ -1,0 +1,8 @@
+{
+  "LanguageIdIsNotEmpty": "Language code cannot be empty",
+  "KeyIsNotEmpty": "Language key cannot be empty",
+  "KeyIsExist": "Language key already exists",
+  "ValueIsNotEmpty": "Language value cannot be empty",
+  "ValueIsExist": "Language value already exists",
+  "LanguageCodeIsNotEmpty": "Associated language cannot be empty"
+}

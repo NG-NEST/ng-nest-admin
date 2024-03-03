@@ -9,24 +9,25 @@ export enum RoleAuth {
 }
 
 export enum RoleDescription {
-  Role = '角色',
+  Role = 'Role',
 
-  Id = '角色编码',
-  Name = '角色名称',
-  Description = '角色描述',
+  Id = 'RoleId',
+  Name = 'Name',
+  Description = 'Description',
 }
 
 export enum RoleIncludeDescription {
-  RoleUser = '角色用户',
+  RoleUser = 'RoleUser',
 }
 
 export enum RoleResolverName {
-  Role = '角色详情',
-  Roles = '角色列表',
-  RoleSelect = '角色查询（没有分页）',
-  CreateRole = '创建角色',
-  UpdateRole = '更新角色',
-  DeleteRole = '删除角色',
+  Role = 'Role',
+  Roles = 'Roles',
+  RoleSelect = 'RoleSelect. No Pagination',
+  RolePermissions = 'RolePermissions. No Pagination',
+  CreateRole = 'CreateRole',
+  UpdateRole = 'UpdateRole',
+  DeleteRole = 'DeleteRole',
 }
 
 export const RoleId = { type: () => ID, description: RoleDescription.Id };

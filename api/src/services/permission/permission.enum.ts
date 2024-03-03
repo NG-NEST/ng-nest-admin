@@ -10,7 +10,7 @@ export enum PermissionAuth {
 export enum PermissionDescription {
   Permission = 'Permission',
 
-  Id = 'Id',
+  Id = 'PermissionId',
   Name = 'Name',
   Code = 'Code',
   Sort = 'Sort',

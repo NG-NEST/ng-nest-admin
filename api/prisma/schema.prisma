@@ -111,3 +111,28 @@ model RolesOnPermissions {
   @@id([roleId, permissionId])
   @@map("sys-role-permission")
 }
+
+model Dictionary {
+  id          String       @id @default(uuid())
+  pid         String?
+  parent      Dictionary?  @relation("children", fields: [pid], references: [id])
+  children    Dictionary[] @relation("children")
+  code        String
+  name        String
+  sort        Int          @default(0)
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sys-dictionary")
+}
+
+model Language {
+  id           String  @id @default(uuid())
+  key          String
+  value        String?
+  languageCode String
+
+  @@map("sys-language")
+}

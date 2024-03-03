@@ -1,0 +1,11 @@
+{
+  "UserIdIsNotEmpty": "id should not be empty",
+  "NameIsNotEmpty": "name should not be empty",
+  "NameIsExist": "name already exist",
+  "AccountIsNotEmpty": "account should not be empty",
+  "AccountIsExist": "account already exist",
+  "PasswordIsNotEmpty": "password should not be empty",
+  "EmailIsNotEmpty": "email should not be empty",
+  "EmailIsExist": "email already exist",
+  "PhoneIsExist": "phone already exist"
+}

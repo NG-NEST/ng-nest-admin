@@ -1,5 +1,4 @@
 import { ExceptionFilter, Catch, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { Logger as Log4js } from '../common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { Prisma } from '@prisma/client';
 
@@ -9,17 +8,18 @@ type HostType = 'http' | 'ws' | 'rpc' | 'graphql';
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor() {}
 
-  catch(exception: Prisma.PrismaClientKnownRequestError | any, host: ExecutionContextHost): void {
-    // In certain situations `httpAdapter` might not be available in the
-    // constructor method, thus we should resolve it here.
-
+  catch(
+    exception: Prisma.PrismaClientKnownRequestError | HttpException,
+    host: ExecutionContextHost,
+  ): void {
     const hostType = host.getType<HostType>();
-
-    const status =
-      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = '';
     if (hostType === 'graphql') {
     } else if (hostType === 'http') {
+      const status =
+        exception instanceof HttpException
+          ? exception.getStatus()
+          : HttpStatus.INTERNAL_SERVER_ERROR;
+      let message = '';
       const ctx = host.switchToHttp();
       const response = ctx.getResponse();
       const request = ctx.getRequest();
@@ -27,8 +27,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       if (exception instanceof Prisma.PrismaClientKnownRequestError) {
         const spt = exception.message.split('\n');
         message = spt[spt.length - 1];
-      } else {
-        message = exception?.getResponse()?.message || exception.toString();
+      } else if (exception instanceof HttpException) {
+        const resp = exception.getResponse() as any;
+        message = resp ? resp['message'] : exception.toString();
       }
 
       const msg = {
@@ -37,16 +38,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         path: request?.url,
         message: message,
       };
-
       Logger.error('Error', msg, 'HttpExceptionFilter');
-
-      const logFormat = ` [Request original url]: ${request?.originalUrl}
-  [Method]: ${request?.method}
-  [IP]: ${request?.ip}
-  [Status code]: ${status}
-  [Response]: ${exception.toString()}`;
-
-      Log4js.error(logFormat);
 
       response.status(status).json(msg);
     }

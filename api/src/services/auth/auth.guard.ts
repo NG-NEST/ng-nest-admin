@@ -1,16 +1,8 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  SetMetadata,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
-
-const PERMISSION_KEY = 'routes';
-export const Authorization = (...routes: string[]) => SetMetadata(PERMISSION_KEY, routes);
+import { IS_PUBLIC_KEY, PERMISSION_KEY } from './auth.metadata';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,6 +13,13 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const lang = I18nContext.current().lang;
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) {
+      return true;
+    }
     const requiredPermissions = this.reflector.getAllAndOverride<string[]>(PERMISSION_KEY, [
       context.getHandler(),
       context.getClass(),

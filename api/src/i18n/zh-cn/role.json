@@ -1,0 +1,5 @@
+{
+  "RoleIdIsNotEmpty": "角色编码不能为空",
+  "NameIsNotEmpty": "角色名称不能为空",
+  "NameIsExist": "角色名称已经存在"
+}

@@ -1,11 +1,11 @@
 {
-  "PermissionIdNotEmpty": "许可编码不能为空",
-  "NameNotEmpty": "许可名称不能为空",
+  "PermissionIdIsNotEmpty": "许可编码不能为空",
+  "NameIsNotEmpty": "许可名称不能为空",
   "NameIsExist": "许可名称已经存在",
-  "CodeNotEmpty": "许可编码不能为空",
+  "CodeIsNotEmpty": "许可编码不能为空",
   "CodeIsExist": "许可编码已经存在",
-  "SortNotEmpty": "许可排序不能为空",
+  "SortIsNotEmpty": "许可排序不能为空",
   "SortIsNotNumber": "许可排序应为数字",
-  "ResourceIdNotEmpty": "资源编码不能为空",
+  "ResourceIdIsNotEmpty": "资源编码不能为空",
   "ResourceIdIsNotExist": "资源编码不存在"
 }

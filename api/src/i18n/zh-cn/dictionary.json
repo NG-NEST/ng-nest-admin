@@ -1,0 +1,10 @@
+{
+  "DictionaryIdIsNotEmpty": "字典编码不能为空",
+  "PidIsNotExist": "字典父节点编码不存在",
+  "NameIsNotEmpty": "字典名称不能为空",
+  "NameIsExist": "字典名称已经存在",
+  "CodeIsNotEmpty": "字典编码不能为空",
+  "CodeIsExist": "字典编码已经存在",
+  "SortIsNotEmpty": "字典排序不能为空",
+  "SortIsNotNumber": "字典排序应为数字"
+}

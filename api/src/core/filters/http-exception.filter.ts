@@ -1,5 +1,4 @@
 import { Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { Logger as Log4js } from '../common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 
 @Catch(HttpException)
@@ -18,18 +17,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
       timestamp: new Date(),
       path: request?.url,
       message: '请求异常',
-      data: message
+      data: message,
     };
 
     Logger.error('Error', msg, 'HttpExceptionFilter');
 
-    const logFormat = ` [Request original url]: ${request?.originalUrl}
-  [Method]: ${request?.method}
-  [IP]: ${request?.ip}
-  [Status code]: ${status}
-  [Response]: ${exception.toString()}`;
-
-    Log4js.error(logFormat);
+    //   const logFormat = ` [Request original url]: ${request?.originalUrl}
+    // [Method]: ${request?.method}
+    // [IP]: ${request?.ip}
+    // [Status code]: ${status}
+    // [Response]: ${exception.toString()}`;
 
     response.status(status).json(msg);
   }

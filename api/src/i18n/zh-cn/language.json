@@ -1,0 +1,8 @@
+{
+  "LanguageIdIsNotEmpty": "语言编码不能为空",
+  "KeyIsNotEmpty": "语言标识不能为空",
+  "KeyIsExist": "语言标识已经存在",
+  "ValueIsNotEmpty": "语言值不能为空",
+  "ValueIsExist": "语言值已经存在",
+  "LanguageCodeIsNotEmpty": "关联语言不能为空"
+}

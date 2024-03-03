@@ -1,0 +1,11 @@
+{
+  "UserIdIsNotEmpty": "用户编码不能为空",
+  "NameIsNotEmpty": "用户名称不能为空",
+  "NameIsExist": "用户名称已存在",
+  "AccountIsNotEmpty": "用户账号不能为空",
+  "AccountIsExist": "用户账号已存在",
+  "PasswordIsNotEmpty": "用户密码不能为空",
+  "EmailIsNotEmpty": "用户邮箱不能为空",
+  "EmailIsExist": "用户邮箱已存在",
+  "PhoneIsExist": "用户手机号已存在"
+}

@@ -1,0 +1,10 @@
+{
+  "DictionaryIdIsNotEmpty": "id should not be empty",
+  "PidIsNotExist": "pid is not exist",
+  "NameIsNotEmpty": "name should not be empty",
+  "NameIsExist": "name already exist",
+  "CodeIsNotEmpty": "code should not be empty",
+  "CodeIsExist": "code already exist",
+  "SortIsNotEmpty": "sort should not be empty",
+  "SortIsNotNumber": "sort should be number"
+}

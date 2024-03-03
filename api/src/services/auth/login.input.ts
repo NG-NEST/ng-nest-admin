@@ -1,20 +1,19 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 import { AuthI18n, LoginDescription } from './auth.enum';
-import { i18nValidationMessage as M } from 'nestjs-i18n';
-import { ValidatorDescription } from '@api/core';
+import { ValidatorDescription, i18n } from '@api/core';
 
 @InputType()
 export class LoginInput {
   @Field({ description: LoginDescription.Account })
   @IsNotEmpty({
-    message: M(`${AuthI18n}.${LoginDescription.Account}${ValidatorDescription.NotEmpty}`),
+    message: i18n(`${AuthI18n}.${LoginDescription.Account}${ValidatorDescription.IsNotEmpty}`),
   })
   account: string;
 
   @Field({ description: LoginDescription.Password })
   @IsNotEmpty({
-    message: M(`${AuthI18n}.${LoginDescription.Password}${ValidatorDescription.NotEmpty}`),
+    message: i18n(`${AuthI18n}.${LoginDescription.Password}${ValidatorDescription.IsNotEmpty}`),
   })
   password: string;
 }

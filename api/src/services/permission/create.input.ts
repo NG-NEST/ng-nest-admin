@@ -1,48 +1,43 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { IsExist, IsNotExist, ValidatorDescription } from '@api/core';
+import { IsExist, IsNotExist, ValidatorDescription, i18n } from '@api/core';
 import { PermissionDescription, PermissionI18n } from './permission.enum';
 import { ResourceDescription } from '../resource';
-import { i18nValidationMessage } from 'nestjs-i18n';
 
 @InputType()
 export class CreatePermissionInput {
   @Field({ description: PermissionDescription.Name })
   @IsNotEmpty({
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${PermissionDescription.Name}${ValidatorDescription.NotEmpty}`,
+    message: i18n(
+      `${PermissionI18n}.${PermissionDescription.Name}${ValidatorDescription.IsNotEmpty}`,
     ),
   })
   @IsExist('permission', {
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${PermissionDescription.Name}${ValidatorDescription.IsExist}`,
-    ),
+    message: i18n(`${PermissionI18n}.${PermissionDescription.Name}${ValidatorDescription.IsExist}`),
   })
   name: string;
 
   @Field({ description: PermissionDescription.Code })
   @IsNotEmpty({
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${PermissionDescription.Code}${ValidatorDescription.NotEmpty}`,
+    message: i18n(
+      `${PermissionI18n}.${PermissionDescription.Code}${ValidatorDescription.IsNotEmpty}`,
     ),
   })
   @IsExist('permission', {
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${PermissionDescription.Code}${ValidatorDescription.IsExist}`,
-    ),
+    message: i18n(`${PermissionI18n}.${PermissionDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code: string;
 
   @Field({ description: PermissionDescription.Sort })
   @IsNotEmpty({
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${PermissionDescription.Sort}${ValidatorDescription.NotEmpty}`,
+    message: i18n(
+      `${PermissionI18n}.${PermissionDescription.Sort}${ValidatorDescription.IsNotEmpty}`,
     ),
   })
   @IsNumber(
     {},
     {
-      message: i18nValidationMessage(
+      message: i18n(
         `${PermissionI18n}.${PermissionDescription.Sort}${ValidatorDescription.IsNotNumber}`,
       ),
     },
@@ -55,14 +50,10 @@ export class CreatePermissionInput {
 
   @Field({ description: ResourceDescription.Id })
   @IsNotEmpty({
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${ResourceDescription.Id}${ValidatorDescription.NotEmpty}`,
-    ),
+    message: i18n(`${PermissionI18n}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`),
   })
   @IsNotExist('resource', {
-    message: i18nValidationMessage(
-      `${PermissionI18n}.${ResourceDescription.Id}${ValidatorDescription.IsNotExist}`,
-    ),
+    message: i18n(`${PermissionI18n}.${ResourceDescription.Id}${ValidatorDescription.IsNotExist}`),
     context: { relation: 'id' },
   })
   resourceId: string;

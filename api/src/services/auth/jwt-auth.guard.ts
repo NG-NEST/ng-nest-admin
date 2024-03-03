@@ -4,14 +4,11 @@ import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';
-import { SetMetadata } from '@nestjs/common';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
+import { IS_PUBLIC_KEY } from './auth.metadata';
 
 export type HostType = 'http' | 'ws' | 'rpc' | 'graphql';
-
-export const IS_PUBLIC_KEY = 'isPublic';
-export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 @Injectable()
 export class JwtGuard implements CanActivate {

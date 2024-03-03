@@ -1,4 +1,5 @@
 import { ID } from '@nestjs/graphql';
+export const UserI18n = 'user';
 
 export enum UserAuth {
   UserCreate = 'user-create',
@@ -8,27 +9,27 @@ export enum UserAuth {
 }
 
 export enum UserDescription {
-  User = '用户',
+  User = 'User',
 
-  Id = '用户编码',
-  Name = '用户名称',
-  Account = '用户账号',
-  Password = '用户密码',
-  Email = '用户邮箱',
-  Phone = '用户手机号',
+  Id = 'UserId',
+  Name = 'Name',
+  Account = 'Account',
+  Password = 'Password',
+  Email = 'Email',
+  Phone = 'Phone',
 }
 
 export enum UserIncludeDescription {
-  UserRole = '用户角色',
+  UserRole = 'UserRole',
 }
 
 export enum UserResolverName {
-  User = '用户详情',
-  Users = '用户列表',
-  UserSelect = '用户查询（没有分页）',
-  CreateUser = '创建用户',
-  UpdateUser = '更新用户',
-  DeleteUser = '删除用户',
+  User = 'User',
+  Users = 'Users',
+  UserSelect = 'UserSelect. No Pagination',
+  CreateUser = 'CreateUser',
+  UpdateUser = 'UpdateUser',
+  DeleteUser = 'DeleteUser',
 }
 
 export const UserId = { type: () => ID, description: UserDescription.Id };

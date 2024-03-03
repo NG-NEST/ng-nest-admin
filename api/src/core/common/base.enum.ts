@@ -8,49 +8,49 @@ export enum SortOrder {
 registerEnumType(SortOrder, { name: 'SortOrder' });
 
 export enum PaginationDescription {
-  Skip = '索引开始位置，默认从 0 开始',
-  Take = '查询的数据条数，默认 10 条数据',
-  OrderBy = '排序规则',
-  Where = '查询条件',
-  Include = '包含关联对象',
+  Skip = 'Index starting position, default is 0',
+  Take = 'Number of data items to retrieve, default is 10',
+  OrderBy = 'Sorting rule',
+  Where = 'Query condition',
+  Include = 'Includes associated objects',
 
-  Count = '总数',
-  Data = '数据集合',
+  Count = 'Total count',
+  Data = 'Data collection',
 }
 
 export enum ValidatorDescription {
-  NotEmpty = 'NotEmpty',
+  IsNotEmpty = 'IsNotEmpty',
   IsExist = 'IsExist',
   IsNotExist = 'IsNotExist',
   IsNotNumber = 'IsNotNumber',
-  JwtString = 'JwtString',
+  IsJWT = 'IsJWT',
 }
 
 export enum BaseDescription {
-  Id = '编码',
-  CreatedAt = '创建时间',
-  UpdatedAt = '更新时间',
+  Id = 'Id',
+  CreatedAt = 'CreatedAt',
+  UpdatedAt = 'UpdatedAt',
 }
 
 export enum IncludeDescription {
-  Include = '关联对象',
+  Include = 'Include object',
 }
 
 export enum WhereDescription {
-  AND = '与关系，所有的条件都返回 true',
-  OR = '或关系，满足一个或多个条件就返回 true',
-  NOT = '非关系，所有的条件都返回 false',
+  AND = 'Logical AND, returns true if all conditions are true',
+  OR = 'Logical OR, returns true if one or more conditions are met',
+  NOT = 'Logical NOT, returns false if all conditions are true',
 
-  Equals = '等于给定的值',
-  In = '在给定的值当中',
-  NotIn = '不在给定的值当中',
-  Lt = '小于给定的值',
-  Lte = '小于等于给定的值',
-  Gt = '大于给定的值',
-  Gte = '大于等于给定的值',
-  Not = '不等于给定的值',
+  Equals = 'Equals the given value',
+  In = 'Is in the given set of values',
+  NotIn = 'Is not in the given set of values',
+  Lt = 'Less than the given value',
+  Lte = 'Less than or equal to the given value',
+  Gt = 'Greater than the given value',
+  Gte = 'Greater than or equal to the given value',
+  Not = 'Does not equal the given value',
 
-  Contains = '包含给定的值',
-  StartsWith = '开始字符包含给定值',
-  EndsWith = '结束字符包含给定值',
+  Contains = 'Contains the given value',
+  StartsWith = 'Starts with the given value',
+  EndsWith = 'Ends with the given value',
 }

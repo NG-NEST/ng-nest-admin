@@ -1,0 +1,7 @@
+{
+  "SubjectIdIsNotEmpty": "id should not be empty",
+  "NameIsNotEmpty": "name should not be empty",
+  "NameIsExist": "name already exist",
+  "CodeIsNotEmpty": "code should not be empty",
+  "CodeIsExist": "code already exist"
+}

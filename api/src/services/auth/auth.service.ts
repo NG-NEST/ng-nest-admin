@@ -6,12 +6,14 @@ import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { VerifyTokenInput } from './verify-token.input';
+import { I18nTranslations } from 'src/generated/i18n.generated';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly i18n: I18nService,
+    private readonly i18n: I18nService<I18nTranslations>,
     private readonly encryptService: EncryptService,
     private readonly jwtService: JwtService,
   ) {}
@@ -74,10 +76,37 @@ export class AuthService {
       return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
     } catch (e) {
       const lang = I18nContext.current().lang;
+
       throw new UnauthorizedException(
         this.i18n.t(`${AuthI18n}.${AuthUnauthorized.TokenFailureOrValidationFailure}`, { lang }),
       );
     }
+  }
+
+  async verifyToken(input: VerifyTokenInput) {
+    const result: { accessToken?: boolean; refreshToken?: boolean } = {};
+    if (input.accessToken) {
+      try {
+        await this.jwtService.verifyAsync(input.accessToken, {
+          secret: jwtConstants.secret,
+        });
+        result.accessToken = true;
+      } catch (e) {
+        result.accessToken = false;
+      }
+    }
+    if (input.refreshToken) {
+      try {
+        await this.jwtService.verifyAsync(input.refreshToken, {
+          secret: jwtConstants.refreshSecret,
+        });
+        result.refreshToken = true;
+      } catch (e) {
+        result.refreshToken = false;
+      }
+    }
+
+    return result;
   }
 
   private createTokens(payload: { id: string; permissions?: string[]; roles?: string[] }): Auth {

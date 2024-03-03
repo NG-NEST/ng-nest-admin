@@ -1,0 +1,5 @@
+{
+  "RoleIdIsNotEmpty": "id should not be empty",
+  "NameIsNotEmpty": "name should not be empty",
+  "NameIsExist": "name already exist"
+}

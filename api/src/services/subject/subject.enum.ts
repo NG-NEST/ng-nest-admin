@@ -1,4 +1,5 @@
 import { ID } from '@nestjs/graphql';
+export const SubjectI18n = 'subject';
 
 export enum SubjectAuth {
   SubjectCreate = 'subject-create',

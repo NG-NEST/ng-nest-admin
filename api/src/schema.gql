@@ -8,54 +8,261 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 input DateTimeFilter {
-  """等于给定的值"""
+  """Equals the given value"""
   equals: DateTime
 
-  """大于给定的值"""
+  """Greater than the given value"""
   gt: DateTime
 
-  """大于等于给定的值"""
+  """Greater than or equal to the given value"""
   gte: DateTime
 
-  """在给定的值当中"""
+  """Is in the given set of values"""
   in: [DateTime!]
 
-  """小于给定的值"""
+  """Less than the given value"""
   lt: DateTime
 
-  """小于等于给定的值"""
+  """Less than or equal to the given value"""
   lte: DateTime
 
-  """不等于给定的值"""
+  """Does not equal the given value"""
   not: DateTime
 
-  """不在给定的值当中"""
+  """Is not in the given set of values"""
   notIn: [DateTime!]
 }
 
+type Dictionary {
+  """Children"""
+  children: [Dictionary!]
+
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """DictionaryId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Parent"""
+  parent: Dictionary
+
+  """Pid"""
+  pid: ID
+
+  """Sort"""
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input DictionaryOrderInput {
+  """Code"""
+  code: SortOrder
+
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """Sort"""
+  sort: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type DictionaryPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Dictionary!]!
+}
+
+type DictionarySelectOutput {
+  """Code"""
+  code: String!
+
+  """Sort"""
+  description: String
+
+  """DictionaryId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Pid"""
+  pid: ID
+
+  """Sort"""
+  sort: Float
+}
+
+input DictionaryWhere {
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Pid"""
+  pid: StringFilter
+
+  """Sort"""
+  sort: StringFilter
+}
+
+input DictionaryWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [DictionaryWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [DictionaryWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [DictionaryWhere!]
+
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Pid"""
+  pid: StringFilter
+
+  """Sort"""
+  sort: StringFilter
+}
+
+type Language {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """LanguageId"""
+  id: ID!
+
+  """Key"""
+  key: String!
+
+  """LanguageCode"""
+  languageCode: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
+  """Value"""
+  value: String
+}
+
+input LanguageOrderInput {
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Key"""
+  key: SortOrder
+
+  """LanguageCode"""
+  languageCode: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+
+  """Value"""
+  value: SortOrder
+}
+
+type LanguagePaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Language!]!
+}
+
+type LanguageSelectOutput {
+  """LanguageId"""
+  id: ID!
+
+  """Key"""
+  key: String!
+
+  """Value"""
+  value: String!
+}
+
+input LanguageWhere {
+  """Key"""
+  key: StringFilter
+
+  """LanguageCode"""
+  languageCode: StringFilter
+
+  """Value"""
+  value: StringFilter
+}
+
+input LanguageWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [LanguageWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [LanguageWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [LanguageWhere!]
+
+  """Key"""
+  key: StringFilter
+
+  """LanguageCode"""
+  languageCode: StringFilter
+
+  """Value"""
+  value: StringFilter
+}
+
 input NumberFilter {
-  """等于给定的值"""
+  """Equals the given value"""
   equals: Float
 
-  """大于给定的值"""
+  """Greater than the given value"""
   gt: Float
 
-  """大于等于给定的值"""
+  """Greater than or equal to the given value"""
   gte: Float
 
-  """在给定的值当中"""
+  """Is in the given set of values"""
   in: [Float!]
 
-  """小于给定的值"""
+  """Less than the given value"""
   lt: Float
 
-  """小于等于给定的值"""
+  """Less than or equal to the given value"""
   lte: Float
 
-  """不等于给定的值"""
+  """Does not equal the given value"""
   not: Float
 
-  """不在给定的值当中"""
+  """Is not in the given set of values"""
   notIn: [Float!]
 }
 
@@ -63,13 +270,13 @@ type Permission {
   """Code"""
   code: String!
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTime
 
   """Description"""
   description: String
 
-  """Id"""
+  """PermissionId"""
   id: ID!
 
   """Name"""
@@ -78,7 +285,7 @@ type Permission {
   """Sort"""
   sort: Float!
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTime
 }
 
@@ -86,7 +293,7 @@ input PermissionOrderInput {
   """Code"""
   code: SortOrder
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: SortOrder
 
   """Description"""
@@ -98,15 +305,15 @@ input PermissionOrderInput {
   """Sort"""
   sort: SortOrder
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: SortOrder
 }
 
 type PermissionPaginationOutput {
-  """总数"""
+  """Total count"""
   count: Int
 
-  """数据集合"""
+  """Data collection"""
   data: [Permission!]!
 }
 
@@ -117,7 +324,7 @@ type PermissionSelectOutput {
   """Sort"""
   description: String
 
-  """Id"""
+  """PermissionId"""
   id: ID!
 
   """Name"""
@@ -142,13 +349,13 @@ input PermissionWhere {
 }
 
 input PermissionWhereInput {
-  """与关系，所有的条件都返回 true"""
+  """Logical AND, returns true if all conditions are true"""
   AND: [PermissionWhere!]
 
-  """非关系，所有的条件都返回 false"""
+  """Logical NOT, returns false if all conditions are true"""
   NOT: [PermissionWhere!]
 
-  """或关系，满足一个或多个条件就返回 true"""
+  """Logical OR, returns true if one or more conditions are met"""
   OR: [PermissionWhere!]
 
   """Code"""
@@ -165,9 +372,60 @@ input PermissionWhereInput {
 }
 
 type Query {
+  """Dictionaries"""
+  dictionaries(
+    """Sorting rule"""
+    orderBy: [DictionaryOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: DictionaryWhereInput
+  ): DictionaryPaginationOutput!
+
+  """Dictionary"""
+  dictionary(
+    """DictionaryId"""
+    id: ID!
+  ): Dictionary!
+
+  """DictionarySelect. No Pagination"""
+  dictionarySelect(
+    """SubjectId"""
+    subjectId: ID!
+  ): [DictionarySelectOutput!]!
+
+  """Language"""
+  language(
+    """LanguageId"""
+    id: ID!
+  ): Language!
+
+  """LanguageSelect. No Pagination"""
+  languageSelect: [LanguageSelectOutput!]!
+
+  """Languages"""
+  languages(
+    """Sorting rule"""
+    orderBy: [LanguageOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: LanguageWhereInput
+  ): LanguagePaginationOutput!
+
   """Permission"""
   permission(
-    """Id"""
+    """PermissionId"""
     id: ID!
   ): Permission!
 
@@ -176,16 +434,16 @@ type Query {
 
   """Permissions"""
   permissions(
-    """排序规则"""
+    """Sorting rule"""
     orderBy: [PermissionOrderInput!]
 
-    """索引开始位置，默认从 0 开始"""
+    """Index starting position, default is 0"""
     skip: Int = 0
 
-    """查询的数据条数，默认 10 条数据"""
+    """Number of data items to retrieve, default is 10"""
     take: Int = 10
 
-    """查询条件"""
+    """Query condition"""
     where: PermissionWhereInput
   ): PermissionPaginationOutput!
 
@@ -203,40 +461,46 @@ type Query {
 
   """Resources"""
   resources(
-    """排序规则"""
+    """Sorting rule"""
     orderBy: [ResourceOrderInput!]
 
-    """索引开始位置，默认从 0 开始"""
+    """Index starting position, default is 0"""
     skip: Int = 0
 
-    """查询的数据条数，默认 10 条数据"""
+    """Number of data items to retrieve, default is 10"""
     take: Int = 10
 
-    """查询条件"""
+    """Query condition"""
     where: ResourceWhereInput
   ): ResourcePaginationOutput!
 
-  """角色详情"""
+  """Role"""
   role(
-    """角色编码"""
+    """RoleId"""
     id: ID!
   ): Role!
 
-  """角色查询（没有分页）"""
+  """RolePermissions. No Pagination"""
+  rolePermissions(
+    """RoleId"""
+    id: ID!
+  ): [RolePermissionOutput!]!
+
+  """RoleSelect. No Pagination"""
   roleSelect: [RoleSelectOutput!]!
 
-  """角色列表"""
+  """Roles"""
   roles(
-    """排序规则"""
+    """Sorting rule"""
     orderBy: [RoleOrderInput!]
 
-    """索引开始位置，默认从 0 开始"""
+    """Index starting position, default is 0"""
     skip: Int = 0
 
-    """查询的数据条数，默认 10 条数据"""
+    """Number of data items to retrieve, default is 10"""
     take: Int = 10
 
-    """查询条件"""
+    """Query condition"""
     where: RoleWhereInput
   ): RolePaginationOutput!
 
@@ -257,43 +521,43 @@ type Query {
 
   """Subjects"""
   subjects(
-    """排序规则"""
+    """Sorting rule"""
     orderBy: [SubjectOrderInput!]
 
-    """索引开始位置，默认从 0 开始"""
+    """Index starting position, default is 0"""
     skip: Int = 0
 
-    """查询的数据条数，默认 10 条数据"""
+    """Number of data items to retrieve, default is 10"""
     take: Int = 10
 
-    """查询条件"""
+    """Query condition"""
     where: SubjectWhereInput
   ): SubjectPaginationOutput!
 
-  """用户详情"""
+  """User"""
   user(
-    """用户编码"""
+    """UserId"""
     id: ID!
   ): User!
 
   """User"""
   userInfo: User!
 
-  """用户查询（没有分页）"""
+  """UserSelect. No Pagination"""
   userSelect: [UserSelectOutput!]!
 
-  """用户列表"""
+  """Users"""
   users(
-    """排序规则"""
+    """Sorting rule"""
     orderBy: [UserOrderInput!]
 
-    """索引开始位置，默认从 0 开始"""
+    """Index starting position, default is 0"""
     skip: Int = 0
 
-    """查询的数据条数，默认 10 条数据"""
+    """Number of data items to retrieve, default is 10"""
     take: Int = 10
 
-    """查询条件"""
+    """Query condition"""
     where: UserWhereInput
   ): UserPaginationOutput!
 }
@@ -305,7 +569,7 @@ type Resource {
   """Code"""
   code: String!
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTime
 
   """Description"""
@@ -332,7 +596,7 @@ type Resource {
   """SubjectId"""
   subjectId: String!
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTime
 }
 
@@ -340,7 +604,7 @@ input ResourceOrderInput {
   """Code"""
   code: SortOrder
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: SortOrder
 
   """Name"""
@@ -352,15 +616,15 @@ input ResourceOrderInput {
   """SubjectId"""
   subjectId: SortOrder
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: SortOrder
 }
 
 type ResourcePaginationOutput {
-  """总数"""
+  """Total count"""
   count: Int
 
-  """数据集合"""
+  """Data collection"""
   data: [Resource!]!
 }
 
@@ -405,13 +669,13 @@ input ResourceWhere {
 }
 
 input ResourceWhereInput {
-  """与关系，所有的条件都返回 true"""
+  """Logical AND, returns true if all conditions are true"""
   AND: [ResourceWhere!]
 
-  """非关系，所有的条件都返回 false"""
+  """Logical NOT, returns false if all conditions are true"""
   NOT: [ResourceWhere!]
 
-  """或关系，满足一个或多个条件就返回 true"""
+  """Logical OR, returns true if one or more conditions are met"""
   OR: [ResourceWhere!]
 
   """Code"""
@@ -434,77 +698,100 @@ input ResourceWhereInput {
 }
 
 type Role {
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTime
 
-  """角色描述"""
+  """Description"""
   description: String
 
-  """角色编码"""
+  """RoleId"""
   id: ID!
 
-  """角色名称"""
+  """Name"""
   name: String!
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTime
 }
 
 input RoleOrderInput {
-  """创建时间"""
+  """CreatedAt"""
   createdAt: SortOrder
 
-  """角色描述"""
+  """Description"""
   description: SortOrder
 
-  """角色名称"""
+  """Name"""
   name: SortOrder
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: SortOrder
 }
 
 type RolePaginationOutput {
-  """总数"""
+  """Total count"""
   count: Int
 
-  """数据集合"""
+  """Data collection"""
   data: [Role!]!
 }
 
-type RoleSelectOutput {
-  """角色描述"""
+type RolePermissionOutput {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
   description: String
 
-  """角色编码"""
+  """PermissionId"""
   id: ID!
 
-  """角色名称"""
+  """Name"""
+  name: String!
+
+  """Sort"""
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+type RoleSelectOutput {
+  """Description"""
+  description: String
+
+  """RoleId"""
+  id: ID!
+
+  """Name"""
   name: String!
 }
 
 input RoleWhere {
-  """角色描述"""
+  """Description"""
   description: StringFilter
 
-  """角色名称"""
+  """Name"""
   name: StringFilter
 }
 
 input RoleWhereInput {
-  """与关系，所有的条件都返回 true"""
+  """Logical AND, returns true if all conditions are true"""
   AND: [RoleWhere!]
 
-  """非关系，所有的条件都返回 false"""
+  """Logical NOT, returns false if all conditions are true"""
   NOT: [RoleWhere!]
 
-  """或关系，满足一个或多个条件就返回 true"""
+  """Logical OR, returns true if one or more conditions are met"""
   OR: [RoleWhere!]
 
-  """角色描述"""
+  """Description"""
   description: StringFilter
 
-  """角色名称"""
+  """Name"""
   name: StringFilter
 }
 
@@ -514,37 +801,37 @@ enum SortOrder {
 }
 
 input StringFilter {
-  """包含给定的值"""
+  """Contains the given value"""
   contains: String
 
-  """结束字符包含给定值"""
+  """Ends with the given value"""
   endsWith: String
 
-  """等于给定的值"""
+  """Equals the given value"""
   equals: String
 
-  """大于给定的值"""
+  """Greater than the given value"""
   gt: String
 
-  """大于等于给定的值"""
+  """Greater than or equal to the given value"""
   gte: String
 
-  """在给定的值当中"""
+  """Is in the given set of values"""
   in: [String!]
 
-  """小于给定的值"""
+  """Less than the given value"""
   lt: String
 
-  """小于等于给定的值"""
+  """Less than or equal to the given value"""
   lte: String
 
-  """不等于给定的值"""
+  """Does not equal the given value"""
   not: String
 
-  """不在给定的值当中"""
+  """Is not in the given set of values"""
   notIn: [String!]
 
-  """开始字符包含给定值"""
+  """Starts with the given value"""
   startsWith: String
 }
 
@@ -552,7 +839,7 @@ type Subject {
   """Code"""
   code: String!
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTime
 
   """Description"""
@@ -564,7 +851,7 @@ type Subject {
   """Name"""
   name: String!
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTime
 }
 
@@ -572,7 +859,7 @@ input SubjectOrderInput {
   """Code"""
   code: SortOrder
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: SortOrder
 
   """Description"""
@@ -581,15 +868,15 @@ input SubjectOrderInput {
   """Name"""
   name: SortOrder
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: SortOrder
 }
 
 type SubjectPaginationOutput {
-  """总数"""
+  """Total count"""
   count: Int
 
-  """数据集合"""
+  """Data collection"""
   data: [Subject!]!
 }
 
@@ -636,13 +923,13 @@ input SubjectWhere {
 }
 
 input SubjectWhereInput {
-  """与关系，所有的条件都返回 true"""
+  """Logical AND, returns true if all conditions are true"""
   AND: [SubjectWhere!]
 
-  """非关系，所有的条件都返回 false"""
+  """Logical NOT, returns false if all conditions are true"""
   NOT: [SubjectWhere!]
 
-  """或关系，满足一个或多个条件就返回 true"""
+  """Logical OR, returns true if one or more conditions are met"""
   OR: [SubjectWhere!]
 
   """Code"""
@@ -656,127 +943,127 @@ input SubjectWhereInput {
 }
 
 type User {
-  """用户账号"""
+  """Account"""
   account: String!
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTime
 
-  """用户邮箱"""
+  """Email"""
   email: String!
 
-  """用户编码"""
+  """UserId"""
   id: ID!
 
-  """用户名称"""
+  """Name"""
   name: String!
 
-  """用户手机号"""
+  """Phone"""
   phone: String
 
-  """用户角色"""
+  """UserRole"""
   roles: [UserRole!]
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTime
 }
 
 input UserOrderInput {
-  """用户账号"""
+  """Account"""
   account: SortOrder
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: SortOrder
 
-  """用户邮箱"""
+  """Email"""
   email: SortOrder
 
-  """用户名称"""
+  """Name"""
   name: SortOrder
 
-  """用户手机号"""
+  """Phone"""
   phone: SortOrder
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: SortOrder
 }
 
 type UserPaginationOutput {
-  """总数"""
+  """Total count"""
   count: Int
 
-  """数据集合"""
+  """Data collection"""
   data: [User!]!
 }
 
 type UserRole {
-  """用户角色"""
+  """UserRole"""
   role: Role
   roleId: ID
 }
 
 type UserSelectOutput {
-  """用户账号"""
+  """Account"""
   account: String!
 
-  """用户邮箱"""
+  """Email"""
   email: String!
 
-  """用户编码"""
+  """UserId"""
   id: ID!
 
-  """用户名称"""
+  """Name"""
   name: String!
 
-  """用户手机号"""
+  """Phone"""
   phone: String
 }
 
 input UserWhere {
-  """用户账号"""
+  """Account"""
   account: StringFilter
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTimeFilter
 
-  """用户邮箱"""
+  """Email"""
   email: StringFilter
 
-  """用户名称"""
+  """Name"""
   name: StringFilter
 
-  """用户手机号"""
+  """Phone"""
   phone: StringFilter
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTimeFilter
 }
 
 input UserWhereInput {
-  """与关系，所有的条件都返回 true"""
+  """Logical AND, returns true if all conditions are true"""
   AND: [UserWhere!]
 
-  """非关系，所有的条件都返回 false"""
+  """Logical NOT, returns false if all conditions are true"""
   NOT: [UserWhere!]
 
-  """或关系，满足一个或多个条件就返回 true"""
+  """Logical OR, returns true if one or more conditions are met"""
   OR: [UserWhere!]
 
-  """用户账号"""
+  """Account"""
   account: StringFilter
 
-  """创建时间"""
+  """CreatedAt"""
   createdAt: DateTimeFilter
 
-  """用户邮箱"""
+  """Email"""
   email: StringFilter
 
-  """用户名称"""
+  """Name"""
   name: StringFilter
 
-  """用户手机号"""
+  """Phone"""
   phone: StringFilter
 
-  """更新时间"""
+  """UpdatedAt"""
   updatedAt: DateTimeFilter
 }
