@@ -6,15 +6,16 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super({
       log: [
-        { emit: 'stdout', level: 'query' },
-        { emit: 'stdout', level: 'info' },
-        { emit: 'stdout', level: 'warn' },
-        { emit: 'stdout', level: 'error' }
-      ]
+        { emit: 'event', level: 'query' },
+        { emit: 'event', level: 'info' },
+        { emit: 'event', level: 'warn' },
+        { emit: 'event', level: 'error' },
+      ],
     });
   }
 
   async onModuleInit() {
     await this.$connect();
+    this.$on('query' as never, (_e: any) => {});
   }
 }

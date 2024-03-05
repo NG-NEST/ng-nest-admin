@@ -1,21 +1,31 @@
-import { ExceptionFilter, Catch, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
+import {
+  ExceptionFilter,
+  Catch,
+  HttpException,
+  HttpStatus,
+  ArgumentsHost,
+  Logger,
+} from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
+import { getRequestLogs } from '../common';
 
 type HostType = 'http' | 'ws' | 'rpc' | 'graphql';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor() {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(
     exception: Prisma.PrismaClientKnownRequestError | HttpException,
-    host: ExecutionContextHost,
+    host: ArgumentsHost,
   ): void {
     const hostType = host.getType<HostType>();
+    const { httpAdapter } = this.httpAdapterHost;
+
     if (hostType === 'graphql') {
     } else if (hostType === 'http') {
-      const status =
+      const httpStatus =
         exception instanceof HttpException
           ? exception.getStatus()
           : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -33,14 +43,22 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
 
       const msg = {
-        statusCode: status,
-        timestamp: new Date(),
-        path: request?.url,
+        statusCode: httpStatus,
+        timestamp: new Date().toISOString(),
+        path: httpAdapter.getRequestUrl(request),
         message: message,
       };
-      Logger.error('Error', msg, 'HttpExceptionFilter');
 
-      response.status(status).json(msg);
+      Logger.error(
+        JSON.stringify({
+          ...msg,
+          requset: getRequestLogs(request),
+        }),
+        exception.stack,
+        'AllExceptionsFilter',
+      );
+
+      httpAdapter.reply(response, msg, httpStatus);
     }
   }
 }

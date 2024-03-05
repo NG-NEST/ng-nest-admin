@@ -1,33 +1,31 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter, TransformInterceptor } from '@api/core';
+import {
+  AllExceptionsFilter,
+  LoggerInstance,
+  TransformInterceptor,
+  responseBodyFormatter,
+} from '@api/core';
 import { env } from 'node:process';
-import { I18nMiddleware, I18nValidationExceptionFilter } from 'nestjs-i18n';
+import { I18nMiddleware, I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { WinstonModule } from 'nest-winston';
-import { createLogger } from 'winston';
-import { loggerOptions } from './logger.config';
-import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: WinstonModule.createLogger({ instance: createLogger({ ...loggerOptions }) }),
+    logger: WinstonModule.createLogger({
+      instance: LoggerInstance,
+    }),
   });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      // exceptionFactory: (errors) => {
-      //   throw new BadRequestException(errors);
-      //   return errors;
-      // },
-    }),
-  );
+  app.useGlobalPipes(new I18nValidationPipe({ whitelist: true, transform: true }));
+
   app.useGlobalFilters(
-    new AllExceptionsFilter(),
+    new AllExceptionsFilter(app.get(HttpAdapterHost)),
     new I18nValidationExceptionFilter({
-      detailedErrors: false,
+      responseBodyFormatter,
     }),
   );
+
   app.useGlobalInterceptors(new TransformInterceptor());
 
   app.use(I18nMiddleware);
