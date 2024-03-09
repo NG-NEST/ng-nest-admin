@@ -11,14 +11,25 @@ import {
   LanguageModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
-import { GlobalModule, grapgQLConfig, i18nConfig } from '@api/core';
+import {
+  CacheClearInterceptor,
+  CacheControlInterceptor,
+  GlobalModule,
+  grapgQLConfig,
+  i18nConfig,
+} from '@api/core';
 import { I18nModule } from 'nestjs-i18n';
+import { CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
     GlobalModule,
     GraphQLModule.forRoot(grapgQLConfig),
     I18nModule.forRootAsync(i18nConfig),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -30,6 +41,10 @@ import { I18nModule } from 'nestjs-i18n';
     PermissionModule,
     DictionaryModule,
     LanguageModule,
+  ],
+  providers: [
+    { provide: APP_INTERCEPTOR, useClass: CacheControlInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: CacheClearInterceptor },
   ],
 })
 export class AppModule {}

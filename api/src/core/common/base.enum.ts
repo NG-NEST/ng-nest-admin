@@ -20,6 +20,7 @@ export enum PaginationDescription {
 
 export enum ValidatorDescription {
   IsNotEmpty = 'IsNotEmpty',
+  IsString = 'IsString',
   IsExist = 'IsExist',
   IsNotExist = 'IsNotExist',
   IsNotNumber = 'IsNotNumber',

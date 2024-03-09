@@ -6,3 +6,4 @@ export * from './subject';
 export * from './permission';
 export * from './dictionary';
 export * from './language';
+export * from './cache';

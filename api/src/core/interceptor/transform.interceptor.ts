@@ -1,26 +1,32 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getRequestLogs } from '../common';
-import { Logs } from '../config';
+import { Logs, getRequestLogs } from '../config';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = getRequestLogs(context.switchToHttp().getRequest());
+    const start = process.hrtime();
+    const { contextType } = context as any;
+    let request = {};
+    if (contextType === 'graphql') {
+      request = getRequestLogs(context.getArgByIndex(2).req);
+    } else if (contextType === 'http') {
+      request = getRequestLogs(context.switchToHttp().getRequest());
+    }
 
     return next.handle().pipe(
       map((data) => {
-        const { contextType } = context as any;
-        if (contextType === 'graphql') {
-        } else {
-          const msg = JSON.stringify({
-            requset: request,
-            response: data,
-          });
+        const msg = JSON.stringify({
+          requset: request,
+          response: data,
+        });
+        const end = process.hrtime(start);
+        Logs.http(msg, {
+          context: TransformInterceptor.name,
+          ms: `+${(end[1] / 1000000).toFixed(0)}ms`,
+        });
 
-          Logs.info(msg, 'TransformInterceptor');
-        }
         return data;
       }),
     );

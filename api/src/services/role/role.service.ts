@@ -1,4 +1,4 @@
-import { BaseSelect, PrismaService } from '@api/core';
+import { BaseSelect, PrismaService, RedisService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { RolePaginationInput } from './role-pagination.input';
 import { Role } from './role.model';
@@ -7,7 +7,10 @@ import { CreateRoleInput } from './create.input';
 
 @Injectable()
 export class RoleService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private redis: RedisService,
+  ) {}
 
   async roles(input: RolePaginationInput, select: BaseSelect) {
     const { where } = input;
@@ -18,7 +21,15 @@ export class RoleService {
   }
 
   async roleSelect(select: BaseSelect) {
-    return await this.prisma.role.findMany({ ...select });
+    const key = 'select-roles';
+    const dt = JSON.parse(await this.redis.get(key)) as Role[];
+    if (dt) {
+      return dt;
+    }
+    const data = await this.prisma.role.findMany({ ...select });
+    await this.redis.set(key, JSON.stringify(data), 'EX', 5);
+
+    return data;
   }
 
   async rolePermissions(id: string, select: BaseSelect) {

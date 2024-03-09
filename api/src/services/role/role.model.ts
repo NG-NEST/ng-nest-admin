@@ -11,7 +11,7 @@ export class Role extends BaseAudit {
   @Field({ description: RoleDescription.Name })
   name: string;
 
-  @Field({ description: RoleDescription.Description })
+  @Field({ description: RoleDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 }

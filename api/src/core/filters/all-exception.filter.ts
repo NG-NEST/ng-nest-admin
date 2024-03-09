@@ -1,29 +1,22 @@
-import {
-  ExceptionFilter,
-  Catch,
-  HttpException,
-  HttpStatus,
-  ArgumentsHost,
-  Logger,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, HttpException, HttpStatus, ArgumentsHost } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
-import { getRequestLogs } from '../common';
-
-type HostType = 'http' | 'ws' | 'rpc' | 'graphql';
+import { Logs, getRequestLogs } from '../config';
+import { ContextType } from '../common';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(
-    exception: Prisma.PrismaClientKnownRequestError | HttpException,
+    exception: Prisma.PrismaClientKnownRequestError | HttpException | Error,
     host: ArgumentsHost,
   ): void {
-    const hostType = host.getType<HostType>();
+    const hostType = host.getType<ContextType>();
     const { httpAdapter } = this.httpAdapterHost;
 
     if (hostType === 'graphql') {
+      // Graphql exception cannot be callback, output exception information through corresponding configuration formatting
     } else if (hostType === 'http') {
       const httpStatus =
         exception instanceof HttpException
@@ -40,6 +33,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       } else if (exception instanceof HttpException) {
         const resp = exception.getResponse() as any;
         message = resp ? resp['message'] : exception.toString();
+      } else if (exception instanceof Error) {
+        message = exception.message;
       }
 
       const msg = {
@@ -49,13 +44,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: message,
       };
 
-      Logger.error(
+      Logs.error(
         JSON.stringify({
           ...msg,
           requset: getRequestLogs(request),
+          stack: exception.stack,
         }),
-        exception.stack,
-        'AllExceptionsFilter',
+        {
+          context: AllExceptionsFilter.name,
+        },
       );
 
       httpAdapter.reply(response, msg, httpStatus);

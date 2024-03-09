@@ -1,5 +1,6 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { Logs } from '../config';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -15,7 +16,40 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   async onModuleInit() {
-    await this.$connect();
-    this.$on('query' as never, (_e: any) => {});
+    try {
+      await this.$connect();
+      Logger.log('Prisma connected', PrismaService.name);
+    } catch (e: any) {
+      Logs.error(e.message.replace(/\n/g, ' '), { context: PrismaService.name });
+    }
+
+    this.$on('query' as never, (e: any) => {
+      const msg = JSON.stringify({ query: e.query, params: e.params });
+      Logs.prisma(msg, {
+        context: PrismaService.name,
+        ms: `+${e.duration}ms`,
+      });
+    });
+    this.$on('info' as never, (e: any) => {
+      const msg = JSON.stringify({ query: e.query, params: e.params });
+      Logs.info(msg, {
+        context: PrismaService.name,
+        ms: `+${e.duration}ms`,
+      });
+    });
+    this.$on('warn' as never, (e: any) => {
+      const msg = JSON.stringify({ query: e.query, params: e.params });
+      Logs.warn(msg, {
+        context: PrismaService.name,
+        ms: `+${e.duration}ms`,
+      });
+    });
+    this.$on('error' as never, (e: any) => {
+      const msg = JSON.stringify({ query: e.query, params: e.params });
+      Logs.error(msg, {
+        context: PrismaService.name,
+        ms: `+${e.duration}ms`,
+      });
+    });
   }
 }

@@ -1,9 +1,11 @@
+import { CacheClear } from '@api/core';
 import {
   CreateRoleInput,
   Authorization,
   RoleAuth,
   RoleService,
   UpdateRoleInput,
+  RoleCache,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -12,7 +14,8 @@ export class RoleController {
   constructor(private roleService: RoleService) {}
 
   @Patch()
-  @Authorization(RoleAuth.RoleUpdate)
+  // @Authorization(RoleAuth.RoleUpdate)
+  @CacheClear(RoleCache.RoleSelect)
   async updateRole(@Body() data: UpdateRoleInput) {
     return await this.roleService.updateRole(data);
   }

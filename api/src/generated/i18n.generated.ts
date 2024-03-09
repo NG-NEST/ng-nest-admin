@@ -9,7 +9,9 @@ export type I18nTranslations = {
         "Forbidden": string;
         "Unauthorized": string;
         "AccountIsNotEmpty": string;
+        "AccountIsString": string;
         "PasswordIsNotEmpty": string;
+        "PasswordIsString": string;
         "AccountOrPasswordVerificationFailed": string;
         "TokenFailureOrValidationFailure": string;
         "AccessTokenIsNotEmpty": string;

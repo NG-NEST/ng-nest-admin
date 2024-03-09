@@ -30,4 +30,8 @@ export enum RoleResolverName {
   DeleteRole = 'DeleteRole',
 }
 
+export enum RoleCache {
+  RoleSelect = 'RoleSelect',
+}
+
 export const RoleId = { type: () => ID, description: RoleDescription.Id };

@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Role,
+  RoleCache,
   RoleId,
   RolePaginationInput,
   RolePaginationOutput,
@@ -29,6 +30,7 @@ export class RoleResolver {
   }
 
   @Query(() => [RoleSelectOutput], { description: RoleResolverName.RoleSelect })
+  @CacheControl(RoleCache.RoleSelect)
   async roleSelect(@PrismaSelect('data') select: BaseSelect): Promise<RoleSelectOutput[]> {
     return await this.roleService.roleSelect(select);
   }
