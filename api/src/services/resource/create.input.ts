@@ -38,7 +38,7 @@ export class CreateResourceInput {
   )
   sort: number;
 
-  @Field({ description: ResourceDescription.Description, nullable: null })
+  @Field({ description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 
@@ -52,7 +52,7 @@ export class CreateResourceInput {
   })
   subjectId: string;
 
-  @Field(() => ID, { description: ResourceDescription.Pid, nullable: null })
+  @Field(() => ID, { description: ResourceDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('resource', {
     message: i18n(`${ResourceI18n}.${ResourceDescription.Pid}${ValidatorDescription.IsNotExist}`),

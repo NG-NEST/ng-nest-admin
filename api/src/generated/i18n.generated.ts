@@ -19,6 +19,9 @@ export type I18nTranslations = {
         "RefreshTokenIsNotEmpty": string;
         "RefreshTokenIsJWT": string;
     };
+    "cache": {
+        "CacheKeyIsNotEmpty": string;
+    };
     "dictionary": {
         "DictionaryIdIsNotEmpty": string;
         "PidIsNotExist": string;

@@ -9,6 +9,7 @@ import {
   PermissionModule,
   DictionaryModule,
   LanguageModule,
+  CacheModule as LocalCacheModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
@@ -41,6 +42,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     PermissionModule,
     DictionaryModule,
     LanguageModule,
+    LocalCacheModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: CacheControlInterceptor },

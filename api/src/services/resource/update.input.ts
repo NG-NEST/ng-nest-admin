@@ -11,21 +11,21 @@ export class UpdateResourceInput {
   })
   id: string;
 
-  @Field({ description: ResourceDescription.Name, nullable: null })
+  @Field({ description: ResourceDescription.Name, nullable: true })
   @IsOptional()
   @IsExist('resource', {
     message: i18n(`${ResourceI18n}.${ResourceDescription.Name}${ValidatorDescription.IsExist}`),
   })
   name?: string;
 
-  @Field({ description: ResourceDescription.Code, nullable: null })
+  @Field({ description: ResourceDescription.Code, nullable: true })
   @IsOptional()
   @IsExist('resource', {
     message: i18n(`${ResourceI18n}.${ResourceDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code?: string;
 
-  @Field({ description: ResourceDescription.Sort, nullable: null })
+  @Field({ description: ResourceDescription.Sort, nullable: true })
   @IsOptional()
   @IsNumber(
     {},
@@ -37,11 +37,11 @@ export class UpdateResourceInput {
   )
   sort?: number;
 
-  @Field({ description: ResourceDescription.Description, nullable: null })
+  @Field({ description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 
-  @Field(() => ID, { description: ResourceDescription.Pid, nullable: null })
+  @Field(() => ID, { description: ResourceDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('resource', {
     message: i18n(`${ResourceI18n}.${ResourceDescription.Pid}${ValidatorDescription.IsNotExist}`),

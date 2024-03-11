@@ -43,11 +43,11 @@ export class CreateDictionaryInput {
   )
   sort: number;
 
-  @Field({ description: DictionaryDescription.Description, nullable: null })
+  @Field({ description: DictionaryDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 
-  @Field(() => ID, { description: DictionaryDescription.Pid, nullable: null })
+  @Field(() => ID, { description: DictionaryDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('dictionary', {
     message: i18n(

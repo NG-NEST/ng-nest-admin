@@ -13,21 +13,21 @@ export class UpdateDictionaryInput {
   })
   id: string;
 
-  @Field({ description: DictionaryDescription.Name, nullable: null })
+  @Field({ description: DictionaryDescription.Name, nullable: true })
   @IsOptional()
   @IsExist('dictionary', {
     message: i18n(`${DictionaryI18n}.${DictionaryDescription.Name}${ValidatorDescription.IsExist}`),
   })
   name?: string;
 
-  @Field({ description: DictionaryDescription.Code, nullable: null })
+  @Field({ description: DictionaryDescription.Code, nullable: true })
   @IsOptional()
   @IsExist('dictionary', {
     message: i18n(`${DictionaryI18n}.${DictionaryDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code?: string;
 
-  @Field({ description: DictionaryDescription.Sort, nullable: null })
+  @Field({ description: DictionaryDescription.Sort, nullable: true })
   @IsOptional()
   @IsNumber(
     {},
@@ -39,11 +39,11 @@ export class UpdateDictionaryInput {
   )
   sort?: number;
 
-  @Field({ description: DictionaryDescription.Description, nullable: null })
+  @Field({ description: DictionaryDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 
-  @Field(() => ID, { description: DictionaryDescription.Pid, nullable: null })
+  @Field(() => ID, { description: DictionaryDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('dictionary', {
     message: i18n(
