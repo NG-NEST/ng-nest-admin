@@ -17,6 +17,7 @@ export class RoleResolver {
   constructor(private roleService: RoleService) {}
 
   @Query(() => RolePaginationOutput, { description: RoleResolverName.Roles })
+  @CacheControl(RoleCache.Roles)
   async roles(
     @Args() input: RolePaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -25,6 +26,7 @@ export class RoleResolver {
   }
 
   @Query(() => Role, { description: RoleResolverName.Role })
+  @CacheControl(RoleCache.Role)
   async role(@Args('id', RoleId) id: string, @PrismaSelect() select: BaseSelect): Promise<Role> {
     return await this.roleService.role(id, select);
   }
@@ -36,6 +38,7 @@ export class RoleResolver {
   }
 
   @Query(() => [RolePermissionOutput], { description: RoleResolverName.RolePermissions })
+  @CacheControl(RoleCache.RolePermissions)
   async rolePermissions(
     @Args('id', RoleId) id: string,
     @PrismaSelect() select: BaseSelect,

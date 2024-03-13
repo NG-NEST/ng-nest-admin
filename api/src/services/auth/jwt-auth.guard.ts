@@ -7,15 +7,16 @@ import { Reflector } from '@nestjs/core';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { IS_PUBLIC_KEY } from './auth.metadata';
+import { I18nTranslations } from '@api/generated';
 
 export type HostType = 'http' | 'ws' | 'rpc' | 'graphql';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
   constructor(
-    private jwtService: JwtService,
-    private reflector: Reflector,
-    private i18n: I18nService,
+    private readonly jwtService: JwtService,
+    private readonly reflector: Reflector,
+    private readonly i18n: I18nService<I18nTranslations>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

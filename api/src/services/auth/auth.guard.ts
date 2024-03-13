@@ -3,12 +3,13 @@ import { Reflector } from '@nestjs/core';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { IS_PUBLIC_KEY, PERMISSION_KEY } from './auth.metadata';
+import { I18nTranslations } from '@api/generated';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private reflector: Reflector,
-    private i18n: I18nService,
+    private readonly reflector: Reflector,
+    private readonly i18n: I18nService<I18nTranslations>,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {

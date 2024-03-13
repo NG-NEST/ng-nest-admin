@@ -1,6 +1,7 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Logs } from '../config';
+import { hrtime } from 'process';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -16,11 +17,21 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   async onModuleInit() {
+    const start = hrtime();
     try {
       await this.$connect();
-      Logger.log('Prisma connected', PrismaService.name);
+      const end = hrtime(start);
+      Logs.info('Prisma connected', {
+        context: PrismaService.name,
+        ms: `+${(end[1] / 1000000).toFixed(0)}ms`,
+      });
     } catch (e: any) {
-      Logs.error(e.message.replace(/\n/g, ' '), { context: PrismaService.name });
+      const end = hrtime(start);
+      Logs.error(e.message.replace(/\n/g, ' '), {
+        context: PrismaService.name,
+        stack: e.stack,
+        ms: `+${(end[1] / 1000000).toFixed(0)}ms`,
+      });
     }
 
     this.$on('query' as never, (e: any) => {

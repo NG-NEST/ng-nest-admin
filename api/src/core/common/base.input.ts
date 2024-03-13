@@ -86,7 +86,7 @@ export class BaseOrder {
 }
 
 export interface BaseSelect {
-  select?: { [property: string]: true };
+  select?: { [property: string]: BaseSelect };
 }
 
 export function BaseInclude<Include>(TInclude: Type<Include>) {
@@ -150,17 +150,17 @@ export function BasePaginationInput(): typeof Pagination;
 export function BasePaginationInput<Where>(TWhere?: Type<Where>): typeof PaginationWhere<Where>;
 export function BasePaginationInput<Where, OrderBy>(
   TWhere?: Type<Where>,
-  TOrderBy?: Type<OrderBy>
+  TOrderBy?: Type<OrderBy>,
 ): typeof PaginationWhereOrder<Where, OrderBy>;
 export function BasePaginationInput<Where, OrderBy, Include>(
   TWhere?: Type<Where>,
   TOrderBy?: Type<OrderBy>,
-  TInclude?: Type<Include>
+  TInclude?: Type<Include>,
 ): typeof PaginationWhereOrderInclude<Where, OrderBy, Include>;
 export function BasePaginationInput<Where, OrderBy, Include>(
   TWhere?: Type<Where>,
   TOrderBy?: Type<OrderBy>,
-  TInclude?: Type<Include>
+  TInclude?: Type<Include>,
 ):
   | typeof Pagination
   | typeof PaginationWhere<Where>

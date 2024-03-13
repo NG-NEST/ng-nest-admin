@@ -1,10 +1,7 @@
 import * as winston from 'winston';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
 import { Request } from 'express';
-
-const format = {
-  format: winston.format.combine(winston.format.timestamp(), winston.format.ms()),
-};
+import { Subject } from 'rxjs';
 
 const clc = {
   red: (text: string) => `\x1B[31m${text}\x1B[39m`,
@@ -17,6 +14,7 @@ const levelColors: Record<string, (text: string) => string> = {
   error: clc.red,
   warn: clc.yellow,
   info: clc.green,
+  cache: clc.cyan,
   http: clc.cyan,
   prisma: clc.cyan,
 };
@@ -25,6 +23,7 @@ type LoggerType = {
   error: (msg: string, params?: LoggerParams) => void;
   warn: (msg: string, params?: LoggerParams) => void;
   info: (msg: string, params?: LoggerParams) => void;
+  cache: (msg: string, params?: LoggerParams) => void;
   http: (msg: string, params?: LoggerParams) => void;
   prisma: (msg: string, params?: LoggerParams) => void;
 };
@@ -38,15 +37,30 @@ type LoggerParams = {
 };
 
 type LoggerExtendMethod = {
+  cache: winston.LeveledLogMethod;
   prisma: winston.LeveledLogMethod;
 };
 
-const customFormat = {
+const dailyFormat = {
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.ms(),
+    winston.format.splat(),
+    winston.format.printf((info) => {
+      LoggerConsole.info(info.message, info);
+      return JSON.stringify(info);
+    }),
+  ),
+};
+
+const consoleFormat = {
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.ms(),
+    winston.format.splat(),
     winston.format.printf((info) => {
       let { context, level, timestamp, message, ms } = info;
+      LogsSubject.next(info);
       if (timestamp) {
         try {
           if (timestamp === new Date(timestamp).toISOString()) {
@@ -57,14 +71,15 @@ const customFormat = {
       const color = levelColors[level];
       const yellow = clc.yellow;
       const name = 'NEST';
-      return (
+      const res =
         color(`[${name}]`) +
         ` ${yellow(`${level.toUpperCase().padEnd(8)}`)}` +
         (timestamp ? ` ${timestamp}` : '') +
         (context ? ` ${yellow(`[${context}]`)}` : '') +
         ` ${color(message)}` +
-        (ms ? ` ${yellow(ms)}` : '')
-      );
+        (ms ? ` ${yellow(ms)}` : '');
+
+      return res;
     }),
   ),
 };
@@ -72,31 +87,26 @@ const customFormat = {
 function winstonConsole(level: string) {
   return new winston.transports.Console({
     level,
-    ...customFormat,
+    ...consoleFormat,
   });
 }
 
 function dailyRotateFile(level: string) {
   return new DailyRotateFile({
     level,
-    utc: true,
-    filename: `${level}-%DATE%.log`,
+    filename: `%DATE%.log`,
     dirname: `logs/${level}`,
-    datePattern: 'YYYY-MM-DD',
+    datePattern: 'YYYY-MM-DD HH',
     maxSize: '20m',
     maxFiles: '30d',
     zippedArchive: true,
-    ...format,
+    ...dailyFormat,
   });
 }
 
 function winstonLogger(level: string) {
   const levels = { [`${level}`]: 0 };
-  const transports: winston.transport[] = [winstonConsole(level), dailyRotateFile(level)];
-  if (level !== 'info') {
-    levels['info'] = 1;
-    transports.push(dailyRotateFile('info'));
-  }
+  const transports: winston.transport[] = [dailyRotateFile(level)];
   return winston.createLogger({
     level,
     levels,
@@ -104,13 +114,20 @@ function winstonLogger(level: string) {
   }) as winston.Logger & LoggerExtendMethod;
 }
 
-const loggerOptions: winston.LoggerOptions = {
-  transports: [winstonConsole('info'), dailyRotateFile('info')],
+const loggerDailyOptions: winston.LoggerOptions = {
+  level: 'info',
+  transports: dailyRotateFile('info'),
+};
+
+const loggerConsoleOptions: winston.LoggerOptions = {
+  level: 'info',
+  transports: winstonConsole('info'),
 };
 
 const LoggerError = winstonLogger('error');
 const LoggerWarn = winstonLogger('warn');
 const LoggerInfo = winstonLogger('info');
+const LoggerCache = winstonLogger('cache');
 const LoggerHttp = winstonLogger('http');
 const LoggerPrisma = winstonLogger('prisma');
 
@@ -118,8 +135,9 @@ export const loggerLevels = {
   error: 0,
   warn: 1,
   info: 2,
-  http: 3,
-  prisma: 4,
+  cache: 3,
+  http: 4,
+  prisma: 5,
 };
 
 export function getRequestLogs(request: Request) {
@@ -129,11 +147,14 @@ export function getRequestLogs(request: Request) {
     ip: request.ip,
     query: request.query,
     body: request.body,
-    headers: request.headers,
+    headers: { ...request.headers },
   };
 }
 
-export const LoggerInstance = winston.createLogger(loggerOptions);
+export const LoggerInstance = winston.createLogger(loggerDailyOptions);
+export const LoggerConsole = winston.createLogger(loggerConsoleOptions);
+
+export const LogsSubject = new Subject<winston.Logform.TransformableInfo>();
 
 export const Logs: LoggerType = {
   error: (msg: string, params?: LoggerParams) => {
@@ -147,6 +168,10 @@ export const Logs: LoggerType = {
   info: (msg: string, params?: LoggerParams) => {
     params.timestamp = params.timestamp || new Date().toISOString();
     LoggerInfo.info(msg, { ...params });
+  },
+  cache: (msg: string, params?: LoggerParams) => {
+    params.timestamp = params.timestamp || new Date().toISOString();
+    LoggerCache.cache(msg, { ...params });
   },
   http: (msg: string, params?: LoggerParams) => {
     params.timestamp = params.timestamp || new Date().toISOString();

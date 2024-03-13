@@ -31,7 +31,17 @@ export enum RoleResolverName {
 }
 
 export enum RoleCache {
+  Role = 'Role',
+  Roles = 'Roles',
   RoleSelect = 'RoleSelect',
+  RolePermissions = 'RolePermissions',
 }
+
+export const RoleCacheClear = [
+  RoleCache.Role,
+  RoleCache.Roles,
+  RoleCache.RoleSelect,
+  RoleCache.RolePermissions,
+];
 
 export const RoleId = { type: () => ID, description: RoleDescription.Id };

@@ -26,7 +26,8 @@
     "paths": {
       "@api/core": ["./src/core"],
       "@api/services": ["./src/services"],
-      "@api/modules": ["./src/modules"]
+      "@api/modules": ["./src/modules"],
+      "@api/generated": ["./src/generated"]
     }
   }
 }

@@ -251,6 +251,37 @@ input LanguageWhereInput {
   value: StringFilter
 }
 
+type LogsFile {
+  """Extension"""
+  extension: String
+
+  """Name"""
+  name: String
+
+  """Type"""
+  type: String
+}
+
+type LogsOutput {
+  """Cache"""
+  cache: [LogsFile!]
+
+  """Error"""
+  error: [LogsFile!]
+
+  """Http"""
+  http: [LogsFile!]
+
+  """Info"""
+  info: [LogsFile!]
+
+  """Prisma"""
+  prisma: [LogsFile!]
+
+  """Warn"""
+  warn: [LogsFile!]
+}
+
 input NumberFilter {
   """Equals the given value"""
   equals: Float
@@ -442,6 +473,9 @@ type Query {
     """Query condition"""
     where: LanguageWhereInput
   ): LanguagePaginationOutput!
+
+  """A list of log categories"""
+  logs: LogsOutput!
 
   """Permission"""
   permission(

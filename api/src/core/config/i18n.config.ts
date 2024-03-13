@@ -4,13 +4,15 @@ import {
   AcceptLanguageResolver,
   HeaderResolver,
   I18nAsyncOptions,
+  I18nService,
   I18nValidationException,
   QueryResolver,
   i18nValidationMessage,
 } from 'nestjs-i18n';
 import { join } from 'path';
 import { I18nTranslations } from 'src/generated/i18n.generated';
-import { Logs, getRequestLogs } from './logger.config';
+import { getRequestLogs } from './logger.config';
+import { HEADER_EXCEPTION_DATA } from '../common';
 
 export const i18nConfig: I18nAsyncOptions = {
   useFactory: (configService: ConfigService) => ({
@@ -30,6 +32,7 @@ export const i18nConfig: I18nAsyncOptions = {
 };
 
 export const i18n = i18nValidationMessage<I18nTranslations>;
+export type I18nTranslationsService = I18nService<I18nTranslations>;
 
 export function responseBodyFormatter(
   host: ArgumentsHost,
@@ -39,6 +42,7 @@ export function responseBodyFormatter(
   const ctx = host.switchToHttp();
   const httpStatus =
     exc instanceof HttpException ? exc.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+  const req = ctx.getRequest();
 
   const msg = {
     statusCode: httpStatus,
@@ -50,12 +54,11 @@ export function responseBodyFormatter(
         : formattedErrors,
   };
 
-  Logs.error(
-    JSON.stringify({ ...msg, request: getRequestLogs(ctx.getRequest()), stack: exc.stack }),
-    {
-      context: 'ValidationExceptionFilter',
-    },
-  );
+  req.headers[HEADER_EXCEPTION_DATA] = JSON.stringify({
+    ...msg,
+    request: getRequestLogs(ctx.getRequest()),
+    stack: exc.stack,
+  });
 
   return msg;
 }

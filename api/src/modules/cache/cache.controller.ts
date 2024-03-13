@@ -12,9 +12,14 @@ export class CacheController {
   }
 
   @Delete()
-  // @Authorization(CacheAuth.CacheDelete)
+  @Authorization(CacheAuth.CacheDelete)
   async deleteCache(@Body('key') key: string) {
-    console.log(key);
     return await this.cacheService.deleteCache(key);
+  }
+
+  @Delete('/all')
+  @Authorization(CacheAuth.CacheDeleteAll)
+  async deleteAllCache() {
+    return await this.cacheService.deleteAllCache();
   }
 }

@@ -1,13 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { CACHE_PREFIX, RedisService } from '@api/core';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CACHE_PREFIX, RedisService, ValidatorDescription } from '@api/core';
 import { CacheKeysInput } from './cache-keys.input';
 import { Cache } from './cache.model';
 import { UpdateCacheInput } from './update.input';
 import { isEmpty } from 'class-validator';
+import { CacheDescription, CacheI18n } from './cache.enum';
+import { I18nContext, I18nService } from 'nestjs-i18n';
+import { I18nTranslations } from '@api/generated';
 
 @Injectable()
 export class CacheService {
-  constructor(private readonly redisService: RedisService) {}
+  constructor(
+    private readonly redisService: RedisService,
+    private readonly i18n: I18nService<I18nTranslations>,
+  ) {}
   async cacheKeys(input: CacheKeysInput) {
     const { key } = input;
     const keys = await this.redisService.keys(`${CACHE_PREFIX}:${key}:*`);
@@ -19,6 +25,17 @@ export class CacheService {
 
   async cache(key: string): Promise<Cache> {
     const cacheKey = `${CACHE_PREFIX}:${key}`;
+
+    const isExit = await this.redisService.exists(cacheKey);
+    if (isExit === 0) {
+      const lang = I18nContext.current().lang;
+      throw new BadRequestException(
+        this.i18n.t(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotExist}`, {
+          lang,
+        }),
+      );
+    }
+
     const value = await this.redisService.get(cacheKey);
     const expiretime = await this.redisService.expiretime(cacheKey);
 
@@ -28,6 +45,12 @@ export class CacheService {
   async deleteCache(key: string) {
     const cacheKey = `${CACHE_PREFIX}:${key}`;
     return await this.redisService.del(cacheKey);
+  }
+
+  async deleteAllCache() {
+    const cacheKey = `${CACHE_PREFIX}:*`;
+    const keys = await this.redisService.keys(cacheKey);
+    return await this.redisService.del(keys);
   }
 
   async updateCache(input: UpdateCacheInput): Promise<string> {
@@ -41,10 +64,10 @@ export class CacheService {
         cacheKey,
         value,
         'EXAT',
-        new Date(expiretime).getSeconds(),
+        new Date(expiretime).getTime() / 1000,
       );
     } else if (isEmpty(value) && !isEmpty(expiretime)) {
-      const ex = await this.redisService.expire(cacheKey, new Date(expiretime).getSeconds());
+      const ex = await this.redisService.expireat(cacheKey, new Date(expiretime).getTime() / 1000);
       return ex.toString();
     }
     return null;

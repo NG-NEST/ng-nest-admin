@@ -4,10 +4,11 @@ import { RedisService } from '../services';
 import { Reflector } from '@nestjs/core';
 import { CACHE_PREFIX, CACHE_CONTROL_METADATA, CACHE_CLEAR_METADATA } from '../decorators';
 import { ConfigService } from '@nestjs/config';
-import { ContextType } from '../common';
+import { ContextType, HEADER_CACHE_DATA, HEADER_REQUEST_DATA } from '../common';
+import { getRequestLogs } from '../config';
 
 @Injectable()
-export class CacheControlInterceptor implements NestInterceptor {
+export class CacheInterceptor implements NestInterceptor {
   constructor(
     private readonly redisService: RedisService,
     private readonly reflector: Reflector,
@@ -28,7 +29,9 @@ export class CacheControlInterceptor implements NestInterceptor {
         if (ttl < exttl / 2) {
           await this.redisService.expire(key, exttl);
         }
-        return of(JSON.parse(data));
+        const pdata = JSON.parse(data);
+        this.setCacheHeader(key, pdata, context);
+        return of(pdata);
       }
       return next.handle().pipe(
         tap(async (tap) => {
@@ -51,6 +54,15 @@ export class CacheControlInterceptor implements NestInterceptor {
     }
 
     return result;
+  }
+
+  setCacheHeader(key: string, data: object, context: ExecutionContext) {
+    const contextType = context.getType<ContextType>();
+    if (contextType === 'graphql') {
+      const req = context.getArgByIndex(2).req;
+      req.headers[HEADER_CACHE_DATA] = { key, data };
+      req.headers[HEADER_REQUEST_DATA] = getRequestLogs(req);
+    }
   }
 }
 

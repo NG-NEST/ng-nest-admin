@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import {
   AllExceptionsFilter,
   LoggerInstance,
+  LoggerMiddleware,
   TransformInterceptor,
   responseBodyFormatter,
 } from '@api/core';
@@ -29,6 +30,8 @@ async function bootstrap() {
   );
 
   app.useGlobalInterceptors(new TransformInterceptor());
+
+  app.use(LoggerMiddleware);
 
   await app.listen(env['PORT'] || 3000, '0.0.0.0');
 }

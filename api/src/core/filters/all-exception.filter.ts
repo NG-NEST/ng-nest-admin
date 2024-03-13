@@ -1,8 +1,8 @@
 import { ExceptionFilter, Catch, HttpException, HttpStatus, ArgumentsHost } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
-import { Logs, getRequestLogs } from '../config';
-import { ContextType } from '../common';
+import { getRequestLogs } from '../config';
+import { ContextType, HEADER_EXCEPTION_DATA } from '../common';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -44,16 +44,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: message,
       };
 
-      Logs.error(
-        JSON.stringify({
-          ...msg,
-          requset: getRequestLogs(request),
-          stack: exception.stack,
-        }),
-        {
-          context: AllExceptionsFilter.name,
-        },
-      );
+      request.headers[HEADER_EXCEPTION_DATA] = JSON.stringify({
+        ...msg,
+        requset: getRequestLogs(request),
+        stack: exception.stack,
+      });
 
       httpAdapter.reply(response, msg, httpStatus);
     }

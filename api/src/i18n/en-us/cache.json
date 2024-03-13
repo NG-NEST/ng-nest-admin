@@ -1,3 +1,4 @@
 {
-  "CacheKeyIsNotEmpty": "key should not be empty"
+  "CacheKeyIsNotEmpty": "key should not be empty",
+  "CacheKeyIsNotExist": "key is not exist"
 }

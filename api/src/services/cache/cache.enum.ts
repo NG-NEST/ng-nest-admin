@@ -4,6 +4,7 @@ export enum CacheAuth {
   CacheCreate = 'cache-create',
   CacheUpdate = 'cache-update',
   CacheDelete = 'cache-delete',
+  CacheDeleteAll = 'cache-delete-all',
 }
 
 export enum CacheDescription {

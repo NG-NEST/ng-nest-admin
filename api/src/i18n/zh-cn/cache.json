@@ -1,3 +1,4 @@
 {
-  "CacheKeyIsNotEmpty": "缓存 key 不能为空"
+  "CacheKeyIsNotEmpty": "缓存 key 不能为空",
+  "CacheKeyIsNotExist": "缓存 key 不存在"
 }

@@ -21,6 +21,7 @@ export type I18nTranslations = {
     };
     "cache": {
         "CacheKeyIsNotEmpty": string;
+        "CacheKeyIsNotExist": string;
     };
     "dictionary": {
         "DictionaryIdIsNotEmpty": string;
