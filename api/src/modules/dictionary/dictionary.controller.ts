@@ -1,9 +1,9 @@
 import {
-  CreateDictionaryInput,
+  DictionaryCreateInput,
   Authorization,
   DictionaryAuth,
   DictionaryService,
-  UpdateDictionaryInput,
+  DictionaryUpdateInput,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -13,19 +13,19 @@ export class DictionaryController {
 
   @Patch()
   @Authorization(DictionaryAuth.DictionaryUpdate)
-  async updateDictionary(@Body() data: UpdateDictionaryInput) {
-    return await this.dictionaryService.updateDictionary(data);
+  async update(@Body() data: DictionaryUpdateInput) {
+    return await this.dictionaryService.update(data);
   }
 
   @Post()
   @Authorization(DictionaryAuth.DictionaryCreate)
-  async createDictionary(@Body() data: CreateDictionaryInput) {
-    return await this.dictionaryService.createDictionary(data);
+  async create(@Body() data: DictionaryCreateInput) {
+    return await this.dictionaryService.create(data);
   }
 
   @Delete(':id')
   @Authorization(DictionaryAuth.DictionaryDelete)
-  async deleteDictionary(@Param('id') id: string) {
-    return await this.dictionaryService.deleteDictionary(id);
+  async delete(@Param('id') id: string) {
+    return await this.dictionaryService.delete(id);
   }
 }

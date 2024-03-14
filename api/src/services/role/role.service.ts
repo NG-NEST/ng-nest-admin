@@ -1,9 +1,9 @@
 import { BaseSelect, PrismaService, RedisService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { RolePaginationInput } from './role-pagination.input';
+import { RolePaginationInput } from './pagination.input';
 import { Role } from './role.model';
-import { UpdateRoleInput } from './update.input';
-import { CreateRoleInput } from './create.input';
+import { RoleUpdateInput } from './update.input';
+import { RoleCreateInput } from './create.input';
 
 @Injectable()
 export class RoleService {
@@ -48,7 +48,7 @@ export class RoleService {
     return (await this.prisma.role.findUnique({ where: { id }, ...select })) as Role;
   }
 
-  async updateRole(input: UpdateRoleInput) {
+  async update(input: RoleUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.role.update({
       data,
@@ -56,15 +56,15 @@ export class RoleService {
     });
   }
 
-  async createRole(data: CreateRoleInput) {
+  async create(data: RoleCreateInput) {
     return await this.prisma.role.create({ data });
   }
 
-  async deleteRole(id: string) {
+  async delete(id: string) {
     return await this.prisma.role.delete({ where: { id } });
   }
 
-  async createRolePermissions(roleId: string, permissionIds: string[]) {
+  async createPermissions(roleId: string, permissionIds: string[]) {
     const deleteRolePermissions = this.prisma.rolesOnPermissions.deleteMany({
       where: { roleId },
     });

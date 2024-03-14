@@ -4,7 +4,7 @@ import { ValidatorDescription, i18n } from '@api/core';
 import { UserDescription, UserI18n } from './user.enum';
 
 @InputType()
-export class ResetPasswordInput {
+export class UserResetPasswordInput {
   @Field({ description: UserDescription.Password })
   @IsNotEmpty({
     message: i18n(`${UserI18n}.${UserDescription.Password}${ValidatorDescription.IsNotEmpty}`),

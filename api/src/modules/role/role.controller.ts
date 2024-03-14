@@ -1,10 +1,10 @@
 import { CacheClear } from '@api/core';
 import {
-  CreateRoleInput,
+  RoleCreateInput,
   Authorization,
   RoleAuth,
   RoleService,
-  UpdateRoleInput,
+  RoleUpdateInput,
   RoleCacheClear,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
@@ -16,28 +16,28 @@ export class RoleController {
   @Patch()
   @Authorization(RoleAuth.RoleUpdate)
   @CacheClear(...RoleCacheClear)
-  async updateRole(@Body() data: UpdateRoleInput) {
-    return await this.roleService.updateRole(data);
+  async update(@Body() data: RoleUpdateInput) {
+    return await this.roleService.update(data);
   }
 
   @Post()
   @Authorization(RoleAuth.RoleCreate)
   @CacheClear(...RoleCacheClear)
-  async createRole(@Body() data: CreateRoleInput) {
-    return await this.roleService.createRole(data);
+  async create(@Body() data: RoleCreateInput) {
+    return await this.roleService.create(data);
   }
 
   @Post(':id/permissions')
   @Authorization(RoleAuth.RolePermissions)
   @CacheClear(...RoleCacheClear)
-  async rolePermissions(@Param('id') id: string, @Body() permissionIds: string[]) {
-    return await this.roleService.createRolePermissions(id, permissionIds);
+  async createPermissions(@Param('id') id: string, @Body() permissionIds: string[]) {
+    return await this.roleService.createPermissions(id, permissionIds);
   }
 
   @Delete(':id')
   @Authorization(RoleAuth.RoleDelete)
   @CacheClear(...RoleCacheClear)
-  async deleteRole(@Param('id') id: string) {
-    return await this.roleService.deleteRole(id);
+  async delete(@Param('id') id: string) {
+    return await this.roleService.delete(id);
   }
 }

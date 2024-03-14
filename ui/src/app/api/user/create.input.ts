@@ -1,6 +1,6 @@
 import { BaseCreateWithoutInput } from '@ui/core';
 
-export class CreateUserInput {
+export class UserCreateInput {
   name!: string;
   account!: string;
   password!: string;

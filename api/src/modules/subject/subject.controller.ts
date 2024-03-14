@@ -1,9 +1,9 @@
 import {
-  CreateSubjectInput,
+  SubjectCreateInput,
   Authorization,
   SubjectAuth,
   SubjectService,
-  UpdateSubjectInput,
+  SubjectUpdateInput,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -13,19 +13,19 @@ export class SubjectController {
 
   @Patch()
   @Authorization(SubjectAuth.SubjectUpdate)
-  async updateSubject(@Body() data: UpdateSubjectInput) {
-    return await this.subjectService.updateSubject(data);
+  async update(@Body() data: SubjectUpdateInput) {
+    return await this.subjectService.update(data);
   }
 
   @Post()
   @Authorization(SubjectAuth.SubjectCreate)
-  async createSubject(@Body() data: CreateSubjectInput) {
-    return await this.subjectService.createSubject(data);
+  async create(@Body() data: SubjectCreateInput) {
+    return await this.subjectService.create(data);
   }
 
   @Delete(':id')
   @Authorization(SubjectAuth.SubjectDelete)
-  async deleteSubject(@Param('id') id: string) {
-    return await this.subjectService.deleteSubject(id);
+  async delete(@Param('id') id: string) {
+    return await this.subjectService.delete(id);
   }
 }

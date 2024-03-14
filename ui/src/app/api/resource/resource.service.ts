@@ -3,12 +3,12 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
 import { Resource } from './resource.model';
-import { ResourcePaginationInput } from './resource-pagination.input';
-import { CreateResourceInput } from './create.input';
+import { ResourcePaginationInput } from './pagination.input';
+import { ResourceCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { ResourceMessage } from './resource.enum';
-import { UpdateResourceInput } from './update.input';
-import { ResourceSelect } from './resource-select.output';
+import { ResourceUpdateInput } from './update.input';
+import { ResourceSelect } from './select.output';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -91,19 +91,15 @@ export class ResourceService {
       .pipe(map((x) => cloneDeep(x.data?.resourceSelect!)));
   }
 
-  createResource(createResource: CreateResourceInput): Observable<string> {
-    return this.http
-      .post('/api/resource', createResource)
-      .pipe(map(() => ResourceMessage.CreatedSuccess));
+  create(input: ResourceCreateInput): Observable<string> {
+    return this.http.post('/api/resource', input).pipe(map(() => ResourceMessage.CreatedSuccess));
   }
 
-  updateResource(updateResource: UpdateResourceInput): Observable<string> {
-    return this.http
-      .put(`/api/resource`, updateResource)
-      .pipe(map(() => ResourceMessage.UpdatedSuccess));
+  update(input: ResourceUpdateInput): Observable<string> {
+    return this.http.patch(`/api/resource`, input).pipe(map(() => ResourceMessage.UpdatedSuccess));
   }
 
-  deleteResource(id: string): Observable<string> {
+  delete(id: string): Observable<string> {
     return this.http.delete(`/api/resource/${id}`).pipe(map(() => ResourceMessage.DeletedSuccess));
   }
 }

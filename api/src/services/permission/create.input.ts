@@ -5,7 +5,7 @@ import { PermissionDescription, PermissionI18n } from './permission.enum';
 import { ResourceDescription } from '../resource';
 
 @InputType()
-export class CreatePermissionInput {
+export class PermissionCreateInput {
   @Field({ description: PermissionDescription.Name })
   @IsNotEmpty({
     message: i18n(

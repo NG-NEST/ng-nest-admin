@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { readdir } from 'fs-extra';
+import { Injectable, StreamableFile } from '@nestjs/common';
+import { createReadStream, readdir } from 'fs-extra';
 import { join } from 'path';
 import { LogsOutput } from './logs.output';
 import { BaseSelect } from '@api/core';
@@ -22,7 +22,7 @@ export class LogsService {
     types = types.filter((type) => isNotEmpty(select.select[type]));
     for (const type of types) {
       if (!typeObj[type]) typeObj[type] = [];
-      const typePath = join(logsPath, type);
+      const typePath = join(process.cwd(), logsPath, type);
       const files = await readdir(typePath);
       typeObj[type].push(
         ...files.map((x) => {
@@ -36,5 +36,10 @@ export class LogsService {
     }
 
     return typeObj;
+  }
+
+  async logStreamableFile(type: LogsType, name: string) {
+    const file = createReadStream(join(process.cwd(), logsPath, type, name));
+    return new StreamableFile(file);
   }
 }

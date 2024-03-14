@@ -69,9 +69,9 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
   save() {
     let rq!: Observable<string>;
     if (!this.id) {
-      rq = this.subject.createSubject(this.form.value);
+      rq = this.subject.create(this.form.value);
     } else {
-      rq = this.subject.updateSubject({ id: this.id, ...this.form.value });
+      rq = this.subject.update({ id: this.id, ...this.form.value });
     }
     this.saveLoading = true;
     rq.pipe(

@@ -1,9 +1,9 @@
 import {
-  CreatePermissionInput,
+  PermissionCreateInput,
   PermissionAuth,
   PermissionService,
   Authorization,
-  UpdatePermissionInput,
+  PermissionUpdateInput,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -13,19 +13,19 @@ export class PermissionController {
 
   @Patch()
   @Authorization(PermissionAuth.PermissionUpdate)
-  async updatePermission(@Body() data: UpdatePermissionInput) {
-    return await this.permissionService.updatePermission(data);
+  async update(@Body() data: PermissionUpdateInput) {
+    return await this.permissionService.update(data);
   }
 
   @Post()
   @Authorization(PermissionAuth.PermissionCreate)
-  async createPermission(@Body() data: CreatePermissionInput) {
-    return await this.permissionService.createPermission(data);
+  async create(@Body() data: PermissionCreateInput) {
+    return await this.permissionService.create(data);
   }
 
   @Delete(':id')
   @Authorization(PermissionAuth.PermissionDelete)
-  async deletePermission(@Param('id') id: string) {
-    return await this.permissionService.deletePermission(id);
+  async delete(@Param('id') id: string) {
+    return await this.permissionService.delete(id);
   }
 }

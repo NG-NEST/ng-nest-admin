@@ -1,9 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { DictionaryPaginationInput } from './dictionary-pagination.input';
+import { DictionaryPaginationInput } from './pagination.input';
 import { Dictionary } from './dictionary.model';
-import { UpdateDictionaryInput } from './update.input';
-import { CreateDictionaryInput } from './create.input';
+import { DictionaryUpdateInput } from './update.input';
+import { DictionaryCreateInput } from './create.input';
 
 @Injectable()
 export class DictionaryService {
@@ -25,7 +25,7 @@ export class DictionaryService {
     return (await this.prisma.dictionary.findUnique({ where: { id }, ...select })) as Dictionary;
   }
 
-  async updateDictionary(input: UpdateDictionaryInput) {
+  async update(input: DictionaryUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.dictionary.update({
       data,
@@ -33,7 +33,7 @@ export class DictionaryService {
     });
   }
 
-  async createDictionary(input: CreateDictionaryInput) {
+  async create(input: DictionaryCreateInput) {
     const { pid, ...other } = input;
     const data = { ...other, parent: {} };
     if (pid) {
@@ -44,7 +44,7 @@ export class DictionaryService {
     });
   }
 
-  async deleteDictionary(id: string) {
+  async delete(id: string) {
     return await this.prisma.dictionary.delete({ where: { id } });
   }
 }

@@ -1,9 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { LanguagePaginationInput } from './language-pagination.input';
+import { LanguagePaginationInput } from './pagination.input';
 import { Language } from './language.model';
-import { UpdateLanguageInput } from './update.input';
-import { CreateLanguageInput } from './create.input';
+import { LanguageUpdateInput } from './update.input';
+import { LanguageCreateInput } from './create.input';
 
 @Injectable()
 export class LanguageService {
@@ -13,7 +13,7 @@ export class LanguageService {
     const { where } = input;
     return {
       data: (await this.prisma.language.findMany({ ...input, ...select })) as Language[],
-      count: await this.prisma.language.count({ where })
+      count: await this.prisma.language.count({ where }),
     };
   }
 
@@ -25,19 +25,19 @@ export class LanguageService {
     return (await this.prisma.language.findUnique({ where: { id }, ...select })) as Language;
   }
 
-  async updateLanguage(input: UpdateLanguageInput) {
+  async update(input: LanguageUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.language.update({
       data,
-      where: { id }
+      where: { id },
     });
   }
 
-  async createLanguage(data: CreateLanguageInput) {
+  async create(data: LanguageCreateInput) {
     return await this.prisma.language.create({ data });
   }
 
-  async deleteLanguage(id: string) {
+  async delete(id: string) {
     return await this.prisma.language.delete({ where: { id } });
   }
 }

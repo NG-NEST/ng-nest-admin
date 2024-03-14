@@ -1,9 +1,9 @@
 import {
-  CreateLanguageInput,
+  LanguageCreateInput,
   Authorization,
   LanguageAuth,
   LanguageService,
-  UpdateLanguageInput,
+  LanguageUpdateInput,
   Public,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
@@ -15,19 +15,19 @@ export class LanguageController {
 
   @Patch()
   @Authorization(LanguageAuth.LanguageUpdate)
-  async updateLanguage(@Body() data: UpdateLanguageInput) {
-    return await this.languageService.updateLanguage(data);
+  async update(@Body() data: LanguageUpdateInput) {
+    return await this.languageService.update(data);
   }
 
   @Post()
   @Authorization(LanguageAuth.LanguageCreate)
-  async createLanguage(@Body() data: CreateLanguageInput) {
-    return await this.languageService.createLanguage(data);
+  async create(@Body() data: LanguageCreateInput) {
+    return await this.languageService.create(data);
   }
 
   @Delete(':id')
   @Authorization(LanguageAuth.LanguageDelete)
-  async deleteLanguage(@Param('id') id: string) {
-    return await this.languageService.deleteLanguage(id);
+  async delete(@Param('id') id: string) {
+    return await this.languageService.delete(id);
   }
 }

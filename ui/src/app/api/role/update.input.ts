@@ -1,4 +1,4 @@
-export class UpdateRoleInput {
+export class RoleUpdateInput {
   id!: string;
   name?: string;
   description?: string;

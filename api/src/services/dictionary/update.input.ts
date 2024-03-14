@@ -4,7 +4,7 @@ import { IsExist, IsNotExist, ValidatorDescription, i18n } from '@api/core';
 import { DictionaryDescription, DictionaryI18n } from './dictionary.enum';
 
 @InputType()
-export class UpdateDictionaryInput {
+export class DictionaryUpdateInput {
   @Field(() => ID, { description: DictionaryDescription.Id })
   @IsNotEmpty({
     message: i18n(

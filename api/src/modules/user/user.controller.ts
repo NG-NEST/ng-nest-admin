@@ -1,10 +1,12 @@
+import { CacheClear } from '@api/core';
 import {
-  CreateUserInput,
-  ResetPasswordInput,
-  UpdateUserInput,
+  UserCreateInput,
+  UserResetPasswordInput,
+  UserUpdateInput,
   UserService,
   Authorization,
   UserAuth,
+  UserCacheClear,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -14,25 +16,28 @@ export class UserController {
 
   @Patch()
   @Authorization(UserAuth.UserUpdate)
-  async updateUser(@Body() data: UpdateUserInput) {
-    return await this.userService.updateUser(data);
+  @CacheClear(...UserCacheClear)
+  async update(@Body() data: UserUpdateInput) {
+    return await this.userService.update(data);
   }
 
   @Post()
   @Authorization(UserAuth.UserCreate)
-  async createUser(@Body() data: CreateUserInput) {
-    return await this.userService.createUser(data);
+  @CacheClear(...UserCacheClear)
+  async create(@Body() data: UserCreateInput) {
+    return await this.userService.create(data);
   }
 
   @Delete(':id')
   @Authorization(UserAuth.UserDelete)
-  async deleteUser(@Param('id') id: string) {
-    return await this.userService.deleteUser(id);
+  @CacheClear(...UserCacheClear)
+  async delete(@Param('id') id: string) {
+    return await this.userService.delete(id);
   }
 
   @Patch(':id/reset-password')
   @Authorization(UserAuth.UserResetPassword)
-  async resetPassword(@Param('id') id: string, @Body() data: ResetPasswordInput) {
+  async resetPassword(@Param('id') id: string, @Body() data: UserResetPasswordInput) {
     return await this.userService.resetPassword(id, data);
   }
 }

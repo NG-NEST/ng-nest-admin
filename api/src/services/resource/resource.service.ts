@@ -1,10 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { ResourcePaginationInput } from './resource-pagination.input';
+import { ResourcePaginationInput } from './pagination.input';
 import { Resource } from './resource.model';
-import { UpdateResourceInput } from './update.input';
-import { CreateResourceInput } from './create.input';
-
+import { ResourceUpdateInput } from './update.input';
+import { ResourceCreateInput } from './create.input';
 
 @Injectable()
 export class ResourceService {
@@ -14,7 +13,7 @@ export class ResourceService {
     const { where } = input;
     return {
       data: (await this.prisma.resource.findMany({ ...input, ...select })) as Resource[],
-      count: await this.prisma.resource.count({ where })
+      count: await this.prisma.resource.count({ where }),
     };
   }
 
@@ -26,26 +25,26 @@ export class ResourceService {
     return (await this.prisma.resource.findUnique({ where: { id }, ...select })) as Resource;
   }
 
-  async updateResource(input: UpdateResourceInput) {
+  async update(input: ResourceUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.resource.update({
       data,
-      where: { id }
+      where: { id },
     });
   }
 
-  async createResource(input: CreateResourceInput) {
+  async create(input: ResourceCreateInput) {
     const { subjectId, pid, ...other } = input;
     const data = { ...other, subject: { connect: { id: subjectId } }, parent: {} };
     if (pid) {
       data.parent = { connect: { id: pid } };
     }
     return await this.prisma.resource.create({
-      data
+      data,
     });
   }
 
-  async deleteResource(id: string) {
+  async delete(id: string) {
     return await this.prisma.resource.delete({ where: { id } });
   }
 }

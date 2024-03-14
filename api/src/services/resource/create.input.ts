@@ -5,7 +5,7 @@ import { ResourceDescription, ResourceI18n } from './resource.enum';
 import { SubjectDescription } from '../subject';
 
 @InputType()
-export class CreateResourceInput {
+export class ResourceCreateInput {
   @Field({ description: ResourceDescription.Name })
   @IsNotEmpty({
     message: i18n(`${ResourceI18n}.${ResourceDescription.Name}${ValidatorDescription.IsNotEmpty}`),

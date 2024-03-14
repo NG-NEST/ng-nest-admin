@@ -69,6 +69,14 @@ export type I18nTranslations = {
         "NameIsNotEmpty": string;
         "NameIsExist": string;
     };
+    "schema": {
+        "SchemaIdIsNotEmpty": string;
+        "NameIsNotEmpty": string;
+        "NameIsExist": string;
+        "CodeIsNotEmpty": string;
+        "CodeIsExist": string;
+        "JsonIsNotEmpty": string;
+    };
     "subject": {
         "SubjectIdIsNotEmpty": string;
         "NameIsNotEmpty": string;

@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Subject,
+  SubjectCache,
   SubjectCode,
   SubjectId,
   SubjectPaginationInput,
@@ -19,6 +20,7 @@ export class SubjectResolver {
   @Query(() => SubjectPaginationOutput, {
     description: SubjectResolverName.Subjects,
   })
+  @CacheControl(SubjectCache.Subjects)
   async subjects(
     @Args() input: SubjectPaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -27,6 +29,7 @@ export class SubjectResolver {
   }
 
   @Query(() => Subject, { description: SubjectResolverName.Subject })
+  @CacheControl(SubjectCache.Subject)
   async subject(
     @Args('id', SubjectId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -37,6 +40,7 @@ export class SubjectResolver {
   @Query(() => [SubjectSelectOutput], {
     description: SubjectResolverName.SubjectSelect,
   })
+  @CacheControl(SubjectCache.SubjectSelect)
   async subjectSelect(@PrismaSelect('data') select: BaseSelect): Promise<SubjectSelectOutput[]> {
     return await this.subjectService.subjectSelect(select);
   }
@@ -44,6 +48,7 @@ export class SubjectResolver {
   @Query(() => [SubjectResourceOutput], {
     description: SubjectResolverName.SubjectResources,
   })
+  @CacheControl(SubjectCache.SubjectResource)
   async subjectResources(
     @Args('code', SubjectCode) code: string,
     @PrismaSelect() select: BaseSelect,

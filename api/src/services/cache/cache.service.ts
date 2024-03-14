@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CACHE_PREFIX, RedisService, ValidatorDescription } from '@api/core';
 import { CacheKeysInput } from './cache-keys.input';
 import { Cache } from './cache.model';
-import { UpdateCacheInput } from './update.input';
+import { CacheUpdateInput } from './update.input';
 import { isEmpty } from 'class-validator';
 import { CacheDescription, CacheI18n } from './cache.enum';
 import { I18nContext, I18nService } from 'nestjs-i18n';
@@ -42,18 +42,18 @@ export class CacheService {
     return { key, value, expiretime: new Date(expiretime * 1000).toISOString() };
   }
 
-  async deleteCache(key: string) {
+  async delete(key: string) {
     const cacheKey = `${CACHE_PREFIX}:${key}`;
     return await this.redisService.del(cacheKey);
   }
 
-  async deleteAllCache() {
+  async deleteAll() {
     const cacheKey = `${CACHE_PREFIX}:*`;
     const keys = await this.redisService.keys(cacheKey);
     return await this.redisService.del(keys);
   }
 
-  async updateCache(input: UpdateCacheInput): Promise<string> {
+  async update(input: CacheUpdateInput): Promise<string> {
     const { key, value, expiretime } = input;
     const cacheKey = `${CACHE_PREFIX}:${key}`;
     const beforeExpiretime = await this.redisService.expiretime(cacheKey);

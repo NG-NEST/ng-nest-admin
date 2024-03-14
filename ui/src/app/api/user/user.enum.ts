@@ -8,14 +8,6 @@ export enum UserDescription {
   Phone = '用户手机号'
 }
 
-export enum UserResolverName {
-  User = '用户详情',
-  Users = '用户列表',
-  CreateUser = '创建用户',
-  UpdateUser = '更新用户',
-  DeleteUser = '删除用户'
-}
-
 export enum UserMessage {
   CreatedSuccess = '新增用户成功！',
   UpdatedSuccess = '更新用户成功！',

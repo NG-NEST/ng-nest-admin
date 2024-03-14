@@ -64,9 +64,9 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   save() {
     let rq!: Observable<string>;
     if (!this.id) {
-      rq = this.role.createRole(this.form.value);
+      rq = this.role.create(this.form.value);
     } else {
-      rq = this.role.updateRole({ id: this.id, ...this.form.value });
+      rq = this.role.update({ id: this.id, ...this.form.value });
     }
     this.saveLoading = true;
     rq.pipe(

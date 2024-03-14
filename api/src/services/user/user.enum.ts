@@ -32,4 +32,12 @@ export enum UserResolverName {
   DeleteUser = 'DeleteUser',
 }
 
+export enum UserCache {
+  User = 'User',
+  Users = 'Users',
+  UserSelect = 'UserSelect',
+}
+
+export const UserCacheClear = [UserCache.User, UserCache.Users, UserCache.UserSelect];
+
 export const UserId = { type: () => ID, description: UserDescription.Id };

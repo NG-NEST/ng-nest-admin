@@ -1,4 +1,4 @@
-export class UpdateResourceInput {
+export class ResourceUpdateInput {
   id!: string;
   name!: string;
   code!: string;

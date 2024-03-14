@@ -1,0 +1,8 @@
+{
+  "SchemaIdIsNotEmpty": "数据结构编码不能为空",
+  "NameIsNotEmpty": "数据结构名称不能为空",
+  "NameIsExist": "数据结构名称已经存在",
+  "CodeIsNotEmpty": "数据结构编码不能为空",
+  "CodeIsExist": "数据结构编码已经存在",
+  "JsonIsNotEmpty": "数据结构内容不能为空"
+}

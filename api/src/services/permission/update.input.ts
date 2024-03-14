@@ -4,7 +4,7 @@ import { ValidatorDescription, i18n } from '@api/core';
 import { PermissionDescription, PermissionI18n } from './permission.enum';
 
 @InputType()
-export class UpdatePermissionInput {
+export class PermissionUpdateInput {
   @Field(() => ID, { description: PermissionDescription.Id })
   @IsNotEmpty({
     message: i18n(

@@ -1,4 +1,4 @@
-export class CreateResourceInput {
+export class ResourceCreateInput {
   name!: string;
   code!: string;
   sort!: number;

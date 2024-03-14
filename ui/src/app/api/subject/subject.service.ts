@@ -3,12 +3,12 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
 import { Subject } from './subject.model';
-import { SubjectPaginationInput } from './subject-pagination.input';
-import { CreateSubjectInput } from './create.input';
+import { SubjectPaginationInput } from './pagination.input';
+import { SubjectCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { SubjectMessage } from './subject.enum';
-import { UpdateSubjectInput } from './update.input';
-import { SubjectSelect } from './subject-select.output';
+import { SubjectUpdateInput } from './update.input';
+import { SubjectSelect } from './select.output';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -77,19 +77,15 @@ export class SubjectService {
       .pipe(map((x) => cloneDeep(x.data?.subjectSelect!)));
   }
 
-  createSubject(createSubject: CreateSubjectInput): Observable<string> {
-    return this.http
-      .post('/api/subject', createSubject)
-      .pipe(map(() => SubjectMessage.CreatedSuccess));
+  create(input: SubjectCreateInput): Observable<string> {
+    return this.http.post('/api/subject', input).pipe(map(() => SubjectMessage.CreatedSuccess));
   }
 
-  updateSubject(updateSubject: UpdateSubjectInput): Observable<string> {
-    return this.http
-      .put(`/api/subject`, updateSubject)
-      .pipe(map(() => SubjectMessage.UpdatedSuccess));
+  update(input: SubjectUpdateInput): Observable<string> {
+    return this.http.patch(`/api/subject`, input).pipe(map(() => SubjectMessage.UpdatedSuccess));
   }
 
-  deleteSubject(id: string): Observable<string> {
+  delete(id: string): Observable<string> {
     return this.http.delete(`/api/subject/${id}`).pipe(map(() => SubjectMessage.DeletedSuccess));
   }
 }

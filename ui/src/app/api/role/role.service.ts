@@ -3,12 +3,12 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
 import { Role } from './role.model';
-import { RolePaginationInput } from './role-pagination.input';
-import { CreateRoleInput } from './create.input';
+import { RolePaginationInput } from './pagination.input';
+import { RoleCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { RoleMessage } from './role.enum';
-import { UpdateRoleInput } from './update.input';
-import { RoleSelect } from './role-select.output';
+import { RoleUpdateInput } from './update.input';
+import { RoleSelect } from './select.output';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -72,15 +72,15 @@ export class RoleService {
       .valueChanges.pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
   }
 
-  createRole(createRole: CreateRoleInput): Observable<string> {
-    return this.http.post('/api/role', createRole).pipe(map(() => RoleMessage.CreatedSuccess));
+  create(input: RoleCreateInput): Observable<string> {
+    return this.http.post('/api/role', input).pipe(map(() => RoleMessage.CreatedSuccess));
   }
 
-  updateRole(updateRole: UpdateRoleInput): Observable<string> {
-    return this.http.put(`/api/role`, updateRole).pipe(map(() => RoleMessage.UpdatedSuccess));
+  update(input: RoleUpdateInput): Observable<string> {
+    return this.http.patch(`/api/role`, input).pipe(map(() => RoleMessage.UpdatedSuccess));
   }
 
-  deleteRole(id: string): Observable<string> {
+  delete(id: string): Observable<string> {
     return this.http.delete(`/api/role/${id}`).pipe(map(() => RoleMessage.DeletedSuccess));
   }
 }

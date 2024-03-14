@@ -1,4 +1,4 @@
-export class CreateRoleInput {
+export class RoleCreateInput {
   name!: string;
   description?: string;
 }

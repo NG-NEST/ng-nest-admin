@@ -28,12 +28,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src", "node_modules"]
             },
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": false,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {

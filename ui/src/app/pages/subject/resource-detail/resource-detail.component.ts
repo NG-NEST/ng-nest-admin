@@ -95,9 +95,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   save() {
     let rq!: Observable<string>;
     if (!this.id) {
-      rq = this.resource.createResource(this.form.value);
+      rq = this.resource.create(this.form.value);
     } else {
-      rq = this.resource.updateResource({ id: this.id, ...this.form.value });
+      rq = this.resource.update({ id: this.id, ...this.form.value });
     }
     this.saveLoading = true;
     rq.pipe(

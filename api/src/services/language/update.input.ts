@@ -4,7 +4,7 @@ import { IsExist, ValidatorDescription, i18n } from '@api/core';
 import { LanguageDescription, LanguageI18n } from './language.enum';
 
 @InputType()
-export class UpdateLanguageInput {
+export class LanguageUpdateInput {
   @Field(() => ID, { description: LanguageDescription.Id })
   @IsNotEmpty({
     message: i18n(`${LanguageI18n}.${LanguageDescription.Id}${ValidatorDescription.IsNotEmpty}`),

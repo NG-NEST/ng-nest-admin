@@ -7,6 +7,8 @@ import {
   HEADER_REQUEST_DATA,
   HEADER_RESPONSE_DATA,
 } from '../common';
+import { StreamableFile } from '@nestjs/common';
+import { ReadStream } from 'fs-extra';
 
 export function LoggerMiddleware(req: Request, res: Response, next: NextFunction) {
   const start = process.hrtime();
@@ -29,9 +31,16 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
       Logs.cache(msg, { context: 'CacheInterceptor', ms: `+${(end[1] / 1000000).toFixed(0)}ms` });
       return;
     }
-    const response = req.headers[HEADER_RESPONSE_DATA];
+    let response = req.headers[HEADER_RESPONSE_DATA];
     ClearCustomHeaders(req);
-    const msg = JSON.stringify({ request, response });
+    let msg = '';
+    if (response instanceof StreamableFile) {
+      const { path, bytesRead } = response['stream'] as ReadStream;
+      msg = JSON.stringify({ request, response: { bytesRead, path } });
+    } else {
+      msg = JSON.stringify({ request, response });
+    }
+
     Logs.http(msg, { context: 'TransformInterceptor', ms: `+${(end[1] / 1000000).toFixed(0)}ms` });
   });
   next();

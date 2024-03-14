@@ -92,9 +92,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     const value = this.form.getRawValue();
     delete value.checkPassword;
     if (!this.id) {
-      rq = this.user.createUser(value);
+      rq = this.user.create(value);
     } else {
-      rq = this.user.updateUser({ id: this.id, ...value });
+      rq = this.user.update({ id: this.id, ...value });
     }
     this.saveLoading = true;
     rq.pipe(finalize(() => (this.saveLoading = false))).subscribe((x) => {

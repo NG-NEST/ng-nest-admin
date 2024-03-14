@@ -1,9 +1,9 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { SubjectPaginationInput } from './subject-pagination.input';
+import { SubjectPaginationInput } from './pagination.input';
 import { Subject } from './subject.model';
-import { UpdateSubjectInput } from './update.input';
-import { CreateSubjectInput } from './create.input';
+import { SubjectUpdateInput } from './update.input';
+import { SubjectCreateInput } from './create.input';
 
 @Injectable()
 export class SubjectService {
@@ -13,7 +13,7 @@ export class SubjectService {
     const { where } = input;
     return {
       data: (await this.prisma.subject.findMany({ ...input, ...select })) as Subject[],
-      count: await this.prisma.subject.count({ where })
+      count: await this.prisma.subject.count({ where }),
     };
   }
 
@@ -29,19 +29,19 @@ export class SubjectService {
     return (await this.prisma.subject.findUnique({ where: { id }, ...select })) as Subject;
   }
 
-  async updateSubject(input: UpdateSubjectInput) {
+  async update(input: SubjectUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.subject.update({
       data,
-      where: { id }
+      where: { id },
     });
   }
 
-  async createSubject(data: CreateSubjectInput) {
+  async create(data: SubjectCreateInput) {
     return await this.prisma.subject.create({ data });
   }
 
-  async deleteSubject(id: string) {
+  async delete(id: string) {
     return await this.prisma.subject.delete({ where: { id } });
   }
 }

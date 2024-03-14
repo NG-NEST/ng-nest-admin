@@ -1,9 +1,9 @@
 import {
-  CreateResourceInput,
+  ResourceCreateInput,
   Authorization,
   ResourceAuth,
   ResourceService,
-  UpdateResourceInput,
+  ResourceUpdateInput,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
@@ -13,19 +13,19 @@ export class ResourceController {
 
   @Patch()
   @Authorization(ResourceAuth.ResourceUpdate)
-  async updateResource(@Body() data: UpdateResourceInput) {
-    return await this.resourceService.updateResource(data);
+  async update(@Body() data: ResourceUpdateInput) {
+    return await this.resourceService.update(data);
   }
 
   @Post()
   @Authorization(ResourceAuth.ResourceCreate)
-  async createResource(@Body() data: CreateResourceInput) {
-    return await this.resourceService.createResource(data);
+  async create(@Body() data: ResourceCreateInput) {
+    return await this.resourceService.create(data);
   }
 
   @Delete(':id')
   @Authorization(ResourceAuth.ResourceDelete)
-  async deleteResource(@Param('id') id: string) {
-    return await this.resourceService.deleteResource(id);
+  async delete(@Param('id') id: string) {
+    return await this.resourceService.delete(id);
   }
 }

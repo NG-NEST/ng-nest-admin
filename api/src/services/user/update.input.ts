@@ -5,7 +5,7 @@ import { RoleDescription } from '../role';
 import { UserDescription, UserI18n } from './user.enum';
 
 @InputType()
-export class UpdateUserInput {
+export class UserUpdateInput {
   @Field(() => ID, { description: UserDescription.Id })
   @IsNotEmpty({
     message: i18n(`${UserI18n}.${UserDescription.Id}${ValidatorDescription.IsNotEmpty}`),

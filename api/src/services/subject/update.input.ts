@@ -4,7 +4,7 @@ import { IsExist, ValidatorDescription, i18n } from '@api/core';
 import { SubjectDescription, SubjectI18n } from './subject.enum';
 
 @InputType()
-export class UpdateSubjectInput {
+export class SubjectUpdateInput {
   @Field(() => ID, { description: SubjectDescription.Id })
   @IsNotEmpty({
     message: i18n(`${SubjectI18n}.${SubjectDescription.Id}${ValidatorDescription.IsNotEmpty}`),

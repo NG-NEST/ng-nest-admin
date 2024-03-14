@@ -1,4 +1,4 @@
-export class UpdateSubjectInput {
+export class SubjectUpdateInput {
   id!: string;
   name?: string;
   code?: string;

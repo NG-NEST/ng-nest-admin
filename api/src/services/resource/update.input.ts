@@ -4,7 +4,7 @@ import { IsExist, IsNotExist, ValidatorDescription, i18n } from '@api/core';
 import { ResourceDescription, ResourceI18n } from './resource.enum';
 
 @InputType()
-export class UpdateResourceInput {
+export class ResourceUpdateInput {
   @Field(() => ID, { description: ResourceDescription.Id })
   @IsNotEmpty({
     message: i18n(`${ResourceI18n}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`),

@@ -1,8 +1,8 @@
 import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
-import { PermissionPaginationInput } from './permission-pagination.input';
-import { CreatePermissionInput } from './create.input';
-import { UpdatePermissionInput } from './update.input';
+import { PermissionPaginationInput } from './pagination.input';
+import { PermissionCreateInput } from './create.input';
+import { PermissionUpdateInput } from './update.input';
 import { Permission } from './permission.model';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class PermissionService {
     const { where } = input;
     return {
       data: (await this.prisma.permission.findMany({ ...input, ...select })) as Permission[],
-      count: await this.prisma.permission.count({ where })
+      count: await this.prisma.permission.count({ where }),
     };
   }
 
@@ -25,23 +25,23 @@ export class PermissionService {
     return (await this.prisma.permission.findUnique({ where: { id }, ...select })) as Permission;
   }
 
-  async updatePermission(input: UpdatePermissionInput) {
+  async update(input: PermissionUpdateInput) {
     const { id, ...data } = input;
     return await this.prisma.permission.update({
       data,
-      where: { id }
+      where: { id },
     });
   }
 
-  async createPermission(input: CreatePermissionInput) {
+  async create(input: PermissionCreateInput) {
     const { resourceId, ...other } = input;
     const data = { ...other, resource: { connect: { id: resourceId } } };
     return await this.prisma.permission.create({
-      data
+      data,
     });
   }
 
-  async deletePermission(id: string) {
+  async delete(id: string) {
     return await this.prisma.permission.delete({ where: { id } });
   }
 }

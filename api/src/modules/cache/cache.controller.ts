@@ -1,4 +1,4 @@
-import { Authorization, CacheAuth, CacheService, UpdateCacheInput } from '@api/services';
+import { Authorization, CacheAuth, CacheService, CacheUpdateInput } from '@api/services';
 import { Body, Controller, Delete, Patch } from '@nestjs/common';
 
 @Controller('cache')
@@ -7,19 +7,19 @@ export class CacheController {
 
   @Patch()
   @Authorization(CacheAuth.CacheUpdate)
-  async updateDictionary(@Body() data: UpdateCacheInput) {
-    return await this.cacheService.updateCache(data);
+  async update(@Body() data: CacheUpdateInput) {
+    return await this.cacheService.update(data);
   }
 
   @Delete()
   @Authorization(CacheAuth.CacheDelete)
-  async deleteCache(@Body('key') key: string) {
-    return await this.cacheService.deleteCache(key);
+  async delete(@Body('key') key: string) {
+    return await this.cacheService.delete(key);
   }
 
   @Delete('/all')
   @Authorization(CacheAuth.CacheDeleteAll)
-  async deleteAllCache() {
-    return await this.cacheService.deleteAllCache();
+  async deleteAll() {
+    return await this.cacheService.deleteAll();
   }
 }

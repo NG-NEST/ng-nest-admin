@@ -30,5 +30,12 @@ export enum SubjectResolverName {
   DeleteSubject = 'DeleteSubject',
 }
 
+export enum SubjectCache {
+  Subject = 'Subject',
+  Subjects = 'Subjects',
+  SubjectSelect = 'SubjectSelect',
+  SubjectResource = 'SubjectResource',
+}
+
 export const SubjectId = { type: () => ID, description: SubjectDescription.Id };
 export const SubjectCode = { description: SubjectDescription.Code };

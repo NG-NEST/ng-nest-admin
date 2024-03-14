@@ -849,6 +849,26 @@ input RoleWhereInput {
   name: StringFilter
 }
 
+type Schema {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """SchemaId"""
+  id: ID!
+
+  """Json"""
+  json: String!
+
+  """Name"""
+  name: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
 enum SortOrder {
   asc
   desc

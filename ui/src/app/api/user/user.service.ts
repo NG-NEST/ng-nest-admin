@@ -3,11 +3,11 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
 import { User } from './user.model';
-import { UserPaginationInput } from './user-pagination.input';
-import { CreateUserInput } from './create.input';
+import { UserPaginationInput } from './pagination.input';
+import { UserCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { UserMessage } from './user.enum';
-import { UpdateUserInput } from './update.input';
+import { UserUpdateInput } from './update.input';
 import { HttpClient } from '@angular/common/http';
 import { ResetPasswordInput } from './reset-password.input';
 
@@ -70,15 +70,15 @@ export class UserService {
       .pipe(map((x) => cloneDeep(x.data?.users!)));
   }
 
-  createUser(createUser: CreateUserInput): Observable<string> {
-    return this.http.post('/api/user', createUser).pipe(map(() => UserMessage.CreatedSuccess));
+  create(input: UserCreateInput): Observable<string> {
+    return this.http.post('/api/user', input).pipe(map(() => UserMessage.CreatedSuccess));
   }
 
-  updateUser(updateUser: UpdateUserInput): Observable<string> {
-    return this.http.put('/api/user', updateUser).pipe(map(() => UserMessage.UpdatedSuccess));
+  update(input: UserUpdateInput): Observable<string> {
+    return this.http.patch('/api/user', input).pipe(map(() => UserMessage.UpdatedSuccess));
   }
 
-  deleteUser(id: string): Observable<string> {
+  delete(id: string): Observable<string> {
     return this.http.delete(`/api/user/${id}`).pipe(map(() => UserMessage.DeletedSuccess));
   }
 

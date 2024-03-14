@@ -4,7 +4,7 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, i18n } from '@api/core';
 
 @InputType()
-export class UpdateCacheInput {
+export class CacheUpdateInput {
   @Field(() => String, { description: CacheDescription.Key })
   @IsNotEmpty({
     message: i18n(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotEmpty}`),

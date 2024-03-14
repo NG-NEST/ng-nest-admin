@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   User,
+  UserCache,
   UserId,
   UserPaginationInput,
   UserPaginationOutput,
@@ -15,6 +16,7 @@ export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Query(() => UserPaginationOutput, { description: UserResolverName.Users })
+  @CacheControl(UserCache.Users)
   async users(
     @Args() input: UserPaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -23,11 +25,13 @@ export class UserResolver {
   }
 
   @Query(() => User, { description: UserResolverName.User })
+  @CacheControl(UserCache.User)
   async user(@Args('id', UserId) id: string, @PrismaSelect() select: BaseSelect): Promise<User> {
     return await this.userService.user(id, select);
   }
 
   @Query(() => [UserSelectOutput], { description: UserResolverName.UserSelect })
+  @CacheControl(UserCache.UserSelect)
   async userSelect(@PrismaSelect('data') select: BaseSelect): Promise<UserSelectOutput[]> {
     return await this.userService.userSelect(select);
   }

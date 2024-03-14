@@ -4,7 +4,7 @@ import { IsExist, ValidatorDescription, i18n } from '@api/core';
 import { RoleDescription, RoleI18n } from './role.enum';
 
 @InputType()
-export class CreateRoleInput {
+export class RoleCreateInput {
   @Field({ description: RoleDescription.Name })
   @IsNotEmpty({
     message: i18n(`${RoleI18n}.${RoleDescription.Name}${ValidatorDescription.IsNotEmpty}`),

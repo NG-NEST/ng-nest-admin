@@ -170,7 +170,7 @@ export class UserComponent {
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
-            this.userService.deleteUser(user.id).subscribe((x) => {
+            this.userService.delete(user.id).subscribe((x) => {
               this.message.success(x);
               if (this.data.length === 1 && this.index > 1) {
                 this.index--;

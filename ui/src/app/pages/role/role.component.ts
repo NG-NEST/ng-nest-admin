@@ -163,7 +163,7 @@ export class RoleComponent {
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
-            this.roleService.deleteRole(role.id).subscribe((x) => {
+            this.roleService.delete(role.id).subscribe((x) => {
               this.message.success(x);
               if (this.data.length === 1 && this.index > 1) {
                 this.index--;

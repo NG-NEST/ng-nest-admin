@@ -255,7 +255,7 @@ export class SubjectComponent {
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
-            this.subjectService.deleteSubject(subject.id).subscribe((x) => {
+            this.subjectService.delete(subject.id).subscribe((x) => {
               this.message.success(x);
               if (this.data.length === 1 && this.index > 1) {
                 this.index--;
@@ -314,7 +314,7 @@ export class SubjectComponent {
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
-            this.resourceService.deleteResource(resource.id).subscribe((x) => {
+            this.resourceService.delete(resource.id).subscribe((x) => {
               this.message.success(x);
               if (this.resourceData.length === 1 && this.resourceIndex > 1) {
                 this.resourceIndex--;
