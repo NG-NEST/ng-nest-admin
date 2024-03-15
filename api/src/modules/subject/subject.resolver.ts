@@ -48,7 +48,7 @@ export class SubjectResolver {
   @Query(() => [SubjectResourceOutput], {
     description: SubjectResolverName.SubjectResources,
   })
-  @CacheControl(SubjectCache.SubjectResource)
+  @CacheControl(SubjectCache.SubjectResources)
   async subjectResources(
     @Args('code', SubjectCode) code: string,
     @PrismaSelect() select: BaseSelect,

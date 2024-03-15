@@ -38,6 +38,6 @@ export enum UserCache {
   UserSelect = 'UserSelect',
 }
 
-export const UserCacheClear = [UserCache.User, UserCache.Users, UserCache.UserSelect];
+export const UserCacheClear = Object.keys(UserCache);
 
 export const UserId = { type: () => ID, description: UserDescription.Id };

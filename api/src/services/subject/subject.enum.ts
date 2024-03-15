@@ -17,7 +17,7 @@ export enum SubjectDescription {
 }
 
 export enum SubjectIncludeDescription {
-  SubjectResource = 'SubjectResource',
+  SubjectResources = 'SubjectResources',
 }
 
 export enum SubjectResolverName {
@@ -34,8 +34,10 @@ export enum SubjectCache {
   Subject = 'Subject',
   Subjects = 'Subjects',
   SubjectSelect = 'SubjectSelect',
-  SubjectResource = 'SubjectResource',
+  SubjectResources = 'SubjectResources',
 }
+
+export const SubjectCacheClear = Object.keys(SubjectCache);
 
 export const SubjectId = { type: () => ID, description: SubjectDescription.Id };
 export const SubjectCode = { description: SubjectDescription.Code };

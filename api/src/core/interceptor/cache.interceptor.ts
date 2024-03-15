@@ -84,9 +84,13 @@ export class CacheClearInterceptor implements NestInterceptor {
           for (const key of keys) {
             const keyPattern = `${CACHE_PREFIX}:${key}:*`;
             const findKeys = await this.redisService.keys(`${keyPattern}`);
-            delKeys.push(...findKeys);
+            if (findKeys.length > 0) {
+              delKeys.push(...findKeys);
+            }
           }
-          await this.redisService.del(delKeys);
+          if (delKeys.length > 0) {
+            await this.redisService.del(delKeys);
+          }
         }),
       );
     } catch {

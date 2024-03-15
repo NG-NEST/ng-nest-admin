@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Language,
+  LanguageCache,
   LanguageId,
   LanguagePaginationInput,
   LanguagePaginationOutput,
@@ -17,6 +18,7 @@ export class LanguageResolver {
   @Query(() => LanguagePaginationOutput, {
     description: LanguageResolverName.Languages,
   })
+  @CacheControl(LanguageCache.Languages)
   async languages(
     @Args() input: LanguagePaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -25,6 +27,7 @@ export class LanguageResolver {
   }
 
   @Query(() => Language, { description: LanguageResolverName.Language })
+  @CacheControl(LanguageCache.Language)
   async language(
     @Args('id', LanguageId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -35,6 +38,7 @@ export class LanguageResolver {
   @Query(() => [LanguageSelectOutput], {
     description: LanguageResolverName.LanguageSelect,
   })
+  @CacheControl(LanguageCache.LanguageSelect)
   async languageSelect(@PrismaSelect('data') select: BaseSelect): Promise<LanguageSelectOutput[]> {
     return await this.languageService.languageSelect(select);
   }

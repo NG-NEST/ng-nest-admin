@@ -3,7 +3,7 @@ import { IsOptional } from 'class-validator';
 import { UserDescription } from './user.enum';
 
 @ObjectType()
-export class UserSelectOutput {
+export class UserSelect {
   @Field(() => ID, { description: UserDescription.Id })
   id: string;
 

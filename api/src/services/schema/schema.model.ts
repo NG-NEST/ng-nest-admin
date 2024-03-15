@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit } from '@api/core';
 import { SchemaDescription } from './schema.enum';
+import { GraphQLJSON } from 'graphql-scalars';
 
 @ObjectType()
 export class Schema extends BaseAudit {
@@ -13,6 +14,6 @@ export class Schema extends BaseAudit {
   @Field({ description: SchemaDescription.Code })
   code: string;
 
-  @Field({ description: SchemaDescription.Json })
-  json: string;
+  @Field(() => GraphQLJSON, { description: SchemaDescription.Json })
+  json: object;
 }

@@ -19,7 +19,7 @@ export class LanguageUpdateInput {
   @IsExist('language', {
     message: i18n(`${LanguageI18n}.${LanguageDescription.Key}${ValidatorDescription.IsExist}`),
   })
-  key: string;
+  key?: string;
 
   @Field({ description: LanguageDescription.Value, nullable: true })
   @IsOptional()

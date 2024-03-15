@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LoginInput } from './login.input';
-import { LoginOutput } from './login.output';
+import { Auth } from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
 import { User } from '../user';
+import { RefreshTokenInput } from './refresh-token.input';
+import { VerifyTokenInput } from './verify-token.input';
+import { VerifyTokenOutput } from './verify-token.output';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -37,7 +40,15 @@ export class AuthService {
       .pipe(map((x) => x.data?.userInfo));
   }
 
-  login(loginInput: LoginInput) {
-    return this.http.post<LoginOutput>('/api/auth/login', loginInput);
+  login(input: LoginInput) {
+    return this.http.post<Auth>('/api/auth/login', input);
+  }
+
+  refreshToken(input: RefreshTokenInput) {
+    return this.http.post<Auth>('/api/auth/refresh-token', input);
+  }
+
+  verifyToken(input: VerifyTokenInput) {
+    return this.http.post<VerifyTokenOutput>('/api/auth/verify-token', input);
   }
 }

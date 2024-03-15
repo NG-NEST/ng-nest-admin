@@ -30,4 +30,12 @@ export enum DictionaryResolverName {
   DeleteDictionary = 'DeleteDictionary',
 }
 
+export enum DictionaryCache {
+  Dictionary = 'Dictionary',
+  Dictionaries = 'Dictionaries',
+  DictionarySelect = 'DictionarySelect',
+}
+
+export const DictionaryCacheClear = Object.keys(DictionaryCache);
+
 export const DictionaryId = { type: () => ID, description: DictionaryDescription.Id };

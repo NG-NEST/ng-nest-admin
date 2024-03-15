@@ -25,4 +25,12 @@ export enum LanguageResolverName {
   DeleteLanguage = 'DeleteLanguage',
 }
 
+export enum LanguageCache {
+  Language = 'Language',
+  Languages = 'Languages',
+  LanguageSelect = 'LanguageSelect',
+}
+
+export const LanguageCacheClear = Object.keys(LanguageCache);
+
 export const LanguageId = { type: () => ID, description: LanguageDescription.Id };

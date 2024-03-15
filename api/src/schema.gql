@@ -102,10 +102,16 @@ type DictionaryPaginationOutput {
 }
 
 type DictionarySelectOutput {
+  """Children"""
+  children: [Dictionary!]
+
   """Code"""
   code: String!
 
-  """Sort"""
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
   description: String
 
   """DictionaryId"""
@@ -114,11 +120,17 @@ type DictionarySelectOutput {
   """Name"""
   name: String!
 
+  """Parent"""
+  parent: Dictionary
+
   """Pid"""
   pid: ID
 
   """Sort"""
-  sort: Float
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input DictionaryWhere {
@@ -163,6 +175,11 @@ input DictionaryWhereInput {
   """Sort"""
   sort: StringFilter
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type Language {
   """CreatedAt"""
@@ -446,8 +463,11 @@ type Query {
 
   """DictionarySelect. No Pagination"""
   dictionarySelect(
-    """SubjectId"""
-    subjectId: ID!
+    """Sorting rule"""
+    orderBy: [DictionaryOrderInput!]
+
+    """Query condition"""
+    where: DictionaryWhereInput
   ): [DictionarySelectOutput!]!
 
   """Language"""
@@ -558,6 +578,33 @@ type Query {
     where: RoleWhereInput
   ): RolePaginationOutput!
 
+  """Schema"""
+  schema(
+    """SchemaId"""
+    id: ID!
+  ): Schema!
+
+  """SchemaSelect. No Pagination"""
+  schemaSelect(
+    """SubjectId"""
+    subjectId: ID!
+  ): [SchemaSelectOutput!]!
+
+  """Schemas"""
+  schemas(
+    """Sorting rule"""
+    orderBy: [SchemaOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: SchemaWhereInput
+  ): SchemaPaginationOutput!
+
   """Subject"""
   subject(
     """SubjectId"""
@@ -598,7 +645,7 @@ type Query {
   userInfo: User!
 
   """UserSelect. No Pagination"""
-  userSelect: [UserSelectOutput!]!
+  userSelect: [UserSelect!]!
 
   """Users"""
   users(
@@ -860,13 +907,71 @@ type Schema {
   id: ID!
 
   """Json"""
-  json: String!
+  json: JSON!
 
   """Name"""
   name: String!
 
   """UpdatedAt"""
   updatedAt: DateTime
+}
+
+input SchemaOrderInput {
+  """Code"""
+  code: SortOrder
+
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type SchemaPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Schema!]!
+}
+
+type SchemaSelectOutput {
+  """Code"""
+  code: String!
+
+  """SchemaId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+}
+
+input SchemaWhere {
+  """Code"""
+  code: StringFilter
+
+  """Name"""
+  name: StringFilter
+}
+
+input SchemaWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [SchemaWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [SchemaWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [SchemaWhere!]
+
+  """Code"""
+  code: StringFilter
+
+  """Name"""
+  name: StringFilter
 }
 
 enum SortOrder {
@@ -1076,7 +1181,7 @@ type UserRole {
   roleId: ID
 }
 
-type UserSelectOutput {
+type UserSelect {
   """Account"""
   account: String!
 

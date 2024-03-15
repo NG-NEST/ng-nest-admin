@@ -24,9 +24,9 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
       return;
     }
     const cacheData = req.headers[HEADER_CACHE_DATA] as any;
-    const request = req.headers[HEADER_REQUEST_DATA];
+    const request = req.headers[HEADER_REQUEST_DATA] as any;
     if (cacheData) {
-      ClearCustomHeaders(req);
+      ClearCustomHeaders(req, request);
       const msg = JSON.stringify({ request, response: { ...cacheData } });
       Logs.cache(msg, { context: 'CacheInterceptor', ms: `+${(end[1] / 1000000).toFixed(0)}ms` });
       return;

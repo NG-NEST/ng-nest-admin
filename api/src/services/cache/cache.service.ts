@@ -50,7 +50,10 @@ export class CacheService {
   async deleteAll() {
     const cacheKey = `${CACHE_PREFIX}:*`;
     const keys = await this.redisService.keys(cacheKey);
-    return await this.redisService.del(keys);
+    if (keys.length > 0) {
+      return await this.redisService.del(keys);
+    }
+    return 0;
   }
 
   async update(input: CacheUpdateInput): Promise<string> {

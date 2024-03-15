@@ -1,14 +1,15 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Dictionary,
+  DictionaryCache,
   DictionaryId,
   DictionaryPaginationInput,
   DictionaryPaginationOutput,
   DictionaryResolverName,
+  DictionarySelectInput,
   DictionarySelectOutput,
   DictionaryService,
-  SubjectId,
 } from '@api/services';
 
 @Resolver(() => Dictionary)
@@ -18,6 +19,7 @@ export class DictionaryResolver {
   @Query(() => DictionaryPaginationOutput, {
     description: DictionaryResolverName.Dictionaries,
   })
+  @CacheControl(DictionaryCache.Dictionaries)
   async dictionaries(
     @Args() input: DictionaryPaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -26,6 +28,7 @@ export class DictionaryResolver {
   }
 
   @Query(() => Dictionary, { description: DictionaryResolverName.Dictionary })
+  @CacheControl(DictionaryCache.Dictionary)
   async dictionary(
     @Args('id', DictionaryId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -36,10 +39,11 @@ export class DictionaryResolver {
   @Query(() => [DictionarySelectOutput], {
     description: DictionaryResolverName.DictionarySelect,
   })
+  @CacheControl(DictionaryCache.DictionarySelect)
   async dictionarySelect(
-    @Args('subjectId', SubjectId) subjectId: string,
+    @Args() input: DictionarySelectInput,
     @PrismaSelect() select: BaseSelect,
   ): Promise<DictionarySelectOutput[]> {
-    return await this.dictionaryService.dictionarySelect(subjectId, select);
+    return await this.dictionaryService.dictionarySelect(input, select);
   }
 }

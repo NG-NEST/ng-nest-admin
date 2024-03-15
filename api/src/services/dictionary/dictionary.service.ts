@@ -4,6 +4,7 @@ import { DictionaryPaginationInput } from './pagination.input';
 import { Dictionary } from './dictionary.model';
 import { DictionaryUpdateInput } from './update.input';
 import { DictionaryCreateInput } from './create.input';
+import { DictionarySelectInput } from './select.input';
 
 @Injectable()
 export class DictionaryService {
@@ -17,8 +18,8 @@ export class DictionaryService {
     };
   }
 
-  async dictionarySelect(id: string, select: BaseSelect) {
-    return await this.prisma.dictionary.findMany({ where: { id }, ...select });
+  async dictionarySelect(input: DictionarySelectInput, select: BaseSelect) {
+    return await this.prisma.dictionary.findMany({ ...input, ...select });
   }
 
   async dictionary(id: string, select: BaseSelect) {

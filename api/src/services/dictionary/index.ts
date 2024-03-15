@@ -6,5 +6,6 @@ export * from './order';
 export * from './pagination.input';
 export * from './where';
 export * from './dictionary.output';
+export * from './select.input';
 export * from './select.output';
 export * from './dictionary.service';

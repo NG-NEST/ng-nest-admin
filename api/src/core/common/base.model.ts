@@ -3,8 +3,8 @@ import { BaseDescription } from './base.enum';
 
 @ObjectType({ isAbstract: true })
 export class BaseAudit {
-  @Field(() => Date, { description: BaseDescription.CreatedAt, nullable: true })
+  @Field({ description: BaseDescription.CreatedAt, nullable: true })
   createdAt?: Date;
-  @Field(() => Date, { description: BaseDescription.UpdatedAt, nullable: true })
+  @Field({ description: BaseDescription.UpdatedAt, nullable: true })
   updatedAt?: Date;
 }

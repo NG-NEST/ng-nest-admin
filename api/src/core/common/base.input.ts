@@ -199,6 +199,24 @@ export function BasePaginationInput<Where, OrderBy, Include>(
   return Pagination;
 }
 
+export class SelectWhereOrder<Where, OrderBy> {
+  where?: Where;
+  orderBy?: OrderBy[];
+}
+
+export function BaseSelectInput<Where, OrderBy>(TWhere?: Type<Where>, TOrderBy?: Type<OrderBy>) {
+  @ArgsType()
+  class SelectWhereOrder {
+    @Field(() => TWhere, { description: PaginationDescription.Where, nullable: true })
+    @IsOptional()
+    where?: Where;
+    @Field(() => [TOrderBy], { description: PaginationDescription.OrderBy, nullable: true })
+    @IsOptional()
+    orderBy?: OrderBy[];
+  }
+  return SelectWhereOrder;
+}
+
 export function BaseCreateWithoutInput<CreateWithout>(TCreateWithout: Type<CreateWithout>) {
   @InputType()
   class Input {

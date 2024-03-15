@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Schema,
+  SchemaCache,
   SchemaId,
   SchemaPaginationInput,
   SchemaPaginationOutput,
@@ -18,6 +19,7 @@ export class SchemaResolver {
   @Query(() => SchemaPaginationOutput, {
     description: SchemaResolverName.Schemas,
   })
+  @CacheControl(SchemaCache.Schemas)
   async schemas(
     @Args() input: SchemaPaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -26,6 +28,7 @@ export class SchemaResolver {
   }
 
   @Query(() => Schema, { description: SchemaResolverName.Schema })
+  @CacheControl(SchemaCache.Schema)
   async schema(
     @Args('id', SchemaId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -36,6 +39,7 @@ export class SchemaResolver {
   @Query(() => [SchemaSelectOutput], {
     description: SchemaResolverName.SchemaSelect,
   })
+  @CacheControl(SchemaCache.SchemaSelect)
   async schemaSelect(
     @Args('subjectId', SubjectId) subjectId: string,
     @PrismaSelect() select: BaseSelect,

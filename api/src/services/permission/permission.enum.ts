@@ -25,11 +25,18 @@ export enum PermissionResolverName {
   Permission = 'Permission',
   Permissions = 'Permissions',
   PermissionSelect = 'PermissionSelect. No Pagination',
-  PermissionResources = 'PermissionResources. No Pagination',
   CreatePermission = 'CreatePermission',
   UpdatePermission = 'UpdatePermission',
   DeletePermission = 'DeletePermission',
 }
+
+export enum PermissionCache {
+  Permission = 'Permission',
+  Permissions = 'Permissions',
+  PermissionSelect = 'PermissionSelect',
+}
+
+export const PermissionCacheClear = Object.keys(PermissionCache);
 
 export const PermissionId = { type: () => ID, description: PermissionDescription.Id };
 export const PermissionCode = { description: PermissionDescription.Code };

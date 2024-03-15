@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Permission,
+  PermissionCache,
   PermissionId,
   PermissionPaginationInput,
   PermissionPaginationOutput,
@@ -17,6 +18,7 @@ export class PermissionResolver {
   @Query(() => PermissionPaginationOutput, {
     description: PermissionResolverName.Permissions,
   })
+  @CacheControl(PermissionCache.Permissions)
   async permissions(
     @Args() input: PermissionPaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -25,6 +27,7 @@ export class PermissionResolver {
   }
 
   @Query(() => Permission, { description: PermissionResolverName.Permission })
+  @CacheControl(PermissionCache.Permission)
   async permission(
     @Args('id', PermissionId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -35,6 +38,7 @@ export class PermissionResolver {
   @Query(() => [PermissionSelectOutput], {
     description: PermissionResolverName.PermissionSelect,
   })
+  @CacheControl(PermissionCache.PermissionSelect)
   async permissionSelect(
     @PrismaSelect('data') select: BaseSelect,
   ): Promise<PermissionSelectOutput[]> {

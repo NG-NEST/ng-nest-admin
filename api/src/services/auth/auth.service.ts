@@ -8,6 +8,7 @@ import { Auth } from './auth.model';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { VerifyTokenInput } from './verify-token.input';
 import { I18nTranslations } from 'src/generated/i18n.generated';
+import { VerifyTokenOutput } from './verify-token.output';
 
 @Injectable()
 export class AuthService {
@@ -84,7 +85,7 @@ export class AuthService {
   }
 
   async verifyToken(input: VerifyTokenInput) {
-    const result: { accessToken?: boolean; refreshToken?: boolean } = {};
+    const result: VerifyTokenOutput = {};
     if (input.accessToken) {
       try {
         await this.jwtService.verifyAsync(input.accessToken, {

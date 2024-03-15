@@ -30,4 +30,12 @@ export enum ResourceResolverName {
   DeleteResource = 'DeleteResource',
 }
 
+export enum ResourceCache {
+  Resource = 'Resource',
+  Resources = 'Resources',
+  ResourceSelect = 'ResourceSelect',
+}
+
+export const ResourceCacheClear = Object.keys(ResourceCache);
+
 export const ResourceId = { type: () => ID, description: ResourceDescription.Id };

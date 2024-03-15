@@ -25,4 +25,12 @@ export enum SchemaResolverName {
   DeleteSchema = 'DeleteSchema',
 }
 
+export enum SchemaCache {
+  Schema = 'Schema',
+  Schemas = 'Schemas',
+  SchemaSelect = 'SchemaSelect',
+}
+
+export const SchemaCacheClear = Object.keys(SchemaCache);
+
 export const SchemaId = { type: () => ID, description: SchemaDescription.Id };

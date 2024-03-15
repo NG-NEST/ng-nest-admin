@@ -16,9 +16,11 @@ export function StatusCode(str: string) {
   return str;
 }
 
-export function ClearCustomHeaders(req: Request) {
-  delete req.headers[HEADER_REQUEST_DATA];
-  delete req.headers[HEADER_RESPONSE_DATA];
-  delete req.headers[HEADER_CACHE_DATA];
-  delete req.headers[HEADER_EXCEPTION_DATA];
+export function ClearCustomHeaders(...requests: Request[]) {
+  for (let req of requests) {
+    delete req.headers[HEADER_REQUEST_DATA];
+    delete req.headers[HEADER_RESPONSE_DATA];
+    delete req.headers[HEADER_CACHE_DATA];
+    delete req.headers[HEADER_EXCEPTION_DATA];
+  }
 }

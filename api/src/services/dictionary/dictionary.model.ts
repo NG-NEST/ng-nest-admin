@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit } from '@api/core';
 import { IsOptional } from 'class-validator';
 import { DictionaryDescription } from './dictionary.enum';
@@ -20,9 +20,11 @@ export class Dictionary extends BaseAudit {
   @IsOptional()
   children?: Dictionary[];
 
+  @Directive('@upper')
   @Field({ description: DictionaryDescription.Name })
   name: string;
 
+  @Directive('@upper')
   @Field({ description: DictionaryDescription.Code })
   code: string;
 

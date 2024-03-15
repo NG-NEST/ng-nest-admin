@@ -1,7 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BaseSelect, PrismaSelect } from '@api/core';
+import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Resource,
+  ResourceCache,
   ResourceId,
   ResourcePaginationInput,
   ResourcePaginationOutput,
@@ -18,6 +19,7 @@ export class ResourceResolver {
   @Query(() => ResourcePaginationOutput, {
     description: ResourceResolverName.Resources,
   })
+  @CacheControl(ResourceCache.Resources)
   async resources(
     @Args() input: ResourcePaginationInput,
     @PrismaSelect('data') select: BaseSelect,
@@ -26,6 +28,7 @@ export class ResourceResolver {
   }
 
   @Query(() => Resource, { description: ResourceResolverName.Resource })
+  @CacheControl(ResourceCache.Resource)
   async resource(
     @Args('id', ResourceId) id: string,
     @PrismaSelect() select: BaseSelect,
@@ -36,6 +39,7 @@ export class ResourceResolver {
   @Query(() => [ResourceSelectOutput], {
     description: ResourceResolverName.ResourceSelect,
   })
+  @CacheControl(ResourceCache.ResourceSelect)
   async resourceSelect(
     @Args('subjectId', SubjectId) subjectId: string,
     @PrismaSelect() select: BaseSelect,
