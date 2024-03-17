@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -24,13 +24,25 @@ export class LoginComponent {
   fb = inject(FormBuilder);
   router = inject(Router);
   loginLoading = signal(false);
+  codekey!: string;
+
+  @ViewChild('svgEle', { static: true }) svgEle!: ElementRef<HTMLDivElement>;
 
   form!: FormGroup;
 
   ngOnInit() {
     this.form = this.fb.group({
       account: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      code: ['', [Validators.required]]
+    });
+    this.getCaptcha();
+  }
+
+  getCaptcha() {
+    this.codekey = Math.random().toString(36).slice(2);
+    this.authService.captcha(this.codekey).subscribe((x) => {
+      this.svgEle.nativeElement.innerHTML = x;
     });
   }
 
@@ -46,16 +58,21 @@ export class LoginComponent {
     }
     this.loginLoading.set(true);
     this.authService
-      .login(this.form.value)
+      .login(this.form.value, { codekey: this.codekey })
       .pipe(
         delay(1000),
         finalize(() => this.loginLoading.set(false))
       )
-      .subscribe((x) => {
-        const { accessToken, refreshToken } = x;
-        this.auth.accessToken.set(accessToken);
-        this.auth.refreshToken.set(refreshToken);
-        this.router.navigateByUrl('/index/overview');
+      .subscribe({
+        next: (x) => {
+          const { accessToken, refreshToken } = x;
+          this.auth.accessToken.set(accessToken);
+          this.auth.refreshToken.set(refreshToken);
+          this.router.navigateByUrl('/index/overview');
+        },
+        error: () => {
+          this.getCaptcha();
+        }
       });
   }
 }

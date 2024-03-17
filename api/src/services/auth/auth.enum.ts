@@ -15,6 +15,7 @@ export enum AuthUnauthorized {
 export enum LoginDescription {
   Account = 'Account',
   Password = 'Password',
+  Code = 'Code',
 }
 
 export enum AuthResolverName {

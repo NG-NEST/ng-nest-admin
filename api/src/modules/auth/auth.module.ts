@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthResolver } from './auth.resolver';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
-import { AuthService, JwtGuard, AuthGuard, jwtConstants } from '@api/services';
+import { AuthService, JwtGuard, AuthGuard, JWT_CONSTANTS } from '@api/services';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -10,9 +10,9 @@ import { APP_GUARD } from '@nestjs/core';
   imports: [
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
+      secret: JWT_CONSTANTS.secret,
       signOptions: {
-        expiresIn: jwtConstants.expiresIn,
+        expiresIn: JWT_CONSTANTS.expiresIn,
       },
     }),
   ],

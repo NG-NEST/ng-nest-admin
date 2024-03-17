@@ -19,14 +19,14 @@
         ></x-input>
       </div>
       <div class="item">
-        <x-button
-          width="100%"
-          attrType="submit"
-          type="primary"
-          size="large"
-          [loading]="loginLoading()"
-          >{{ loginLoading() ? '' : '登 录' }}</x-button
-        >
+        <label>验证码：</label>
+        <x-input size="large" formControlName="code" placeholder="请输入验证码" required></x-input>
+        <div class="captcha" (click)="getCaptcha()" #svgEle></div>
+      </div>
+      <div class="item">
+        <x-button attrType="submit" type="primary" size="large" [loading]="loginLoading()">{{
+          loginLoading() ? '' : '登 录'
+        }}</x-button>
       </div>
     </div>
   </form>

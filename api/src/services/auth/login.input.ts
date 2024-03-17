@@ -22,4 +22,13 @@ export class LoginInput {
     message: i18n(`${AuthI18n}.${LoginDescription.Password}${ValidatorDescription.IsString}`),
   })
   password: string;
+
+  @Field({ description: LoginDescription.Code })
+  @IsNotEmpty({
+    message: i18n(`${AuthI18n}.${LoginDescription.Code}${ValidatorDescription.IsNotEmpty}`),
+  })
+  @IsString({
+    message: i18n(`${AuthI18n}.${LoginDescription.Code}${ValidatorDescription.IsString}`),
+  })
+  code: string;
 }

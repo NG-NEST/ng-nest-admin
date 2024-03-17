@@ -40,8 +40,12 @@ export class AuthService {
       .pipe(map((x) => x.data?.userInfo));
   }
 
-  login(input: LoginInput) {
-    return this.http.post<Auth>('/api/auth/login', input);
+  captcha(codekey: string) {
+    return this.http.get('/api/auth/captcha', { headers: { codekey }, responseType: 'text' });
+  }
+
+  login(input: LoginInput, headers: { [key: string]: any }) {
+    return this.http.post<Auth>('/api/auth/login', input, { headers });
   }
 
   refreshToken(input: RefreshTokenInput) {

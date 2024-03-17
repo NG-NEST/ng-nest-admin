@@ -1,7 +1,7 @@
 import { BaseSelect, EncryptService, PrismaService } from '@api/core';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { JWT_CONSTANTS } from './constants';
 import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
@@ -71,7 +71,7 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     try {
       const { id } = this.jwtService.verify(refreshToken, {
-        secret: jwtConstants.refreshSecret,
+        secret: JWT_CONSTANTS.refreshSecret,
       });
 
       return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
@@ -89,7 +89,7 @@ export class AuthService {
     if (input.accessToken) {
       try {
         await this.jwtService.verifyAsync(input.accessToken, {
-          secret: jwtConstants.secret,
+          secret: JWT_CONSTANTS.secret,
         });
         result.accessToken = true;
       } catch (e) {
@@ -99,7 +99,7 @@ export class AuthService {
     if (input.refreshToken) {
       try {
         await this.jwtService.verifyAsync(input.refreshToken, {
-          secret: jwtConstants.refreshSecret,
+          secret: JWT_CONSTANTS.refreshSecret,
         });
         result.refreshToken = true;
       } catch (e) {
@@ -113,12 +113,12 @@ export class AuthService {
   private createTokens(payload: { id: string; permissions?: string[]; roles?: string[] }): Auth {
     return {
       accessToken: this.jwtService.sign(payload, {
-        secret: jwtConstants.secret,
-        expiresIn: jwtConstants.expiresIn,
+        secret: JWT_CONSTANTS.secret,
+        expiresIn: JWT_CONSTANTS.expiresIn,
       }),
       refreshToken: this.jwtService.sign(payload, {
-        secret: jwtConstants.refreshSecret,
-        expiresIn: jwtConstants.refreshExpiresIn,
+        secret: JWT_CONSTANTS.refreshSecret,
+        expiresIn: JWT_CONSTANTS.refreshExpiresIn,
       }),
     };
   }
