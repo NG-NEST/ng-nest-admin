@@ -10,6 +10,8 @@ import { UserMessage } from './user.enum';
 import { UserUpdateInput } from './update.input';
 import { HttpClient } from '@angular/common/http';
 import { ResetPasswordInput } from './reset-password.input';
+import { UserSelectInput } from './select.input';
+import { UserSelectOutput } from './select.output';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -68,6 +70,23 @@ export class UserService {
         `
       })
       .pipe(map((x) => cloneDeep(x.data?.users!)));
+  }
+
+  userSelect(input: UserSelectInput): Observable<UserSelectOutput[]> {
+    return this.apollo
+      .query<{ userSelect: UserSelectOutput[] }>({
+        variables: input,
+        query: gql`
+          query UserSelect($where: UserWhereInput, $orderBy: [UserOrderInput!]) {
+            userSelect(where: $where, orderBy: $orderBy) {
+              id
+              name
+              account
+            }
+          }
+        `
+      })
+      .pipe(map((x) => cloneDeep(x.data?.userSelect!)));
   }
 
   create(input: UserCreateInput): Observable<string> {

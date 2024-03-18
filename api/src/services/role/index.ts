@@ -6,6 +6,7 @@ export * from './order';
 export * from './pagination.input';
 export * from './where';
 export * from './role.output';
+export * from './select.input';
 export * from './select.output';
 export * from './permission.output';
 export * from './role.service';

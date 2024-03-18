@@ -1,7 +1,4 @@
-export class UserSelect {
-  id!: string;
-  name!: string;
-  account!: string;
-  email!: string;
-  phone?: string;
-}
+import { User } from "./user.model";
+
+export class UserSelectOutput extends User {}
+

@@ -116,6 +116,19 @@ export function BasePaginationInput<Where, OrderBy, Include>(
   }
 }
 
+export class SelectWhereOrder<Where, OrderBy> {
+  where?: Where;
+  orderBy?: OrderBy[];
+}
+
+export function BaseSelectInput<Where, OrderBy>(_TWhere: Type<Where>, _TOrderBy: Type<OrderBy>) {
+  class SelectWhereOrder {
+    where?: Where;
+    orderBy?: OrderBy[];
+  }
+  return SelectWhereOrder;
+}
+
 export class BaseCreateWithoutInput<CreateWithout> {
   create?: CreateWithout[];
 }

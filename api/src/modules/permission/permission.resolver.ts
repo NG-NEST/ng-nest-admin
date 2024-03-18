@@ -7,6 +7,7 @@ import {
   PermissionPaginationInput,
   PermissionPaginationOutput,
   PermissionResolverName,
+  PermissionSelectInput,
   PermissionSelectOutput,
   PermissionService,
 } from '@api/services';
@@ -40,8 +41,9 @@ export class PermissionResolver {
   })
   @CacheControl(PermissionCache.PermissionSelect)
   async permissionSelect(
+    @Args() input: PermissionSelectInput,
     @PrismaSelect('data') select: BaseSelect,
   ): Promise<PermissionSelectOutput[]> {
-    return await this.permissionService.permissionSelect(select);
+    return await this.permissionService.permissionSelect(input, select);
   }
 }

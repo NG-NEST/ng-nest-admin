@@ -13,7 +13,7 @@ export class LogsController {
   }
 
   @Get(':type/:name')
-  downloadLogFile(@Param('type') type: LogsType, @Param('name') name: string) {
+  downloadFile(@Param('type') type: LogsType, @Param('name') name: string) {
     return this.logsService.logStreamableFile(type, name);
   }
 }

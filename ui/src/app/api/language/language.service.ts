@@ -8,8 +8,9 @@ import { LanguageCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { LanguageMessage } from './language.enum';
 import { LanguageUpdateInput } from './update.input';
-import { LanguageSelect } from './select.output';
+import { LanguageSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
+import { LanguageSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
@@ -64,13 +65,13 @@ export class LanguageService {
       .pipe(map((x) => cloneDeep(x.data?.languages!)));
   }
 
-  languageSelect(subjectId: string): Observable<LanguageSelect[]> {
+  languageSelect(input: LanguageSelectInput): Observable<LanguageSelectOutput[]> {
     return this.apollo
-      .query<{ languageSelect: LanguageSelect[] }>({
-        variables: { subjectId },
+      .query<{ languageSelect: LanguageSelectOutput[] }>({
+        variables: input,
         query: gql`
-          query LanguageSelect($subjectId: ID!) {
-            languageSelect(subjectId: $subjectId) {
+          query LanguageSelect($where: LanguageWhereInput, $orderBy: [LanguageOrderInput!]) {
+            languageSelect(where: $where, orderBy: $orderBy) {
               id
               key
               value

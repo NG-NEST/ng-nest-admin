@@ -14,6 +14,8 @@ export type I18nTranslations = {
         "PasswordIsString": string;
         "CodeIsNotEmpty": string;
         "CodeIsString": string;
+        "CodeVerificationFailed": string;
+        "IdentificationIsNotEmpty": string;
         "AccountOrPasswordVerificationFailed": string;
         "TokenFailureOrValidationFailure": string;
         "AccessTokenIsNotEmpty": string;

@@ -4,6 +4,7 @@ import { PermissionPaginationInput } from './pagination.input';
 import { PermissionCreateInput } from './create.input';
 import { PermissionUpdateInput } from './update.input';
 import { Permission } from './permission.model';
+import { PermissionSelectInput } from './select.input';
 
 @Injectable()
 export class PermissionService {
@@ -17,8 +18,8 @@ export class PermissionService {
     };
   }
 
-  async permissionSelect(select: BaseSelect) {
-    return await this.prisma.permission.findMany({ ...select });
+  async permissionSelect(input: PermissionSelectInput, select: BaseSelect) {
+    return await this.prisma.permission.findMany({ ...input, ...select });
   }
 
   async permission(id: string, select: BaseSelect) {

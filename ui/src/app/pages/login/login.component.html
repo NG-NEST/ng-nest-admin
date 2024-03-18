@@ -5,27 +5,37 @@
         <div class="logo"></div>
       </div>
       <div class="item">
-        <label>账号：</label>
-        <x-input size="large" formControlName="account" placeholder="请输入账号" required></x-input>
-      </div>
-      <div class="item">
-        <label>密码：</label>
+        <label>{{ 'login.account' | xI18n }}</label>
         <x-input
           size="large"
-          formControlName="password"
-          type="password"
-          placeholder="请输入密码"
+          formControlName="account"
+          [placeholder]="'login.please-input-account' | xI18n"
           required
         ></x-input>
       </div>
       <div class="item">
-        <label>验证码：</label>
-        <x-input size="large" formControlName="code" placeholder="请输入验证码" required></x-input>
+        <label>{{ 'login.password' | xI18n }}</label>
+        <x-input
+          size="large"
+          formControlName="password"
+          type="password"
+          [placeholder]="'login.please-input-password' | xI18n"
+          required
+        ></x-input>
+      </div>
+      <div class="item">
+        <label>{{ 'login.code' | xI18n }}</label>
+        <x-input
+          size="large"
+          formControlName="code"
+          [placeholder]="'login.please-input-code' | xI18n"
+          required
+        ></x-input>
         <div class="captcha" (click)="getCaptcha()" #svgEle></div>
       </div>
       <div class="item">
         <x-button attrType="submit" type="primary" size="large" [loading]="loginLoading()">{{
-          loginLoading() ? '' : '登 录'
+          loginLoading() ? '' : ('login.login' | xI18n)
         }}</x-button>
       </div>
     </div>

@@ -4,25 +4,27 @@ import { SchemaPaginationInput } from './pagination.input';
 import { Schema } from './schema.model';
 import { SchemaUpdateInput } from './update.input';
 import { SchemaCreateInput } from './create.input';
+import { SchemaSelectInput } from './select.input';
+import { SchemaPaginationOutput } from './schema.output';
 
 @Injectable()
 export class SchemaService {
   constructor(private prisma: PrismaService) {}
 
-  async schemas(input: SchemaPaginationInput, select: BaseSelect) {
+  async schemas(input: SchemaPaginationInput, select: BaseSelect): Promise<SchemaPaginationOutput> {
     const { where } = input;
     return {
-      data: (await this.prisma.schema.findMany({ ...input, ...select })) as Schema[],
+      data: await this.prisma.schema.findMany({ ...input, ...select }),
       count: await this.prisma.schema.count({ where }),
     };
   }
 
-  async schemaSelect(id: string, select: BaseSelect) {
-    return await this.prisma.schema.findMany({ where: { id }, ...select });
+  async schemaSelect(input: SchemaSelectInput, select: BaseSelect): Promise<Schema[]> {
+    return await this.prisma.schema.findMany({ ...input, ...select });
   }
 
-  async schema(id: string, select: BaseSelect) {
-    return (await this.prisma.schema.findUnique({ where: { id }, ...select })) as Schema;
+  async schema(id: string, select: BaseSelect): Promise<Schema> {
+    return await this.prisma.schema.findUnique({ where: { id }, ...select });
   }
 
   async update(input: SchemaUpdateInput) {

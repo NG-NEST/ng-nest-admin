@@ -9,6 +9,7 @@ import {
   SubjectPaginationOutput,
   SubjectResolverName,
   SubjectResourceOutput,
+  SubjectSelectInput,
   SubjectSelectOutput,
   SubjectService,
 } from '@api/services';
@@ -41,8 +42,11 @@ export class SubjectResolver {
     description: SubjectResolverName.SubjectSelect,
   })
   @CacheControl(SubjectCache.SubjectSelect)
-  async subjectSelect(@PrismaSelect('data') select: BaseSelect): Promise<SubjectSelectOutput[]> {
-    return await this.subjectService.subjectSelect(select);
+  async subjectSelect(
+    @Args() input: SubjectSelectInput,
+    @PrismaSelect('data') select: BaseSelect,
+  ): Promise<SubjectSelectOutput[]> {
+    return await this.subjectService.subjectSelect(input, select);
   }
 
   @Query(() => [SubjectResourceOutput], {

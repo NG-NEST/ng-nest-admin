@@ -7,6 +7,7 @@ import {
   LanguagePaginationInput,
   LanguagePaginationOutput,
   LanguageResolverName,
+  LanguageSelectInput,
   LanguageSelectOutput,
   LanguageService,
 } from '@api/services';
@@ -39,7 +40,10 @@ export class LanguageResolver {
     description: LanguageResolverName.LanguageSelect,
   })
   @CacheControl(LanguageCache.LanguageSelect)
-  async languageSelect(@PrismaSelect('data') select: BaseSelect): Promise<LanguageSelectOutput[]> {
-    return await this.languageService.languageSelect(select);
+  async languageSelect(
+    @Args() input: LanguageSelectInput,
+    @PrismaSelect('data') select: BaseSelect,
+  ): Promise<LanguageSelectOutput[]> {
+    return await this.languageService.languageSelect(input, select);
   }
 }

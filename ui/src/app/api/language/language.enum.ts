@@ -14,7 +14,7 @@ export enum LanguageDescription {
 }
 
 export enum LanguageMessage {
-  CreatedSuccess = '新增本地化语言成功！',
-  UpdatedSuccess = '更新本地化语言成功！',
-  DeletedSuccess = '删除本地化语言成功！'
+  CreatedSuccess = '新增本地化语言成功',
+  UpdatedSuccess = '更新本地化语言成功',
+  DeletedSuccess = '删除本地化语言成功'
 }

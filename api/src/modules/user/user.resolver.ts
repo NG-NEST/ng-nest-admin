@@ -7,7 +7,8 @@ import {
   UserPaginationInput,
   UserPaginationOutput,
   UserResolverName,
-  UserSelect,
+  UserSelectInput,
+  UserSelectOutput,
   UserService,
 } from '@api/services';
 
@@ -30,9 +31,12 @@ export class UserResolver {
     return await this.userService.user(id, select);
   }
 
-  @Query(() => [UserSelect], { description: UserResolverName.UserSelect })
+  @Query(() => [UserSelectOutput], { description: UserResolverName.UserSelect })
   @CacheControl(UserCache.UserSelect)
-  async userSelect(@PrismaSelect('data') select: BaseSelect): Promise<UserSelect[]> {
-    return await this.userService.userSelect(select);
+  async userSelect(
+    @Args() input: UserSelectInput,
+    @PrismaSelect('data') select: BaseSelect,
+  ): Promise<UserSelectOutput[]> {
+    return await this.userService.userSelect(input, select);
   }
 }

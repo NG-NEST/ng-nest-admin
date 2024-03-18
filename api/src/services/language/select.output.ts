@@ -1,14 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { LanguageDescription } from './language.enum';
+import { ObjectType } from '@nestjs/graphql';
+import { Language } from './language.model';
 
 @ObjectType()
-export class LanguageSelectOutput {
-  @Field(() => ID, { description: LanguageDescription.Id })
-  id: string;
-
-  @Field({ description: LanguageDescription.Key })
-  key: string;
-
-  @Field({ description: LanguageDescription.Value })
-  value: string;
-}
+export class LanguageSelectOutput extends Language {}

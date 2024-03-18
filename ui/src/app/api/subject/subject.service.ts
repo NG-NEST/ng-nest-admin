@@ -8,8 +8,9 @@ import { SubjectCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { SubjectMessage } from './subject.enum';
 import { SubjectUpdateInput } from './update.input';
-import { SubjectSelect } from './select.output';
+import { SubjectSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
+import { SubjectSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
@@ -61,12 +62,13 @@ export class SubjectService {
       .pipe(map((x) => cloneDeep(x.data?.subjects!)));
   }
 
-  subjectSelect(): Observable<SubjectSelect[]> {
+  subjectSelect(input: SubjectSelectInput): Observable<SubjectSelectOutput[]> {
     return this.apollo
-      .query<{ subjectSelect: SubjectSelect[] }>({
+      .query<{ subjectSelect: SubjectSelectOutput[] }>({
+        variables: input,
         query: gql`
-          query SubjectSelect {
-            subjectSelect {
+          query SubjectSelect($where: SubjectWhereInput, $orderBy: [SubjectOrderInput!]) {
+            subjectSelect(where: $where, orderBy: $orderBy) {
               id
               name
               code

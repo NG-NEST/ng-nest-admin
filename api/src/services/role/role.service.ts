@@ -1,35 +1,26 @@
-import { BaseSelect, PrismaService, RedisService } from '@api/core';
+import { BaseSelect, PrismaService } from '@api/core';
 import { Injectable } from '@nestjs/common';
 import { RolePaginationInput } from './pagination.input';
 import { Role } from './role.model';
 import { RoleUpdateInput } from './update.input';
 import { RoleCreateInput } from './create.input';
+import { RoleSelectInput } from './select.input';
+import { RolePaginationOutput } from './role.output';
 
 @Injectable()
 export class RoleService {
-  constructor(
-    private prisma: PrismaService,
-    private redis: RedisService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  async roles(input: RolePaginationInput, select: BaseSelect) {
+  async roles(input: RolePaginationInput, select: BaseSelect): Promise<RolePaginationOutput> {
     const { where } = input;
     return {
-      data: (await this.prisma.role.findMany({ ...input, ...select })) as Role[],
+      data: await this.prisma.role.findMany({ ...input, ...select }),
       count: await this.prisma.role.count({ where }),
     };
   }
 
-  async roleSelect(select: BaseSelect) {
-    const key = 'select-roles';
-    const dt = JSON.parse(await this.redis.get(key)) as Role[];
-    if (dt) {
-      return dt;
-    }
-    const data = await this.prisma.role.findMany({ ...select });
-    await this.redis.set(key, JSON.stringify(data), 'EX', 5);
-
-    return data;
+  async roleSelect(input: RoleSelectInput, select: BaseSelect): Promise<Role[]> {
+    return await this.prisma.role.findMany({ ...input, ...select });
   }
 
   async rolePermissions(id: string, select: BaseSelect) {

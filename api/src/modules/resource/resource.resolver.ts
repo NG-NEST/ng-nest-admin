@@ -7,9 +7,9 @@ import {
   ResourcePaginationInput,
   ResourcePaginationOutput,
   ResourceResolverName,
+  ResourceSelectInput,
   ResourceSelectOutput,
   ResourceService,
-  SubjectId,
 } from '@api/services';
 
 @Resolver(() => Resource)
@@ -41,9 +41,9 @@ export class ResourceResolver {
   })
   @CacheControl(ResourceCache.ResourceSelect)
   async resourceSelect(
-    @Args('subjectId', SubjectId) subjectId: string,
+    @Args() input: ResourceSelectInput,
     @PrismaSelect() select: BaseSelect,
   ): Promise<ResourceSelectOutput[]> {
-    return await this.resourceService.resourceSelect(subjectId, select);
+    return await this.resourceService.resourceSelect(input, select);
   }
 }

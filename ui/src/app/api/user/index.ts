@@ -4,6 +4,8 @@ export * from './reset-password.input';
 export * from './pagination.input';
 export * from './where';
 export * from './order';
+export * from './select.input';
+export * from './select.output';
 export * from './user.enum';
 export * from './user.model';
 export * from './user.output';

@@ -5,6 +5,8 @@ import { User } from './user.model';
 import { UserUpdateInput } from './update.input';
 import { UserCreateInput } from './create.input';
 import { UserResetPasswordInput } from './reset-password.input';
+import { UserSelectInput } from './select.input';
+import { UserPaginationOutput } from './user.output';
 
 @Injectable()
 export class UserService {
@@ -13,20 +15,20 @@ export class UserService {
     private encrypt: EncryptService,
   ) {}
 
-  async users(input: UserPaginationInput, select: BaseSelect) {
+  async users(input: UserPaginationInput, select: BaseSelect): Promise<UserPaginationOutput> {
     const { where } = input;
     return {
-      data: (await this.prisma.user.findMany({ ...input, ...select })) as User[],
+      data: await this.prisma.user.findMany({ ...input, ...select }),
       count: await this.prisma.user.count({ where }),
     };
   }
 
-  async userSelect(select: BaseSelect) {
-    return await this.prisma.user.findMany({ ...select });
+  async userSelect(input: UserSelectInput, select: BaseSelect): Promise<User[]> {
+    return await this.prisma.user.findMany({ ...input, ...select });
   }
 
-  async user(id: string, select: BaseSelect) {
-    return (await this.prisma.user.findUnique({ where: { id }, ...select })) as User;
+  async user(id: string, select: BaseSelect): Promise<User> {
+    return await this.prisma.user.findUnique({ where: { id }, ...select });
   }
 
   async update(input: UserUpdateInput) {

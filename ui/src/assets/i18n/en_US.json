@@ -1,0 +1,12 @@
+{
+  "locale": "en_US",
+  "login": {
+    "account": "Account",
+    "password": "Password",
+    "code": "Code",
+    "please-input-username": "Please input username",
+    "please-input-password": "Please enter the password",
+    "please-input-code": "Please enter verification code",
+    "login": "Login"
+  }
+}

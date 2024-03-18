@@ -227,14 +227,23 @@ type LanguagePaginationOutput {
 }
 
 type LanguageSelectOutput {
+  """CreatedAt"""
+  createdAt: DateTime
+
   """LanguageId"""
   id: ID!
 
   """Key"""
   key: String!
 
+  """LanguageCode"""
+  languageCode: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
   """Value"""
-  value: String!
+  value: String
 }
 
 input LanguageWhere {
@@ -380,7 +389,10 @@ type PermissionSelectOutput {
   """Code"""
   code: String!
 
-  """Sort"""
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
   description: String
 
   """PermissionId"""
@@ -390,7 +402,10 @@ type PermissionSelectOutput {
   name: String!
 
   """Sort"""
-  sort: Float
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input PermissionWhere {
@@ -477,7 +492,13 @@ type Query {
   ): Language!
 
   """LanguageSelect. No Pagination"""
-  languageSelect: [LanguageSelectOutput!]!
+  languageSelect(
+    """Sorting rule"""
+    orderBy: [LanguageOrderInput!]
+
+    """Query condition"""
+    where: LanguageWhereInput
+  ): [LanguageSelectOutput!]!
 
   """Languages"""
   languages(
@@ -504,7 +525,13 @@ type Query {
   ): Permission!
 
   """PermissionSelect. No Pagination"""
-  permissionSelect: [PermissionSelectOutput!]!
+  permissionSelect(
+    """Sorting rule"""
+    orderBy: [PermissionOrderInput!]
+
+    """Query condition"""
+    where: PermissionWhereInput
+  ): [PermissionSelectOutput!]!
 
   """Permissions"""
   permissions(
@@ -529,8 +556,11 @@ type Query {
 
   """ResourceSelect. No Pagination"""
   resourceSelect(
-    """SubjectId"""
-    subjectId: ID!
+    """Sorting rule"""
+    orderBy: [ResourceOrderInput!]
+
+    """Query condition"""
+    where: ResourceWhereInput
   ): [ResourceSelectOutput!]!
 
   """Resources"""
@@ -561,7 +591,13 @@ type Query {
   ): [RolePermissionOutput!]!
 
   """RoleSelect. No Pagination"""
-  roleSelect: [RoleSelectOutput!]!
+  roleSelect(
+    """Sorting rule"""
+    orderBy: [RoleOrderInput!]
+
+    """Query condition"""
+    where: RoleWhereInput
+  ): [RoleSelectOutput!]!
 
   """Roles"""
   roles(
@@ -586,8 +622,11 @@ type Query {
 
   """SchemaSelect. No Pagination"""
   schemaSelect(
-    """SubjectId"""
-    subjectId: ID!
+    """Sorting rule"""
+    orderBy: [SchemaOrderInput!]
+
+    """Query condition"""
+    where: SchemaWhereInput
   ): [SchemaSelectOutput!]!
 
   """Schemas"""
@@ -618,7 +657,13 @@ type Query {
   ): [SubjectResourceOutput!]!
 
   """SubjectSelect. No Pagination"""
-  subjectSelect: [SubjectSelectOutput!]!
+  subjectSelect(
+    """Sorting rule"""
+    orderBy: [SubjectOrderInput!]
+
+    """Query condition"""
+    where: SubjectWhereInput
+  ): [SubjectSelectOutput!]!
 
   """Subjects"""
   subjects(
@@ -645,7 +690,13 @@ type Query {
   userInfo: User!
 
   """UserSelect. No Pagination"""
-  userSelect: [UserSelect!]!
+  userSelect(
+    """Sorting rule"""
+    orderBy: [UserOrderInput!]
+
+    """Query condition"""
+    where: UserWhereInput
+  ): [UserSelectOutput!]!
 
   """Users"""
   users(
@@ -714,6 +765,9 @@ input ResourceOrderInput {
   """Sort"""
   sort: SortOrder
 
+  """Subject"""
+  subject: SortOrder
+
   """SubjectId"""
   subjectId: SortOrder
 
@@ -730,10 +784,16 @@ type ResourcePaginationOutput {
 }
 
 type ResourceSelectOutput {
+  """Children"""
+  children: [Resource!]
+
   """Code"""
   code: String!
 
-  """Sort"""
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
   description: String
 
   """ResourceId"""
@@ -742,11 +802,17 @@ type ResourceSelectOutput {
   """Name"""
   name: String!
 
+  """Parent"""
+  parent: Resource
+
   """Pid"""
   pid: ID
 
   """Sort"""
-  sort: Float
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input ResourceWhere {
@@ -764,6 +830,9 @@ input ResourceWhere {
 
   """Sort"""
   sort: StringFilter
+
+  """Subject"""
+  subject: StringFilter
 
   """SubjectId"""
   subjectId: StringFilter
@@ -793,6 +862,9 @@ input ResourceWhereInput {
 
   """Sort"""
   sort: StringFilter
+
+  """Subject"""
+  subject: StringFilter
 
   """SubjectId"""
   subjectId: StringFilter
@@ -861,6 +933,9 @@ type RolePermissionOutput {
 }
 
 type RoleSelectOutput {
+  """CreatedAt"""
+  createdAt: DateTime
+
   """Description"""
   description: String
 
@@ -869,6 +944,9 @@ type RoleSelectOutput {
 
   """Name"""
   name: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input RoleWhere {
@@ -942,11 +1020,20 @@ type SchemaSelectOutput {
   """Code"""
   code: String!
 
+  """CreatedAt"""
+  createdAt: DateTime
+
   """SchemaId"""
   id: ID!
 
+  """Json"""
+  json: JSON!
+
   """Name"""
   name: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input SchemaWhere {
@@ -1060,10 +1147,16 @@ type SubjectPaginationOutput {
 }
 
 type SubjectResourceOutput {
+  """Children"""
+  children: [Resource!]
+
   """Code"""
   code: String!
 
-  """Sort"""
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
   description: String
 
   """ResourceId"""
@@ -1072,22 +1165,37 @@ type SubjectResourceOutput {
   """Name"""
   name: String!
 
+  """Parent"""
+  parent: Resource
+
   """Pid"""
   pid: ID
 
   """Sort"""
-  sort: Float
+  sort: Float!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 type SubjectSelectOutput {
   """Code"""
   code: String!
 
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
   """SubjectId"""
   id: ID!
 
   """Name"""
   name: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input SubjectWhere {
@@ -1181,9 +1289,12 @@ type UserRole {
   roleId: ID
 }
 
-type UserSelect {
+type UserSelectOutput {
   """Account"""
   account: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
 
   """Email"""
   email: String!
@@ -1196,6 +1307,12 @@ type UserSelect {
 
   """Phone"""
   phone: String
+
+  """UserRole"""
+  roles: [UserRole!]
+
+  """UpdatedAt"""
+  updatedAt: DateTime
 }
 
 input UserWhere {

@@ -1,5 +1,3 @@
-export class SubjectSelect {
-  id!: string;
-  name!: string;
-  code!: string;
-}
+import { Subject } from './subject.model';
+
+export class SubjectSelectOutput extends Subject {}

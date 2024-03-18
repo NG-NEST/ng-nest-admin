@@ -8,8 +8,9 @@ import { RoleCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { RoleMessage } from './role.enum';
 import { RoleUpdateInput } from './update.input';
-import { RoleSelect } from './select.output';
+import { RoleSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
+import { RoleSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -57,12 +58,13 @@ export class RoleService {
       .pipe(map((x) => cloneDeep(x.data?.roles!)));
   }
 
-  roleSelect(): Observable<RoleSelect[]> {
+  roleSelect(input: RoleSelectInput): Observable<RoleSelectOutput[]> {
     return this.apollo
-      .watchQuery<{ roleSelect: RoleSelect[] }>({
+      .watchQuery<{ roleSelect: RoleSelectOutput[] }>({
+        variables: input,
         query: gql`
-          query RoleSelect {
-            roleSelect {
+          query RoleSelect($where: RoleWhereInput, $orderBy: [RoleOrderInput!]) {
+            roleSelect(where: $where, orderBy: $orderBy) {
               id
               name
             }

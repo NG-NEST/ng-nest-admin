@@ -8,6 +8,7 @@ import {
   RolePaginationOutput,
   RolePermissionOutput,
   RoleResolverName,
+  RoleSelectInput,
   RoleSelectOutput,
   RoleService,
 } from '@api/services';
@@ -33,8 +34,11 @@ export class RoleResolver {
 
   @Query(() => [RoleSelectOutput], { description: RoleResolverName.RoleSelect })
   @CacheControl(RoleCache.RoleSelect)
-  async roleSelect(@PrismaSelect('data') select: BaseSelect): Promise<RoleSelectOutput[]> {
-    return await this.roleService.roleSelect(select);
+  async roleSelect(
+    @Args() input: RoleSelectInput,
+    @PrismaSelect('data') select: BaseSelect,
+  ): Promise<RoleSelectOutput[]> {
+    return await this.roleService.roleSelect(input, select);
   }
 
   @Query(() => [RolePermissionOutput], { description: RoleResolverName.RolePermissions })

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -8,11 +8,13 @@ import { AppAuthService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
 import { Router } from '@angular/router';
 import { delay, finalize } from 'rxjs';
+import { isEmpty } from 'lodash-es';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent],
+  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -21,7 +23,9 @@ export class LoginComponent {
   authService = inject(AuthService);
   message = inject(XMessageService);
   storage = inject(XStorageService);
+  i18n = inject(XI18nService);
   fb = inject(FormBuilder);
+  renderer = inject(Renderer2);
   router = inject(Router);
   loginLoading = signal(false);
   codekey!: string;
@@ -47,13 +51,18 @@ export class LoginComponent {
   }
 
   submit() {
-    const { account, password } = this.form.value;
-    if (!account) {
-      this.message.warning('请输入账号！');
+    const t = this.i18n.translate;
+    const { account, password, code } = this.form.value;
+    if (isEmpty(account)) {
+      this.message.warning(t('login.please-input-account'));
       return;
     }
-    if (!password) {
-      this.message.warning('请输入密码！');
+    if (isEmpty(password)) {
+      this.message.warning(t('login.please-input-password'));
+      return;
+    }
+    if (isEmpty(code)) {
+      this.message.warning(t('login.please-input-code'));
       return;
     }
     this.loginLoading.set(true);

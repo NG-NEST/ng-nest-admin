@@ -1,4 +1,3 @@
-export class RoleSelect {
-  id!: string;
-  name!: string;
-}
+import { Role } from './role.model';
+
+export class RoleSelectOutput extends Role {}

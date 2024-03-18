@@ -1,8 +1,3 @@
-export class DictionarySelect {
-  pid?: string;
-  id!: string;
-  name!: string;
-  code!: string;
-  sort?: number;
-  description?: string;
-}
+import { Dictionary } from './dictionary.model';
+
+export class DictionarySelectOutput extends Dictionary {}

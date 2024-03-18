@@ -4,6 +4,7 @@ import { LanguagePaginationInput } from './pagination.input';
 import { Language } from './language.model';
 import { LanguageUpdateInput } from './update.input';
 import { LanguageCreateInput } from './create.input';
+import { LanguageSelectInput } from './select.input';
 
 @Injectable()
 export class LanguageService {
@@ -17,8 +18,8 @@ export class LanguageService {
     };
   }
 
-  async languageSelect(select: BaseSelect) {
-    return await this.prisma.language.findMany({ ...select });
+  async languageSelect(input: LanguageSelectInput, select: BaseSelect) {
+    return await this.prisma.language.findMany({ ...input, ...select });
   }
 
   async language(id: string, select: BaseSelect) {

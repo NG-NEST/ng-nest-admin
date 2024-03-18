@@ -4,12 +4,17 @@ import { ResourcePaginationInput } from './pagination.input';
 import { Resource } from './resource.model';
 import { ResourceUpdateInput } from './update.input';
 import { ResourceCreateInput } from './create.input';
+import { ResourceSelectInput } from './select.input';
+import { ResourcePaginationOutput } from './resource.output';
 
 @Injectable()
 export class ResourceService {
   constructor(private prisma: PrismaService) {}
 
-  async resources(input: ResourcePaginationInput, select: BaseSelect) {
+  async resources(
+    input: ResourcePaginationInput,
+    select: BaseSelect,
+  ): Promise<ResourcePaginationOutput> {
     const { where } = input;
     return {
       data: (await this.prisma.resource.findMany({ ...input, ...select })) as Resource[],
@@ -17,8 +22,8 @@ export class ResourceService {
     };
   }
 
-  async resourceSelect(subjectId: string, select: BaseSelect) {
-    return await this.prisma.resource.findMany({ where: { subjectId }, ...select });
+  async resourceSelect(input: ResourceSelectInput, select: BaseSelect) {
+    return (await this.prisma.resource.findMany({ ...input, ...select })) as Resource[];
   }
 
   async resource(id: string, select: BaseSelect) {

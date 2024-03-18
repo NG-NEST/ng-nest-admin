@@ -8,8 +8,9 @@ import { ResourceCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { ResourceMessage } from './resource.enum';
 import { ResourceUpdateInput } from './update.input';
-import { ResourceSelect } from './select.output';
+import { ResourceSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
+import { ResourceSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class ResourceService {
@@ -73,13 +74,13 @@ export class ResourceService {
       .pipe(map((x) => cloneDeep(x.data?.resources!)));
   }
 
-  resourceSelect(subjectId: string): Observable<ResourceSelect[]> {
+  resourceSelect(input: ResourceSelectInput): Observable<ResourceSelectOutput[]> {
     return this.apollo
-      .query<{ resourceSelect: ResourceSelect[] }>({
-        variables: { subjectId },
+      .query<{ resourceSelect: ResourceSelectOutput[] }>({
+        variables: input,
         query: gql`
-          query ResourceSelect($subjectId: ID!) {
-            resourceSelect(subjectId: $subjectId) {
+          query ResourceSelect($where: ResourceWhereInput, $orderBy: [ResourceOrderInput!]) {
+            resourceSelect(where: $where, orderBy: $orderBy) {
               pid
               id
               name

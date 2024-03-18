@@ -1,0 +1,12 @@
+{
+  "locale": "zh_CN",
+  "login": {
+    "account": "账号：",
+    "password": "密码：",
+    "code": "验证码：",
+    "please-input-account": "请输入账号",
+    "please-input-password": "请输入密码",
+    "please-input-code": "请输入验证码",
+    "login": "登 录"
+  }
+}

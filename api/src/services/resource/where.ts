@@ -2,7 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { BaseStringFilter, BaseWhereInput, NumberFilter, StringFilter } from '@api/core';
 import { ResourceDescription } from './resource.enum';
-import { SubjectDescription } from '../subject';
+import { SubjectDescription, SubjectWhereInput } from '../subject';
 
 @InputType()
 export class ResourceWhere {
@@ -29,6 +29,10 @@ export class ResourceWhere {
   @Field(() => BaseStringFilter, { description: SubjectDescription.Id, nullable: true })
   @IsOptional()
   subjectId?: StringFilter;
+
+  @Field(() => BaseStringFilter, { description: SubjectDescription.Subject, nullable: true })
+  @IsOptional()
+  subject?: SubjectWhereInput;
 }
 
 @InputType()

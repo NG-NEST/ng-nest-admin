@@ -4,29 +4,38 @@ import { SubjectPaginationInput } from './pagination.input';
 import { Subject } from './subject.model';
 import { SubjectUpdateInput } from './update.input';
 import { SubjectCreateInput } from './create.input';
+import { SubjectSelectInput } from './select.input';
+import { Resource } from '../resource';
+import { SubjectPaginationOutput } from './subject.output';
 
 @Injectable()
 export class SubjectService {
   constructor(private prisma: PrismaService) {}
 
-  async subjects(input: SubjectPaginationInput, select: BaseSelect) {
+  async subjects(
+    input: SubjectPaginationInput,
+    select: BaseSelect,
+  ): Promise<SubjectPaginationOutput> {
     const { where } = input;
     return {
-      data: (await this.prisma.subject.findMany({ ...input, ...select })) as Subject[],
+      data: await this.prisma.subject.findMany({ ...input, ...select }),
       count: await this.prisma.subject.count({ where }),
     };
   }
 
-  async subjectSelect(select: BaseSelect) {
-    return await this.prisma.subject.findMany({ ...select });
+  async subjectSelect(input: SubjectSelectInput, select: BaseSelect): Promise<Subject[]> {
+    return await this.prisma.subject.findMany({ ...input, ...select });
   }
 
   async subjectResources(code: string, select: BaseSelect) {
-    return await this.prisma.resource.findMany({ where: { subject: { code } }, ...select });
+    return (await this.prisma.resource.findMany({
+      where: { subject: { code } },
+      ...select,
+    })) as Resource[];
   }
 
-  async subject(id: string, select: BaseSelect) {
-    return (await this.prisma.subject.findUnique({ where: { id }, ...select })) as Subject;
+  async subject(id: string, select: BaseSelect): Promise<Subject> {
+    return await this.prisma.subject.findUnique({ where: { id }, ...select });
   }
 
   async update(input: SubjectUpdateInput) {

@@ -7,9 +7,9 @@ import {
   SchemaPaginationInput,
   SchemaPaginationOutput,
   SchemaResolverName,
+  SchemaSelectInput,
   SchemaSelectOutput,
   SchemaService,
-  SubjectId,
 } from '@api/services';
 
 @Resolver(() => Schema)
@@ -41,9 +41,9 @@ export class SchemaResolver {
   })
   @CacheControl(SchemaCache.SchemaSelect)
   async schemaSelect(
-    @Args('subjectId', SubjectId) subjectId: string,
+    @Args() input: SchemaSelectInput,
     @PrismaSelect() select: BaseSelect,
   ): Promise<SchemaSelectOutput[]> {
-    return await this.schemaService.schemaSelect(subjectId, select);
+    return await this.schemaService.schemaSelect(input, select);
   }
 }

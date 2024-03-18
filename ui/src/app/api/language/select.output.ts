@@ -1,5 +1,3 @@
-export class LanguageSelect {
-  id!: string;
-  key!: string;
-  value!: string;
-}
+import { Language } from './language.model';
+
+export class LanguageSelectOutput extends Language {}

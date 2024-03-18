@@ -13,7 +13,7 @@ export enum ResourceDescription {
 }
 
 export enum ResourceMessage {
-  CreatedSuccess = '新增资源成功！',
-  UpdatedSuccess = '更新资源成功！',
-  DeletedSuccess = '删除资源成功！'
+  CreatedSuccess = '新增资源成功',
+  UpdatedSuccess = '更新资源成功',
+  DeletedSuccess = '删除资源成功'
 }

@@ -6,6 +6,7 @@ export * from './order';
 export * from './pagination.input';
 export * from './where';
 export * from './subject.output';
+export * from './select.input';
 export * from './select.output';
 export * from './resource.output';
 export * from './subject.service';

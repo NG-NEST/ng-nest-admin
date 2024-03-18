@@ -8,6 +8,8 @@ export enum AuthDescription {
 export enum AuthUnauthorized {
   Forbidden = 'Forbidden',
   Unauthorized = 'Unauthorized',
+  CodeVerificationFailed = 'CodeVerificationFailed',
+  IdentificationIsNotEmpty = 'IdentificationIsNotEmpty',
   AccountOrPasswordVerificationFailed = 'AccountOrPasswordVerificationFailed',
   TokenFailureOrValidationFailure = 'TokenFailureOrValidationFailure',
 }

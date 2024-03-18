@@ -8,8 +8,9 @@ import { DictionaryCreateInput } from './create.input';
 import { cloneDeep } from 'lodash-es';
 import { DictionaryMessage } from './dictionary.enum';
 import { DictionaryUpdateInput } from './update.input';
-import { DictionarySelect } from './select.output';
+import { DictionarySelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
+import { DictionarySelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class DictionaryService {
@@ -75,13 +76,13 @@ export class DictionaryService {
       .pipe(map((x) => cloneDeep(x.data?.dictionarys!)));
   }
 
-  dictionarySelect(pid: string): Observable<DictionarySelect[]> {
+  dictionarySelect(input: DictionarySelectInput): Observable<DictionarySelectOutput[]> {
     return this.apollo
-      .query<{ dictionarySelect: DictionarySelect[] }>({
-        variables: { pid },
+      .query<{ dictionarySelect: DictionarySelectOutput[] }>({
+        variables: input,
         query: gql`
-          query DictionarySelect($pid: ID!) {
-            dictionarySelect(pid: $pid) {
+          query DictionarySelect($where: DictionaryWhereInput, $orderBy: [DictionaryOrderInput!]) {
+            dictionarySelect(where: $where, orderBy: $orderBy) {
               id
               name
               code

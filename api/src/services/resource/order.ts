@@ -1,7 +1,7 @@
 import { BaseOrder, SortOrder } from '@api/core';
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { SubjectDescription } from '../subject';
+import { SubjectDescription, SubjectOrderInput } from '../subject';
 import { ResourceDescription } from './resource.enum';
 
 @InputType()
@@ -21,4 +21,8 @@ export class ResourceOrderInput extends BaseOrder {
   @Field(() => SortOrder, { description: SubjectDescription.Id, nullable: true })
   @IsOptional()
   subjectId?: SortOrder;
+
+  @Field(() => SortOrder, { description: SubjectDescription.Subject, nullable: true })
+  @IsOptional()
+  subject?: SubjectOrderInput;
 }

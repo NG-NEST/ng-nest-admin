@@ -7,5 +7,6 @@ export * from './pagination.input';
 export * from './where';
 export * from './order';
 export * from './user.output';
+export * from './select.input';
 export * from './select.output';
 export * from './user.service';

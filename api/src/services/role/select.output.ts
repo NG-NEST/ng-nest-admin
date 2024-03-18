@@ -1,16 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
-import { RoleDescription } from './role.enum';
+import { ObjectType } from '@nestjs/graphql';
+import { Role } from './role.model';
 
 @ObjectType()
-export class RoleSelectOutput {
-  @Field(() => ID, { description: RoleDescription.Id })
-  id: string;
-
-  @Field({ description: RoleDescription.Name })
-  name: string;
-
-  @Field({ description: RoleDescription.Description, nullable: true })
-  @IsOptional()
-  description?: string;
-}
+export class RoleSelectOutput extends Role {}

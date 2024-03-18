@@ -1,14 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { SubjectDescription } from './subject.enum';
+import { ObjectType } from '@nestjs/graphql';
+import { Subject } from './subject.model';
 
 @ObjectType()
-export class SubjectSelectOutput {
-  @Field(() => ID, { description: SubjectDescription.Id })
-  id: string;
-
-  @Field({ description: SubjectDescription.Name })
-  name: string;
-
-  @Field({ description: SubjectDescription.Code })
-  code: string;
-}
+export class SubjectSelectOutput extends Subject {}

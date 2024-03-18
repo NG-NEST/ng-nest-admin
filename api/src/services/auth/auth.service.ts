@@ -1,7 +1,7 @@
-import { BaseSelect, EncryptService, PrismaService } from '@api/core';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BaseSelect, EncryptService, PrismaService, RedisService } from '@api/core';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JWT_CONSTANTS } from './constants';
+import { CAPTCHA, JWT_CONSTANTS } from './constants';
 import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
@@ -9,6 +9,7 @@ import { I18nContext, I18nService } from 'nestjs-i18n';
 import { VerifyTokenInput } from './verify-token.input';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 import { VerifyTokenOutput } from './verify-token.output';
+import { CaptchaObj, create } from 'svg-captcha';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly i18n: I18nService<I18nTranslations>,
     private readonly encryptService: EncryptService,
     private readonly jwtService: JwtService,
+    private readonly redisService: RedisService,
   ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
@@ -28,9 +30,20 @@ export class AuthService {
     return null;
   }
 
-  async login(user: LoginInput) {
+  async login(input: LoginInput, codekey: string) {
     const lang = I18nContext.current().lang;
-    const { account } = user;
+
+    const { code, password, account } = input;
+    const cacheCode = await this.redisService.get(`${CAPTCHA}:${codekey}`);
+    const codeSuccess = cacheCode?.toUpperCase() === code?.toUpperCase();
+    if (!codeSuccess) {
+      throw new BadRequestException(
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`, {
+          lang,
+        }),
+      );
+    }
+
     const findUser = await this.prisma.user.findFirst({
       select: {
         id: true,
@@ -50,7 +63,7 @@ export class AuthService {
       throwMsg();
       return null;
     }
-    if (this.encryptService.compare(user.password, findUser.password)) {
+    if (this.encryptService.compare(password, findUser.password)) {
       id = findUser.id;
     }
     if (id === '') {
@@ -59,6 +72,21 @@ export class AuthService {
     } else {
       return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
     }
+  }
+
+  async getCaptcha(codekey: string): Promise<CaptchaObj> {
+    const lang = I18nContext.current().lang;
+    if (!codekey) {
+      throw new BadRequestException(
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.IdentificationIsNotEmpty}`, {
+          lang,
+        }),
+      );
+    }
+    const captcha = create({ noise: 2 });
+    await this.redisService.set(`${CAPTCHA}:${codekey}`, captcha.text, 'EX', 60);
+
+    return captcha;
   }
 
   async getUserFromToken(id: string, select: BaseSelect) {
