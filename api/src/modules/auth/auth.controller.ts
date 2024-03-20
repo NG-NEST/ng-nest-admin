@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import {
   AuthService,
   LoginInput,
+  LoginNoCodeInput,
   Public,
   RefreshTokenInput,
   VerifyTokenInput,
@@ -25,6 +26,11 @@ export class AuthController {
   async login(@Body() login: LoginInput, @Req() req: Request) {
     const { codekey } = req.headers;
     return await this.auth.login(login, codekey as string);
+  }
+
+  @Post('login-no-code')
+  async loginNoCode(@Body() login: LoginNoCodeInput) {
+    return await this.auth.login(login, null, false);
   }
 
   @Post('refresh-token')

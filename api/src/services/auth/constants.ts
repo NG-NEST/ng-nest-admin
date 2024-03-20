@@ -7,3 +7,5 @@ export const JWT_CONSTANTS = {
 };
 
 export const CAPTCHA = 'Captcha';
+
+export const AUTH = 'Auth';

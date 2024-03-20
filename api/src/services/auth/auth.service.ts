@@ -1,7 +1,7 @@
-import { BaseSelect, EncryptService, PrismaService, RedisService } from '@api/core';
+import { BaseSelect, EncryptService, PrismaService, RedisService, ms } from '@api/core';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CAPTCHA, JWT_CONSTANTS } from './constants';
+import { AUTH, CAPTCHA, JWT_CONSTANTS } from './constants';
 import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
@@ -10,6 +10,8 @@ import { VerifyTokenInput } from './verify-token.input';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 import { VerifyTokenOutput } from './verify-token.output';
 import { CaptchaObj, create } from 'svg-captcha';
+import { LoginNoCodeInput } from './login-no-code.input';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +21,7 @@ export class AuthService {
     private readonly encryptService: EncryptService,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
+    private readonly config: ConfigService,
   ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
@@ -30,18 +33,21 @@ export class AuthService {
     return null;
   }
 
-  async login(input: LoginInput, codekey: string) {
+  async login(input: LoginInput | LoginNoCodeInput, codekey: string, requiredCode = true) {
     const lang = I18nContext.current().lang;
 
-    const { code, password, account } = input;
-    const cacheCode = await this.redisService.get(`${CAPTCHA}:${codekey}`);
-    const codeSuccess = cacheCode?.toUpperCase() === code?.toUpperCase();
-    if (!codeSuccess) {
-      throw new BadRequestException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`, {
-          lang,
-        }),
-      );
+    const { password, account } = input;
+    if (requiredCode && input instanceof LoginInput) {
+      const code = input.code;
+      const cacheCode = await this.redisService.get(`${CAPTCHA}:${codekey}`);
+      const codeSuccess = cacheCode?.toUpperCase() === code?.toUpperCase();
+      if (!codeSuccess) {
+        throw new BadRequestException(
+          this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`, {
+            lang,
+          }),
+        );
+      }
     }
 
     const findUser = await this.prisma.user.findFirst({
@@ -138,17 +144,58 @@ export class AuthService {
     return result;
   }
 
-  private createTokens(payload: { id: string; permissions?: string[]; roles?: string[] }): Auth {
+  private async createTokens(payload: {
+    id: string;
+    permissions?: string[];
+    roles?: string[];
+  }): Promise<Auth> {
+    const accessToken = await this.createToken(
+      'accessToken',
+      payload,
+      JWT_CONSTANTS.secret,
+      JWT_CONSTANTS.expiresIn,
+    );
+    const refreshToken = await this.createToken(
+      'refreshToken',
+      payload,
+      JWT_CONSTANTS.refreshSecret,
+      JWT_CONSTANTS.refreshExpiresIn,
+    );
+
     return {
-      accessToken: this.jwtService.sign(payload, {
-        secret: JWT_CONSTANTS.secret,
-        expiresIn: JWT_CONSTANTS.expiresIn,
-      }),
-      refreshToken: this.jwtService.sign(payload, {
-        secret: JWT_CONSTANTS.refreshSecret,
-        expiresIn: JWT_CONSTANTS.refreshExpiresIn,
-      }),
+      accessToken,
+      refreshToken,
     };
+  }
+
+  private async createToken(
+    key: string,
+    payload: {
+      id: string;
+      permissions?: string[];
+      roles?: string[];
+    },
+    secret: string,
+    expiresIn: string,
+  ) {
+    const sso = this.config.getOrThrow<boolean>('sso');
+    if (sso) {
+      const { id } = payload;
+      let token = await this.redisService.get(`${AUTH}:${id}:${key}`);
+      if (!token) {
+        token = this.jwtService.sign(payload, {
+          secret: secret,
+          expiresIn: expiresIn,
+        });
+        await this.redisService.set(`${AUTH}:${id}:${key}`, token, 'PX', ms(expiresIn));
+      }
+      return token;
+    } else {
+      return this.jwtService.sign(payload, {
+        secret: secret,
+        expiresIn: expiresIn,
+      });
+    }
   }
 
   private async getUserRolesAndPermissions(id: string) {
