@@ -12,6 +12,7 @@ import { VerifyTokenOutput } from './verify-token.output';
 import { CaptchaObj, create } from 'svg-captcha';
 import { LoginNoCodeInput } from './login-no-code.input';
 import { ConfigService } from '@nestjs/config';
+import { AuthPayload } from './auth-payload';
 
 @Injectable()
 export class AuthService {
@@ -80,6 +81,18 @@ export class AuthService {
     }
   }
 
+  async logout(payload: AuthPayload) {
+    const sso = this.config.getOrThrow<boolean>('SSO');
+    if (sso) {
+      const { id } = payload;
+      await this.redisService.del(`${AUTH}:${id}:accessToken`);
+      await this.redisService.del(`${AUTH}:${id}:refreshToken`);
+
+      return { loggedOut: true };
+    }
+    return { loggedOut: true };
+  }
+
   async getCaptcha(codekey: string): Promise<CaptchaObj> {
     const lang = I18nContext.current().lang;
     if (!codekey) {
@@ -104,11 +117,11 @@ export class AuthService {
 
   async refreshToken(refreshToken: string) {
     try {
-      const { id } = this.jwtService.verify(refreshToken, {
+      const { id } = await this.jwtService.verifyAsync<AuthPayload>(refreshToken, {
         secret: JWT_CONSTANTS.refreshSecret,
       });
 
-      return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) });
+      return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) }, true);
     } catch (e) {
       const lang = I18nContext.current().lang;
 
@@ -118,48 +131,61 @@ export class AuthService {
     }
   }
 
-  async verifyToken(input: VerifyTokenInput) {
+  async verifyTokens(input: VerifyTokenInput) {
     const result: VerifyTokenOutput = {};
     if (input.accessToken) {
-      try {
-        await this.jwtService.verifyAsync(input.accessToken, {
-          secret: JWT_CONSTANTS.secret,
-        });
-        result.accessToken = true;
-      } catch (e) {
-        result.accessToken = false;
-      }
+      result.accessToken = await this.verifyToken(
+        'accessToken',
+        input.accessToken,
+        JWT_CONSTANTS.secret,
+      );
     }
     if (input.refreshToken) {
-      try {
-        await this.jwtService.verifyAsync(input.refreshToken, {
-          secret: JWT_CONSTANTS.refreshSecret,
-        });
-        result.refreshToken = true;
-      } catch (e) {
-        result.refreshToken = false;
-      }
+      result.refreshToken = await this.verifyToken(
+        'refreshToken',
+        input.refreshToken,
+        JWT_CONSTANTS.refreshSecret,
+      );
     }
 
     return result;
   }
 
-  private async createTokens(payload: {
-    id: string;
-    permissions?: string[];
-    roles?: string[];
-  }): Promise<Auth> {
+  private async verifyToken(key: string, token: string, secret: string) {
+    if (!token) {
+      return false;
+    }
+    try {
+      const info = await this.jwtService.verifyAsync<AuthPayload>(token, {
+        secret,
+      });
+      const sso = this.config.getOrThrow<boolean>('SSO');
+      if (sso) {
+        const { id } = info;
+        let rtoken = await this.redisService.get(`${AUTH}:${id}:${key}`);
+        return rtoken === token;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private async createTokens(payload: AuthPayload, refresh = false): Promise<Auth> {
     const accessToken = await this.createToken(
       'accessToken',
       payload,
       JWT_CONSTANTS.secret,
       JWT_CONSTANTS.expiresIn,
+      refresh,
     );
     const refreshToken = await this.createToken(
       'refreshToken',
       payload,
       JWT_CONSTANTS.refreshSecret,
       JWT_CONSTANTS.refreshExpiresIn,
+      refresh,
     );
 
     return {
@@ -170,19 +196,16 @@ export class AuthService {
 
   private async createToken(
     key: string,
-    payload: {
-      id: string;
-      permissions?: string[];
-      roles?: string[];
-    },
+    payload: AuthPayload,
     secret: string,
     expiresIn: string,
+    refresh = false,
   ) {
     const sso = this.config.getOrThrow<boolean>('sso');
     if (sso) {
       const { id } = payload;
       let token = await this.redisService.get(`${AUTH}:${id}:${key}`);
-      if (!token) {
+      if (!token || refresh) {
         token = this.jwtService.sign(payload, {
           secret: secret,
           expiresIn: expiresIn,
@@ -191,10 +214,12 @@ export class AuthService {
       }
       return token;
     } else {
-      return this.jwtService.sign(payload, {
+      const token = this.jwtService.sign(payload, {
         secret: secret,
         expiresIn: expiresIn,
       });
+
+      return token;
     }
   }
 

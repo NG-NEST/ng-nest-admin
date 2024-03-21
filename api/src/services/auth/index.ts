@@ -1,5 +1,6 @@
 export * from './auth.enum';
 export * from './auth.model';
+export * from './auth-payload';
 export * from './login.input';
 export * from './login-no-code.input';
 export * from './refresh-token.input';

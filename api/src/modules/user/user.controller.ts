@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Post()
-  @Authorization(UserAuth.UserCreate)
+  // @Authorization(UserAuth.UserCreate)
   @CacheClear(...UserCacheClear)
   async create(@Body() data: UserCreateInput) {
     return await this.userService.create(data);
