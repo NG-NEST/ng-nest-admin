@@ -5,6 +5,13 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
+    "aigc": {
+        "TypeIsNotEmpty": string;
+        "TypeIsIn": string;
+        "ModelIsNotEmpty": string;
+        "ModelIsIn": string;
+        "PromptIsNotEmpty": string;
+    };
     "auth": {
         "Forbidden": string;
         "Unauthorized": string;
@@ -55,6 +62,11 @@ export type I18nTranslations = {
         "SortIsNotNumber": string;
         "ResourceIdIsNotEmpty": string;
         "ResourceIdIsNotExist": string;
+    };
+    "qwen": {
+        "ModelIsNotEmpty": string;
+        "ModelIsIn": string;
+        "PromptIsNotEmpty": string;
     };
     "resource": {
         "ResourceIdIsNotEmpty": string;

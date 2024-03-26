@@ -1,7 +1,7 @@
 import { BaseSelect, EncryptService, PrismaService, RedisService, ms } from '@api/core';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AUTH, CAPTCHA, JWT_CONSTANTS } from './constants';
+import { AUTH, CAPTCHA, JWT_CONSTANTS } from './auth.constants';
 import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';

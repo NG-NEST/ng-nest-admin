@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AUTH, JWT_CONSTANTS } from './constants';
+import { AUTH, JWT_CONSTANTS } from './auth.constants';
 import { Request } from 'express';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';

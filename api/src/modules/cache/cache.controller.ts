@@ -18,7 +18,7 @@ export class CacheController {
   }
 
   @Delete('/all')
-  // @Authorization(CacheAuth.CacheDeleteAll)
+  @Authorization(CacheAuth.CacheDeleteAll)
   async deleteAll() {
     return await this.cacheService.deleteAll();
   }

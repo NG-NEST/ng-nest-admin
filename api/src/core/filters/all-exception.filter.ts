@@ -2,7 +2,7 @@ import { ExceptionFilter, Catch, HttpException, HttpStatus, ArgumentsHost } from
 import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import { getRequestLogs } from '../config';
-import { ContextType, HEADER_EXCEPTION_DATA } from '../common';
+import { ClearCustomHeaders, ContextType, HEADER_EXCEPTION_DATA } from '../common';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -16,7 +16,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
 
     if (hostType === 'graphql') {
-      // Graphql exception cannot be callback, output exception information through corresponding configuration formatting
+      // Graphql exceptions cannot be handled interceptor callbacks, only in the corresponding configuration format
     } else if (hostType === 'http') {
       const httpStatus =
         exception instanceof HttpException
@@ -27,12 +27,17 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const response = ctx.getResponse();
       const request = ctx.getRequest();
 
+      let res: any;
+
       if (exception instanceof Prisma.PrismaClientKnownRequestError) {
         const spt = exception.message.split('\n');
         message = spt[spt.length - 1];
       } else if (exception instanceof HttpException) {
         const resp = exception.getResponse() as any;
         message = resp ? resp['message'] : exception.toString();
+        if (resp) {
+          res = resp;
+        }
       } else if (exception instanceof Error) {
         message = exception.message;
       }
@@ -44,9 +49,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: message,
       };
 
+      ClearCustomHeaders(request);
+
       request.headers[HEADER_EXCEPTION_DATA] = JSON.stringify({
         ...msg,
         requset: getRequestLogs(request),
+        response: res,
         stack: exception.stack,
       });
 

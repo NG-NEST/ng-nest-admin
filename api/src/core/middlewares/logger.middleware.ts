@@ -15,7 +15,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
   res.on('finish', () => {
     const end = process.hrtime(start);
     const exceptionData = req.headers[HEADER_EXCEPTION_DATA] as string;
-    if (res.statusCode > 400 || exceptionData) {
+    if (res.statusCode >= 400 || exceptionData) {
       ClearCustomHeaders(req);
       Logs.error(exceptionData, {
         context: 'ExceptionsFilter',

@@ -5,7 +5,7 @@ export * from './login.input';
 export * from './login-no-code.input';
 export * from './refresh-token.input';
 export * from './verify-token.input';
-export * from './constants';
+export * from './auth.constants';
 export * from './jwt-auth.guard';
 export * from './auth.guard';
 export * from './auth.metadata';

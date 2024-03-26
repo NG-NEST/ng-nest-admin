@@ -1,0 +1,7 @@
+{
+  "TypeIsNotEmpty": "类型不能为空",
+  "TypeIsIn": "类型必须在指定的列表中",
+  "ModelIsNotEmpty": "模型不能为空",
+  "ModelIsIn": "模型必须在指定的列表中",
+  "PromptIsNotEmpty": "指令不能为空"
+}

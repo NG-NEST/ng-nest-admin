@@ -12,6 +12,7 @@ import {
   CacheModule as LocalCacheModule,
   LogsModule,
   SchemaModule,
+  AigcModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
@@ -47,6 +48,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     LocalCacheModule,
     LogsModule,
     SchemaModule,
+    AigcModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: CacheInterceptor },

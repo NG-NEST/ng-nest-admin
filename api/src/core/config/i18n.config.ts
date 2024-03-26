@@ -12,7 +12,7 @@ import {
 import { join } from 'path';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 import { getRequestLogs } from './logger.config';
-import { HEADER_EXCEPTION_DATA } from '../common';
+import { ClearCustomHeaders, HEADER_EXCEPTION_DATA } from '../common';
 
 export const i18nConfig: I18nAsyncOptions = {
   useFactory: (configService: ConfigService) => ({
@@ -47,16 +47,18 @@ export function responseBodyFormatter(
   const msg = {
     statusCode: httpStatus,
     timestamp: new Date().toISOString(),
-    path: ctx.getRequest()?.url,
+    path: req.url,
     message:
       formattedErrors instanceof Array && formattedErrors.length === 1
         ? formattedErrors[0]
         : formattedErrors,
   };
 
+  ClearCustomHeaders(req);
+
   req.headers[HEADER_EXCEPTION_DATA] = JSON.stringify({
     ...msg,
-    request: getRequestLogs(ctx.getRequest()),
+    request: getRequestLogs(req),
     stack: exc.stack,
   });
 
