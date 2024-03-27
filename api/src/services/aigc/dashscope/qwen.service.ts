@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { TEXT_GENERATION_URL } from './qwen.constants';
+import { DASHSCOPE_GENERATION_URL } from './qwen.constants';
 import { ConfigService } from '@nestjs/config';
 import { QwenInput } from './qwen.input';
 
@@ -9,7 +9,7 @@ export class QwenService {
 
   async textGeneration(input: QwenInput) {
     const { model, prompt } = input;
-    const response = await fetch(TEXT_GENERATION_URL, {
+    const response = await fetch(DASHSCOPE_GENERATION_URL, {
       method: 'POST',
       headers: this.setHeader(),
       body: JSON.stringify({ model, input: { prompt } }),

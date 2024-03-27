@@ -1,4 +1,5 @@
 import { QwenModel } from './dashscope';
+import { GeminiModel } from './gemini';
 
 export const AigcI18n = 'aigc';
 
@@ -10,8 +11,7 @@ export enum AigcDescription {
 
 export enum AigcType {
   Qwen = 'qwen',
+  Gemini = 'gemini',
 }
 
-export enum AigcModeMy {}
-
-export type AigcModel = QwenModel | AigcModeMy;
+export type AigcModel = QwenModel | GeminiModel;

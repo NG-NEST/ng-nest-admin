@@ -15,16 +15,9 @@ import {
   AigcModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
-import {
-  CacheClearInterceptor,
-  CacheInterceptor,
-  GlobalModule,
-  grapgQLConfig,
-  i18nConfig,
-} from '@api/core';
+import { GlobalModule, grapgQLConfig, i18nConfig } from '@api/core';
 import { I18nModule } from 'nestjs-i18n';
 import { CacheModule } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -49,10 +42,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     LogsModule,
     SchemaModule,
     AigcModule,
-  ],
-  providers: [
-    { provide: APP_INTERCEPTOR, useClass: CacheInterceptor },
-    { provide: APP_INTERCEPTOR, useClass: CacheClearInterceptor },
   ],
 })
 export class AppModule {}

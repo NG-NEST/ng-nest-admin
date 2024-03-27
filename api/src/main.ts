@@ -11,6 +11,7 @@ import { env } from 'node:process';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { WinstonModule } from 'nest-winston';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
@@ -28,6 +29,8 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new TransformInterceptor());
   app.use(LoggerMiddleware);
+
+  app.useWebSocketAdapter(new WsAdapter(app));
 
   await app.listen(env['PORT'] || 3000, '0.0.0.0');
 }
