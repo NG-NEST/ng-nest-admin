@@ -11,6 +11,7 @@ export type I18nTranslations = {
         "ModelIsNotEmpty": string;
         "ModelIsIn": string;
         "PromptIsNotEmpty": string;
+        "MessagesIsNotEmpty": string;
     };
     "auth": {
         "Forbidden": string;
