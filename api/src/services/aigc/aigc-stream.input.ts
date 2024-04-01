@@ -1,6 +1,6 @@
 import { IsIn, IsNotEmpty } from 'class-validator';
 import { AIGC_MODELS, AIGC_TYPES } from './aigc.constants';
-import { AigcDescription, AigcI18n, AigcMessage, AigcModel, AigcType } from './aigc.enum';
+import { AigcDescription, AigcI18n, AigcMessageInput, AigcModel, AigcType } from './aigc.enum';
 import { ValidatorDescription, i18n } from '@api/core';
 
 export class AigcStreamInput {
@@ -23,5 +23,5 @@ export class AigcStreamInput {
   @IsNotEmpty({
     message: i18n(`${AigcI18n}.${AigcDescription.Messages}${ValidatorDescription.IsNotEmpty}`),
   })
-  messages: AigcMessage[];
+  messages: AigcMessageInput[];
 }

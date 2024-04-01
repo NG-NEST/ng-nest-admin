@@ -19,4 +19,4 @@ export enum AigcType {
 
 export type AigcModel = QwenModel | GeminiModel | QianFanModel;
 
-export type AigcMessage = QwenMessage;
+export type AigcMessageInput = QwenMessage;

@@ -6,3 +6,4 @@ export * from './common';
 export * from './decorators';
 export * from './config';
 export * from './functions';
+export * from './adapters';
