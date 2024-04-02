@@ -1,28 +1,32 @@
-import { BaseSelect, EncryptService, PrismaService, RedisService, ms } from '@api/core';
+import {
+  BaseSelect,
+  EncryptService,
+  I18nService,
+  PrismaService,
+  RedisService,
+  ms,
+} from '@api/core';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH, CAPTCHA, JWT_CONSTANTS } from './auth.constants';
 import { LoginInput } from './login.input';
 import { AuthI18n, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
-import { I18nContext, I18nService } from 'nestjs-i18n';
 import { VerifyTokenInput } from './verify-token.input';
-import { I18nTranslations } from 'src/generated/i18n.generated';
 import { VerifyTokenOutput } from './verify-token.output';
 import { CaptchaObj, create } from 'svg-captcha';
 import { LoginNoCodeInput } from './login-no-code.input';
-import { ConfigService } from '@nestjs/config';
 import { AuthPayload } from './auth-payload';
+import { IncomingHttpHeaders } from 'node:http';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly i18n: I18nService<I18nTranslations>,
+    private readonly i18n: I18nService,
     private readonly encryptService: EncryptService,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
-    private readonly config: ConfigService,
   ) {}
 
   async validateUser(account: string, password: string): Promise<any> {
@@ -35,8 +39,6 @@ export class AuthService {
   }
 
   async login(input: LoginInput | LoginNoCodeInput, codekey: string, requiredCode = true) {
-    const lang = I18nContext.current().lang;
-
     const { password, account } = input;
     if (requiredCode && input instanceof LoginInput) {
       const code = input.code;
@@ -44,9 +46,7 @@ export class AuthService {
       const codeSuccess = cacheCode?.toUpperCase() === code?.toUpperCase();
       if (!codeSuccess) {
         throw new BadRequestException(
-          this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`, {
-            lang,
-          }),
+          this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`),
         );
       }
     }
@@ -61,9 +61,7 @@ export class AuthService {
     let id = '';
     const throwMsg = () => {
       throw new UnauthorizedException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.AccountOrPasswordVerificationFailed}`, {
-          lang,
-        }),
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.AccountOrPasswordVerificationFailed}`),
       );
     };
     if (findUser === null) {
@@ -82,24 +80,17 @@ export class AuthService {
   }
 
   async logout(payload: AuthPayload) {
-    const sso = this.config.getOrThrow<boolean>('SSO');
-    if (sso) {
-      const { id } = payload;
-      await this.redisService.del(`${AUTH}:${id}:accessToken`);
-      await this.redisService.del(`${AUTH}:${id}:refreshToken`);
+    const { id } = payload;
+    await this.redisService.del(`${AUTH}:${id}:accessToken`);
+    await this.redisService.del(`${AUTH}:${id}:refreshToken`);
 
-      return { loggedOut: true };
-    }
     return { loggedOut: true };
   }
 
   async getCaptcha(codekey: string): Promise<CaptchaObj> {
-    const lang = I18nContext.current().lang;
     if (!codekey) {
       throw new BadRequestException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.IdentificationIsNotEmpty}`, {
-          lang,
-        }),
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.IdentificationIsNotEmpty}`),
       );
     }
     const captcha = create({ noise: 2 });
@@ -123,10 +114,8 @@ export class AuthService {
 
       return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) }, true);
     } catch (e) {
-      const lang = I18nContext.current().lang;
-
       throw new UnauthorizedException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.TokenFailureOrValidationFailure}`, { lang }),
+        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.TokenFailureOrValidationFailure}`),
       );
     }
   }
@@ -134,42 +123,46 @@ export class AuthService {
   async verifyTokens(input: VerifyTokenInput) {
     const result: VerifyTokenOutput = {};
     if (input.accessToken) {
-      result.accessToken = await this.verifyToken(
+      result.accessToken = !!(await this.verifyToken(
         'accessToken',
         input.accessToken,
         JWT_CONSTANTS.secret,
-      );
+      ));
     }
     if (input.refreshToken) {
-      result.refreshToken = await this.verifyToken(
+      result.refreshToken = !!(await this.verifyToken(
         'refreshToken',
         input.refreshToken,
         JWT_CONSTANTS.refreshSecret,
-      );
+      ));
     }
 
     return result;
   }
 
-  private async verifyToken(key: string, token: string, secret: string) {
+  async verifyToken(key: string, token: string, secret: string) {
     if (!token) {
-      return false;
+      return null;
     }
     try {
       const info = await this.jwtService.verifyAsync<AuthPayload>(token, {
         secret,
       });
-      const sso = this.config.getOrThrow<boolean>('SSO');
-      if (sso) {
-        const { id } = info;
-        let rtoken = await this.redisService.get(`${AUTH}:${id}:${key}`);
-        return rtoken === token;
+      const { id } = info;
+      let rtoken = await this.redisService.get(`${AUTH}:${id}:${key}`);
+      if (rtoken === token) {
+        return info;
       } else {
-        return true;
+        return null;
       }
     } catch (e) {
-      return false;
+      return null;
     }
+  }
+
+  extractTokenFromHeader(headers: IncomingHttpHeaders): string | undefined {
+    const [type, token] = headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : null;
   }
 
   private async createTokens(payload: AuthPayload, refresh = false): Promise<Auth> {
@@ -201,26 +194,16 @@ export class AuthService {
     expiresIn: string,
     refresh = false,
   ) {
-    const sso = this.config.getOrThrow<boolean>('sso');
-    if (sso) {
-      const { id } = payload;
-      let token = await this.redisService.get(`${AUTH}:${id}:${key}`);
-      if (!token || refresh) {
-        token = this.jwtService.sign(payload, {
-          secret: secret,
-          expiresIn: expiresIn,
-        });
-        await this.redisService.set(`${AUTH}:${id}:${key}`, token, 'PX', ms(expiresIn));
-      }
-      return token;
-    } else {
-      const token = this.jwtService.sign(payload, {
+    const { id } = payload;
+    let token = await this.redisService.get(`${AUTH}:${id}:${key}`);
+    if (!token || refresh) {
+      token = this.jwtService.sign(payload, {
         secret: secret,
         expiresIn: expiresIn,
       });
-
-      return token;
+      await this.redisService.set(`${AUTH}:${id}:${key}`, token, 'PX', ms(expiresIn));
     }
+    return token;
   }
 
   private async getUserRolesAndPermissions(id: string) {

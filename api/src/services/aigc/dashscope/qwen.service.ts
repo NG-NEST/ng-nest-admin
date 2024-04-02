@@ -62,13 +62,21 @@ export class QwenService {
 
       let surplus: Buffer = null;
       let start = 0;
+      let replaceText = '';
 
       child.stdout.on('data', (buffer: Buffer) => {
         surplus = surplus ? Buffer.concat([surplus, buffer]) : buffer;
         const { analyzed, end } = this.matchBuffer(surplus, start);
         start = end + 1;
 
-        output.next(analyzed);
+        if (analyzed.length > 0) {
+          const last = analyzed[analyzed.length - 1];
+          if (replaceText) {
+            last.text = this.replaceRepeat(last.text, replaceText);
+          }
+          output.next({ data: [last] });
+          replaceText += last.text;
+        }
       });
       child.on('close', () => {
         output.complete();
@@ -90,6 +98,15 @@ export class QwenService {
       headers.append('Accept', 'text/event-stream');
     }
     return headers;
+  }
+
+  private replaceRepeat(text: string, rep: string) {
+    const escapeRegExp = (str: string) => {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
+
+    const escapedPrefix = escapeRegExp(rep);
+    return text.replace(new RegExp(`^${escapedPrefix}`), '');
   }
 
   private matchBuffer(buffer: Buffer, start: number) {
@@ -116,6 +133,7 @@ export class QwenService {
               text: output.text,
               inputTokens: usage.input_tokens,
               outputTokens: usage.output_tokens,
+              totalTokens: usage.input_tokens + usage.output_tokens,
               requestId: request_id,
               status: httpStatus,
             });
@@ -134,8 +152,7 @@ export class QwenService {
         }
       } catch {}
     }
-    const analyzed = { data };
 
-    return { analyzed, end };
+    return { analyzed: data, end };
   }
 }

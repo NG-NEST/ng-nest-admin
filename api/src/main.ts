@@ -5,6 +5,7 @@ import {
   // WsAdapter,
   LoggerInstance,
   LoggerMiddleware,
+  RedisIoAdapter,
   TransformInterceptor,
   responseBodyFormatter,
 } from '@api/core';
@@ -30,7 +31,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.use(LoggerMiddleware);
 
-  // app.useWebSocketAdapter(new WsAdapter(app));
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
 
   await app.listen(env['PORT'] || 3000, '0.0.0.0');
 }

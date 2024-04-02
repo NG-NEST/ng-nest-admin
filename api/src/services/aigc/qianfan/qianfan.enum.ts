@@ -5,6 +5,12 @@ export enum QianFanDescription {
   Prompt = 'Prompt',
 }
 
+export enum QianFanRole {
+  Function = 'function',
+  User = 'user',
+  Assistant = 'assistant',
+}
+
 export enum QianFanModel {
   ERNIE358k = 'ERNIE-3.5-8K',
 }

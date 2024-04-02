@@ -10,6 +10,7 @@ import { QianFanModel, QianFanService } from './qianfan';
 import { AigcOutput } from './aigc.output';
 import { AigcStreamOutput } from './aigc-stream.output';
 import { AigcStreamInput } from './aigc-stream.input';
+import { QianFanMessage } from './qianfan/qianfan-stream.input';
 
 @Injectable()
 export class AigcService {
@@ -37,6 +38,11 @@ export class AigcService {
       return this.qwenService.textGenerationSubject({
         model: model as QwenModel,
         messages: messages as QwenMessage[],
+      });
+    } else if (type === AigcType.QianFan) {
+      return this.qianfanService.textGenerationSubject({
+        model: model as QianFanModel,
+        messages: messages as QianFanMessage[],
       });
     }
     return of();
