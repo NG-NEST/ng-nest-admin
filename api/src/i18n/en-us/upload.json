@@ -1,0 +1,4 @@
+{
+  "FilepathIsNotEmpty": "The file path cannot be empty",
+  "UidIsUUID": "uid invalid format"
+}

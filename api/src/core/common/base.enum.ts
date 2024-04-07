@@ -26,6 +26,7 @@ export enum ValidatorDescription {
   IsNotNumber = 'IsNotNumber',
   IsJWT = 'IsJWT',
   IsIn = 'IsIn',
+  IsUUID = 'IsUUID',
 }
 
 export enum BaseDescription {

@@ -4,3 +4,4 @@ export * from './is-not-exist.decorator';
 export * from './cache.decorator';
 export * from './current-user.decorator';
 export * from './gql-current-user.decorator';
+export * from './file.decorator';

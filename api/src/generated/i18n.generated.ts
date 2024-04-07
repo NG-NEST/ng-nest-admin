@@ -101,6 +101,10 @@ export type I18nTranslations = {
         "CodeIsNotEmpty": string;
         "CodeIsExist": string;
     };
+    "upload": {
+        "FilepathIsNotEmpty": string;
+        "UidIsUUID": string;
+    };
     "user": {
         "UserIdIsNotEmpty": string;
         "NameIsNotEmpty": string;
