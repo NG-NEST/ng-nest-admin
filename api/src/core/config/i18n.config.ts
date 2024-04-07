@@ -4,7 +4,6 @@ import {
   AcceptLanguageResolver,
   HeaderResolver,
   I18nAsyncOptions,
-  I18nService,
   I18nValidationException,
   QueryResolver,
   i18nValidationMessage,
@@ -16,7 +15,7 @@ import { ClearCustomHeaders, HEADER_EXCEPTION_DATA } from '../common';
 
 export const i18nConfig: I18nAsyncOptions = {
   useFactory: (configService: ConfigService) => ({
-    fallbackLanguage: configService.getOrThrow('LANG'),
+    fallbackLanguage: configService.getOrThrow('LANGUAGE'),
     loaderOptions: {
       path: join(__dirname, '../../i18n/'),
       watch: true,
@@ -32,7 +31,6 @@ export const i18nConfig: I18nAsyncOptions = {
 };
 
 export const i18n = i18nValidationMessage<I18nTranslations>;
-export type I18nTranslationsService = I18nService<I18nTranslations>;
 
 export function responseBodyFormatter(
   host: ArgumentsHost,

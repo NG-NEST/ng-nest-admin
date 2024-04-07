@@ -5,6 +5,11 @@ export enum GeminiDescription {
   Prompt = 'Prompt',
 }
 
+export enum GeminiRole {
+  User = 'user',
+  Model = 'model',
+}
+
 export enum GeminiModel {
   GeminiPro = 'gemini-pro',
 }

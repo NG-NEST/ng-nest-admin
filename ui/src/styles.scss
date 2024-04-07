@@ -2,34 +2,91 @@
 @import 'params';
 
 @font-face {
-  font-family: 'ubuntu';
-  src:
-    url('assets/fonts/ubuntu.eot?#') format('eot'),
-    url('assets/fonts/ubuntu.ttf') format('truetype'),
-    url('assets/fonts/ubuntu.woff') format('woff'),
-    url('assets/fonts/ubuntu.svg#ubuntu') format('svg');
+  font-family: 'Inter';
+  src: url('assets/fonts/inter.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('assets/fonts/dm-mono.woff2') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  width: 100%;
+  background-color: $--x-background;
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 0.75rem; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 0.75rem;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 0.75rem;
+  // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body,
+input,
+ul,
+li,
+p {
   margin: 0;
   padding: 0;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+ul {
+  list-style: none;
 }
-::-webkit-scrollbar-thumb {
-  border-radius: 0.0625rem;
-  background: $--x-text-800;
+
+a {
+  color: $--x-primary;
+  text-decoration: none;
+  transition: all 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    color: $--x-primary;
+  }
 }
-::-webkit-scrollbar-track {
-  border-radius: 0.0625rem;
-  background: $--x-background-a300;
+
+code,
+pre,
+tt {
+  font-family:
+    DM Mono,
+    SFMono-Regular,
+    Consolas,
+    Liberation Mono,
+    Menlo,
+    Courier,
+    monospace;
+}
+
+body,
+input {
+  font-family:
+    Inter,
+    -apple-system,
+    SF UI Text,
+    Arial,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    WenQuanYi Micro Hei,
+    sans-serif;
 }
 
 .app-inner {
@@ -101,5 +158,82 @@ body {
         }
       }
     }
+  }
+}
+
+[class^='language-'] {
+  background-color: #e9e9e9;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  display: inherit;
+}
+
+.language-typescript,
+.language-ts,
+.language-js,
+.language-javascript,
+.language-json {
+  .token.decorator,
+  .token.keyword,
+  .token.builtin {
+    color: #0546ff;
+  }
+
+  .token.class-name,
+  .token.property,
+  .token.boolean,
+  .token.regex-source {
+    color: #f637e3;
+  }
+
+  .token.string,
+  .token.number,
+  .token.regex-delimiter {
+    color: #fa2c05;
+  }
+
+  .token.comment {
+    color: #746e7c;
+  }
+}
+
+.language-html {
+  .token.tag,
+  .token.punctuation {
+    color: #0546ff;
+  }
+  .token.attr-name {
+    color: #f637e3;
+  }
+  .token.attr-value,
+  .token.attr-value .token.punctuation {
+    color: #fa2c05;
+    &.attr-equals {
+      color: #0546ff;
+    }
+  }
+  .token.attr-name {
+    .attr-equals {
+      color: #0546ff;
+    }
+  }
+}
+
+.language-scss,
+.language-less,
+.language-css {
+  .token.selector,
+  .token.function,
+  .token.keyword {
+    color: #0546ff;
+  }
+  .token.property {
+    color: #f637e3;
+  }
+  .token.string {
+    color: #fa2c05;
+  }
+  .token.punctuation {
+    color: #474747;
   }
 }

@@ -14,12 +14,13 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
   const start = process.hrtime();
   res.on('finish', () => {
     const end = process.hrtime(start);
+    const time = ((end[0] * 1e9 + end[1]) / 1000000).toFixed(0);
     const exceptionData = req.headers[HEADER_EXCEPTION_DATA] as string;
     if (res.statusCode >= 400 || exceptionData) {
       ClearCustomHeaders(req);
       Logs.error(exceptionData, {
         context: 'ExceptionsFilter',
-        ms: `+${(end[1] / 1000000).toFixed(0)}ms`,
+        ms: `+${time}ms`,
       });
       return;
     }
@@ -28,7 +29,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
     if (cacheData) {
       ClearCustomHeaders(req, request);
       const msg = JSON.stringify({ request, response: { ...cacheData } });
-      Logs.cache(msg, { context: 'CacheInterceptor', ms: `+${(end[1] / 1000000).toFixed(0)}ms` });
+      Logs.cache(msg, { context: 'CacheInterceptor', ms: `+${time}ms` });
       return;
     }
     let response = req.headers[HEADER_RESPONSE_DATA];
@@ -41,7 +42,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
       msg = JSON.stringify({ request, response });
     }
 
-    Logs.http(msg, { context: 'TransformInterceptor', ms: `+${(end[1] / 1000000).toFixed(0)}ms` });
+    Logs.http(msg, { context: 'TransformInterceptor', ms: `+${time}ms` });
   });
   next();
 }

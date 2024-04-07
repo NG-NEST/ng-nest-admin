@@ -6,7 +6,7 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { AuthService } from '@ui/api';
 import { AppAuthService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { delay, finalize } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
@@ -27,14 +27,22 @@ export class LoginComponent {
   fb = inject(FormBuilder);
   renderer = inject(Renderer2);
   router = inject(Router);
+  activatedRoute = inject(ActivatedRoute);
+  appid = signal('');
   loginLoading = signal(false);
   codekey!: string;
+  redirect = signal('');
 
   @ViewChild('svgEle', { static: true }) svgEle!: ElementRef<HTMLDivElement>;
 
   form!: FormGroup;
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((x) => {
+      const { redirect, appid } = x;
+      this.appid.set(appid);
+      this.redirect.set(redirect);
+    });
     this.form = this.fb.group({
       account: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -77,7 +85,11 @@ export class LoginComponent {
           const { accessToken, refreshToken } = x;
           this.auth.accessToken.set(accessToken);
           this.auth.refreshToken.set(refreshToken);
-          this.router.navigateByUrl('/index/overview');
+          if (this.redirect()) {
+            location.href = `${this.redirect()}?accessToken=${accessToken}`;
+          } else {
+            this.router.navigateByUrl('/index');
+          }
         },
         error: () => {
           this.getCaptcha();

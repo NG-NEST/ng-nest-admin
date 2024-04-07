@@ -1,18 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CACHE_PREFIX, RedisService, ValidatorDescription } from '@api/core';
+import { CACHE_PREFIX, RedisService, ValidatorDescription, I18nService } from '@api/core';
 import { CacheKeysInput } from './cache-keys.input';
 import { Cache } from './cache.model';
 import { CacheUpdateInput } from './update.input';
 import { isEmpty } from 'class-validator';
 import { CacheDescription, CacheI18n } from './cache.enum';
-import { I18nContext, I18nService } from 'nestjs-i18n';
-import { I18nTranslations } from '@api/generated';
 
 @Injectable()
 export class CacheService {
   constructor(
     private readonly redisService: RedisService,
-    private readonly i18n: I18nService<I18nTranslations>,
+    private readonly i18n: I18nService,
   ) {}
   async cacheKeys(input: CacheKeysInput) {
     const { key } = input;
@@ -28,11 +26,8 @@ export class CacheService {
 
     const isExit = await this.redisService.exists(cacheKey);
     if (isExit === 0) {
-      const lang = I18nContext.current().lang;
       throw new BadRequestException(
-        this.i18n.t(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotExist}`, {
-          lang,
-        }),
+        this.i18n.t(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotExist}`),
       );
     }
 

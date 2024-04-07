@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AigcInput } from './aigc.input';
-import { QwenService } from './dashscope/qwen.service';
 import { AigcType } from './aigc.enum';
-import { QwenMessage, QwenModel } from './dashscope';
-import { GeminiService } from './gemini/gemini.service';
-import { GeminiModel } from './gemini';
+import { QwenMessage, QwenService, QwenModel } from './dashscope';
+import { GeminiModel, GeminiService } from './gemini';
 import { Observable, of } from 'rxjs';
-import { QianFanModel, QianFanService } from './qianfan';
+import { QianFanModel, QianFanService, QianFanMessage } from './qianfan';
 import { AigcOutput } from './aigc.output';
 import { AigcStreamOutput } from './aigc-stream.output';
 import { AigcStreamInput } from './aigc-stream.input';
@@ -38,6 +36,13 @@ export class AigcService {
         model: model as QwenModel,
         messages: messages as QwenMessage[],
       });
+    } else if (type === AigcType.QianFan) {
+      return this.qianfanService.textGenerationSubject({
+        model: model as QianFanModel,
+        messages: messages as QianFanMessage[],
+      });
+    } else if (type === AigcType.Gemini) {
+      return this.geminiService.textGenerationSubject(input);
     }
     return of();
   }

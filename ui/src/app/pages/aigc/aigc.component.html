@@ -1,0 +1,55 @@
+<div class="aigc">
+  <div class="source">
+    <x-slider
+      size="large"
+      [data]="slideData"
+      (nodeChange)="sourceChange($event)"
+      [nodeTpl]="nodeTpl"
+    >
+    </x-slider>
+    <ng-template #nodeTpl let-node="$node">
+      <div class="aigc-source-node">
+        <span>{{ node.label }}</span>
+        <x-select
+          [style.width.rem]="10"
+          [data]="node.data.models"
+          [ngModel]="activeModel()"
+          (ngModelChange)="activeModel.set($event)"
+          [bordered]="false"
+        ></x-select>
+      </div>
+    </ng-template>
+  </div>
+  <div class="content">
+    <div class="list">
+      @for (item of contentList(); track item) {
+        <div class="item" @flyInBottom>
+          @if (item.role === 'user') {
+            <div class="role user"><x-icon type="fto-user"></x-icon></div>
+          } @else if (item.role === 'assistant') {
+            <div class="role assistant">
+              @if (isLoading() && $last) {
+                <x-button circle [loading]="isLoading()"></x-button>
+              } @else {
+                GPT
+              }
+            </div>
+          }
+          <div
+            class="message"
+            [class.white]="item.role === 'assistant'"
+            [innerHTML]="item.content"
+          ></div>
+        </div>
+      }
+    </div>
+  </div>
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="prompt">
+      <x-textarea formControlName="content" height="10rem"></x-textarea>
+      <x-button attrType="submit" round size="large" [loading]="isLoading()"
+        >&nbsp;&nbsp;&nbsp;&nbsp;提交&nbsp;&nbsp;&nbsp;&nbsp;</x-button
+      >
+    </div>
+  </form>
+</div>

@@ -10,10 +10,18 @@ export const LayoutRoutes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login-routing.module').then((x) => x.LoginRoutes)
+    loadChildren: () => import('./pages/login/login-routing.module').then((x) => x.LoginRoutes),
+    data: {
+      login: true
+    },
+    canActivate: [AppCanActivate]
+  },
+  {
+    path: 'aigc',
+    loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes)
   },
 
-  { path: '', redirectTo: 'index', pathMatch: 'full' }
+  { path: '', redirectTo: 'aigc', pathMatch: 'full' }
 ];
 
 export const AppRoutes: Routes = [

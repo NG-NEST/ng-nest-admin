@@ -1,6 +1,6 @@
 import { QwenMessage, QwenModel } from './dashscope';
 import { GeminiModel } from './gemini';
-import { QianFanModel } from './qianfan';
+import { QianFanMessage, QianFanModel } from './qianfan';
 
 export const AigcI18n = 'aigc';
 
@@ -19,4 +19,4 @@ export enum AigcType {
 
 export type AigcModel = QwenModel | GeminiModel | QianFanModel;
 
-export type AigcMessageInput = QwenMessage;
+export type AigcMessageInput = QwenMessage | QianFanMessage;
