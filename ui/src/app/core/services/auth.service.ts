@@ -24,7 +24,7 @@ export class AppAuthService {
   }
 
   check(route?: ActivatedRouteSnapshot) {
-    if (route) {
+    if (route && route.data) {
       const { login } = route.data;
       if (login) {
         if (this.accessToken() && this.accessToken() !== 'null') {
