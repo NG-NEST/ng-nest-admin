@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AigcController } from './aigc.controller';
+import { AigcGateway } from './aigc.gateway';
 import { AuthModule } from '../auth/auth.module';
-import {
-  AigcGateway,
-  AigcService,
-  GeminiService,
-  QianFanService,
-  QwenService,
-} from '@api/services';
+import { AigcService, GeminiService, QianFanService, QwenService } from '@api/services';
 
 @Module({
   imports: [AuthModule],

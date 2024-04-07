@@ -8,15 +8,25 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { AigcService } from './aigc.service';
-import { AigcDescription, AigcI18n, AigcMessageInput, AigcModel, AigcType } from './aigc.enum';
 import { Server, Socket } from 'socket.io';
 import { Observable, map } from 'rxjs';
-import { AigcStreamOutput } from './aigc-stream.output';
-import { AIGC_MODELS, AIGC_TYPES } from './aigc.constants';
 import { HttpStatus } from '@nestjs/common';
 import { ValidatorDescription, I18nService } from '@api/core';
-import { AuthI18n, AuthService, AuthUnauthorized, JWT_CONSTANTS } from '../auth';
+import {
+  AIGC_MODELS,
+  AIGC_TYPES,
+  AigcDescription,
+  AigcI18n,
+  AigcMessageInput,
+  AigcModel,
+  AigcService,
+  AigcStreamOutput,
+  AigcType,
+  AuthI18n,
+  AuthService,
+  AuthUnauthorized,
+  JWT_CONSTANTS,
+} from '@api/services';
 
 @WebSocketGateway(3010, { path: '/aigc' })
 export class AigcGateway implements OnGatewayConnection, OnGatewayDisconnect {

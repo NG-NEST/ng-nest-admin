@@ -48,7 +48,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   $destroy = new Subject<void>();
 
   ngOnInit(): void {
-    this.role.roleSelect().subscribe((x) => {
+    this.role.roleSelect({}).subscribe((x) => {
       this.roles = x.map((y) => ({ label: y.name, id: y.id }));
     });
     const { id } = this.data;

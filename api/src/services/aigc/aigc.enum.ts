@@ -1,7 +1,6 @@
 import { QwenMessage, QwenModel } from './dashscope';
 import { GeminiModel } from './gemini';
-import { QianFanModel } from './qianfan';
-import { QianFanMessage } from './qianfan/qianfan-stream.input';
+import { QianFanMessage, QianFanModel } from './qianfan';
 
 export const AigcI18n = 'aigc';
 

@@ -66,10 +66,6 @@ export class QianFanService {
         let start = 0;
 
         child.stdout.on('data', (buffer: Buffer) => {
-          console.log('=================');
-          console.log(buffer.toString());
-          console.log('=================');
-
           try {
             const obj = JSON.parse(buffer.toString());
             if (obj && obj.error_code) {
@@ -93,7 +89,11 @@ export class QianFanService {
           const { analyzed, end } = this.matchBuffer(surplus, start);
           start = end + 1;
 
-          output.next(analyzed);
+          if (analyzed.length > 0) {
+            const last = analyzed[analyzed.length - 1];
+            last.text = analyzed.map((x) => x.text).join('');
+            output.next({ data: [last] });
+          }
         });
         child.on('close', () => {
           output.complete();
@@ -147,7 +147,7 @@ export class QianFanService {
     let end = start;
     for (let i = start; i < list.length; i++) {
       const item = list[i];
-      const dataMatch = item.match(/data:(.*)$/m);
+      const dataMatch = item.match(/data: (.*)$/m);
       const dataStr = dataMatch ? dataMatch[1] : null;
       try {
         const dataObj = dataStr ? JSON.parse(dataStr) : null;
@@ -168,7 +168,7 @@ export class QianFanService {
         }
       } catch {}
     }
-    const analyzed = { data };
+    const analyzed = data;
 
     return { analyzed, end };
   }

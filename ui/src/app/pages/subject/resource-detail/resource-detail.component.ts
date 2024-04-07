@@ -121,7 +121,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   }
 
   getSubjectSelect() {
-    return this.subject.subjectSelect().pipe(
+    return this.subject.subjectSelect({}).pipe(
       tap((x) => {
         this.subjects = x.map((y) => ({ label: y.name, id: y.id }));
       })
@@ -129,7 +129,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   }
 
   getResourceSelect() {
-    return this.resource.resourceSelect(this.subjectId).pipe(
+    return this.resource.resourceSelect({ where: { subjectId: this.subjectId } }).pipe(
       tap((x) => {
         this.resources = x.map((y) => ({
           label: y.name,

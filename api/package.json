@@ -23,6 +23,7 @@
   "dependencies": {
     "@apollo/server": "^4.10.1",
     "@as-integrations/fastify": "^2.1.1",
+    "@google/generative-ai": "^0.5.0",
     "@graphql-tools/utils": "^10.1.2",
     "@nestjs/apollo": "^12.1.0",
     "@nestjs/cache-manager": "^2.2.1",

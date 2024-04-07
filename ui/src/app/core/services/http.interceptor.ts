@@ -6,7 +6,6 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { XMessageRef, XMessageService } from '@ng-nest/ui/message';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { AppAuthService } from './auth.service';
@@ -18,7 +17,6 @@ export function AppNoopInterceptor(
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
   const message = inject(XMessageService);
-  const router = inject(Router);
   const auth = inject(AppAuthService);
   let headers: { [key: string]: string } = {};
   let addTokens = ['graphql', 'api'];
@@ -38,16 +36,16 @@ export function AppNoopInterceptor(
       if (x instanceof HttpResponse) {
         const body: any = x.body;
         if (body.data === null && body.errors.length > 0) {
-          let msg = body.errors.map((y: any) => y.message);
-          if (msg.includes('Unauthorized')) {
-            router.navigateByUrl('/login').then(() => {
-              auth.accessToken.set(null);
-            });
+          let msgs = body.errors.map((y: any) => y.message);
+          let codes = body.errors.map((y: any) => y.code);
+          if (codes.includes('UNAUTHENTICATED')) {
+            auth.accessToken.set('');
+            auth.toLoginPage();
           }
           if (!Boolean(messageRef?.opened())) {
-            messageRef = message.error({ content: msg });
+            messageRef = message.error({ content: msgs });
           }
-          throwError(() => new Error(msg));
+          throwError(() => new Error(msgs));
         }
         return x;
       }
@@ -63,9 +61,8 @@ export function AppNoopInterceptor(
         }
       }
       if (x.status === 401) {
-        router.navigateByUrl('/login').then(() => {
-          auth.accessToken.set(null);
-        });
+        auth.accessToken.set('');
+        auth.toLoginPage();
       }
       if (!Boolean(messageRef?.opened())) {
         messageRef = message.error({ content: msg });
