@@ -47,7 +47,7 @@ const dailyFormat = {
     winston.format.ms(),
     winston.format.splat(),
     winston.format.printf((info) => {
-      LoggerConsole.info(info.message, info);
+      LOGGER_CONSOLE.info(info.message, info);
       return JSON.stringify(info);
     }),
   ),
@@ -60,7 +60,7 @@ const consoleFormat = {
     winston.format.splat(),
     winston.format.printf((info) => {
       let { context, level, timestamp, message, ms } = info;
-      LogsSubject.next(info);
+      LOGS_SUBJECT.next(info);
       if (timestamp) {
         try {
           if (timestamp === new Date(timestamp).toISOString()) {
@@ -131,7 +131,7 @@ const LoggerCache = winstonLogger('cache');
 const LoggerHttp = winstonLogger('http');
 const LoggerPrisma = winstonLogger('prisma');
 
-export const loggerLevels = {
+export const LOGGER_LEVELS = {
   error: 0,
   warn: 1,
   info: 2,
@@ -151,12 +151,12 @@ export function getRequestLogs(request: Request) {
   };
 }
 
-export const LoggerInstance = winston.createLogger(loggerDailyOptions);
-export const LoggerConsole = winston.createLogger(loggerConsoleOptions);
+export const LOGGER_INSTANCE = winston.createLogger(loggerDailyOptions);
+export const LOGGER_CONSOLE = winston.createLogger(loggerConsoleOptions);
 
-export const LogsSubject = new Subject<winston.Logform.TransformableInfo>();
+export const LOGS_SUBJECT = new Subject<winston.Logform.TransformableInfo>();
 
-export const Logs: LoggerType = {
+export const LOGS: LoggerType = {
   error: (msg: string, params?: LoggerParams) => {
     params.timestamp = params.timestamp || new Date().toISOString();
     LoggerError.error(msg, { ...params });

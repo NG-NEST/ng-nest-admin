@@ -16,13 +16,13 @@ import {
   AIGC_MODELS,
   AIGC_TYPES,
   AigcDescription,
-  AigcI18n,
+  AIGC_I18N,
   AigcMessageInput,
   AigcModel,
   AigcService,
   AigcStreamOutput,
   AigcType,
-  AuthI18n,
+  AUTH_I18N,
   AuthService,
   AuthUnauthorized,
   JWT_CONSTANTS,
@@ -46,7 +46,7 @@ export class AigcGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!payload) {
       socket.emit('error', {
         status: HttpStatus.UNAUTHORIZED,
-        message: this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Unauthorized}`, headers),
+        message: this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Unauthorized}`, headers),
         error: true,
         code: AuthUnauthorized.Unauthorized,
       });
@@ -57,7 +57,7 @@ export class AigcGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('error', {
         status: HttpStatus.BAD_REQUEST,
         message: this.i18n.t(
-          `${AigcI18n}.${AigcDescription.Type}${ValidatorDescription.IsIn}`,
+          `${AIGC_I18N}.${AigcDescription.Type}${ValidatorDescription.IsIn}`,
           headers,
         ),
         error: true,
@@ -68,7 +68,7 @@ export class AigcGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('error', {
         status: HttpStatus.BAD_REQUEST,
         message: this.i18n.t(
-          `${AigcI18n}.${AigcDescription.Model}${ValidatorDescription.IsIn}`,
+          `${AIGC_I18N}.${AigcDescription.Model}${ValidatorDescription.IsIn}`,
           headers,
         ),
         error: true,

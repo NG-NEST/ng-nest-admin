@@ -1,4 +1,4 @@
-export const UploadI18n = 'upload';
+export const UPLOAD_I18N = 'upload';
 
 export enum UploadAuth {}
 
@@ -16,11 +16,4 @@ export enum UploadDescription {
   Url = 'Url',
 
   Filepath = 'Filepath',
-}
-
-export enum UploadStatus {
-  Ready = 'ready',
-  Uploading = 'uploading',
-  Completed = 'completed',
-  Failed = 'failed',
 }

@@ -104,7 +104,7 @@ export class AigcComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit() {
-    this.form = this.fb.group({ content: ['使用 javascript 正则匹配指定首位为换行符的字符'] });
+    this.form = this.fb.group({ content: [''] });
     this.createSocket();
   }
 
@@ -116,6 +116,10 @@ export class AigcComponent implements OnInit, OnDestroy {
   sourceChange(source: any) {
     this.activeSource.set(source.data);
     this.activeModel.set(this.activeSource().models[0]);
+    this.createSocket();
+  }
+
+  modelChange() {
     this.createSocket();
   }
 
@@ -187,6 +191,8 @@ export class AigcComponent implements OnInit, OnDestroy {
       this.isLoading.set(true);
       this.socket.emit('text-generation', this.list);
       this.list.push({ role: 'assistant', content: '' });
+
+      this.form.patchValue({ content: '' });
     }
   }
 

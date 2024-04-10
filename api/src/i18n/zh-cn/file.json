@@ -1,0 +1,12 @@
+{
+  "UidIsNotEmpty": "Uid 不能为空",
+  "NameIsNotEmpty": "名称不能为空",
+  "ActualnameIsNotEmpty": "实际名称不能为空",
+  "StatusIsNotEmpty": "状态不能为空",
+  "StatusIsIn": "状态必须在指定的列表中",
+  "SizeIsNotEmpty": "文件大小不能为空",
+  "MimetypeIsNotEmpty": "文件类型不能为空",
+  "KeyIsNotEmpty": "文件路径不能为空",
+  "KeyIsExist": "文件路径已经存在",
+  "UrlIsNotEmpty": "文件地址不能为空"
+}

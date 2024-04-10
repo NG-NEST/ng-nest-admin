@@ -138,3 +138,26 @@ model Schema {
 
   @@map("sys-schema")
 }
+
+enum FileStatus {
+  Ready
+  Uploading
+  Completed
+  Failed
+}
+
+model File {
+  id         String     @id @default(uuid())
+  uid        String
+  key        String     @unique
+  mimetype   String
+  name       String
+  actualname String
+  size       Int
+  status     FileStatus
+  url        String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("sys-file")
+}

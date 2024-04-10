@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const SchemaI18n = 'schema';
+export const SCHEMA_I18N = 'schema';
 
 export enum SchemaAuth {
   SchemaCreate = 'schema-create',

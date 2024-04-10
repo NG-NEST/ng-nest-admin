@@ -14,7 +14,7 @@
           [style.width.rem]="10"
           [data]="node.data.models"
           [ngModel]="activeModel()"
-          (ngModelChange)="activeModel.set($event)"
+          (ngModelChange)="activeModel.set($event); modelChange()"
           [bordered]="false"
         ></x-select>
       </div>

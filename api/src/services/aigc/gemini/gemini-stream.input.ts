@@ -10,5 +10,11 @@ export class GeminiMessage {
 }
 
 export class GeminiPart {
-  text: string;
+  text?: string;
+  inlineData?: GeminiInlineData;
+}
+
+export class GeminiInlineData {
+  mimeType: string;
+  data: string;
 }

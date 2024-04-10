@@ -1,4 +1,4 @@
-export const AuthI18n = 'auth';
+export const AUTH_I18N = 'auth';
 
 export enum AuthDescription {
   AccessToken = 'AccessToken',

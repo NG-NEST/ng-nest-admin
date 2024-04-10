@@ -66,6 +66,10 @@ export class GeminiService {
       let start = 0;
 
       child.stdout.on('data', (buffer: Buffer) => {
+        console.log('==========');
+        console.log(buffer.toString());
+        console.log('==========');
+
         surplus = surplus ? Buffer.concat([surplus, buffer]) : buffer;
         const { analyzed, end } = this.matchBuffer(surplus, start);
         start = end + 1;

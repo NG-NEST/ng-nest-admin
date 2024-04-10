@@ -45,6 +45,18 @@ export type I18nTranslations = {
         "SortIsNotEmpty": string;
         "SortIsNotNumber": string;
     };
+    "file": {
+        "UidIsNotEmpty": string;
+        "NameIsNotEmpty": string;
+        "ActualnameIsNotEmpty": string;
+        "StatusIsNotEmpty": string;
+        "StatusIsIn": string;
+        "SizeIsNotEmpty": string;
+        "MimetypeIsNotEmpty": string;
+        "KeyIsNotEmpty": string;
+        "KeyIsExist": string;
+        "UrlIsNotEmpty": string;
+    };
     "language": {
         "LanguageIdIsNotEmpty": string;
         "KeyIsNotEmpty": string;
@@ -63,11 +75,6 @@ export type I18nTranslations = {
         "SortIsNotNumber": string;
         "ResourceIdIsNotEmpty": string;
         "ResourceIdIsNotExist": string;
-    };
-    "qwen": {
-        "ModelIsNotEmpty": string;
-        "ModelIsIn": string;
-        "PromptIsNotEmpty": string;
     };
     "resource": {
         "ResourceIdIsNotEmpty": string;

@@ -10,7 +10,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { JwtService } from '@nestjs/jwt';
 import { AUTH, CAPTCHA, JWT_CONSTANTS } from './auth.constants';
 import { LoginInput } from './login.input';
-import { AuthI18n, AuthUnauthorized } from './auth.enum';
+import { AUTH_I18N, AuthUnauthorized } from './auth.enum';
 import { Auth } from './auth.model';
 import { VerifyTokenInput } from './verify-token.input';
 import { VerifyTokenOutput } from './verify-token.output';
@@ -46,7 +46,7 @@ export class AuthService {
       const codeSuccess = cacheCode?.toUpperCase() === code?.toUpperCase();
       if (!codeSuccess) {
         throw new BadRequestException(
-          this.i18n.t(`${AuthI18n}.${AuthUnauthorized.CodeVerificationFailed}`),
+          this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.CodeVerificationFailed}`),
         );
       }
     }
@@ -61,7 +61,7 @@ export class AuthService {
     let id = '';
     const throwMsg = () => {
       throw new UnauthorizedException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.AccountOrPasswordVerificationFailed}`),
+        this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.AccountOrPasswordVerificationFailed}`),
       );
     };
     if (findUser === null) {
@@ -90,7 +90,7 @@ export class AuthService {
   async getCaptcha(codekey: string): Promise<CaptchaObj> {
     if (!codekey) {
       throw new BadRequestException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.IdentificationIsNotEmpty}`),
+        this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.IdentificationIsNotEmpty}`),
       );
     }
     const captcha = create({ noise: 2 });
@@ -115,7 +115,7 @@ export class AuthService {
       return this.createTokens({ id, ...(await this.getUserRolesAndPermissions(id)) }, true);
     } catch (e) {
       throw new UnauthorizedException(
-        this.i18n.t(`${AuthI18n}.${AuthUnauthorized.TokenFailureOrValidationFailure}`),
+        this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.TokenFailureOrValidationFailure}`),
       );
     }
   }

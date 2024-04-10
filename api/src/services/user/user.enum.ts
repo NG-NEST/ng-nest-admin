@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const UserI18n = 'user';
+export const USER_I18N = 'user';
 
 export enum UserAuth {
   UserCreate = 'user-create',

@@ -4,7 +4,7 @@ import { CacheKeysInput } from './cache-keys.input';
 import { Cache } from './cache.model';
 import { CacheUpdateInput } from './update.input';
 import { isEmpty } from 'class-validator';
-import { CacheDescription, CacheI18n } from './cache.enum';
+import { CacheDescription, CACHE_I18N } from './cache.enum';
 
 @Injectable()
 export class CacheService {
@@ -27,7 +27,7 @@ export class CacheService {
     const isExit = await this.redisService.exists(cacheKey);
     if (isExit === 0) {
       throw new BadRequestException(
-        this.i18n.t(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotExist}`),
+        this.i18n.t(`${CACHE_I18N}.${CacheDescription.Key}${ValidatorDescription.IsNotExist}`),
       );
     }
 

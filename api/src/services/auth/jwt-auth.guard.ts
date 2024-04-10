@@ -3,7 +3,7 @@ import { JWT_CONSTANTS } from './auth.constants';
 import { Request } from 'express';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';
-import { AuthI18n, AuthUnauthorized } from './auth.enum';
+import { AUTH_I18N, AuthUnauthorized } from './auth.enum';
 import { IS_PUBLIC_KEY } from './auth.metadata';
 import { AuthService } from './auth.service';
 import { I18nService } from '@api/core';
@@ -35,22 +35,22 @@ export class JwtGuard implements CanActivate {
       request = ctx.getContext().req;
     }
     if (!request) {
-      throw new UnauthorizedException(this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Unauthorized}`));
+      throw new UnauthorizedException(this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Unauthorized}`));
     }
     const token = this.auth.extractTokenFromHeader(request.headers);
     if (!token) {
-      throw new UnauthorizedException(this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Unauthorized}`));
+      throw new UnauthorizedException(this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Unauthorized}`));
     }
     try {
       const payload = await this.auth.verifyToken('accessToken', token, JWT_CONSTANTS.secret);
       if (!payload) {
         throw new UnauthorizedException(
-          this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Unauthorized}`),
+          this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Unauthorized}`),
         );
       }
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException(this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Unauthorized}`));
+      throw new UnauthorizedException(this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Unauthorized}`));
     }
     return true;
   }

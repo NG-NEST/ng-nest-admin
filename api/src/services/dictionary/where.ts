@@ -1,27 +1,27 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { BaseStringFilter, BaseWhereInput, NumberFilter, StringFilter } from '@api/core';
+import { BASE_STRING_FILTER, BaseWhereInput, NumberFilter, StringFilter } from '@api/core';
 import { DictionaryDescription } from './dictionary.enum';
 
 @InputType()
 export class DictionaryWhere {
-  @Field(() => BaseStringFilter, { description: DictionaryDescription.Name, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: DictionaryDescription.Name, nullable: true })
   @IsOptional()
   name?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: DictionaryDescription.Code, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: DictionaryDescription.Code, nullable: true })
   @IsOptional()
   code?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: DictionaryDescription.Sort, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: DictionaryDescription.Sort, nullable: true })
   @IsOptional()
   sort?: NumberFilter;
 
-  @Field(() => BaseStringFilter, { description: DictionaryDescription.Description, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: DictionaryDescription.Description, nullable: true })
   @IsOptional()
   description?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: DictionaryDescription.Pid, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: DictionaryDescription.Pid, nullable: true })
   @IsOptional()
   pid?: StringFilter;
 }

@@ -3,7 +3,7 @@ import { AigcInput } from './aigc.input';
 import { AigcType } from './aigc.enum';
 import { QwenMessage, QwenService, QwenModel } from './dashscope';
 import { GeminiModel, GeminiService } from './gemini';
-import { Observable, of } from 'rxjs';
+import { Observable, delay, of } from 'rxjs';
 import { QianFanModel, QianFanService, QianFanMessage } from './qianfan';
 import { AigcOutput } from './aigc.output';
 import { AigcStreamOutput } from './aigc-stream.output';
@@ -26,7 +26,8 @@ export class AigcService {
     } else if (type === AigcType.QianFan) {
       return this.qianfanService.textGeneration({ model: model as QianFanModel, prompt });
     }
-    return null;
+
+    return await of().pipe(delay(10000)).toPromise();
   }
 
   textGenerationSubject(input: AigcStreamInput): Observable<AigcStreamOutput> {

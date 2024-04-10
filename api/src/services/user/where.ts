@@ -1,9 +1,9 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import {
-  BaseDateTimeFilter,
+  BASE_DATETIME_FILTER,
   BaseDescription,
-  BaseStringFilter,
+  BASE_STRING_FILTER,
   BaseWhereInput,
   DateTimeFilter,
   StringFilter
@@ -12,27 +12,27 @@ import { UserDescription } from './user.enum';
 
 @InputType()
 export class UserWhere {
-  @Field(() => BaseStringFilter, { description: UserDescription.Name, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: UserDescription.Name, nullable: true })
   @IsOptional()
   name?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: UserDescription.Account, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: UserDescription.Account, nullable: true })
   @IsOptional()
   account?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: UserDescription.Email, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: UserDescription.Email, nullable: true })
   @IsOptional()
   email?: StringFilter;
 
-  @Field(() => BaseStringFilter, { description: UserDescription.Phone, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: UserDescription.Phone, nullable: true })
   @IsOptional()
   phone?: StringFilter;
 
-  @Field(() => BaseDateTimeFilter, { description: BaseDescription.CreatedAt, nullable: true })
+  @Field(() => BASE_DATETIME_FILTER, { description: BaseDescription.CreatedAt, nullable: true })
   @IsOptional()
   createdAt?: DateTimeFilter;
 
-  @Field(() => BaseDateTimeFilter, { description: BaseDescription.UpdatedAt, nullable: true })
+  @Field(() => BASE_DATETIME_FILTER, { description: BaseDescription.UpdatedAt, nullable: true })
   @IsOptional()
   updatedAt?: DateTimeFilter;
 }

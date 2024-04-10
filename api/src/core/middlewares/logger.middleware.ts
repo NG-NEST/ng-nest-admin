@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Logs } from '../config';
+import { LOGS } from '../config';
 import {
   ClearCustomHeaders,
   HEADER_CACHE_DATA,
@@ -18,7 +18,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
     const exceptionData = req.headers[HEADER_EXCEPTION_DATA] as string;
     if (res.statusCode >= 400 || exceptionData) {
       ClearCustomHeaders(req);
-      Logs.error(exceptionData, {
+      LOGS.error(exceptionData, {
         context: 'ExceptionsFilter',
         ms: `+${time}ms`,
       });
@@ -29,7 +29,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
     if (cacheData) {
       ClearCustomHeaders(req, request);
       const msg = JSON.stringify({ request, response: { ...cacheData } });
-      Logs.cache(msg, { context: 'CacheInterceptor', ms: `+${time}ms` });
+      LOGS.cache(msg, { context: 'CacheInterceptor', ms: `+${time}ms` });
       return;
     }
     let response = req.headers[HEADER_RESPONSE_DATA];
@@ -42,7 +42,7 @@ export function LoggerMiddleware(req: Request, res: Response, next: NextFunction
       msg = JSON.stringify({ request, response });
     }
 
-    Logs.http(msg, { context: 'TransformInterceptor', ms: `+${time}ms` });
+    LOGS.http(msg, { context: 'TransformInterceptor', ms: `+${time}ms` });
   });
   next();
 }

@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const LanguageI18n = 'language';
+export const LANGUAGE_I18N = 'language';
 
 export enum LanguageAuth {
   LanguageCreate = 'language-create',

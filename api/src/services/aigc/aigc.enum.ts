@@ -2,7 +2,7 @@ import { QwenMessage, QwenModel } from './dashscope';
 import { GeminiModel } from './gemini';
 import { QianFanMessage, QianFanModel } from './qianfan';
 
-export const AigcI18n = 'aigc';
+export const AIGC_I18N = 'aigc';
 
 export enum AigcDescription {
   Type = 'Type',

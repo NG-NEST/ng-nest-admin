@@ -1,4 +1,4 @@
-export const QianFanI18n = 'qianfan';
+export const QIAN_FAN_I18N = 'qianfan';
 
 export enum QianFanDescription {
   Model = 'Model',

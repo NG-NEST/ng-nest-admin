@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AuthI18n, AuthUnauthorized } from './auth.enum';
+import { AUTH_I18N, AuthUnauthorized } from './auth.enum';
 import { IS_PUBLIC_KEY, PERMISSION_KEY } from './auth.metadata';
 import { I18nService } from '@api/core';
 
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
       !user ||
       !requiredPermissions.some((permission) => user.permissions?.includes(permission))
     ) {
-      throw new ForbiddenException(this.i18n.t(`${AuthI18n}.${AuthUnauthorized.Forbidden}`));
+      throw new ForbiddenException(this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Forbidden}`));
     }
     return true;
   }

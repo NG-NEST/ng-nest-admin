@@ -1,33 +1,33 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { IsExist, ValidatorDescription, i18n } from '@api/core';
-import { SubjectDescription, SubjectI18n } from './subject.enum';
+import { IsExist, ValidatorDescription, I18N } from '@api/core';
+import { SubjectDescription, SUBJECT_I18N } from './subject.enum';
 
 @InputType()
 export class SubjectUpdateInput {
   @Field(() => ID, { description: SubjectDescription.Id })
   @IsNotEmpty({
-    message: i18n(`${SubjectI18n}.${SubjectDescription.Id}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${SUBJECT_I18N}.${SubjectDescription.Id}${ValidatorDescription.IsNotEmpty}`),
   })
   id: string;
 
   @Field({ description: SubjectDescription.Name, nullable: true })
   @IsOptional()
   @IsNotEmpty({
-    message: i18n(`${SubjectI18n}.${SubjectDescription.Name}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${SUBJECT_I18N}.${SubjectDescription.Name}${ValidatorDescription.IsNotEmpty}`),
   })
   @IsExist('subject', {
-    message: i18n(`${SubjectI18n}.${SubjectDescription.Name}${ValidatorDescription.IsExist}`),
+    message: I18N(`${SUBJECT_I18N}.${SubjectDescription.Name}${ValidatorDescription.IsExist}`),
   })
   name?: string;
 
   @Field({ description: SubjectDescription.Code, nullable: true })
   @IsOptional()
   @IsNotEmpty({
-    message: i18n(`${SubjectI18n}.${SubjectDescription.Code}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${SUBJECT_I18N}.${SubjectDescription.Code}${ValidatorDescription.IsNotEmpty}`),
   })
   @IsExist('subject', {
-    message: i18n(`${SubjectI18n}.${SubjectDescription.Code}${ValidatorDescription.IsExist}`),
+    message: I18N(`${SUBJECT_I18N}.${SubjectDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code?: string;
 

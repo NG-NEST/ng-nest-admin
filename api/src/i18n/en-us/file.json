@@ -1,0 +1,12 @@
+{
+  "UidIsNotEmpty": "Uid cannot be empty",
+  "NameIsNotEmpty": "The name cannot be empty",
+  "ActualnameIsNotEmpty": "The actual name cannot be empty",
+  "StatusIsNotEmpty": "State cannot be empty",
+  "StatusIsIn": "State must be in the specified list",
+  "SizeIsNotEmpty": "The file size can't be empty",
+  "MimetypeIsNotEmpty": "The file type can't be empty",
+  "KeyIsNotEmpty": "The file path cannot be empty",
+  "KeyIsExist": "The file path already exist",
+  "UrlIsNotEmpty": "The file address cannot be empty"
+}

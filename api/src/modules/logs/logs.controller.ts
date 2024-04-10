@@ -1,4 +1,4 @@
-import { LogsSubject } from '@api/core';
+import { LOGS_SUBJECT } from '@api/core';
 import { LogsService, LogsType } from '@api/services';
 import { Controller, Sse, MessageEvent, Get, Param } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
@@ -9,7 +9,7 @@ export class LogsController {
 
   @Sse()
   sse(): Observable<MessageEvent> {
-    return LogsSubject.pipe(map((x) => ({ data: x })));
+    return LOGS_SUBJECT.pipe(map((x) => ({ data: x })));
   }
 
   @Get(':type/:name')

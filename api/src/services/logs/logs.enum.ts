@@ -1,4 +1,4 @@
-export const LogsI18n = 'logs';
+export const LOGS_I18N = 'logs';
 
 export enum LogsAuth {
   LogsCreate = 'logs-create',

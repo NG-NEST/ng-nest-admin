@@ -70,9 +70,9 @@ export class NumberFilter {
   not?: number;
 }
 
-export const BaseStringFilter: Type<StringFilter> = StringFilter;
-export const BaseDateTimeFilter: Type<DateTimeFilter> = DateTimeFilter;
-export const BaseNumberFilter: Type<NumberFilter> = NumberFilter;
+export const BASE_STRING_FILTER: Type<StringFilter> = StringFilter;
+export const BASE_DATETIME_FILTER: Type<DateTimeFilter> = DateTimeFilter;
+export const BASE_NUMBER_FILTER: Type<NumberFilter> = NumberFilter;
 
 @InputType()
 export class BaseOrder {

@@ -1,5 +1,0 @@
-{
-  "ModelIsNotEmpty": "Model cannot be empty",
-  "ModelIsIn": "Model must be specified in the list",
-  "PromptIsNotEmpty": "Prompt cannot be empty"
-}

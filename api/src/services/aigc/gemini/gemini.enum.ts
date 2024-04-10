@@ -1,4 +1,4 @@
-export const GeminiI18n = 'gemini';
+export const GEMINI_I18N = 'gemini';
 
 export enum GeminiDescription {
   Model = 'Model',

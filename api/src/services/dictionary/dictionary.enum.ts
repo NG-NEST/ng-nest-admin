@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const DictionaryI18n = 'dictionary';
+export const DICTIONARY_I18N = 'dictionary';
 
 export enum DictionaryAuth {
   DictionaryCreate = 'dictionary-create',

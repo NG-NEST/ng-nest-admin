@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const RoleI18n = 'role';
+export const ROLE_I18N = 'role';
 
 export enum RoleAuth {
   RoleCreate = 'role-create',

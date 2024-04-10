@@ -13,7 +13,7 @@ import { I18nTranslations } from 'src/generated/i18n.generated';
 import { getRequestLogs } from './logger.config';
 import { ClearCustomHeaders, HEADER_EXCEPTION_DATA } from '../common';
 
-export const i18nConfig: I18nAsyncOptions = {
+export const I18N_CONFING: I18nAsyncOptions = {
   useFactory: (configService: ConfigService) => ({
     fallbackLanguage: configService.getOrThrow('LANGUAGE'),
     loaderOptions: {
@@ -30,7 +30,7 @@ export const i18nConfig: I18nAsyncOptions = {
   inject: [ConfigService],
 };
 
-export const i18n = i18nValidationMessage<I18nTranslations>;
+export const I18N = i18nValidationMessage<I18nTranslations>;
 
 export function responseBodyFormatter(
   host: ArgumentsHost,

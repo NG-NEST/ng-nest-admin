@@ -1,4 +1,4 @@
-export const CacheI18n = 'cache';
+export const CACHE_I18N = 'cache';
 
 export enum CacheAuth {
   CacheCreate = 'cache-create',

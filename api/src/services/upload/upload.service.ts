@@ -1,12 +1,16 @@
 import { CosService } from '@api/core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-import { UploadStatus } from './upload.enum';
 import { UploadInput } from './upload.input';
+import { PutObjectResult } from 'cos-nodejs-sdk-v5';
+import { FileService, FileStatus } from '../file';
 
 @Injectable()
 export class UploadService {
-  constructor(private readonly cos: CosService) {}
+  constructor(
+    private readonly cos: CosService,
+    private readonly file: FileService,
+  ) {}
 
   async uploadCos(file: Express.Multer.File, body: UploadInput) {
     let { filepath, actualname, uid } = body;
@@ -22,19 +26,21 @@ export class UploadService {
           Key: key,
           Body: file.buffer,
         })
-        .then(async (res: any) => {
+        .then(async (res: PutObjectResult) => {
           const upload = {
             size,
-            name: name,
+            name,
             actualname,
-            status: UploadStatus.Completed,
+            status: FileStatus.Completed,
             mimetype,
             key,
             uid,
             url: res.Location,
           };
 
-          resolve(upload);
+          const result = await this.file.create(upload);
+
+          resolve(result);
         })
         .catch((e) => {
           throw new BadRequestException(e);

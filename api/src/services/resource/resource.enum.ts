@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const ResourceI18n = 'resource';
+export const RESOURCE_I18N = 'resource';
 
 export enum ResourceAuth {
   ResourceCreate = 'resource-create',

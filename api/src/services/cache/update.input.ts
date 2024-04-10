@@ -1,13 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { CacheDescription, CacheI18n } from './cache.enum';
+import { CacheDescription, CACHE_I18N } from './cache.enum';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { ValidatorDescription, i18n } from '@api/core';
+import { ValidatorDescription, I18N } from '@api/core';
 
 @InputType()
 export class CacheUpdateInput {
   @Field(() => String, { description: CacheDescription.Key })
   @IsNotEmpty({
-    message: i18n(`${CacheI18n}.${CacheDescription.Key}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${CACHE_I18N}.${CacheDescription.Key}${ValidatorDescription.IsNotEmpty}`),
   })
   key: string;
 

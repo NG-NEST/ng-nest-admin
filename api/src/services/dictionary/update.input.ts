@@ -1,14 +1,14 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { IsExist, IsNotExist, ValidatorDescription, i18n } from '@api/core';
-import { DictionaryDescription, DictionaryI18n } from './dictionary.enum';
+import { IsExist, IsNotExist, ValidatorDescription, I18N } from '@api/core';
+import { DictionaryDescription, DICTIONARY_I18N } from './dictionary.enum';
 
 @InputType()
 export class DictionaryUpdateInput {
   @Field(() => ID, { description: DictionaryDescription.Id })
   @IsNotEmpty({
-    message: i18n(
-      `${DictionaryI18n}.${DictionaryDescription.Id}${ValidatorDescription.IsNotEmpty}`,
+    message: I18N(
+      `${DICTIONARY_I18N}.${DictionaryDescription.Id}${ValidatorDescription.IsNotEmpty}`,
     ),
   })
   id: string;
@@ -16,14 +16,14 @@ export class DictionaryUpdateInput {
   @Field({ description: DictionaryDescription.Name, nullable: true })
   @IsOptional()
   @IsExist('dictionary', {
-    message: i18n(`${DictionaryI18n}.${DictionaryDescription.Name}${ValidatorDescription.IsExist}`),
+    message: I18N(`${DICTIONARY_I18N}.${DictionaryDescription.Name}${ValidatorDescription.IsExist}`),
   })
   name?: string;
 
   @Field({ description: DictionaryDescription.Code, nullable: true })
   @IsOptional()
   @IsExist('dictionary', {
-    message: i18n(`${DictionaryI18n}.${DictionaryDescription.Code}${ValidatorDescription.IsExist}`),
+    message: I18N(`${DICTIONARY_I18N}.${DictionaryDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code?: string;
 
@@ -32,8 +32,8 @@ export class DictionaryUpdateInput {
   @IsNumber(
     {},
     {
-      message: i18n(
-        `${DictionaryI18n}.${DictionaryDescription.Sort}${ValidatorDescription.IsNotNumber}`,
+      message: I18N(
+        `${DICTIONARY_I18N}.${DictionaryDescription.Sort}${ValidatorDescription.IsNotNumber}`,
       ),
     },
   )
@@ -46,8 +46,8 @@ export class DictionaryUpdateInput {
   @Field(() => ID, { description: DictionaryDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('dictionary', {
-    message: i18n(
-      `${DictionaryI18n}.${DictionaryDescription.Pid}${ValidatorDescription.IsNotExist}`,
+    message: I18N(
+      `${DICTIONARY_I18N}.${DictionaryDescription.Pid}${ValidatorDescription.IsNotExist}`,
     ),
     context: { relation: 'id' },
   })

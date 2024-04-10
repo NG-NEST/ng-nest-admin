@@ -1,6 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { FastifyRequest } from 'fastify';
 import { Observable } from 'rxjs';
 import { FILE_METADATA } from '../decorators';
 
@@ -15,15 +14,36 @@ export class FileInterceptor implements NestInterceptor {
       return next.handle();
     }
     try {
-      console.log(key);
-      const req = context.switchToHttp().getRequest<FastifyRequest>();
+      const req = context.switchToHttp().getRequest();
       const parts = req.parts();
+      let body: { [key: string]: any } = {};
+      let file: Express.Multer.File;
       for await (let part of parts) {
-        console.log(part);
+        const { fieldname } = part;
+        if (part.type === 'file' && fieldname === key) {
+          const buffer = await part.toBuffer();
+          file = {
+            fieldname: fieldname,
+            originalname: part.filename,
+            encoding: part.encoding,
+            mimetype: part.mimetype,
+            destination: null,
+            filename: part.filename,
+            path: null,
+            size: buffer.length,
+            buffer: buffer,
+            stream: part.file,
+          };
+        } else if (part.type === 'field') {
+          body[fieldname] = part.value;
+        }
       }
 
+      if (file) req.file = file;
+      if (Object.keys(body).length > 0) req.body = body;
+
       return next.handle();
-    } catch {
+    } catch (e: any) {
       return next.handle();
     }
   }

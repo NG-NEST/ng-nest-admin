@@ -1,4 +1,4 @@
-export const QwenI18n = 'qwen';
+export const QWEN_I18N = 'qwen';
 
 export enum QwenDescription {
   Model = 'Model',

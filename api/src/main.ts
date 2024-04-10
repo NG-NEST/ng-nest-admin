@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import {
   AllExceptionsFilter,
   // WsAdapter,
-  LoggerInstance,
+  LOGGER_INSTANCE,
   LoggerMiddleware,
   RedisIoAdapter,
   TransformInterceptor,
@@ -19,7 +19,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
     cors: true,
     logger: WinstonModule.createLogger({
-      instance: LoggerInstance,
+      instance: LOGGER_INSTANCE,
     }),
   });
   app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));

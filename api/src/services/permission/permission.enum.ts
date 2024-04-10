@@ -1,5 +1,5 @@
 import { ID } from '@nestjs/graphql';
-export const PermissionI18n = 'permission';
+export const PERMISSION_I18N = 'permission';
 
 export enum PermissionAuth {
   PermissionCreate = 'permission-create',

@@ -16,7 +16,7 @@ import {
   UploadModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
-import { GlobalModule, grapgQLConfig, i18nConfig } from '@api/core';
+import { GlobalModule, grapgQLConfig, I18N_CONFING } from '@api/core';
 import { I18nModule } from 'nestjs-i18n';
 import { CacheModule } from '@nestjs/cache-manager';
 
@@ -24,7 +24,7 @@ import { CacheModule } from '@nestjs/cache-manager';
   imports: [
     GlobalModule,
     GraphQLModule.forRoot(grapgQLConfig()),
-    I18nModule.forRootAsync(i18nConfig),
+    I18nModule.forRootAsync(I18N_CONFING),
     CacheModule.register({
       isGlobal: true,
     }),
