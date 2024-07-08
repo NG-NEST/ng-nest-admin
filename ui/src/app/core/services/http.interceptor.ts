@@ -43,7 +43,7 @@ export function AppNoopInterceptor(
             auth.toLoginPage();
           }
           if (!Boolean(messageRef?.opened())) {
-            messageRef = message.error({ content: msgs });
+            messageRef = message.error(msgs);
           }
           throwError(() => new Error(msgs));
         }
@@ -65,7 +65,7 @@ export function AppNoopInterceptor(
         auth.toLoginPage();
       }
       if (!Boolean(messageRef?.opened())) {
-        messageRef = message.error({ content: msg });
+        messageRef = message.error(msg);
       }
 
       return throwError(() => new Error(msg));

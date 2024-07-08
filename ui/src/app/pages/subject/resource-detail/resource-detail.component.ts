@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -31,12 +31,6 @@ import { XTextareaComponent } from '@ng-nest/ui/textarea';
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<ResourceDetailComponent>);
-  data = inject(X_DIALOG_DATA) as {
-    id: string;
-    title: string;
-    subjectId: string;
-    saveSuccess: () => void;
-  };
   id = '';
   title = '';
   subjectId = '';
@@ -50,6 +44,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
   $destroy = new Subject<void>();
   constructor(
+    @Inject(X_DIALOG_DATA)
+    public data: { id: string; title: string; subjectId: string; saveSuccess: () => void },
     private resource: ResourceService,
     private subject: SubjectService,
     private fb: FormBuilder,
@@ -72,8 +68,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     this.subjectId = subjectId;
     if (subjectId) this.form.patchValue({ subjectId });
     const request: Observable<any>[] = [this.getSubjectSelect(), this.getResourceSelect()];
+    this.form.controls['subjectId'].disable();
     if (this.id) {
-      this.form.controls['subjectId'].disable();
       request.push(this.getResource());
     }
     this.formLoading = true;
@@ -129,7 +125,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   }
 
   getResourceSelect() {
-    return this.resource.resourceSelect({ where: { subjectId: this.subjectId } }).pipe(
+    return this.resource.resourceSelect({ where: { subjectId: { equals: this.subjectId } } }).pipe(
       tap((x) => {
         this.resources = x.map((y) => ({
           label: y.name,

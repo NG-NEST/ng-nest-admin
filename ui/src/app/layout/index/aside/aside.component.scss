@@ -64,6 +64,7 @@
     &-menus {
       position: relative;
       z-index: 10;
+      padding: 0 1rem;
       ::ng-deep .x-menu-nodes .x-menu-node {
         border-right: none;
         color: $--x-primary-900;

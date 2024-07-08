@@ -30,6 +30,7 @@
     <x-table
       ngSkipHydration
       #tableCom
+      [bordered]="true"
       [data]="data"
       [columns]="columns"
       [(index)]="index"
@@ -40,8 +41,6 @@
       [rowHeight]="0"
       [sizeData]="[10, 20, 50, 100]"
       [showJump]="true"
-      [scroll]="{ x: 1200, y: 400 }"
-      [virtualScroll]="true"
       [bodyColumnTpl]="{ operate: this.operateTpl, roles: this.rolesTpl }"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"

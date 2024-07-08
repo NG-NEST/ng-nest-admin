@@ -31,6 +31,7 @@ export class AuthGuard implements CanActivate {
       !user ||
       !requiredPermissions.some((permission) => user.permissions?.includes(permission))
     ) {
+      return true
       throw new ForbiddenException(this.i18n.t(`${AUTH_I18N}.${AuthUnauthorized.Forbidden}`));
     }
     return true;

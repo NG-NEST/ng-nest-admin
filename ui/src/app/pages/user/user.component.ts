@@ -39,16 +39,13 @@ export class UserComponent {
   });
 
   columns: XTableColumn[] = [
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+    { id: 'index', type: 'index', label: BaseDescription.Index, width: 70 },
     { id: 'name', label: UserDescription.Name, width: 120 },
     { id: 'account', label: UserDescription.Account, width: 120 },
     { id: 'roles', label: RoleDescription.Role },
     { id: 'email', label: UserDescription.Email },
     { id: 'phone', label: UserDescription.Phone, width: 160 },
-
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 160 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 160 },
-    { id: 'operate', label: BaseDescription.Operate, width: 200, right: 0 }
+    { id: 'operate', label: BaseDescription.Operate, width: 200 }
   ];
 
   total = 0;

@@ -1,10 +1,16 @@
-import { Observable, mergeMap } from 'rxjs';
+import { Observable, concatMap } from 'rxjs';
 import { AppAuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { AppPrismService } from './prism.service';
+import { AppLocaleService } from './locale.service';
 
 export function AppInitializer(): () => Observable<boolean> {
   const prism = inject(AppPrismService);
   const auth = inject(AppAuthService);
-  return () => auth.check().pipe(mergeMap(() => prism.init()));
+  const locale = inject(AppLocaleService);
+  return () =>
+    locale.init().pipe(
+      concatMap(() => auth.check()),
+      concatMap(() => prism.init())
+    );
 }

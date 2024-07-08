@@ -3,7 +3,7 @@ import { XConfig } from '@ng-nest/ui/core';
 export const NgNestConfig: XConfig = {
   components: {
     pagination: {
-      space: 0.8
+      space: '0.8rem'
     },
     table: {
       rowHeight: 38
@@ -13,6 +13,10 @@ export const NgNestConfig: XConfig = {
     }
   },
   theme: {
-    colors: { primary: '#4096ff' }
+    colors: { primary: '#4096ff' },
+    vars: {
+      borderRadius: '0.25rem',
+      borderSmallRadius: '0.125rem'
+    }
   }
 };

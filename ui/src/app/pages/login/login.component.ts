@@ -59,18 +59,17 @@ export class LoginComponent {
   }
 
   submit() {
-    const t = this.i18n.translate;
     const { account, password, code } = this.form.value;
     if (isEmpty(account)) {
-      this.message.warning(t('login.please-input-account'));
+      this.message.warning(this.i18n.translate('login.please-input-account'));
       return;
     }
     if (isEmpty(password)) {
-      this.message.warning(t('login.please-input-password'));
+      this.message.warning(this.i18n.translate('login.please-input-password'));
       return;
     }
     if (isEmpty(code)) {
-      this.message.warning(t('login.please-input-code'));
+      this.message.warning(this.i18n.translate('login.please-input-code'));
       return;
     }
     this.loginLoading.set(true);

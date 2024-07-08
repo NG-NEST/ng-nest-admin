@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthResolver } from './auth.resolver';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
-import { AuthService, JwtGuard, AuthGuard, JWT_CONSTANTS } from '@api/services';
+import { AuthGuard, AuthService, JWT_CONSTANTS, JwtGuard } from '@api/services';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({

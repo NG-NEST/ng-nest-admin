@@ -16,12 +16,8 @@ export const LayoutRoutes: Routes = [
     },
     canActivate: [AppCanActivate]
   },
-  {
-    path: 'aigc',
-    loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes)
-  },
 
-  { path: '', redirectTo: 'aigc', pathMatch: 'full' }
+  { path: '', redirectTo: 'index', pathMatch: 'full' }
 ];
 
 export const AppRoutes: Routes = [
@@ -45,6 +41,11 @@ export const AppRoutes: Routes = [
     path: 'subject',
     loadChildren: () =>
       import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes),
+    canActivate: [AppCanActivate]
+  },
+  {
+    path: 'aigc',
+    loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes),
     canActivate: [AppCanActivate]
   },
 

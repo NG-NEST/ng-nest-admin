@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -31,7 +31,6 @@ import { XData } from '@ng-nest/ui/core';
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<UserDetailComponent>);
-  data = inject(X_DIALOG_DATA) as { id: string; saveSuccess: () => void };
   user = inject(UserService);
   fb = inject(FormBuilder);
   message = inject(XMessageService);
@@ -46,6 +45,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
+
+  constructor(@Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void }) {}
 
   ngOnInit(): void {
     this.role.roleSelect({}).subscribe((x) => {

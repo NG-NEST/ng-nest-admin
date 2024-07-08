@@ -104,7 +104,8 @@ export class SubjectComponent {
     this.getTableData();
   }
 
-  activatedRowChange(item: XTableRow) {
+  activatedRowChange(item?: XTableRow) {
+    if (!item) return;
     this.selectedSubject.set(item as Subject);
     this.getResourceTableData();
   }

@@ -137,14 +137,14 @@ input {
   .list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 2rem;
     padding: 1.25rem 0;
     .item {
       display: flex;
       align-items: flex-start;
       label {
         width: 8.625rem;
-        line-height: 1.75rem;
+        line-height: 2.25rem;
         text-align: right;
       }
       &.required {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -22,7 +22,6 @@ import { Observable, Subject, finalize } from 'rxjs';
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<RoleDetailComponent>);
-  data = inject(X_DIALOG_DATA) as { id: string; saveSuccess: () => void };
   id = '';
 
   formLoading = false;
@@ -32,6 +31,7 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
 
   $destroy = new Subject<void>();
   constructor(
+    @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
     private role: RoleService,
     private fb: FormBuilder,
     private message: XMessageService,

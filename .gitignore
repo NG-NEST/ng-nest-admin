@@ -1,6 +1,5 @@
 api/node_modules
 api/dist
-api/prisma/migrations
 api/logs
 api/.env
 ui/node_modules
