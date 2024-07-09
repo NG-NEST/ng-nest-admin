@@ -1,8 +1,8 @@
 import { Injectable, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { XStorageService } from '@ng-nest/ui/core';
 import { AuthService, User } from '@ui/api';
-import { Observable, concatMap, finalize, map, of, tap } from 'rxjs';
+import { Observable, concatMap, finalize, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AppAuthService {
@@ -23,51 +23,25 @@ export class AppAuthService {
     });
   }
 
-  check(route?: ActivatedRouteSnapshot) {
+  check(route?: ActivatedRouteSnapshot | null, init = false) {
+    if (init) {
+      return this.verifyLogin();
+    }
     if (route && route.data) {
       const { login } = route.data;
       if (login) {
-        if (this.accessToken() && this.accessToken() !== 'null') {
-          const url = new URL(location.href);
-          const searchParams = new URLSearchParams(url.search);
-          const redirect = searchParams.get('redirect');
-          if (redirect) {
-            return this.verifyToken(this.accessToken()).pipe(
-              map((x) => {
-                if (x) {
-                  location.href = `${redirect}?accessToken=${this.accessToken()}`;
-                  return false;
-                } else {
-                  this.toLoginPage({
-                    redirect,
-                    appid: searchParams.get('appid')
-                  });
-                  return true;
-                }
-              })
-            );
-          } else {
-            return this.verifyToken(this.accessToken()).pipe(
-              map((x) => {
-                if (x) {
-                  this.router.navigateByUrl('/overview');
-                } else {
-                  this.toLoginPage();
-                }
-                return x;
-              })
-            );
-          }
-        } else {
-          return of(true);
-        }
+        return of(true);
       }
     }
-    if (this.accessToken() && this.accessToken() !== 'null') {
-      return this.verifyToken(this.accessToken()).pipe(
-        map((x: boolean) => {
-          if (!x) this.toLoginPage();
-          return x;
+    if (this.accessToken()) {
+      return this.verifyToken().pipe(
+        concatMap((x) => {
+          if (x) {
+            return this.getUserInfo();
+          } else {
+            this.toLoginPage();
+          }
+          return of(false);
         })
       );
     } else {
@@ -78,24 +52,45 @@ export class AppAuthService {
         })
       );
     }
-    if (this.accessToken()) {
-      if (!this.userInfo()) {
-        return this.getUserInfo();
-      } else {
-        return of(true);
-      }
+  }
+
+  verifyLogin() {
+    if (!this.accessToken()) {
+      return of(true);
+    }
+    const url = new URL(location.href);
+    const searchParams = new URLSearchParams(url.search);
+    const redirect = searchParams.get('redirect');
+    if (redirect) {
+      return this.verifyToken().pipe(
+        map((x) => {
+          if (x) {
+            location.href = `${redirect}?accessToken=${this.accessToken()}`;
+            return false;
+          } else {
+            this.toLoginPage(true);
+            return true;
+          }
+        })
+      );
     } else {
-      this.router.navigate(['/login']);
-      return of(false);
+      return this.verifyToken().pipe(
+        map((x) => {
+          if (!x) {
+            this.toLoginPage();
+          }
+          return x;
+        })
+      );
     }
   }
 
-  verifyToken(accessToken: string): Observable<boolean> {
-    return this.auth.verifyToken({ accessToken }).pipe(
+  verifyToken(): Observable<boolean> {
+    return this.auth.verifyToken({ accessToken: this.accessToken() }).pipe(
       map((x: any) => x.accessToken),
       map((x: boolean) => {
         if (!x) {
-          this.accessToken.set('');
+          this.clear();
         }
         return x;
       })
@@ -104,11 +99,9 @@ export class AppAuthService {
 
   getUserInfo() {
     return this.auth.userInfo().pipe(
-      tap((user) => {
+      map((user) => {
         this.userInfo.set(user);
-      }),
-      concatMap(() => {
-        return of(true);
+        return true;
       })
     );
   }
@@ -116,14 +109,30 @@ export class AppAuthService {
   logout() {
     return of(true).pipe(
       finalize(() => {
-        this.accessToken.set(null);
-        this.refreshToken.set(null);
-        this.router.navigate(['/login']);
+        this.clear();
+        this.toLoginPage();
       })
     );
   }
 
-  toLoginPage(queryParams: Params | null = null) {
-    this.router.navigate(['/login'], { queryParams });
+  clear() {
+    this.userInfo.set(null);
+    this.accessToken.set(null);
+    this.refreshToken.set(null);
+  }
+
+  toLoginPage(isRedirect = false) {
+    if (isRedirect) {
+      const url = new URL(location.href);
+      const searchParams = new URLSearchParams(url.search);
+      const redirect = searchParams.get('redirect');
+      if (redirect !== null) {
+        this.router.navigate(['/login'], { queryParams: { redirect } });
+      } else {
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }

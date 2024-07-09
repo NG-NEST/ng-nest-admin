@@ -87,7 +87,7 @@ export class LoginComponent {
           if (this.redirect()) {
             location.href = `${this.redirect()}?accessToken=${accessToken}`;
           } else {
-            this.router.navigateByUrl('/index');
+            this.router.navigateByUrl('/');
           }
         },
         error: () => {

@@ -134,7 +134,10 @@ input {
 }
 
 .app-dialog-form {
-  .list {
+  .title {
+    border-bottom: $--x-border-base;
+  }
+  .content {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -158,6 +161,12 @@ input {
         }
       }
     }
+  }
+  .actions {
+    x-button {
+      min-width: 120px;
+    }
+    border-top: $--x-border-base;
   }
 }
 

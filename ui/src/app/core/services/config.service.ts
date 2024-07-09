@@ -34,8 +34,8 @@ export class AppConfigService {
         }
       }
     };
-    if (arr.length > 2) {
-      setList(arr[2]);
+    if (arr.length > 1 && arr[1] !== '') {
+      setList(arr[1]);
     } else if (arr.length === 2 && arr[1] === '') {
       setList('overview');
     }

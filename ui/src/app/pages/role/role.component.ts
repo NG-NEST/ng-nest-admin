@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Role, RoleDescription, RoleService, RoleWhereInput } from '@ui/api';
@@ -35,22 +35,22 @@ export class RoleComponent {
     name: [null]
   });
 
-  columns: XTableColumn[] = [
+  columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
     { id: 'name', label: RoleDescription.Name },
     { id: 'description', label: RoleDescription.Description },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 160 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 160 },
+    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
+    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
     { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
-  ];
+  ]);
 
-  total = 0;
-  index = 1;
-  size = 10;
-  tableLoading = false;
-  resetLoading = false;
-  searchLoading = false;
-  data: Role[] = [];
+  total = signal(0);
+  index = signal(1);
+  size = signal(10);
+  tableLoading = signal(false);
+  resetLoading = signal(false);
+  searchLoading = signal(false);
+  data = signal<Role[]>([]);
 
   @ViewChild('tableCom') tableCom!: XTableComponent;
 
@@ -72,23 +72,23 @@ export class RoleComponent {
   }
 
   sizeChange() {
-    this.index = 1;
+    this.index.set(1);
     this.getTableData();
   }
 
   getTableData() {
-    this.tableLoading = true;
+    this.tableLoading.set(true);
     this.roleService
-      .roles(this.setParams(this.index, this.size))
+      .roles(this.setParams(this.index(), this.size()))
       .pipe(
         delay(300),
         tap((x) => {
           return this.resultConvert(x);
         }),
         finalize(() => {
-          this.tableLoading = false;
-          this.resetLoading = false;
-          this.searchLoading = false;
+          this.tableLoading.set(false);
+          this.resetLoading.set(false);
+          this.searchLoading.set(false);
         })
       )
       .subscribe();
@@ -98,7 +98,6 @@ export class RoleComponent {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: RoleWhereInput = {};
     const { name } = this.searchForm.value;
-    this.index = index;
     if (!XIsEmpty(name)) where.name = { contains: name! };
 
     return {
@@ -117,20 +116,20 @@ export class RoleComponent {
       return x;
     });
 
-    this.total = count!;
-    this.data = list;
+    this.total.set(count!);
+    this.data.set(list);
   }
 
   action(type: string, role?: Role) {
     switch (type) {
       case 'search':
-        this.searchLoading = true;
-        this.index = 1;
+        this.searchLoading.set(true);
+        this.index.set(1);
         this.getTableData();
         break;
       case 'reset':
-        this.resetLoading = true;
-        this.index = 1;
+        this.resetLoading.set(true);
+        this.index.set(1);
         this.searchForm.reset();
         this.getTableData();
         break;
@@ -139,7 +138,7 @@ export class RoleComponent {
           data: {
             saveSuccess: () => {
               this.searchForm.reset();
-              this.index = 1;
+              this.index.set(1);
               this.getTableData();
             }
           }
@@ -165,8 +164,8 @@ export class RoleComponent {
             if (data !== 'confirm') return;
             this.roleService.delete(role.id).subscribe((x) => {
               this.message.success(x);
-              if (this.data.length === 1 && this.index > 1) {
-                this.index--;
+              if (this.data().length === 1 && this.index() > 1) {
+                this.index.update((x) => --x);
               }
               this.getTableData();
             });

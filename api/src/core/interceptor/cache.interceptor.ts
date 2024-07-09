@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable, of, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { RedisService } from '../services';
 import { Reflector } from '@nestjs/core';
 import { CACHE_PREFIX, CACHE_CONTROL_METADATA, CACHE_CLEAR_METADATA } from '../decorators';
@@ -79,7 +79,7 @@ export class CacheClearInterceptor implements NestInterceptor {
     }
     try {
       return next.handle().pipe(
-        tap(async () => {
+        map(async (x) => {
           const delKeys: string[] = [];
           for (const key of keys) {
             const keyPattern = `${CACHE_PREFIX}:${key}:*`;
@@ -91,6 +91,7 @@ export class CacheClearInterceptor implements NestInterceptor {
           if (delKeys.length > 0) {
             await this.redisService.del(delKeys);
           }
+          return x;
         }),
       );
     } catch {

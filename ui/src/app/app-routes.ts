@@ -3,10 +3,9 @@ import { AppCanActivate } from '@ui/core';
 
 export const LayoutRoutes: Routes = [
   {
-    path: 'index',
+    path: '',
     loadChildren: () => import('./layout/index/index-routing.module').then((x) => x.IndexRoutes),
-    canActivateChild: [AppCanActivate],
-    canLoad: [AppCanActivate]
+    canActivate: [AppCanActivate]
   },
   {
     path: 'login',
@@ -15,39 +14,31 @@ export const LayoutRoutes: Routes = [
       login: true
     },
     canActivate: [AppCanActivate]
-  },
-
-  { path: '', redirectTo: 'index', pathMatch: 'full' }
+  }
 ];
 
 export const AppRoutes: Routes = [
+  { path: '', redirectTo: 'overview', pathMatch: 'full' },
   {
     path: 'overview',
     loadChildren: () =>
-      import('./pages/overview/overview-routing.module').then((x) => x.OverviewRoutes),
-    canActivate: [AppCanActivate]
+      import('./pages/overview/overview-routing.module').then((x) => x.OverviewRoutes)
   },
   {
     path: 'user',
-    loadChildren: () => import('./pages/user/user-routing.module').then((x) => x.UserRoutes),
-    canActivate: [AppCanActivate]
+    loadChildren: () => import('./pages/user/user-routing.module').then((x) => x.UserRoutes)
   },
   {
     path: 'role',
-    loadChildren: () => import('./pages/role/role-routing.module').then((x) => x.RoleRoutes),
-    canActivate: [AppCanActivate]
+    loadChildren: () => import('./pages/role/role-routing.module').then((x) => x.RoleRoutes)
   },
   {
     path: 'subject',
     loadChildren: () =>
-      import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes),
-    canActivate: [AppCanActivate]
+      import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes)
   },
   {
     path: 'aigc',
-    loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes),
-    canActivate: [AppCanActivate]
-  },
-
-  { path: '', redirectTo: 'overview', pathMatch: 'full' }
+    loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes)
+  }
 ];

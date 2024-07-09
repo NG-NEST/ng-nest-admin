@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
@@ -38,23 +38,23 @@ export class UserComponent {
     name: [null]
   });
 
-  columns: XTableColumn[] = [
-    { id: 'index', type: 'index', label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: UserDescription.Name, width: 120 },
-    { id: 'account', label: UserDescription.Account, width: 120 },
+  columns = signal<XTableColumn[]>([
+    { id: 'index', type: 'index', label: BaseDescription.Index, width: 70, left: 0 },
+    { id: 'name', label: UserDescription.Name, width: 120, left: 70 },
+    { id: 'account', label: UserDescription.Account, width: 120, left: 190 },
     { id: 'roles', label: RoleDescription.Role },
     { id: 'email', label: UserDescription.Email },
     { id: 'phone', label: UserDescription.Phone, width: 160 },
-    { id: 'operate', label: BaseDescription.Operate, width: 200 }
-  ];
+    { id: 'operate', label: BaseDescription.Operate, width: 200, right: 0 }
+  ]);
 
-  total = 0;
-  index = 1;
-  size = 10;
-  tableLoading = false;
-  resetLoading = false;
-  searchLoading = false;
-  data: User[] = [];
+  total = signal(0);
+  index = signal(1);
+  size = signal(10);
+  tableLoading = signal(false);
+  resetLoading = signal(false);
+  searchLoading = signal(false);
+  data = signal<User[]>([]);
 
   @ViewChild('tableCom') tableCom!: XTableComponent;
 
@@ -76,23 +76,23 @@ export class UserComponent {
   }
 
   sizeChange() {
-    this.index = 1;
+    this.index.set(1);
     this.getTableData();
   }
 
   getTableData() {
-    this.tableLoading = true;
+    this.tableLoading.set(true);
     this.userService
-      .users(this.setParams(this.index, this.size))
+      .users(this.setParams(this.index(), this.size()))
       .pipe(
         delay(300),
         tap((x) => {
-          return this.resultConvert(x);
+          this.resultConvert(x);
         }),
         finalize(() => {
-          this.tableLoading = false;
-          this.resetLoading = false;
-          this.searchLoading = false;
+          this.tableLoading.set(false);
+          this.resetLoading.set(false);
+          this.searchLoading.set(false);
         })
       )
       .subscribe();
@@ -102,9 +102,7 @@ export class UserComponent {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: UserWhereInput = {};
     const { name } = this.searchForm.value;
-    this.index = index;
     if (!XIsEmpty(name)) where.name = { contains: name! };
-
     return {
       skip: (index - 1) * size,
       take: size,
@@ -121,20 +119,20 @@ export class UserComponent {
       return x;
     });
 
-    this.total = count!;
-    this.data = list;
+    this.total.set(count!);
+    this.data.set(list);
   }
 
   action(type: string, user?: User) {
     switch (type) {
       case 'search':
-        this.searchLoading = true;
-        this.index = 1;
+        this.searchLoading.set(true);
+        this.index.set(1);
         this.getTableData();
         break;
       case 'reset':
-        this.resetLoading = true;
-        this.index = 1;
+        this.resetLoading.set(true);
+        this.index.set(1);
         this.searchForm.reset();
         this.getTableData();
         break;
@@ -143,7 +141,7 @@ export class UserComponent {
           data: {
             saveSuccess: () => {
               this.searchForm.reset();
-              this.index = 1;
+              this.index.set(1);
               this.getTableData();
             }
           }
@@ -169,8 +167,8 @@ export class UserComponent {
             if (data !== 'confirm') return;
             this.userService.delete(user.id).subscribe((x) => {
               this.message.success(x);
-              if (this.data.length === 1 && this.index > 1) {
-                this.index--;
+              if (this.data().length === 1 && this.index() > 1) {
+                this.index.update((x) => --x);
               }
               this.getTableData();
             });

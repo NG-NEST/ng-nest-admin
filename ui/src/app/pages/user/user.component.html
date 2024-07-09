@@ -9,14 +9,14 @@
       </div>
       <div class="buttons">
         <div>
-          <x-button type="primary" icon="fto-search" attrType="submit" [loading]="searchLoading"
+          <x-button type="primary" icon="fto-search" attrType="submit" [loading]="searchLoading()"
             >搜索</x-button
           >
           <x-button
             icon="fto-refresh-cw"
             attrType="button"
             (click)="action('reset')"
-            [loading]="resetLoading"
+            [loading]="resetLoading()"
             >重置</x-button
           >
         </div>
@@ -26,21 +26,22 @@
       </div>
     </form>
   </div>
-  <div class="app-table" [x-loading]="tableLoading">
+  <div class="app-table" [x-loading]="tableLoading()">
     <x-table
       ngSkipHydration
       #tableCom
-      [bordered]="true"
-      [data]="data"
-      [columns]="columns"
+      [data]="data()"
+      [columns]="columns()"
       [(index)]="index"
       [(size)]="size"
-      [total]="total"
+      [(total)]="total"
       [showSize]="true"
-      [showEmpty]="!tableLoading"
+      [showEmpty]="!tableLoading()"
       [rowHeight]="0"
       [sizeData]="[10, 20, 50, 100]"
       [showJump]="true"
+      [scroll]="{ x: 1200, y: 400 }"
+      [virtualScroll]="true"
       [bodyColumnTpl]="{ operate: this.operateTpl, roles: this.rolesTpl }"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
