@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -7,7 +7,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
 import { SubjectService } from '@ui/api';
-import { Observable, Subject, finalize } from 'rxjs';
+import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-subject-detail',
@@ -24,11 +24,11 @@ import { Observable, Subject, finalize } from 'rxjs';
 })
 export class SubjectDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<SubjectDetailComponent>);
-  id = '';
-  title = '';
+  id = signal('');
+  title = signal('');
 
-  formLoading = false;
-  saveLoading = false;
+  formLoading = signal(false);
+  saveLoading = signal(false);
 
   form!: FormGroup;
 
@@ -37,8 +37,7 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
     @Inject(X_DIALOG_DATA) public data: { id: string; title: string; saveSuccess: () => void },
     private subject: SubjectService,
     private fb: FormBuilder,
-    private message: XMessageService,
-    private cdr: ChangeDetectorRef
+    private message: XMessageService
   ) {}
 
   ngOnInit(): void {
@@ -48,16 +47,17 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
       description: [null]
     });
     const { id, title } = this.data;
-    this.id = id;
-    this.title = title;
+    this.id.set(id);
+    this.title.set(title);
     if (this.id) {
-      this.formLoading = true;
+      this.formLoading.set(true);
       this.subject
-        .subject(this.id)
-        .pipe(finalize(() => (this.formLoading = false)))
-        .subscribe((x) => {
-          this.form.patchValue(x);
-        });
+        .subject(this.id())
+        .pipe(
+          tap((x) => this.form.patchValue(x)),
+          finalize(() => this.formLoading.set(false))
+        )
+        .subscribe();
     }
   }
 
@@ -68,21 +68,21 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
 
   save() {
     let rq!: Observable<string>;
-    if (!this.id) {
+    if (!this.id()) {
       rq = this.subject.create(this.form.value);
     } else {
-      rq = this.subject.update({ id: this.id, ...this.form.value });
+      rq = this.subject.update({ id: this.id(), ...this.form.value });
     }
-    this.saveLoading = true;
+    this.saveLoading.set(true);
     rq.pipe(
+      tap((x) => {
+        this.message.success(x);
+        this.dialogRef.close();
+        this.data.saveSuccess();
+      }),
       finalize(() => {
-        this.saveLoading = false;
-        this.cdr.detectChanges();
+        this.saveLoading.set(false);
       })
-    ).subscribe((x) => {
-      this.message.success(x);
-      this.dialogRef.close();
-      this.data.saveSuccess();
-    });
+    ).subscribe();
   }
 }

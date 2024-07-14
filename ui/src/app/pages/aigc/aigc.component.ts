@@ -80,12 +80,12 @@ export class AigcComponent implements OnInit, OnDestroy {
   activeSource = signal(this.source[0]);
   activeModel = signal(this.activeSource().models[0]);
 
-  slideData = this.source.map((x) => ({ label: x.name, id: x.type, data: x }));
+  slideData = signal(this.source.map((x) => ({ label: x.name, id: x.type, data: x })));
 
   form!: FormGroup;
 
   socket!: Socket | null;
-  list: { role: string; content: string }[] = [];
+  list = signal<{ role: string; content: string }[]>([]);
   contentList = signal<{ role: string; content: SafeHtml }[]>([]);
   marked = new Marked(
     {
@@ -145,7 +145,7 @@ export class AigcComponent implements OnInit, OnDestroy {
     });
     this.socket.on('text-generation', (x) => {
       if (x && x.data) {
-        const last = this.list[this.list.length - 1];
+        const last = this.list()[this.list().length - 1];
         let isFinished = false;
         for (let item of x.data) {
           let { text, finished, error, message } = item;
@@ -161,6 +161,20 @@ export class AigcComponent implements OnInit, OnDestroy {
         if (!isFinished) md = this.addCursor(md);
         lastItem.content = this.domSanitizer.bypassSecurityTrustHtml(md);
         this.isLoading.set(!isFinished);
+      }
+    });
+    this.socket.on('exception', (x) => {
+      if (x && x.message) {
+        this.list.update((y) => {
+          y.splice(y.length - 1);
+          return y;
+        });
+        this.contentList.update((y) => {
+          const last = y[y.length - 1];
+          last.content = this.domSanitizer.bypassSecurityTrustHtml(x.message);
+          return y;
+        });
+        this.isLoading.set(false);
       }
     });
     this.socket.on('error', (data: any) => {
@@ -183,14 +197,20 @@ export class AigcComponent implements OnInit, OnDestroy {
         role: 'user',
         content
       };
-      this.list.push(item);
+      this.list.update((x) => {
+        x.push(item);
+        return x;
+      });
       this.contentList().push(item, {
         role: 'assistant',
         content: this.domSanitizer.bypassSecurityTrustHtml(this.createCursor().outerHTML)
       });
       this.isLoading.set(true);
-      this.socket.emit('text-generation', this.list);
-      this.list.push({ role: 'assistant', content: '' });
+      this.socket.emit('text-generation', this.list());
+      this.list.update((x) => {
+        x.push({ role: 'assistant', content: '' });
+        return x;
+      });
 
       this.form.patchValue({ content: '' });
     }

@@ -66,12 +66,24 @@ export class GeminiService {
       let start = 0;
 
       child.stdout.on('data', (buffer: Buffer) => {
-        console.log('==========');
-        console.log(buffer.toString());
-        console.log('==========');
+        // console.log('==========');
+        // console.log(buffer.toString());
+        // console.log('==========');
 
         surplus = surplus ? Buffer.concat([surplus, buffer]) : buffer;
-        const { analyzed, end } = this.matchBuffer(surplus, start);
+        const { analyzed, end, error } = this.matchBuffer(surplus, start);
+
+        if (error) {
+          // child.kill();
+          // throw new WsException(error.error.message);
+          // output.next({
+          //   data: [{ code: error.error.code, message: error.error.message, error: true }],
+          // });
+          output.error(error.error);
+          output.complete();
+          child.kill();
+        }
+
         start = end + 1;
 
         if (analyzed.length > 0) {
@@ -120,6 +132,7 @@ export class GeminiService {
     const list = str.split(/\r\n\r\n/);
     const data: AigcOutput[] = [];
     let end = start;
+    let error = null;
     for (let i = start; i < list.length; i++) {
       const item = list[i];
       const dataMatch = item.match(/data:(.*)$/m);
@@ -136,12 +149,17 @@ export class GeminiService {
           });
 
           end = i;
+        } else {
+          error = JSON.parse(item);
+          break;
         }
-      } catch {}
+      } catch {
+        error = { code: 500, message: 'Server data exception.' };
+      }
     }
     const analyzed = data;
 
-    return { analyzed, end };
+    return { analyzed, end, error };
   }
 
   private async getTokens(input: AigcStreamInput) {

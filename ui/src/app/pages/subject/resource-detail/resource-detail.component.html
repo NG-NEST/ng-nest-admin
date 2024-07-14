@@ -1,15 +1,15 @@
-<form [x-loading]="formLoading" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ title }}资源</h4>
+<form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+  <h4 x-dialog-title class="title">{{ title() }}资源</h4>
   <div x-dialog-content class="content">
     <div class="item required">
       <label>主体：</label>
-      <x-select formControlName="subjectId" [data]="subjects" placeholder="请选择主体"></x-select>
+      <x-select formControlName="subjectId" [data]="subjects()" placeholder="请选择主体"></x-select>
     </div>
     <div class="item">
       <label>父资源：</label>
       <x-tree-select
         formControlName="pid"
-        [data]="resources"
+        [data]="resources()"
         placeholder="请选择父资源"
       ></x-tree-select>
     </div>
@@ -37,7 +37,7 @@
       icon="fto-save"
       type="primary"
       attrType="submit"
-      [loading]="saveLoading"
+      [loading]="saveLoading()"
       [disabled]="!form.valid"
       >保存</x-button
     >

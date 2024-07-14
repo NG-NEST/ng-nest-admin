@@ -7,7 +7,7 @@ import { AuthService } from '@ui/api';
 import { AppAuthService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, finalize } from 'rxjs';
+import { delay, finalize, tap } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
@@ -30,7 +30,7 @@ export class LoginComponent {
   activatedRoute = inject(ActivatedRoute);
   appid = signal('');
   loginLoading = signal(false);
-  codekey!: string;
+  codekey = signal('');
   redirect = signal('');
 
   @ViewChild('svgEle', { static: true }) svgEle!: ElementRef<HTMLDivElement>;
@@ -52,8 +52,8 @@ export class LoginComponent {
   }
 
   getCaptcha() {
-    this.codekey = Math.random().toString(36).slice(2);
-    this.authService.captcha(this.codekey).subscribe((x) => {
+    this.codekey.set(Math.random().toString(36).slice(2));
+    this.authService.captcha(this.codekey()).subscribe((x) => {
       this.svgEle.nativeElement.innerHTML = x;
     });
   }
@@ -74,13 +74,10 @@ export class LoginComponent {
     }
     this.loginLoading.set(true);
     this.authService
-      .login(this.form.value, { codekey: this.codekey })
+      .login(this.form.value, { codekey: this.codekey() })
       .pipe(
         delay(1000),
-        finalize(() => this.loginLoading.set(false))
-      )
-      .subscribe({
-        next: (x) => {
+        tap((x) => {
           const { accessToken, refreshToken } = x;
           this.auth.accessToken.set(accessToken);
           this.auth.refreshToken.set(refreshToken);
@@ -89,7 +86,10 @@ export class LoginComponent {
           } else {
             this.router.navigateByUrl('/');
           }
-        },
+        }),
+        finalize(() => this.loginLoading.set(false))
+      )
+      .subscribe({
         error: () => {
           this.getCaptcha();
         }

@@ -1,5 +1,5 @@
-<form [x-loading]="formLoading" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ title }}主体</h4>
+<form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+  <h4 x-dialog-title class="title">{{ title() }}主体</h4>
   <div x-dialog-content class="content">
     <div class="item required">
       <label>主体名称：</label>
@@ -21,7 +21,7 @@
       icon="fto-save"
       type="primary"
       attrType="submit"
-      [loading]="saveLoading"
+      [loading]="saveLoading()"
       [disabled]="!form.valid"
       >保存</x-button
     >

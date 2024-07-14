@@ -4,8 +4,8 @@
   }
 
   .source {
-    position: fixed;
-    top: 0;
+    position: sticky;
+    top: 2.25rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -23,15 +23,14 @@
   }
 
   .content {
-    padding-top: 7rem;
+    // padding-top: 7rem;
     width: 100%;
-    padding-bottom: 12rem;
+    // padding-bottom: 12rem;
     display: flex;
     justify-content: center;
 
     .list {
       width: 30rem;
-      min-height: 100vh;
       padding: 1rem 0;
       .item {
         display: flex;
@@ -62,7 +61,7 @@
   }
 
   .form {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     width: 100%;
     display: flex;

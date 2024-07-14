@@ -41,7 +41,7 @@ export class RoleComponent {
     { id: 'description', label: RoleDescription.Description },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    { id: 'operate', label: BaseDescription.Operate, width: 120, right: 0 }
   ]);
 
   total = signal(0);

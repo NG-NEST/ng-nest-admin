@@ -109,16 +109,20 @@ input {
 .app-table {
   margin-top: 1rem;
   .operate {
-    x-link:not(:first-child) {
-      margin-left: 1rem;
-    }
+    color: $--x-text-300;
   }
 }
 
 .app-search-form {
+  .list {
+    display: flex;
+  }
   .item {
     display: flex;
     align-items: center;
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
   }
   .buttons {
     margin-top: 1rem;

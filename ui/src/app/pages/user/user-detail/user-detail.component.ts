@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -35,12 +35,12 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   message = inject(XMessageService);
   role = inject(RoleService);
-  roles: XData<XSelectNode> = [];
+  roles = signal<XData<XSelectNode>>([]);
 
-  id = '';
+  id = signal('');
 
-  formLoading = false;
-  saveLoading = false;
+  formLoading = signal(false);
+  saveLoading = signal(false);
 
   form!: FormGroup;
 
@@ -50,11 +50,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.role.roleSelect({}).subscribe((x) => {
-      this.roles = x.map((y) => ({ label: y.name, id: y.id }));
+      this.roles.set(x.map((y) => ({ label: y.name, id: y.id })));
     });
     const { id } = this.data;
-    this.id = id;
-    if (!this.id) {
+    this.id.set(id);
+    if (!id) {
       this.form = this.fb.group({
         name: [null, [Validators.required]],
         account: [null, [Validators.required]],
@@ -74,10 +74,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         phone: [null]
       });
     }
-    this.formLoading = true;
+    this.formLoading.set(true);
     this.user
-      .user(this.id)
-      .pipe(tap(() => (this.formLoading = false)))
+      .user(this.id())
+      .pipe(finalize(() => this.formLoading.set(false)))
       .subscribe((x) => {
         this.form.patchValue({ ...x, roleIds: x.roles?.map((y) => y.roleId) });
       });
@@ -92,17 +92,20 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     let rq!: Observable<string>;
     const value = this.form.getRawValue();
     delete value.checkPassword;
-    if (!this.id) {
+    if (!this.id()) {
       rq = this.user.create(value);
     } else {
-      rq = this.user.update({ id: this.id, ...value });
+      rq = this.user.update({ id: this.id(), ...value });
     }
-    this.saveLoading = true;
-    rq.pipe(finalize(() => (this.saveLoading = false))).subscribe((x) => {
-      this.message.success(x);
-      this.dialogRef.close();
-      this.data.saveSuccess();
-    });
+    this.saveLoading.set(true);
+    rq.pipe(
+      tap((x) => {
+        this.message.success(x);
+        this.dialogRef.close();
+        this.data.saveSuccess();
+      }),
+      finalize(() => this.saveLoading.set(false))
+    ).subscribe();
   }
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {

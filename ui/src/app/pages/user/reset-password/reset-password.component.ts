@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,7 +13,7 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { UserService } from '@ui/api';
-import { Subject, finalize } from 'rxjs';
+import { Subject, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-reset-password',
@@ -34,10 +34,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   message = inject(XMessageService);
 
-  id = '';
+  id = signal('');
 
-  formLoading = false;
-  saveLoading = false;
+  formLoading = signal(false);
+  saveLoading = signal(false);
 
   form!: FormGroup;
 
@@ -47,7 +47,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const { id } = this.data;
-    this.id = id;
+    this.id.set(id);
     this.form = this.fb.group({
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]]
@@ -62,14 +62,17 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   save() {
     const value = this.form.getRawValue();
     delete value.checkPassword;
-    this.saveLoading = true;
+    this.saveLoading.set(true);
     this.user
-      .resetPassword(this.id, value)
-      .pipe(finalize(() => (this.saveLoading = false)))
-      .subscribe((x) => {
-        this.message.success(x);
-        this.dialogRef.close();
-      });
+      .resetPassword(this.id(), value)
+      .pipe(
+        tap((x) => {
+          this.message.success(x);
+          this.dialogRef.close();
+        }),
+        finalize(() => this.saveLoading.set(false))
+      )
+      .subscribe();
   }
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {

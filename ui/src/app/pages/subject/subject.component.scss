@@ -71,11 +71,5 @@
         color: $--x-text-500;
       }
     }
-
-    .operator {
-      x-link:not(:first-child) {
-        margin-left: 0.5rem;
-      }
-    }
   }
 }

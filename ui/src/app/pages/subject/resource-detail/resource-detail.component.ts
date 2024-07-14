@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -31,14 +31,14 @@ import { XTextareaComponent } from '@ng-nest/ui/textarea';
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<ResourceDetailComponent>);
-  id = '';
-  title = '';
-  subjectId = '';
-  subjects: XData<XSelectNode> = [];
-  resources: XData<XTreeSelectNode> = [];
+  id = signal('');
+  title = signal('');
+  subjectId = signal('');
+  subjects = signal<XData<XSelectNode>>([]);
+  resources = signal<XData<XTreeSelectNode>>([]);
 
-  formLoading = false;
-  saveLoading = false;
+  formLoading = signal(false);
+  saveLoading = signal(false);
 
   form!: FormGroup;
 
@@ -49,8 +49,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     private resource: ResourceService,
     private subject: SubjectService,
     private fb: FormBuilder,
-    private message: XMessageService,
-    private cdr: ChangeDetectorRef
+    private message: XMessageService
   ) {}
 
   ngOnInit(): void {
@@ -63,21 +62,20 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
       subjectId: [null, [Validators.required]]
     });
     const { id, title, subjectId } = this.data;
-    this.id = id;
-    this.title = title;
-    this.subjectId = subjectId;
+    this.id.set(id);
+    this.title.set(title);
+    this.subjectId.set(subjectId);
     if (subjectId) this.form.patchValue({ subjectId });
     const request: Observable<any>[] = [this.getSubjectSelect(), this.getResourceSelect()];
     this.form.controls['subjectId'].disable();
-    if (this.id) {
+    if (this.id()) {
       request.push(this.getResource());
     }
-    this.formLoading = true;
+    this.formLoading.set(true);
     forkJoin(request)
       .pipe(
         finalize(() => {
-          this.formLoading = false;
-          this.cdr.detectChanges();
+          this.formLoading.set(false);
         })
       )
       .subscribe();
@@ -90,26 +88,26 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
   save() {
     let rq!: Observable<string>;
-    if (!this.id) {
+    if (!this.id()) {
       rq = this.resource.create(this.form.getRawValue());
     } else {
-      rq = this.resource.update({ id: this.id, ...this.form.getRawValue() });
+      rq = this.resource.update({ id: this.id(), ...this.form.getRawValue() });
     }
-    this.saveLoading = true;
+    this.saveLoading.set(true);
     rq.pipe(
+      tap((x) => {
+        this.message.success(x);
+        this.dialogRef.close();
+        this.data.saveSuccess();
+      }),
       finalize(() => {
-        this.saveLoading = false;
-        this.cdr.detectChanges();
+        this.saveLoading.set(false);
       })
-    ).subscribe((x) => {
-      this.message.success(x);
-      this.dialogRef.close();
-      this.data.saveSuccess();
-    });
+    ).subscribe();
   }
 
   getResource() {
-    return this.resource.resource(this.id).pipe(
+    return this.resource.resource(this.id()).pipe(
       tap((x) => {
         this.form.patchValue(x);
       })
@@ -119,21 +117,25 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   getSubjectSelect() {
     return this.subject.subjectSelect({}).pipe(
       tap((x) => {
-        this.subjects = x.map((y) => ({ label: y.name, id: y.id }));
+        this.subjects.set(x.map((y) => ({ label: y.name, id: y.id })));
       })
     );
   }
 
   getResourceSelect() {
-    return this.resource.resourceSelect({ where: { subjectId: { equals: this.subjectId } } }).pipe(
-      tap((x) => {
-        this.resources = x.map((y) => ({
-          label: y.name,
-          id: y.id,
-          pid: y.pid,
-          disabled: this.id === y.id
-        }));
-      })
-    );
+    return this.resource
+      .resourceSelect({ where: { subjectId: { equals: this.subjectId() } } })
+      .pipe(
+        tap((x) => {
+          this.resources.set(
+            x.map((y) => ({
+              label: y.name,
+              id: y.id,
+              pid: y.pid,
+              disabled: this.id() === y.id
+            }))
+          );
+        })
+      );
   }
 }

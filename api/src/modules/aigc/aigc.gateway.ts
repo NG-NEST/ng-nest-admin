@@ -6,10 +6,11 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsException,
   WsResponse,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { HttpStatus } from '@nestjs/common';
 import { ValidatorDescription, I18nService } from '@api/core';
 import {
@@ -91,6 +92,11 @@ export class AigcGateway implements OnGatewayConnection, OnGatewayDisconnect {
         model: model as AigcModel,
         messages: data,
       })
-      .pipe(map((x) => ({ event: 'text-generation', data: x })));
+      .pipe(
+        map((x) => ({ event: 'text-generation', data: x })),
+        catchError((x) => {
+          throw new WsException(x);
+        }),
+      );
   }
 }

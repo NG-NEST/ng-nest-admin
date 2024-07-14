@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, signal } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent, XTableRow } from '@ng-nest/ui/table';
 import {
@@ -46,21 +46,24 @@ export class SubjectComponent {
   searchForm = this.fb.group({
     name: [null]
   });
-  columns: XTableColumn[] = [{ id: 'name', label: SubjectDescription.Name }];
-  total = 0;
-  index = 1;
-  size = 20;
-  tableLoading = false;
-  resetLoading = false;
-  searchLoading = false;
-  data: Subject[] = [];
+  columns = signal<XTableColumn[]>([{ id: 'name', label: SubjectDescription.Name }]);
+  total = signal(0);
+  index = signal(1);
+  size = signal(20);
+  tableLoading = signal(false);
+  resetLoading = signal(false);
+  searchLoading = signal(false);
+  data = signal<Subject[]>([]);
   selectedSubject = signal<Subject | null>(null);
-  enabled = false;
+  enabled = computed(() => {
+    return this.selectedSubject() !== null;
+  });
 
   resourceSearchForm = this.fb.group({
-    name: [null]
+    name: [null],
+    code: [null]
   });
-  resourceColumns: XTableColumn[] = [
+  resourceColumns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
     { id: 'name', label: ResourceDescription.Name },
     { id: 'code', label: ResourceDescription.Code },
@@ -68,14 +71,14 @@ export class SubjectComponent {
     { id: 'parentName', label: ResourceDescription.Parent },
     { id: 'subjectName', label: SubjectDescription.Name },
     { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
-  ];
-  resourceTotal = 0;
-  resourceIndex = 1;
-  resourceSize = 20;
-  resourceTableLoading = false;
-  resourceResetLoading = false;
-  resourceSearchLoading = false;
-  resourceData: Subject[] = [];
+  ]);
+  resourceTotal = signal(0);
+  resourceIndex = signal(1);
+  resourceSize = signal(20);
+  resourceTableLoading = signal(false);
+  resourceResetLoading = signal(false);
+  resourceSearchLoading = signal(false);
+  resourceData = signal<Resource[]>([]);
 
   constructor(
     private datePipe: DatePipe,
@@ -86,9 +89,16 @@ export class SubjectComponent {
     private message: XMessageService,
     private messageBox: XMessageBoxService
   ) {
-    effect(() => {
-      this.enabled = this.selectedSubject() !== null;
-    });
+    effect(
+      () => {
+        if (this.enabled()) {
+          this.resourceSearchForm.enable();
+        } else {
+          this.resourceSearchForm.disable();
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
@@ -100,7 +110,7 @@ export class SubjectComponent {
   }
 
   sizeChange() {
-    this.index = 1;
+    this.index.set(1);
     this.getTableData();
   }
 
@@ -111,18 +121,18 @@ export class SubjectComponent {
   }
 
   getTableData() {
-    this.tableLoading = true;
+    this.tableLoading.set(true);
     this.subjectService
-      .subjects(this.setParams(this.index, this.size))
+      .subjects(this.setParams(this.index(), this.size()))
       .pipe(
         delay(300),
         tap((x) => {
           return this.resultConvert(x);
         }),
         finalize(() => {
-          this.tableLoading = false;
-          this.resetLoading = false;
-          this.searchLoading = false;
+          this.tableLoading.set(false);
+          this.resetLoading.set(false);
+          this.searchLoading.set(false);
         })
       )
       .subscribe();
@@ -136,15 +146,14 @@ export class SubjectComponent {
       return x;
     });
 
-    this.total = count!;
-    this.data = list;
+    this.total.set(count!);
+    this.data.set(list);
   }
 
   setParams(index: number, size: number) {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: SubjectWhereInput = {};
     const { name } = this.searchForm.value;
-    this.index = index;
     if (!XIsEmpty(name)) where.name = { contains: name! };
 
     return {
@@ -160,36 +169,36 @@ export class SubjectComponent {
   }
 
   resourceSizeChange() {
-    this.resourceIndex = 1;
+    this.resourceIndex.set(1);
     this.getResourceTableData();
   }
 
   getResourceTableData() {
-    this.resourceTableLoading = true;
+    this.resourceTableLoading.set(true);
     this.resourceService
-      .resources(this.setResourceParams(this.resourceIndex, this.resourceSize))
+      .resources(this.setResourceParams(this.resourceIndex(), this.resourceSize()))
       .pipe(
         delay(300),
         tap((x) => {
           return this.resourceResultConvert(x);
         }),
         finalize(() => {
-          this.resourceTableLoading = false;
-          this.resourceResetLoading = false;
-          this.resourceSearchLoading = false;
+          this.resourceTableLoading.set(false);
+          this.resourceResetLoading.set(false);
+          this.resourceSearchLoading.set(false);
         })
       )
       .subscribe();
   }
 
   setResourceParams(index: number, size: number) {
-    const orderBy: ResourceOrderInput[] = [{ sort: 'desc' }];
+    const orderBy: ResourceOrderInput[] = [{ sort: 'asc' }];
     const where: ResourceWhereInput = {
       subjectId: { equals: this.selectedSubject()!.id }
     };
-    const { name } = this.resourceSearchForm.value;
-    this.resourceIndex = index;
+    const { name, code } = this.resourceSearchForm.getRawValue();
     if (!XIsEmpty(name)) where.name = { contains: name! };
+    if (!XIsEmpty(code)) where.code = { contains: code! };
 
     return {
       skip: (index - 1) * size,
@@ -208,20 +217,20 @@ export class SubjectComponent {
       x.parentName = x.parent?.name;
       return x;
     });
-    this.resourceTotal = count!;
-    this.resourceData = list;
+    this.resourceTotal.set(count!);
+    this.resourceData.set(list);
   }
 
   action(type: string, subject?: Subject) {
     switch (type) {
       case 'search':
-        this.searchLoading = true;
-        this.index = 1;
+        this.searchLoading.set(true);
+        this.index.set(1);
         this.getTableData();
         break;
       case 'reset':
-        this.resetLoading = true;
-        this.index = 1;
+        this.resetLoading.set(true);
+        this.index.set(1);
         this.searchForm.reset();
         this.getTableData();
         break;
@@ -231,7 +240,7 @@ export class SubjectComponent {
             title: '新增',
             saveSuccess: () => {
               this.searchForm.reset();
-              this.index = 1;
+              this.index.set(1);
               this.getTableData();
             }
           }
@@ -258,8 +267,8 @@ export class SubjectComponent {
             if (data !== 'confirm') return;
             this.subjectService.delete(subject.id).subscribe((x) => {
               this.message.success(x);
-              if (this.data.length === 1 && this.index > 1) {
-                this.index--;
+              if (this.data().length === 1 && this.index() > 1) {
+                this.index.update((x) => --x);
               }
               this.getTableData();
             });
@@ -272,13 +281,13 @@ export class SubjectComponent {
   resourceAction(type: string, resource?: Resource) {
     switch (type) {
       case 'search':
-        this.resourceSearchLoading = true;
-        this.resourceIndex = 1;
+        this.resourceSearchLoading.set(true);
+        this.resourceIndex.set(1);
         this.getResourceTableData();
         break;
       case 'reset':
-        this.resetLoading = true;
-        this.resourceIndex = 1;
+        this.resetLoading.set(true);
+        this.resourceIndex.set(1);
         this.resourceSearchForm.reset();
         this.getResourceTableData();
         break;
@@ -289,7 +298,7 @@ export class SubjectComponent {
             subjectId: this.selectedSubject()!.id,
             saveSuccess: () => {
               this.resourceSearchForm.reset();
-              this.resourceIndex = 1;
+              this.resourceIndex.set(1);
               this.getResourceTableData();
             }
           }
@@ -317,8 +326,8 @@ export class SubjectComponent {
             if (data !== 'confirm') return;
             this.resourceService.delete(resource.id).subscribe((x) => {
               this.message.success(x);
-              if (this.resourceData.length === 1 && this.resourceIndex > 1) {
-                this.resourceIndex--;
+              if (this.resourceData().length === 1 && this.resourceIndex() > 1) {
+                this.resourceIndex.update((x) => --x);
               }
               this.getResourceTableData();
             });

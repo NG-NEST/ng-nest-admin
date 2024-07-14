@@ -1,16 +1,16 @@
 <div class="app-inner">
-  <div class="app-table subject-table" [x-loading]="tableLoading">
+  <div class="app-table subject-table" [x-loading]="tableLoading()">
     <x-table
       ngSkipHydration
-      [data]="data"
-      [columns]="columns"
-      [index]="index"
-      [size]="size"
-      [total]="total"
+      [data]="data()"
+      [columns]="columns()"
+      [(index)]="index"
+      [(size)]="size"
+      [(total)]="total"
       [rowHeight]="0"
       [showEllipsis]="false"
       [showTotal]="false"
-      [showEmpty]="!tableLoading"
+      [showEmpty]="!tableLoading()"
       [hiddenPaginationBorder]="true"
       [scroll]="{ x: 180, y: 300 }"
       [virtualScroll]="true"
@@ -38,6 +38,7 @@
           <x-link type="primary" (click)="action('edit', row); $event.stopPropagation()"
             >修改</x-link
           >
+          |
           <x-link type="danger" (click)="action('delete', row); $event.stopPropagation()"
             >删除</x-link
           >
@@ -47,11 +48,19 @@
   </div>
   <div class="app-right">
     <div class="app-tools">
-      <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="resourceAction('search')">
+      <form
+        class="app-search-form"
+        [formGroup]="resourceSearchForm"
+        (ngSubmit)="resourceAction('search')"
+      >
         <div class="list">
           <div class="item">
             <label>资源名称：</label>
             <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
+          </div>
+          <div class="item">
+            <label>资源标识：</label>
+            <x-input formControlName="code" placeholder="请输入资源标识"></x-input>
           </div>
         </div>
         <div class="buttons">
@@ -60,16 +69,16 @@
               type="primary"
               icon="fto-search"
               attrType="submit"
-              [loading]="resourceSearchLoading"
-              [disabled]="!enabled"
+              [loading]="resourceSearchLoading()"
+              [disabled]="!enabled()"
               >搜索</x-button
             >
             <x-button
               icon="fto-refresh-cw"
               attrType="button"
               (click)="resourceAction('reset')"
-              [loading]="resourceResetLoading"
-              [disabled]="!enabled"
+              [loading]="resourceResetLoading()"
+              [disabled]="!enabled()"
               >重置</x-button
             >
           </div>
@@ -78,24 +87,24 @@
             icon="fto-plus"
             attrType="button"
             (click)="resourceAction('add')"
-            [disabled]="!enabled"
+            [disabled]="!enabled()"
             >新增</x-button
           >
         </div>
       </form>
     </div>
-    <div class="app-table" [x-loading]="resourceTableLoading">
+    <div class="app-table" [x-loading]="resourceTableLoading()">
       <x-table
         ngSkipHydration
-        [data]="resourceData"
-        [columns]="resourceColumns"
-        [index]="resourceIndex"
-        [size]="resourceSize"
-        [total]="resourceTotal"
+        [data]="resourceData()"
+        [columns]="resourceColumns()"
+        [(index)]="resourceIndex"
+        [(size)]="resourceSize"
+        [(total)]="resourceTotal"
         [showSize]="true"
         [sizeData]="[10, 20, 50, 100]"
         [showJump]="true"
-        [showEmpty]="!resourceTableLoading"
+        [showEmpty]="!resourceTableLoading()"
         [bodyColumnTpl]="{ operate: this.operateTpl }"
         [adaptionHeight]="105"
         (indexChange)="resourceIndexChange()"
@@ -103,7 +112,7 @@
       ></x-table>
       <ng-template #operateTpl let-column="$column" let-row="$row">
         <div class="operate">
-          <x-link type="primary" (click)="resourceAction('edit', row)">修改</x-link>
+          <x-link type="primary" (click)="resourceAction('edit', row)">修改</x-link> |
           <x-link type="danger" (click)="resourceAction('delete', row)">删除</x-link>
         </div>
       </ng-template>

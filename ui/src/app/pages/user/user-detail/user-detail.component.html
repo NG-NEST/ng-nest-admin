@@ -1,11 +1,11 @@
-<form [x-loading]="formLoading" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ id ? '修改用户' : '新增用户' }}</h4>
+<form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+  <h4 x-dialog-title class="title">{{ id() ? '修改用户' : '新增用户' }}</h4>
   <div x-dialog-content class="content">
     <div class="item required">
       <label>用户账号：</label>
       <x-input formControlName="account" placeholder="请输入用户账号" required></x-input>
     </div>
-    @if (!id) {
+    @if (!id()) {
       <div class="item required">
         <label>用户密码：</label>
         <x-input
@@ -30,7 +30,7 @@
     <div class="item required">
       <label>用户角色：</label>
       <x-select
-        [data]="roles"
+        [data]="roles()"
         formControlName="roleIds"
         multiple
         placeholder="请选择用户角色"
@@ -58,7 +58,7 @@
       icon="fto-save"
       type="primary"
       attrType="submit"
-      [loading]="saveLoading"
+      [loading]="saveLoading()"
       [disabled]="!form.valid"
       >保存</x-button
     >
