@@ -1,0 +1,74 @@
+<div class="app-inner">
+  <div class="app-tools">
+    <form
+      class="app-search-form"
+      [formGroup]="resourceSearchForm"
+      (ngSubmit)="resourceAction('search')"
+    >
+      <div class="list">
+        <div class="item keynote">
+          <label>主体：</label>
+          <x-select
+            formControlName="subjectId"
+            placeholder="请选择主体"
+            [data]="subjects()"
+            [clearable]="false"
+          ></x-select>
+        </div>
+        <div class="item">
+          <label>资源名称：</label>
+          <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
+        </div>
+        <div class="item">
+          <label>资源标识：</label>
+          <x-input formControlName="code" placeholder="请输入资源标识"></x-input>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>
+          <x-button
+            type="primary"
+            icon="fto-search"
+            attrType="submit"
+            [loading]="resourceSearchLoading()"
+            >搜索</x-button
+          >
+          <x-button
+            icon="fto-refresh-cw"
+            attrType="button"
+            (click)="resourceAction('reset')"
+            [loading]="resourceResetLoading()"
+            >重置</x-button
+          >
+        </div>
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="resourceAction('add')"
+          >新增</x-button
+        >
+      </div>
+    </form>
+  </div>
+  <div class="app-table" [x-loading]="resourceTableLoading()">
+    <x-table
+      ngSkipHydration
+      [data]="resourceData()"
+      [columns]="resourceColumns()"
+      [(index)]="resourceIndex"
+      [(size)]="resourceSize"
+      [(total)]="resourceTotal"
+      [showSize]="true"
+      [sizeData]="[10, 20, 50, 100]"
+      [showJump]="true"
+      [showEmpty]="!resourceTableLoading()"
+      [bodyColumnTpl]="{ operate: this.operateTpl }"
+      [adaptionHeight]="105"
+      (indexChange)="resourceIndexChange()"
+      (sizeChange)="resourceSizeChange()"
+    ></x-table>
+    <ng-template #operateTpl let-column="$column" let-row="$row">
+      <div class="operate">
+        <x-link type="primary" (click)="resourceAction('edit', row)">修改</x-link> |
+        <x-link type="danger" (click)="resourceAction('delete', row)">删除</x-link>
+      </div>
+    </ng-template>
+  </div>
+</div>

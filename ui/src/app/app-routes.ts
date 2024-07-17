@@ -38,6 +38,11 @@ export const AppRoutes: Routes = [
       import('./pages/subject/subject-routing.module').then((x) => x.SubjectRoutes)
   },
   {
+    path: 'permission',
+    loadChildren: () =>
+      import('./pages/permission/permission-routing.module').then((x) => x.PermissionRoutes)
+  },
+  {
     path: 'aigc',
     loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes)
   }

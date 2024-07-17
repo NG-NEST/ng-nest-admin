@@ -286,7 +286,7 @@ export class SubjectComponent {
         this.getResourceTableData();
         break;
       case 'reset':
-        this.resetLoading.set(true);
+        this.resourceResetLoading.set(true);
         this.resourceIndex.set(1);
         this.resourceSearchForm.reset();
         this.getResourceTableData();

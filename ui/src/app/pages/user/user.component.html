@@ -56,7 +56,7 @@
     <ng-template #rolesTpl let-column="$column" let-row="$row">
       <div class="roles">
         @for (tag of row.roles; track tag.role.id) {
-          <x-tag type="primary">{{ tag.role.name }}</x-tag>
+          <x-tag type="primary" size="small">{{ tag.role.name }}</x-tag>
         }
       </div>
     </ng-template>
