@@ -60,7 +60,7 @@ export class RoleService {
 
   roleSelect(input: RoleSelectInput): Observable<RoleSelectOutput[]> {
     return this.apollo
-      .watchQuery<{ roleSelect: RoleSelectOutput[] }>({
+      .query<{ roleSelect: RoleSelectOutput[] }>({
         variables: input,
         query: gql`
           query RoleSelect($where: RoleWhereInput, $orderBy: [RoleOrderInput!]) {
@@ -71,7 +71,7 @@ export class RoleService {
           }
         `
       })
-      .valueChanges.pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
+      .pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
   }
 
   create(input: RoleCreateInput): Observable<string> {

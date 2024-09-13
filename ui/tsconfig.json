@@ -30,9 +30,7 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@ui/core": ["./src/app/core"],
-      "@ui/api": ["./src/app/api"],
-      "@ng-nest/ui": ["../../ng-nest-17/lib/ng-nest/ui/"],
-      "@ng-nest/ui/*": ["../../ng-nest-17/lib/ng-nest/ui/*"]
+      "@ui/api": ["./src/app/api"]
     }
   },
   "angularCompilerOptions": {
