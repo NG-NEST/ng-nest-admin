@@ -23,7 +23,7 @@
     "@angular/router": "^18.0.3",
     "@angular/service-worker": "^18.0.3",
     "@angular/ssr": "^18.0.4",
-    "@ng-nest/ui": "^18.0.1",
+    "@ng-nest/ui": "^18.0.2",
     "apollo-angular": "^7.0.2",
     "express": "^4.18.2",
     "lodash-es": "^4.17.21",

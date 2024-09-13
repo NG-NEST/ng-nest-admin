@@ -13,10 +13,10 @@ export class RedisService extends Redis implements OnModuleInit {
       // port: config.getOrThrow('REDIS_PORT'),
       // db: config.getOrThrow('REDIS_TOKEN_DB'),
       // password: config.getOrThrow('REDIS_PASSWORD'),
-      retryStrategy: () => {
-        LOGS.error('Redis connection failed', { context: RedisService.name });
-        return null;
-      },
+      // retryStrategy: () => {
+      //   LOGS.error('Redis connection failed', { context: RedisService.name });
+      //   return null;
+      // },
     };
 
     super(config.getOrThrow('REDIS_URL'), redisOptions);
