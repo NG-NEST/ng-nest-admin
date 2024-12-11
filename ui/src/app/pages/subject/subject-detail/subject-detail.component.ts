@@ -10,17 +10,16 @@ import { SubjectService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-subject-detail',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    XLoadingComponent,
-    XInputComponent,
-    XButtonComponent,
-    XDialogModule,
-    XTextareaComponent
-  ],
-  templateUrl: './subject-detail.component.html'
+    selector: 'app-subject-detail',
+    imports: [
+        ReactiveFormsModule,
+        XLoadingComponent,
+        XInputComponent,
+        XButtonComponent,
+        XDialogModule,
+        XTextareaComponent
+    ],
+    templateUrl: './subject-detail.component.html'
 })
 export class SubjectDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<SubjectDetailComponent>);
@@ -49,7 +48,7 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
     const { id, title } = this.data;
     this.id.set(id);
     this.title.set(title);
-    if (this.id) {
+    if (this.id()) {
       this.formLoading.set(true);
       this.subject
         .subject(this.id())

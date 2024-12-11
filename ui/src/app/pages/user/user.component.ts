@@ -18,20 +18,19 @@ import { XTagComponent } from '@ng-nest/ui/tag';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @Component({
-  selector: 'app-user',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    XInputComponent,
-    XButtonComponent,
-    XLoadingComponent,
-    XTableComponent,
-    XLinkComponent,
-    XTagComponent
-  ],
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss'],
-  providers: [DatePipe]
+    selector: 'app-user',
+    imports: [
+        ReactiveFormsModule,
+        XInputComponent,
+        XButtonComponent,
+        XLoadingComponent,
+        XTableComponent,
+        XLinkComponent,
+        XTagComponent
+    ],
+    templateUrl: './user.component.html',
+    styleUrls: ['./user.component.scss'],
+    providers: [DatePipe]
 })
 export class UserComponent {
   searchForm = this.fb.group({

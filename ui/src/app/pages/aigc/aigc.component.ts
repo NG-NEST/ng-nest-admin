@@ -6,7 +6,7 @@ import { AuthService } from '@ui/api';
 import { AppAuthService, AppPrismService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
 import { Router } from '@angular/router';
-import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
+import { XI18nService } from '@ng-nest/ui/i18n';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
 import { Socket, io } from 'socket.io-client';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -17,7 +17,6 @@ import Prism from 'prismjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { XSliderComponent } from '@ng-nest/ui/slider';
 import { XSelectComponent } from '@ng-nest/ui/select';
-import { JsonPipe } from '@angular/common';
 
 export const flyInBottom = [
   trigger('flyInBottom', [
@@ -30,17 +29,14 @@ export const flyInBottom = [
 
 @Component({
   selector: 'app-aigc',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe,
     XTextareaComponent,
     XButtonComponent,
     XIconComponent,
     XSliderComponent,
-    XSelectComponent,
-    XI18nPipe
+    XSelectComponent
   ],
   templateUrl: './aigc.component.html',
   styleUrls: ['./aigc.component.scss'],

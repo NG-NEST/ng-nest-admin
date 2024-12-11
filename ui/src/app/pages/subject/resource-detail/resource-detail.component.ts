@@ -14,20 +14,19 @@ import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
 
 @Component({
-  selector: 'app-resource-detail',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    XLoadingComponent,
-    XInputComponent,
-    XButtonComponent,
-    XSelectComponent,
-    XDialogModule,
-    XTreeSelectComponent,
-    XInputNumberComponent,
-    XTextareaComponent
-  ],
-  templateUrl: './resource-detail.component.html'
+    selector: 'app-resource-detail',
+    imports: [
+        ReactiveFormsModule,
+        XLoadingComponent,
+        XInputComponent,
+        XButtonComponent,
+        XSelectComponent,
+        XDialogModule,
+        XTreeSelectComponent,
+        XInputNumberComponent,
+        XTextareaComponent
+    ],
+    templateUrl: './resource-detail.component.html'
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<ResourceDetailComponent>);

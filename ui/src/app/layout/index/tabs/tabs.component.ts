@@ -7,17 +7,16 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XAvatarComponent } from '@ng-nest/ui/avatar';
 
 @Component({
-  selector: 'app-tabs',
-  standalone: true,
-  imports: [
-    XCrumbComponent,
-    XIconComponent,
-    XDropdownComponent,
-    XButtonComponent,
-    XAvatarComponent
-  ],
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+    selector: 'app-tabs',
+    imports: [
+        XCrumbComponent,
+        XIconComponent,
+        XDropdownComponent,
+        XButtonComponent,
+        XAvatarComponent
+    ],
+    templateUrl: './tabs.component.html',
+    styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent {
   userFirstName = computed(() => {

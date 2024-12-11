@@ -14,8 +14,8 @@
       [hiddenPaginationBorder]="true"
       [scroll]="{ x: 180, y: 300 }"
       [virtualScroll]="true"
-      [headColumnTpl]="{ name: this.nameHeadTpl }"
-      [bodyColumnTpl]="{ name: this.nameBodyTpl }"
+      [headColumnTpl]="{ name: nameHeadTpl }"
+      [bodyColumnTpl]="{ name: nameBodyTpl }"
       [adaptionHeight]="105"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
@@ -105,13 +105,14 @@
         [sizeData]="[10, 20, 50, 100]"
         [showJump]="true"
         [showEmpty]="!resourceTableLoading()"
-        [bodyColumnTpl]="{ operate: this.operateTpl }"
+        [bodyColumnTpl]="{ operate: operateTpl }"
         [adaptionHeight]="105"
         (indexChange)="resourceIndexChange()"
         (sizeChange)="resourceSizeChange()"
       ></x-table>
       <ng-template #operateTpl let-column="$column" let-row="$row">
         <div class="operate">
+          <x-link type="primary" (click)="resourceAction('permission', row)">许可</x-link> |
           <x-link type="primary" (click)="resourceAction('edit', row)">修改</x-link> |
           <x-link type="danger" (click)="resourceAction('delete', row)">删除</x-link>
         </div>

@@ -2,11 +2,10 @@ import { Component, signal } from '@angular/core';
 import { XMenuComponent } from '@ng-nest/ui/menu';
 import { AppConfigService } from '@ui/core';
 @Component({
-  selector: 'app-aside',
-  standalone: true,
-  imports: [XMenuComponent],
-  templateUrl: './aside.component.html',
-  styleUrls: ['./aside.component.scss']
+    selector: 'app-aside',
+    imports: [XMenuComponent],
+    templateUrl: './aside.component.html',
+    styleUrls: ['./aside.component.scss']
 })
 export class AsideComponent {
   collapsed = signal(false);

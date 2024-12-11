@@ -1,4 +1,4 @@
-@import 'params';
+@use '../../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
 
 :host {
   position: fixed;
@@ -8,8 +8,8 @@
   left: 0;
   z-index: 11;
   transition:
-    width $--x-animation-duration-slow,
-    background-color $--x-animation-duration-slow;
+    width $x-animation-duration-slow,
+    background-color $x-animation-duration-slow;
   box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
 
   .aside {
@@ -35,7 +35,7 @@
       }
     }
     &-logo {
-      color: $--x-text;
+      color: $x-text;
       height: 3.25rem;
       overflow: hidden;
       display: flex;
@@ -47,18 +47,18 @@
       > img {
         width: 2rem;
         transition:
-          width $--x-animation-duration-slow,
-          padding $--x-animation-duration-slow;
+          width $x-animation-duration-slow,
+          padding $x-animation-duration-slow;
       }
       > span {
-        font-size: $--x-font-size-big;
+        font-size: $x-font-size-big;
         margin-left: 0.625rem;
         visibility: inherit;
         text-overflow: ellipsis;
         white-space: nowrap;
         transition:
-          visibility $--x-animation-duration-slow,
-          opacity $--x-animation-duration-slow;
+          visibility $x-animation-duration-slow,
+          opacity $x-animation-duration-slow;
       }
     }
     &-menus {
@@ -67,10 +67,10 @@
       padding: 0 1rem;
       ::ng-deep .x-menu-nodes .x-menu-node {
         border-right: none;
-        color: $--x-primary-900;
+        color: $x-primary-900;
 
         x-menu-node > a {
-          color: $--x-primary-900;
+          color: $x-primary-900;
         }
         &:hover {
           background-color: rgba(50, 50, 50, 0.5);
@@ -78,7 +78,7 @@
         &.x-activated {
           background-color: rgba(50, 50, 50, 0.9);
           x-menu-node > a {
-            color: $--x-primary;
+            color: $x-primary;
           }
           &::after {
             right: 0;

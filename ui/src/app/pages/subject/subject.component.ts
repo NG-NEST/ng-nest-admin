@@ -28,7 +28,6 @@ import { ResourceDetailComponent } from './resource-detail/resource-detail.compo
 
 @Component({
   selector: 'app-subject',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -89,16 +88,13 @@ export class SubjectComponent {
     private message: XMessageService,
     private messageBox: XMessageBoxService
   ) {
-    effect(
-      () => {
-        if (this.enabled()) {
-          this.resourceSearchForm.enable();
-        } else {
-          this.resourceSearchForm.disable();
-        }
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      if (this.enabled()) {
+        this.resourceSearchForm.enable();
+      } else {
+        this.resourceSearchForm.disable();
+      }
+    });
   }
 
   ngOnInit() {

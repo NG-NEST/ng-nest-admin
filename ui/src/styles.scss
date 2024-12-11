@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'params';
+@use '../node_modules/@ng-nest/ui/style/params/index.scss' as *;
 
 @font-face {
   font-family: 'Inter';
@@ -16,7 +16,7 @@
 }
 
 body {
-  background-color: $--x-background;
+  background-color: $x-background;
   height: 100%;
 }
 
@@ -52,13 +52,13 @@ ul {
 }
 
 a {
-  color: $--x-primary;
+  color: $x-primary;
   text-decoration: none;
   transition: all 0.4s;
   cursor: pointer;
 
   &:hover {
-    color: $--x-primary;
+    color: $x-primary;
   }
 }
 
@@ -102,14 +102,14 @@ input {
 .app-table {
   padding: 1rem;
   background-color: rgba(255, 255, 255);
-  border-radius: $--x-border-radius;
+  border-radius: $x-border-radius;
   box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
 }
 
 .app-table {
   margin-top: 1rem;
   .operate {
-    color: $--x-text-300;
+    color: $x-text-300;
   }
 }
 
@@ -142,7 +142,7 @@ input {
 
 .app-dialog-form {
   .title {
-    border-bottom: $--x-border-base;
+    border-bottom: $x-border-base;
   }
   .content {
     display: grid;
@@ -161,9 +161,9 @@ input {
         label::before {
           display: inline-block;
           margin-right: 0.25rem;
-          color: $--x-danger;
+          color: $x-danger;
           line-height: 1;
-          font-size: $--x-font-size-small;
+          font-size: $x-font-size-small;
           content: '*';
         }
       }
@@ -173,7 +173,7 @@ input {
     x-button {
       min-width: 120px;
     }
-    border-top: $--x-border-base;
+    border-top: $x-border-base;
   }
 }
 

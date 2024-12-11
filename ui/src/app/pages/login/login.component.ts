@@ -12,11 +12,10 @@ import { isEmpty } from 'lodash-es';
 import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   auth = inject(AppAuthService);

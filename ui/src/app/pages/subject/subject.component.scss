@@ -1,4 +1,4 @@
-@import 'params';
+@use '../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
 
 :host {
   .app-inner {
@@ -24,10 +24,10 @@
           content: ' ';
           width: 0.6rem;
           height: 90%;
-          background: $--x-border-100;
+          background: $x-border-100;
           background:
-            linear-gradient(-45deg, transparent 0.3rem, $--x-border-100 0) bottom right,
-            linear-gradient(-135deg, transparent 0.3rem, $--x-border-100 0) top right;
+            linear-gradient(-45deg, transparent 0.3rem, $x-border-100 0) bottom right,
+            linear-gradient(-135deg, transparent 0.3rem, $x-border-100 0) top right;
           background-size: 50% 51%;
           background-repeat: no-repeat;
           left: -0.3rem;
@@ -38,10 +38,10 @@
           content: ' ';
           width: 0.6rem;
           height: 90%;
-          background: $--x-border-100;
+          background: $x-border-100;
           background:
-            linear-gradient(45deg, transparent 0.3rem, $--x-border-100 0) bottom left,
-            linear-gradient(135deg, transparent 0.3rem, $--x-border-100 0) top left;
+            linear-gradient(45deg, transparent 0.3rem, $x-border-100 0) bottom left,
+            linear-gradient(135deg, transparent 0.3rem, $x-border-100 0) top left;
           background-size: 50% 51%;
           background-repeat: no-repeat;
           right: -0.3rem;
@@ -68,7 +68,7 @@
       display: flex;
       flex-direction: column;
       span {
-        color: $--x-text-500;
+        color: $x-text-500;
       }
     }
   }

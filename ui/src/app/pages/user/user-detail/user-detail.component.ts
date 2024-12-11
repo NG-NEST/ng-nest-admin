@@ -17,17 +17,16 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
 import { XData } from '@ng-nest/ui/core';
 
 @Component({
-  selector: 'app-user-detail',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    XLoadingComponent,
-    XInputComponent,
-    XButtonComponent,
-    XSelectComponent,
-    XDialogModule
-  ],
-  templateUrl: './user-detail.component.html'
+    selector: 'app-user-detail',
+    imports: [
+        ReactiveFormsModule,
+        XLoadingComponent,
+        XInputComponent,
+        XButtonComponent,
+        XSelectComponent,
+        XDialogModule
+    ],
+    templateUrl: './user-detail.component.html'
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<UserDetailComponent>);

@@ -16,19 +16,18 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 
 @Component({
-  selector: 'app-role',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    XInputComponent,
-    XButtonComponent,
-    XLoadingComponent,
-    XTableComponent,
-    XLinkComponent
-  ],
-  templateUrl: './role.component.html',
-  providers: [DatePipe]
+    selector: 'app-role',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        XInputComponent,
+        XButtonComponent,
+        XLoadingComponent,
+        XTableComponent,
+        XLinkComponent
+    ],
+    templateUrl: './role.component.html',
+    providers: [DatePipe]
 })
 export class RoleComponent {
   searchForm = this.fb.group({

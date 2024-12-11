@@ -1,4 +1,4 @@
-@import 'params';
+@use '../../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
 
 :host {
   width: calc(100% - 15rem);
@@ -12,8 +12,8 @@
   left: 15rem;
   z-index: 13;
   transition:
-    left $--x-animation-duration-slow,
-    width $--x-animation-duration-slow;
+    left $x-animation-duration-slow,
+    width $x-animation-duration-slow;
   font-size: 0.875rem;
   background-color: rgba(255, 255, 255);
   box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);

@@ -9,16 +9,15 @@ import { RoleService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-role-detail',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    XLoadingComponent,
-    XInputComponent,
-    XButtonComponent,
-    XDialogModule
-  ],
-  templateUrl: './role-detail.component.html'
+    selector: 'app-role-detail',
+    imports: [
+        ReactiveFormsModule,
+        XLoadingComponent,
+        XInputComponent,
+        XButtonComponent,
+        XDialogModule
+    ],
+    templateUrl: './role-detail.component.html'
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<RoleDetailComponent>);
