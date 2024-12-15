@@ -25,6 +25,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { ResourceDetailComponent } from './resource-detail/resource-detail.component';
+import { PermissionListComponent } from './permission-list/permission-list.component';
 
 @Component({
   selector: 'app-subject',
@@ -327,6 +328,20 @@ export class SubjectComponent {
               }
               this.getResourceTableData();
             });
+          }
+        });
+        break;
+      case 'permission':
+        if (!resource) return;
+        this.dialog.create(PermissionListComponent, {
+          width: '800px',
+          backdropClose: false,
+          data: {
+            id: resource.id,
+            title: resource.name,
+            saveSuccess: () => {
+              this.getResourceTableData();
+            }
           }
         });
         break;

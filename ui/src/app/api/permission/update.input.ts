@@ -4,4 +4,5 @@ export class PermissionUpdateInput {
   code?: string;
   sort?: number;
   description?: string;
+  resourceId?: string;
 }

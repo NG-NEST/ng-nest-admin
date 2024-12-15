@@ -6,12 +6,20 @@ import {
   Authorization,
   PermissionUpdateInput,
   PermissionCacheClear,
+  PermissionSaveManyInput,
 } from '@api/services';
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post, Req } from '@nestjs/common';
 
 @Controller('permission')
 export class PermissionController {
   constructor(private permissionService: PermissionService) {}
+
+  @Post('many')
+  @Authorization(PermissionAuth.PermissionSaveMany)
+  @CacheClear(...PermissionCacheClear)
+  async saveMany(@Body() data: PermissionSaveManyInput) {
+    return await this.permissionService.saveMany(data);
+  }
 
   @Patch()
   @Authorization(PermissionAuth.PermissionUpdate)
@@ -23,7 +31,8 @@ export class PermissionController {
   @Post()
   @Authorization(PermissionAuth.PermissionCreate)
   @CacheClear(...PermissionCacheClear)
-  async create(@Body() data: PermissionCreateInput) {
+  async create(@Body() data: PermissionCreateInput, @Req() req: Request) {
+    console.log(data, req);
     return await this.permissionService.create(data);
   }
 

@@ -5,6 +5,8 @@ export enum PermissionAuth {
   PermissionCreate = 'permission-create',
   PermissionUpdate = 'permission-update',
   PermissionDelete = 'permission-delete',
+
+  PermissionSaveMany = 'permission-save-many',
 }
 
 export enum PermissionDescription {
@@ -15,6 +17,9 @@ export enum PermissionDescription {
   Code = 'Code',
   Sort = 'Sort',
   Description = 'Description',
+  ResourceId = 'ResourceId',
+
+  Many = 'Many',
 }
 
 export enum PermissionIncludeDescription {

@@ -22,7 +22,7 @@ async function bootstrap() {
       instance: LOGGER_INSTANCE,
     }),
   });
-  app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new I18nValidationPipe());
   app.useGlobalFilters(
     new AllExceptionsFilter(app.get(HttpAdapterHost)),
     new I18nValidationExceptionFilter({

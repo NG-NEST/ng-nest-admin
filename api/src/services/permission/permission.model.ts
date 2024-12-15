@@ -20,4 +20,7 @@ export class Permission extends BaseAudit {
   @Field({ description: PermissionDescription.Description })
   @IsOptional()
   description?: string;
+
+  @Field({ description: PermissionDescription.ResourceId })
+  resourceId: string;
 }

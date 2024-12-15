@@ -175,6 +175,51 @@ input {
     }
     border-top: $x-border-base;
   }
+  .attrs {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+    .attrs-table {
+      table {
+        border: $x-border-base;
+        border-collapse: collapse;
+        width: 100%;
+        thead {
+          tr th {
+            padding: 0.5rem 0.75rem;
+            background-color: $x-background;
+            text-align: left;
+            white-space: nowrap;
+            &:not(:first-child) {
+              border-left: $x-border-base;
+            }
+          }
+        }
+        tbody {
+          tr td {
+            border-top: $x-border-base;
+            &:not(:first-child) {
+              border-left: $x-border-base;
+            }
+            x-input {
+              width: 100%;
+            }
+            &.index {
+              padding: 0.5rem 0.75rem;
+            }
+          }
+        }
+      }
+      .empty {
+        padding: 1.25rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: $x-border-base;
+        border-right: $x-border-base;
+        border-bottom: $x-border-base;
+      }
+    }
+  }
 }
 
 [class^='language-'] {

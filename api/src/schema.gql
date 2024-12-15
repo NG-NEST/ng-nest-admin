@@ -350,6 +350,9 @@ type Permission {
   """Name"""
   name: String!
 
+  """ResourceId"""
+  resourceId: String!
+
   """Sort"""
   sort: Float!
 
@@ -401,6 +404,9 @@ type PermissionSelectOutput {
   """Name"""
   name: String!
 
+  """ResourceId"""
+  resourceId: String!
+
   """Sort"""
   sort: Float!
 
@@ -417,6 +423,9 @@ input PermissionWhere {
 
   """Name"""
   name: StringFilter
+
+  """ResourceId"""
+  resourceId: StringFilter
 
   """Sort"""
   sort: NumberFilter
@@ -440,6 +449,9 @@ input PermissionWhereInput {
 
   """Name"""
   name: StringFilter
+
+  """ResourceId"""
+  resourceId: StringFilter
 
   """Sort"""
   sort: NumberFilter
@@ -924,6 +936,9 @@ type RolePermissionOutput {
 
   """Name"""
   name: String!
+
+  """ResourceId"""
+  resourceId: String!
 
   """Sort"""
   sort: Float!

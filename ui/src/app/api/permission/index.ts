@@ -9,3 +9,4 @@ export * from './permission.output';
 export * from './select.input';
 export * from './select.output';
 export * from './permission.service';
+export * from './save-many.input';

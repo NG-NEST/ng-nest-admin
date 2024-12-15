@@ -1,4 +1,9 @@
-import { APP_INITIALIZER, ApplicationConfig, isDevMode } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  isDevMode,
+  provideExperimentalZonelessChangeDetection
+} from '@angular/core';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
@@ -21,6 +26,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
+    provideExperimentalZonelessChangeDetection(),
     provideHttpClient(withFetch(), withInterceptors([AppNoopInterceptor])),
     provideRouter(
       LayoutRoutes,

@@ -11,6 +11,7 @@ import { PermissionUpdateInput } from './update.input';
 import { PermissionSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { PermissionSelectInput } from './select.input';
+import { PermessionSaveManyInput } from './save-many.input';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
@@ -77,6 +78,9 @@ export class PermissionService {
               id
               name
               code
+              sort
+              description
+              resourceId
             }
           }
         `
@@ -100,5 +104,11 @@ export class PermissionService {
     return this.http
       .delete(`/api/permission/${id}`)
       .pipe(map(() => PermissionMessage.DeletedSuccess));
+  }
+
+  saveMany(input: PermessionSaveManyInput): Observable<string> {
+    return this.http
+      .post(`/api/permission/many`, input)
+      .pipe(map(() => PermissionMessage.UpdatedSuccess));
   }
 }

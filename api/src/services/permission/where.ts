@@ -26,6 +26,10 @@ export class PermissionWhere {
   @Field(() => BASE_STRING_FILTER, { description: PermissionDescription.Description, nullable: true })
   @IsOptional()
   description?: StringFilter;
+
+  @Field(() => BASE_STRING_FILTER, { description: PermissionDescription.ResourceId, nullable: true })
+  @IsOptional()
+  resourceId?: StringFilter;
 }
 
 @InputType()
