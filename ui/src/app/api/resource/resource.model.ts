@@ -1,4 +1,5 @@
 import { BaseModel } from '@ui/core';
+import { Permission } from '../permission';
 
 export class Resource extends BaseModel {
   pid?: string;
@@ -6,6 +7,7 @@ export class Resource extends BaseModel {
   code!: string;
   sort!: number;
   description?: string;
+  permissions?: Permission[];
   subject!: ResourceSubject;
   subjectId!: string;
   subjectName!: string;

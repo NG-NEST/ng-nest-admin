@@ -85,6 +85,11 @@ export class ResourceService {
               id
               name
               code
+              permissions {
+                code
+                id
+                name
+              }
             }
           }
         `

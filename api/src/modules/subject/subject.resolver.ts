@@ -3,11 +3,11 @@ import { BaseSelect, CacheControl, PrismaSelect } from '@api/core';
 import {
   Subject,
   SubjectCache,
-  SubjectCode,
   SubjectId,
   SubjectPaginationInput,
   SubjectPaginationOutput,
   SubjectResolverName,
+  SubjectResourceInput,
   SubjectResourceOutput,
   SubjectSelectInput,
   SubjectSelectOutput,
@@ -54,9 +54,9 @@ export class SubjectResolver {
   })
   @CacheControl(SubjectCache.SubjectResources)
   async subjectResources(
-    @Args('code', SubjectCode) code: string,
+    @Args() input: SubjectResourceInput,
     @PrismaSelect() select: BaseSelect,
   ): Promise<SubjectResourceOutput[]> {
-    return await this.subjectService.subjectResources(code, select);
+    return await this.subjectService.subjectResources(input, select);
   }
 }

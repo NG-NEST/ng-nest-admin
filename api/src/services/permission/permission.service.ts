@@ -17,6 +17,20 @@ export class PermissionService {
       data: (await this.prisma.permission.findMany({ ...input, ...select })) as Permission[],
       count: await this.prisma.permission.count({ where }),
     };
+
+    this.prisma.resource.findMany({
+      where: {
+        id: { in: ['1'] },
+      },
+      orderBy: [{ sort: 'asc' }, {}],
+      include: {
+        permissions: {
+          orderBy: {
+            sort: 'asc',
+          },
+        },
+      },
+    });
   }
 
   async permissionSelect(input: PermissionSelectInput, select: BaseSelect) {

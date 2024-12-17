@@ -9,3 +9,5 @@ export * from './subject.enum';
 export * from './subject.model';
 export * from './subject.output';
 export * from './subject.service';
+export * from './subject-resource.input';
+export * from './subject-resource.output';

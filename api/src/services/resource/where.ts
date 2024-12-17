@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { BASE_STRING_FILTER, BaseWhereInput, NumberFilter, StringFilter } from '@api/core';
+import { BASE_NUMBER_FILTER, BASE_STRING_FILTER, BaseWhereInput, NumberFilter, StringFilter } from '@api/core';
 import { ResourceDescription } from './resource.enum';
 import { SubjectDescription, SubjectWhereInput } from '../subject';
 
@@ -14,7 +14,7 @@ export class ResourceWhere {
   @IsOptional()
   code?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: ResourceDescription.Sort, nullable: true })
+  @Field(() => BASE_NUMBER_FILTER, { description: ResourceDescription.Sort, nullable: true })
   @IsOptional()
   sort?: NumberFilter;
 
@@ -30,7 +30,7 @@ export class ResourceWhere {
   @IsOptional()
   subjectId?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: SubjectDescription.Subject, nullable: true })
+  @Field(() => SubjectWhereInput, { description: SubjectDescription.Subject, nullable: true })
   @IsOptional()
   subject?: SubjectWhereInput;
 }

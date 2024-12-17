@@ -14,20 +14,21 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
+import { RolePermissionComponent } from './role-permission/role-permission.component';
 
 @Component({
-    selector: 'app-role',
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        XInputComponent,
-        XButtonComponent,
-        XLoadingComponent,
-        XTableComponent,
-        XLinkComponent
-    ],
-    templateUrl: './role.component.html',
-    providers: [DatePipe]
+  selector: 'app-role',
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    XInputComponent,
+    XButtonComponent,
+    XLoadingComponent,
+    XTableComponent,
+    XLinkComponent
+  ],
+  templateUrl: './role.component.html',
+  providers: [DatePipe]
 })
 export class RoleComponent {
   searchForm = this.fb.group({
@@ -40,7 +41,7 @@ export class RoleComponent {
     { id: 'description', label: RoleDescription.Description },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 120, right: 0 }
+    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
   ]);
 
   total = signal(0);
@@ -170,6 +171,18 @@ export class RoleComponent {
             });
           }
         });
+        break;
+      case 'auth':
+        this.dialog.create(RolePermissionComponent, {
+          width: '800px',
+          data: {
+            id: role?.id,
+            saveSuccess: () => {
+              // this.getTableData();
+            }
+          }
+        });
+        break;
     }
   }
 }

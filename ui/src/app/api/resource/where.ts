@@ -1,4 +1,5 @@
 import { BaseWhereInput, NumberFilter, StringFilter } from '@ui/core';
+import { SubjectWhereInput } from '../subject/where';
 
 export class ResourceWhereInput extends BaseWhereInput<ResourceWhereInput> {
   name?: string | StringFilter;
@@ -7,4 +8,5 @@ export class ResourceWhereInput extends BaseWhereInput<ResourceWhereInput> {
   description?: string | StringFilter;
   pid?: string | StringFilter;
   subjectId?: string | StringFilter;
+  subject?: SubjectWhereInput;
 }

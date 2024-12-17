@@ -8,5 +8,6 @@ export * from './where';
 export * from './subject.output';
 export * from './select.input';
 export * from './select.output';
-export * from './resource.output';
+export * from './subject-resource.input';
+export * from './subject-resource.output';
 export * from './subject.service';

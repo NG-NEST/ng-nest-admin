@@ -11,6 +11,8 @@ import { SubjectUpdateInput } from './update.input';
 import { SubjectSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { SubjectSelectInput } from './select.input';
+import { SubjectResourceOutput } from './subject-resource.output';
+import { SubjectResourceInput } from './subject-resource.input';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
@@ -77,6 +79,24 @@ export class SubjectService {
         `
       })
       .pipe(map((x) => cloneDeep(x.data?.subjectSelect!)));
+  }
+
+  subjectResources(input: SubjectResourceInput): Observable<SubjectResourceOutput[]> {
+    return this.apollo
+      .query<{ subjectResources: SubjectResourceOutput[] }>({
+        variables: input,
+        query: gql`
+          query SubjectResources($where: ResourceWhereInput, $orderBy: [ResourceOrderInput!]) {
+            subjectResources(where: $where, orderBy: $orderBy) {
+              id
+              pid
+              name
+              code
+            }
+          }
+        `
+      })
+      .pipe(map((x) => cloneDeep(x.data?.subjectResources!)));
   }
 
   create(input: SubjectCreateInput): Observable<string> {

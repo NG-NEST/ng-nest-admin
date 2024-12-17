@@ -3,6 +3,7 @@ import { Resource } from './resource.model';
 import { ResourceDescription } from './resource.enum';
 import { BaseAudit } from '@api/core';
 import { IsOptional } from 'class-validator';
+import { Permission, PermissionDescription } from '../permission';
 
 @ObjectType()
 export class ResourceSelectOutput extends BaseAudit {
@@ -33,4 +34,8 @@ export class ResourceSelectOutput extends BaseAudit {
   @Field({ description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
+
+  @Field(() => [Permission], { description: PermissionDescription.Permission, nullable: true })
+  @IsOptional()
+  permissions?: Permission[];
 }

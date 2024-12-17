@@ -664,8 +664,11 @@ type Query {
 
   """SubjectResources. No Pagination"""
   subjectResources(
-    """Code"""
-    code: String!
+    """Sorting rule"""
+    orderBy: [ResourceOrderInput!]
+
+    """Query condition"""
+    where: ResourceWhereInput
   ): [SubjectResourceOutput!]!
 
   """SubjectSelect. No Pagination"""
@@ -817,6 +820,9 @@ type ResourceSelectOutput {
   """Parent"""
   parent: Resource
 
+  """Permission"""
+  permissions: [Permission!]
+
   """Pid"""
   pid: ID
 
@@ -841,10 +847,10 @@ input ResourceWhere {
   pid: StringFilter
 
   """Sort"""
-  sort: StringFilter
+  sort: NumberFilter
 
   """Subject"""
-  subject: StringFilter
+  subject: SubjectWhereInput
 
   """SubjectId"""
   subjectId: StringFilter
@@ -873,10 +879,10 @@ input ResourceWhereInput {
   pid: StringFilter
 
   """Sort"""
-  sort: StringFilter
+  sort: NumberFilter
 
   """Subject"""
-  subject: StringFilter
+  subject: SubjectWhereInput
 
   """SubjectId"""
   subjectId: StringFilter
@@ -1182,6 +1188,9 @@ type SubjectResourceOutput {
 
   """Parent"""
   parent: Resource
+
+  """Permission"""
+  permissions: [Permission!]
 
   """Pid"""
   pid: ID
