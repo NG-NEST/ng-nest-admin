@@ -9,7 +9,7 @@
         <thead>
           <tr>
             <th>序号</th>
-            <th>许可名称</th>
+            <th width="120">许可名称</th>
             <th>编码</th>
             <th>排序</th>
             <th>描述</th>
@@ -21,9 +21,11 @@
             <tr [formGroupName]="$index">
               <td class="index">{{ $index + 1 }}</td>
               <td><x-input formControlName="name"></x-input></td>
-              <td><x-input formControlName="code"></x-input></td>
               <td>
-                <x-input-number formControlName="sort" [style.width.px]="160"></x-input-number>
+                <x-input formControlName="code"></x-input>
+              </td>
+              <td>
+                <x-input-number formControlName="sort" [style.width.px]="165"></x-input-number>
               </td>
               <td><x-input formControlName="description"></x-input></td>
               <td>

@@ -1,4 +1,5 @@
 import { ID } from '@nestjs/graphql';
+import { ResourceCache } from '../resource/resource.enum';
 export const PERMISSION_I18N = 'permission';
 
 export enum PermissionAuth {
@@ -41,7 +42,10 @@ export enum PermissionCache {
   PermissionSelect = 'PermissionSelect',
 }
 
-export const PermissionCacheClear = Object.keys(PermissionCache);
+export const PermissionCacheClear = [
+  ...Object.keys(PermissionCache),
+  ...Object.keys(ResourceCache),
+];
 
 export const PermissionId = { type: () => ID, description: PermissionDescription.Id };
 export const PermissionCode = { description: PermissionDescription.Code };

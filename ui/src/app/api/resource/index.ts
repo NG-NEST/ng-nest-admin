@@ -3,6 +3,7 @@ export * from './update.input';
 export * from './pagination.input';
 export * from './where';
 export * from './order';
+export * from './include';
 export * from './select.input';
 export * from './select.output';
 export * from './resource.enum';

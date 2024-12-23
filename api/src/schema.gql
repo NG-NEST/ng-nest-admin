@@ -457,6 +457,14 @@ input PermissionWhereInput {
   sort: NumberFilter
 }
 
+input PermissionsInclude {
+  """Sorting rule"""
+  orderBy: PermissionOrderInput
+
+  """Query condition"""
+  where: PermissionWhereInput
+}
+
 type Query {
   """CacheGet"""
   cache(key: String!): Cache!
@@ -568,6 +576,9 @@ type Query {
 
   """ResourceSelect. No Pagination"""
   resourceSelect(
+    """Includes associated objects"""
+    include: ResourceIncludeInput
+
     """Sorting rule"""
     orderBy: [ResourceOrderInput!]
 
@@ -661,15 +672,6 @@ type Query {
     """SubjectId"""
     id: ID!
   ): Subject!
-
-  """SubjectResources. No Pagination"""
-  subjectResources(
-    """Sorting rule"""
-    orderBy: [ResourceOrderInput!]
-
-    """Query condition"""
-    where: ResourceWhereInput
-  ): [SubjectResourceOutput!]!
 
   """SubjectSelect. No Pagination"""
   subjectSelect(
@@ -765,6 +767,11 @@ type Resource {
 
   """UpdatedAt"""
   updatedAt: DateTime
+}
+
+input ResourceIncludeInput {
+  """Permission"""
+  permissions: PermissionsInclude
 }
 
 input ResourceOrderInput {
@@ -1165,41 +1172,6 @@ type SubjectPaginationOutput {
 
   """Data collection"""
   data: [Subject!]!
-}
-
-type SubjectResourceOutput {
-  """Children"""
-  children: [Resource!]
-
-  """Code"""
-  code: String!
-
-  """CreatedAt"""
-  createdAt: DateTime
-
-  """Description"""
-  description: String
-
-  """ResourceId"""
-  id: ID!
-
-  """Name"""
-  name: String!
-
-  """Parent"""
-  parent: Resource
-
-  """Permission"""
-  permissions: [Permission!]
-
-  """Pid"""
-  pid: ID
-
-  """Sort"""
-  sort: Float!
-
-  """UpdatedAt"""
-  updatedAt: DateTime
 }
 
 type SubjectSelectOutput {

@@ -338,6 +338,7 @@ export class SubjectComponent {
           backdropClose: false,
           data: {
             id: resource.id,
+            code: resource.code,
             title: resource.name,
             saveSuccess: () => {
               this.getResourceTableData();

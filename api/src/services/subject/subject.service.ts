@@ -5,9 +5,7 @@ import { Subject } from './subject.model';
 import { SubjectUpdateInput } from './update.input';
 import { SubjectCreateInput } from './create.input';
 import { SubjectSelectInput } from './select.input';
-import { Resource } from '../resource';
 import { SubjectPaginationOutput } from './subject.output';
-import { SubjectResourceInput } from './subject-resource.input';
 
 @Injectable()
 export class SubjectService {
@@ -26,10 +24,6 @@ export class SubjectService {
 
   async subjectSelect(input: SubjectSelectInput, select: BaseSelect): Promise<Subject[]> {
     return await this.prisma.subject.findMany({ ...input, ...select });
-  }
-
-  async subjectResources(input: SubjectResourceInput, select: BaseSelect): Promise<Resource[]> {
-    return (await this.prisma.resource.findMany({ ...input, ...select })) as Resource[];
   }
 
   async subject(id: string, select: BaseSelect): Promise<Subject> {

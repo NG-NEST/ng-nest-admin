@@ -85,4 +85,10 @@ export class RoleService {
   delete(id: string): Observable<string> {
     return this.http.delete(`/api/role/${id}`).pipe(map(() => RoleMessage.DeletedSuccess));
   }
+
+  updatePermissions(id: string, permissionCodes: string[]) {
+    return this.http
+      .post(`/api/role/${id}/permissions`, permissionCodes)
+      .pipe(map(() => RoleMessage.UpdatedPermissionsSuccess));
+  }
 }

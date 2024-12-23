@@ -7,8 +7,6 @@ import {
   SubjectPaginationInput,
   SubjectPaginationOutput,
   SubjectResolverName,
-  SubjectResourceInput,
-  SubjectResourceOutput,
   SubjectSelectInput,
   SubjectSelectOutput,
   SubjectService,
@@ -47,16 +45,5 @@ export class SubjectResolver {
     @PrismaSelect('data') select: BaseSelect,
   ): Promise<SubjectSelectOutput[]> {
     return await this.subjectService.subjectSelect(input, select);
-  }
-
-  @Query(() => [SubjectResourceOutput], {
-    description: SubjectResolverName.SubjectResources,
-  })
-  @CacheControl(SubjectCache.SubjectResources)
-  async subjectResources(
-    @Args() input: SubjectResourceInput,
-    @PrismaSelect() select: BaseSelect,
-  ): Promise<SubjectResourceOutput[]> {
-    return await this.subjectService.subjectResources(input, select);
   }
 }

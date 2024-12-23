@@ -85,10 +85,12 @@ export class ResourceService {
               id
               name
               code
+              sort
               permissions {
                 code
                 id
                 name
+                sort
               }
             }
           }

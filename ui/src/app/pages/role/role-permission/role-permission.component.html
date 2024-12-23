@@ -13,6 +13,7 @@
     <div class="item">
       <label>资源：</label>
       <x-table
+        [rowHeight]="0"
         [style.width.px]="600"
         [showPagination]="false"
         [allowSelectRow]="false"
@@ -20,8 +21,17 @@
         bordered
         [columns]="columns()"
         [data]="resources()"
+        [bodyColumnTpl]="{ permissions: permissionsTpl }"
+        [expandedLevel]="0"
       >
       </x-table>
+      <ng-template #permissionsTpl let-column="$column" let-row="$row" let-index="$index">
+        <ng-container formArrayName="list">
+          <div class="permissions" [formGroupName]="index">
+            <x-checkbox [data]="row.permissions" formControlName="permissions"></x-checkbox>
+          </div>
+        </ng-container>
+      </ng-template>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">

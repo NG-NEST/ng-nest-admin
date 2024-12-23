@@ -121,10 +121,15 @@ export class SelectWhereOrder<Where, OrderBy> {
   orderBy?: OrderBy[];
 }
 
-export function BaseSelectInput<Where, OrderBy>(_TWhere: Type<Where>, _TOrderBy: Type<OrderBy>) {
+export function BaseSelectInput<Where, OrderBy, Include>(
+  _TWhere?: Type<Where>,
+  _TOrderBy?: Type<OrderBy>,
+  _TInclude?: Type<Include>
+) {
   class SelectWhereOrder {
     where?: Where;
     orderBy?: OrderBy[];
+    include?: Include;
   }
   return SelectWhereOrder;
 }

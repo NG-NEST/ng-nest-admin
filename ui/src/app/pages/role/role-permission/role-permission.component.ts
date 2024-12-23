@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XData } from '@ng-nest/ui/core';
@@ -7,8 +7,9 @@ import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
-import { Resource, RoleService, SubjectService } from '@ui/api';
+import { ResourceService, RoleService, SubjectService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
+import { XCheckboxComponent } from '@ng-nest/ui/checkbox';
 
 @Component({
   selector: 'app-role-permission',
@@ -18,9 +19,11 @@ import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
     XButtonComponent,
     XSelectComponent,
     XDialogModule,
-    XTableComponent
+    XTableComponent,
+    XCheckboxComponent
   ],
-  templateUrl: './role-permission.component.html'
+  templateUrl: './role-permission.component.html',
+  styleUrls: ['./role-permission.component.scss']
 })
 export class RolePermissionComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<RolePermissionComponent>);
@@ -34,23 +37,31 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
 
   columns = signal<XTableColumn[]>([
     { id: 'name', label: '资源', type: 'expand', flex: 1 },
-    { id: 'permission', label: '许可', flex: 1.5 }
+    { id: 'permissions', label: '许可', flex: 2 }
   ]);
 
-  resources = signal<Resource[]>([]);
+  resources = signal<
+    { name: string; code: string; permissions: { id: string; label: string }[] }[]
+  >([]);
+
+  get list() {
+    return this.form.get('list') as FormArray;
+  }
 
   $destroy = new Subject<void>();
   constructor(
     @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
     private role: RoleService,
     private subject: SubjectService,
+    private resource: ResourceService,
     private fb: FormBuilder,
     private message: XMessageService
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      subjectCode: [null, [Validators.required]]
+      subjectCode: [null, [Validators.required]],
+      list: this.fb.array([])
     });
     const { id } = this.data;
     this.id.set(id);
@@ -84,13 +95,35 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   }
 
   getSubjectResources() {
-    return this.subject
-      .subjectResources({
-        where: { subject: { code: { equals: this.form.getRawValue().subjectCode } } }
+    return this.resource
+      .resourceSelect({
+        where: { subject: { code: { equals: this.form.getRawValue().subjectCode } } },
+        orderBy: [{ sort: 'asc' }],
+        include: { permissions: { orderBy: [{ sort: 'asc' }] } }
       })
       .pipe(
         tap((x) => {
-          this.resources.set(x);
+          for (let resource of x) {
+            resource;
+            this.list.push(
+              this.fb.group({
+                permissions: [[]]
+              })
+            );
+          }
+          this.resources.set(
+            x.map((y) => {
+              return {
+                id: y.id,
+                pid: y.pid,
+                name: y.name,
+                code: y.code,
+                permissions: y.permissions!.map((z) => {
+                  return { id: z.code, label: z.name };
+                })
+              };
+            })
+          );
         })
       );
   }
@@ -100,22 +133,23 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    let rq!: Observable<string>;
-    if (!this.id()) {
-      rq = this.role.create(this.form.value);
-    } else {
-      rq = this.role.update({ id: this.id(), ...this.form.value });
+    const permissions: string[] = [];
+    for (let item of this.form.value.list) {
+      permissions.push(...item.permissions);
     }
     this.saveLoading.set(true);
-    rq.pipe(
-      tap((x) => {
-        this.message.success(x);
-        this.dialogRef.close();
-        this.data.saveSuccess();
-      }),
-      finalize(() => {
-        this.saveLoading.set(false);
-      })
-    ).subscribe();
+    this.role
+      .updatePermissions(this.id(), permissions)
+      .pipe(
+        tap((x) => {
+          this.message.success(x);
+          this.dialogRef.close();
+          this.data.saveSuccess();
+        }),
+        finalize(() => {
+          this.saveLoading.set(false);
+        })
+      )
+      .subscribe();
   }
 }

@@ -199,6 +199,9 @@ export function BasePaginationInput<Where, OrderBy, Include>(
   return Pagination;
 }
 
+@ArgsType()
+export class Select {}
+
 export class SelectWhere<Where> {
   where?: Where;
 }
@@ -214,11 +217,17 @@ export class SelectWhereOrderInclude<Where, OrderBy, Include> extends SelectWher
   include?: Include;
 }
 
+export function BaseSelectInput(): typeof Select;
 export function BaseSelectInput<Where>(TWhere?: Type<Where>): typeof SelectWhere;
 export function BaseSelectInput<Where, OrderBy>(
   TWhere?: Type<Where>,
   TOrderBy?: Type<OrderBy>,
 ): typeof SelectWhereOrder<Where, OrderBy>;
+export function BaseSelectInput<Where, OrderBy, Include>(
+  TWhere?: Type<Where>,
+  TOrderBy?: Type<OrderBy>,
+  TInclude?: Type<Include>,
+): typeof SelectWhereOrderInclude<Where, OrderBy, Include>;
 export function BaseSelectInput<Where, OrderBy, Include>(
   TWhere?: Type<Where>,
   TOrderBy?: Type<OrderBy>,
@@ -251,12 +260,13 @@ export function BaseSelectInput<Where, OrderBy, Include>(
     @Field(() => [TOrderBy], { description: PaginationDescription.OrderBy, nullable: true })
     @IsOptional()
     orderBy?: OrderBy[];
-    @Field(() => [TInclude], { description: PaginationDescription.Include, nullable: true })
+    @Field(() => TInclude, { description: PaginationDescription.Include, nullable: true })
     @IsOptional()
-    include?: Include[];
+    include?: Include;
   }
-
-  if (TWhere && !TOrderBy && !TInclude) {
+  if (!TWhere && !TOrderBy && !TInclude) {
+    return Select;
+  } else if (TWhere && !TOrderBy && !TInclude) {
     return SelectWhere;
   } else if (TWhere && TOrderBy && !TInclude) {
     return SelectWhereOrder;
@@ -264,7 +274,7 @@ export function BaseSelectInput<Where, OrderBy, Include>(
     return SelectWhereOrderInclude;
   }
 
-  return SelectWhere;
+  return Select;
 }
 
 export function BaseCreateWithoutInput<CreateWithout>(TCreateWithout: Type<CreateWithout>) {

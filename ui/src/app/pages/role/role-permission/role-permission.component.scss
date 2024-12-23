@@ -1,0 +1,17 @@
+:host {
+  x-table {
+    ::ng-deep {
+      .x-checkbox-row-list {
+        flex-wrap: wrap;
+      }
+      .x-checkbox-row-item {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+  .permissions,
+  .name {
+    margin-top: -0.5rem;
+    display: inline-flex;
+  }
+}

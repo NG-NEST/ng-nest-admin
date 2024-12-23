@@ -28,6 +28,7 @@ import { XEmptyComponent } from '@ng-nest/ui/empty';
 export class PermissionListComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<PermissionListComponent>);
   id = signal('');
+  code = signal('');
   title = signal('');
   resources = signal<XData<XTreeSelectNode>>([]);
 
@@ -49,15 +50,22 @@ export class PermissionListComponent implements OnInit, OnDestroy {
   $destroy = new Subject<void>();
   constructor(
     @Inject(X_DIALOG_DATA)
-    public data: { id: string; title: string; subjectId: string; saveSuccess: () => void },
+    public data: {
+      id: string;
+      code: string;
+      title: string;
+      subjectId: string;
+      saveSuccess: () => void;
+    },
     private permission: PermissionService,
     private fb: FormBuilder,
     private message: XMessageService
   ) {}
 
   ngOnInit(): void {
-    const { id, title } = this.data;
+    const { id, title, code } = this.data;
     this.id.set(id);
+    this.code.set(code);
     this.title.set(title);
 
     const request: Observable<any>[] = [];
@@ -116,7 +124,7 @@ export class PermissionListComponent implements OnInit, OnDestroy {
       this.fb.group({
         id: [permission?.id ?? ''],
         name: [permission?.name ?? '', [Validators.required]],
-        code: [permission?.code ?? '', [Validators.required]],
+        code: [permission?.code ?? this.code() + '-', [Validators.required]],
         description: [permission?.description ?? ''],
         sort: [permission?.sort ?? 0, [Validators.required]],
         resourceId: [permission?.resourceId ?? this.id()]
