@@ -30,8 +30,8 @@ export class RoleController {
   @Post(':id/permissions')
   @Authorization(RoleAuth.RolePermissions)
   @CacheClear(...RoleCacheClear)
-  async updatePermissions(@Param('id') id: string, @Body() permissionCodes: string[]) {
-    return await this.roleService.updatePermissions(id, permissionCodes);
+  async updatePermissions(@Param('id') id: string, @Body() permissionIds: string[]) {
+    return await this.roleService.updatePermissions(id, permissionIds);
   }
 
   @Delete(':id')

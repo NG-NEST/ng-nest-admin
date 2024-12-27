@@ -11,6 +11,8 @@ import { RoleUpdateInput } from './update.input';
 import { RoleSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { RoleSelectInput } from './select.input';
+import { Permission } from '../permission';
+import { RolePermissionOutput } from './role-permissions.output';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -74,6 +76,24 @@ export class RoleService {
       .pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
   }
 
+  rolePermissions(id: string): Observable<RolePermissionOutput[]> {
+    return this.apollo
+      .query<{ rolePermissions: Permission[] }>({
+        variables: { id },
+        query: gql`
+          query RolePermissions($id: ID!) {
+            rolePermissions(id: $id) {
+              id
+              code
+              name
+              resourceId
+            }
+          }
+        `
+      })
+      .pipe(map((x) => x.data?.rolePermissions));
+  }
+
   create(input: RoleCreateInput): Observable<string> {
     return this.http.post('/api/role', input).pipe(map(() => RoleMessage.CreatedSuccess));
   }
@@ -86,9 +106,9 @@ export class RoleService {
     return this.http.delete(`/api/role/${id}`).pipe(map(() => RoleMessage.DeletedSuccess));
   }
 
-  updatePermissions(id: string, permissionCodes: string[]) {
+  updatePermissions(id: string, permissionIds: string[]) {
     return this.http
-      .post(`/api/role/${id}/permissions`, permissionCodes)
+      .post(`/api/role/${id}/permissions`, permissionIds)
       .pipe(map(() => RoleMessage.UpdatedPermissionsSuccess));
   }
 }

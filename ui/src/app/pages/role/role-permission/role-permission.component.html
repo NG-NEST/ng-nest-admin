@@ -26,9 +26,9 @@
       >
       </x-table>
       <ng-template #permissionsTpl let-column="$column" let-row="$row" let-index="$index">
-        <ng-container formArrayName="list">
-          <div class="permissions" [formGroupName]="index">
-            <x-checkbox [data]="row.permissions" formControlName="permissions"></x-checkbox>
+        <ng-container>
+          <div class="permissions" formGroupName="permissions">
+            <x-checkbox [data]="row.permissions" [formControlName]="row.id"></x-checkbox>
           </div>
         </ng-container>
       </ng-template>

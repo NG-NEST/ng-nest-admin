@@ -48,7 +48,7 @@ model UsersOnRoles {
 model Permission {
   id                 String               @id @default(uuid())
   name               String
-  code               String               @unique
+  code               String
   sort               Int                  @default(0)
   resourceId         String
   createdAt          DateTime             @default(now())
@@ -91,14 +91,14 @@ model Subject {
 }
 
 model RolesOnPermissions {
-  roleId         String
-  permissionCode String
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  permission     Permission @relation(fields: [permissionCode], references: [code])
-  role           Role       @relation(fields: [roleId], references: [id])
+  roleId       String
+  permissionId String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  role         Role       @relation(fields: [roleId], references: [id])
 
-  @@id([roleId, permissionCode])
+  @@id([roleId, permissionId])
   @@map("sys-role-permission")
 }
 

@@ -9,3 +9,4 @@ export * from './role.enum';
 export * from './role.model';
 export * from './role.output';
 export * from './role.service';
+export * from './role-permissions.output';

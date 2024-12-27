@@ -55,12 +55,12 @@ export class RoleService {
     return await this.prisma.role.delete({ where: { id } });
   }
 
-  async updatePermissions(roleId: string, permissionCodes: string[]) {
+  async updatePermissions(roleId: string, permissionIds: string[]) {
     const deleteRolePermissions = this.prisma.rolesOnPermissions.deleteMany({
       where: { roleId },
     });
     const createRolePermissions = this.prisma.rolesOnPermissions.createMany({
-      data: permissionCodes.map((permissionCode) => ({ roleId, permissionCode })),
+      data: permissionIds.map((permissionId) => ({ roleId, permissionId })),
     });
 
     return await this.prisma.$transaction([deleteRolePermissions, createRolePermissions]);

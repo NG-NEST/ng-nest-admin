@@ -1,7 +1,7 @@
 import { BaseAudit } from '@ui/core';
 
 export class Permission extends BaseAudit {
-  id?: string;
+  id!: string;
   name!: string;
   code!: string;
   sort!: number;
