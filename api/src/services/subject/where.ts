@@ -5,6 +5,10 @@ import { SubjectDescription } from './subject.enum';
 
 @InputType()
 export class SubjectWhere {
+  @Field(() => StringFilter, { description: SubjectDescription.Id, nullable: true })
+  @IsOptional()
+  id?: StringFilter;
+
   @Field(() => BASE_STRING_FILTER, { description: SubjectDescription.Name, nullable: true })
   @IsOptional()
   name?: StringFilter;
@@ -19,4 +23,4 @@ export class SubjectWhere {
 }
 
 @InputType()
-export class SubjectWhereInput extends BaseWhereInput(SubjectWhere) {}
+export class SubjectWhereInput extends BaseWhereInput(SubjectWhere) { }

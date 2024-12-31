@@ -22,15 +22,18 @@ body {
 
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width: 0.75rem; /*高宽分别对应横竖滚动条的尺寸*/
+  width: 0.75rem;
+  /*高宽分别对应横竖滚动条的尺寸*/
   height: 0.75rem;
 }
+
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
   border-radius: 0.75rem;
   // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.1);
 }
+
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
@@ -108,6 +111,7 @@ input {
 
 .app-table {
   margin-top: 1rem;
+
   .operate {
     color: $x-text-300;
   }
@@ -117,21 +121,26 @@ input {
   .list {
     display: flex;
   }
+
   .item {
     display: flex;
     align-items: center;
+
     &:not(:first-child) {
       margin-left: 1rem;
     }
+
     label {
       white-space: nowrap;
     }
   }
+
   .buttons {
     margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     x-button {
       &:not(:first-child) {
         margin-left: 1rem;
@@ -141,22 +150,39 @@ input {
 }
 
 .app-dialog-form {
+  position: relative;
+
   .title {
     border-bottom: $x-border-base;
   }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: -1rem;
+
+    .x-button {
+      height: 3rem;
+      line-height: 3rem;
+    }
+  }
+
   .content {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
     padding: 1.25rem 0;
+
     .item {
       display: flex;
       align-items: flex-start;
+
       label {
         width: 8.625rem;
         line-height: 2.25rem;
         text-align: right;
       }
+
       &.required {
         label::before {
           display: inline-block;
@@ -169,46 +195,57 @@ input {
       }
     }
   }
+
   .actions {
     x-button {
       min-width: 120px;
     }
+
     border-top: $x-border-base;
   }
+
   .attrs {
     padding: 1.25rem 1rem;
     gap: 1rem;
+
     .attrs-table {
       table {
         border: $x-border-base;
         border-collapse: collapse;
         width: 100%;
+
         thead {
           tr th {
             padding: 0.5rem 0.75rem;
             background-color: $x-background;
             text-align: left;
             white-space: nowrap;
+
             &:not(:first-child) {
               border-left: $x-border-base;
             }
           }
         }
+
         tbody {
           tr td {
             border-top: $x-border-base;
+
             &:not(:first-child) {
               border-left: $x-border-base;
             }
+
             x-input {
               width: 100%;
             }
+
             &.index {
               padding: 0.5rem 0.75rem;
             }
           }
         }
       }
+
       .empty {
         padding: 1.25rem 1rem;
         display: flex;
@@ -234,6 +271,7 @@ input {
 .language-js,
 .language-javascript,
 .language-json {
+
   .token.decorator,
   .token.keyword,
   .token.builtin {
@@ -259,20 +297,25 @@ input {
 }
 
 .language-html {
+
   .token.tag,
   .token.punctuation {
     color: #0546ff;
   }
+
   .token.attr-name {
     color: #f637e3;
   }
+
   .token.attr-value,
   .token.attr-value .token.punctuation {
     color: #fa2c05;
+
     &.attr-equals {
       color: #0546ff;
     }
   }
+
   .token.attr-name {
     .attr-equals {
       color: #0546ff;
@@ -283,17 +326,21 @@ input {
 .language-scss,
 .language-less,
 .language-css {
+
   .token.selector,
   .token.function,
   .token.keyword {
     color: #0546ff;
   }
+
   .token.property {
     color: #f637e3;
   }
+
   .token.string {
     color: #fa2c05;
   }
+
   .token.punctuation {
     color: #474747;
   }

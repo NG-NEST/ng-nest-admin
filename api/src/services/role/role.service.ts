@@ -9,7 +9,7 @@ import { RolePaginationOutput } from './role.output';
 
 @Injectable()
 export class RoleService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async roles(input: RolePaginationInput, select: BaseSelect): Promise<RolePaginationOutput> {
     const { where } = input;
@@ -23,9 +23,9 @@ export class RoleService {
     return await this.prisma.role.findMany({ ...input, ...select });
   }
 
-  async rolePermissions(id: string, select: BaseSelect) {
+  async rolePermissions(id: string, subjectId: string, select: BaseSelect) {
     const data = await this.prisma.rolesOnPermissions.findMany({
-      where: { roleId: id },
+      where: { roleId: id, permission: { resource: { subjectId } } },
       select: { permission: { ...select } },
     });
 

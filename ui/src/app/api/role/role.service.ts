@@ -19,7 +19,7 @@ export class RoleService {
   constructor(
     private apollo: Apollo,
     private http: HttpClient
-  ) {}
+  ) { }
 
   role(id: string): Observable<Role> {
     return this.apollo
@@ -76,13 +76,13 @@ export class RoleService {
       .pipe(map((x) => cloneDeep(x.data?.roleSelect!)));
   }
 
-  rolePermissions(id: string): Observable<RolePermissionOutput[]> {
+  rolePermissions(id: string, subjectId: string): Observable<RolePermissionOutput[]> {
     return this.apollo
       .query<{ rolePermissions: Permission[] }>({
-        variables: { id },
+        variables: { id, subjectId },
         query: gql`
-          query RolePermissions($id: ID!) {
-            rolePermissions(id: $id) {
+          query RolePermissions($id: ID!, $subjectId: ID!) {
+            rolePermissions(id: $id, subjectId: $subjectId) {
               id
               code
               name

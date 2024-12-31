@@ -99,8 +99,21 @@ export class AuthService {
     return captcha;
   }
 
-  async getUserFromToken(id: string, select: BaseSelect) {
+  async getUserById(id: string, select: BaseSelect) {
     const user = await this.prisma.user.findUnique({ where: { id }, ...select });
+    const permisions = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        roles: {
+          select: {
+            role: {
+              select: { permissions: { select: { permission: { select: { name: true } } } } },
+            },
+          },
+        },
+      },
+    });
+    console.log(JSON.stringify(permisions));
     const { password, ...result } = user;
 
     return result;

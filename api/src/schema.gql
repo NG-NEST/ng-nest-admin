@@ -611,6 +611,9 @@ type Query {
   rolePermissions(
     """RoleId"""
     id: ID!
+
+    """SubjectId"""
+    subjectId: ID!
   ): [RolePermissionOutput!]!
 
   """RoleSelect. No Pagination"""
@@ -908,6 +911,9 @@ type Role {
   """Name"""
   name: String!
 
+  """Permission"""
+  permissions: [RolePermission!]
+
   """UpdatedAt"""
   updatedAt: DateTime
 }
@@ -932,6 +938,12 @@ type RolePaginationOutput {
 
   """Data collection"""
   data: [Role!]!
+}
+
+type RolePermission {
+  """Permission"""
+  permission: Permission
+  permissionId: ID
 }
 
 type RolePermissionOutput {
@@ -972,6 +984,9 @@ type RoleSelectOutput {
 
   """Name"""
   name: String!
+
+  """Permission"""
+  permissions: [RolePermission!]
 
   """UpdatedAt"""
   updatedAt: DateTime
@@ -1201,6 +1216,9 @@ input SubjectWhere {
   """Description"""
   description: StringFilter
 
+  """SubjectId"""
+  id: StringFilter
+
   """Name"""
   name: StringFilter
 }
@@ -1220,6 +1238,9 @@ input SubjectWhereInput {
 
   """Description"""
   description: StringFilter
+
+  """SubjectId"""
+  id: StringFilter
 
   """Name"""
   name: StringFilter

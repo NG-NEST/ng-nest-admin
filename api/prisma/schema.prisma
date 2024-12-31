@@ -22,13 +22,13 @@ model User {
 }
 
 model Role {
-  id                 String               @id @default(uuid())
-  name               String               @unique
-  description        String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  RolesOnPermissions RolesOnPermissions[]
-  users              UsersOnRoles[]
+  id          String               @id @default(uuid())
+  name        String               @unique
+  description String?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  permissions RolesOnPermissions[]
+  users       UsersOnRoles[]
 
   @@map("sys-role")
 }
@@ -46,16 +46,16 @@ model UsersOnRoles {
 }
 
 model Permission {
-  id                 String               @id @default(uuid())
-  name               String
-  code               String
-  sort               Int                  @default(0)
-  resourceId         String
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  description        String?
-  resource           Resource             @relation(fields: [resourceId], references: [id])
-  RolesOnPermissions RolesOnPermissions[]
+  id          String               @id @default(uuid())
+  name        String
+  code        String
+  sort        Int                  @default(0)
+  resourceId  String
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  description String?
+  resource    Resource             @relation(fields: [resourceId], references: [id])
+  roles       RolesOnPermissions[]
 
   @@map("sys-permission")
 }

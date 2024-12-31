@@ -64,16 +64,16 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
     private resource: ResourceService,
     private fb: FormBuilder,
     private message: XMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      subjectCode: [null, [Validators.required]],
+      subjectId: [null, [Validators.required]],
       permissions: this.fb.group({})
     });
     const { id } = this.data;
     this.id.set(id);
-    const request: Observable<any>[] = [this.getRolePermissions()];
+    const request: Observable<any>[] = [this.getSubjectSelect()];
 
     this.formLoading.set(true);
     forkJoin(request)
@@ -90,11 +90,20 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
     this.$destroy.complete();
   }
 
+  subjectChange() {
+    this.formLoading.set(true);
+    this.getRolePermissions().pipe(
+      finalize(() => {
+        this.formLoading.set(false);
+      })
+    ).subscribe()
+  }
+
   getRolePermissions() {
-    return this.role.rolePermissions(this.id()).pipe(
+    return this.role.rolePermissions(this.id(), this.form.getRawValue().subjectId).pipe(
       mergeMap((x) => {
         this.rolePermisions.set(x);
-        return this.getSubjectSelect();
+        return this.getSubjectResources();
       })
     );
   }
@@ -102,10 +111,10 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   getSubjectSelect() {
     return this.subject.subjectSelect({}).pipe(
       mergeMap((x) => {
-        this.subjects.set(x.map((y) => ({ label: y.name, id: y.code })));
+        this.subjects.set(x.map((y) => ({ label: y.name, id: y.id })));
         if (x.length > 0) {
-          this.form.patchValue({ subjectCode: x[0].code! });
-          return this.getSubjectResources();
+          this.form.patchValue({ subjectId: x[0].id! });
+          return this.getRolePermissions();
         } else {
           return of();
         }
@@ -116,7 +125,7 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   getSubjectResources() {
     return this.resource
       .resourceSelect({
-        where: { subject: { code: { equals: this.form.getRawValue().subjectCode } } },
+        where: { subject: { id: { equals: this.form.getRawValue().subjectId } } },
         orderBy: [{ sort: 'asc' }],
         include: { permissions: { orderBy: [{ sort: 'asc' }] } }
       })

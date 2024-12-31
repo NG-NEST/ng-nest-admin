@@ -53,9 +53,4 @@ export class AuthController {
   async logout(@CurrentUser() user: AuthPayload) {
     return await this.auth.logout(user);
   }
-
-  @Get('userinfo')
-  async userinfo(@CurrentUser() user: AuthPayload) {
-    return await this.auth.getUserFromToken(user.id, null);
-  }
 }
