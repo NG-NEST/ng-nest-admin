@@ -3,5 +3,9 @@ import { CanActivateFn } from '@angular/router';
 import { AppAuthService } from './auth.service';
 
 export const AppCanActivate: CanActivateFn = (route) => {
-  return inject(AppAuthService).check(route);
+  return inject(AppAuthService).canActivate(route);
+};
+
+export const AppCanLoad: CanActivateFn = (route) => {
+  return inject(AppAuthService).canLoad(route);
 };

@@ -1,4 +1,5 @@
 import { BaseAudit, BaseModel } from '@ui/core';
+import { Role } from '../role/role.model';
 
 export class User extends BaseModel {
   name!: string;
@@ -10,5 +11,5 @@ export class User extends BaseModel {
 
 export class UserRole extends BaseAudit {
   roleId?: string;
-  role?: any;
+  role?: Role;
 }

@@ -10,7 +10,7 @@ export function AppInitializer(): () => Observable<boolean> {
   const locale = inject(AppLocaleService);
   return () =>
     locale.init().pipe(
-      concatMap(() => auth.check(null, true)),
+      concatMap(() => auth.canActivate(null, true)),
       concatMap(() => prism.init())
     );
 }

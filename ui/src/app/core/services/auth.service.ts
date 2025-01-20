@@ -1,7 +1,7 @@
 import { Injectable, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { XStorageService } from '@ng-nest/ui/core';
-import { AuthService, User } from '@ui/api';
+import { AuthService, Permission, User } from '@ui/api';
 import { Observable, concatMap, finalize, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +13,7 @@ export class AppAuthService {
   accessToken = signal(this.localStorage.getLocal('accessToken'));
   refreshToken = signal(this.localStorage.getLocal('refreshToken'));
   userInfo = signal<User | null>(null);
+  userPermissions: Map<string, Permission> = new Map([]);
 
   constructor() {
     effect(() => {
@@ -23,7 +24,7 @@ export class AppAuthService {
     });
   }
 
-  check(route?: ActivatedRouteSnapshot | null, init = false) {
+  canActivate(route?: ActivatedRouteSnapshot | null, init = false) {
     if (init) {
       return this.verifyLogin();
     }
@@ -52,6 +53,12 @@ export class AppAuthService {
         })
       );
     }
+  }
+
+  canLoad(route?: ActivatedRouteSnapshot | null) {
+    const data = route?.data!;
+    if (!data || this.userPermissions.get(data['permission'])) return of(true);
+    return of(false);
   }
 
   verifyLogin() {
@@ -101,9 +108,27 @@ export class AppAuthService {
     return this.auth.userInfo().pipe(
       map((user) => {
         this.userInfo.set(user);
+        if (user.roles && user.roles.length > 0) {
+          for (let item of user.roles) {
+            const { role } = item;
+            if (!role) continue;
+            const { permissions } = role!;
+            if (!permissions) continue;
+            for (let it of permissions) {
+              const { permission } = it;
+              if (!permission) continue;
+              this.userPermissions.set(permission.code, permission);
+            }
+          }
+        }
         return true;
       })
     );
+  }
+
+  hasPermission(code: string) {
+    const permission = this.userPermissions.get(code);
+    return permission ? true : false;
   }
 
   logout() {
@@ -117,6 +142,7 @@ export class AppAuthService {
 
   clear() {
     this.userInfo.set(null);
+    this.userPermissions.clear();
     this.accessToken.set(null);
     this.refreshToken.set(null);
   }

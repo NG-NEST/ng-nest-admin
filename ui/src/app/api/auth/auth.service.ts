@@ -31,6 +31,12 @@ export class AuthService {
                 role {
                   id
                   name
+                  permissions {
+                    permission {
+                      name
+                      code
+                    }
+                  }
                 }
               }
             }
