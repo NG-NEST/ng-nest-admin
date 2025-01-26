@@ -13,7 +13,7 @@ import {
   SubjectService,
   SubjectWhereInput
 } from '@ui/api';
-import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
+import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
@@ -36,7 +36,8 @@ import { PermissionListComponent } from './permission-list/permission-list.compo
     XButtonComponent,
     XLoadingComponent,
     XTableComponent,
-    XLinkComponent
+    XLinkComponent,
+    AppAuthDirective
   ],
   templateUrl: './subject.component.html',
   styleUrls: ['./subject.component.scss'],

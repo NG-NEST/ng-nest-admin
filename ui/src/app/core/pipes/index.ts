@@ -1,1 +1,1 @@
-export * from './zero-prefix';
+export * from './zero-prefix.pipe';

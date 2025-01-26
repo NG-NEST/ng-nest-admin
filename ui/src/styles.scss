@@ -114,6 +114,11 @@ input {
 
   .operate {
     color: $x-text-300;
+    x-link {
+      &:not(:first-child) {
+        margin-left: 0.75rem;
+      }
+    }
   }
 }
 
@@ -271,7 +276,6 @@ input {
 .language-js,
 .language-javascript,
 .language-json {
-
   .token.decorator,
   .token.keyword,
   .token.builtin {
@@ -297,7 +301,6 @@ input {
 }
 
 .language-html {
-
   .token.tag,
   .token.punctuation {
     color: #0546ff;
@@ -326,7 +329,6 @@ input {
 .language-scss,
 .language-less,
 .language-css {
-
   .token.selector,
   .token.function,
   .token.keyword {

@@ -4,7 +4,7 @@ import { XIsEmpty } from '@ng-nest/ui/core';
 import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { RoleDescription, User, UserDescription, UserService, UserWhereInput } from '@ui/api';
-import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
+import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -18,19 +18,20 @@ import { XTagComponent } from '@ng-nest/ui/tag';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @Component({
-    selector: 'app-user',
-    imports: [
-        ReactiveFormsModule,
-        XInputComponent,
-        XButtonComponent,
-        XLoadingComponent,
-        XTableComponent,
-        XLinkComponent,
-        XTagComponent
-    ],
-    templateUrl: './user.component.html',
-    styleUrls: ['./user.component.scss'],
-    providers: [DatePipe]
+  selector: 'app-user',
+  imports: [
+    ReactiveFormsModule,
+    XInputComponent,
+    XButtonComponent,
+    XLoadingComponent,
+    XTableComponent,
+    XLinkComponent,
+    XTagComponent,
+    AppAuthDirective
+  ],
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss'],
+  providers: [DatePipe]
 })
 export class UserComponent {
   searchForm = this.fb.group({

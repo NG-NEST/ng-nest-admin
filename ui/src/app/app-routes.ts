@@ -55,6 +55,9 @@ export const AppRoutes: Routes = [
   },
   {
     path: 'aigc',
+    data: {
+      permission: 'aigc-view'
+    },
     loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes),
     canActivate: [AppCanLoad]
   }

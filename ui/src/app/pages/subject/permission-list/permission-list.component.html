@@ -1,5 +1,6 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
   <h4 x-dialog-title class="title">许可配置-{{ title() }}</h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content attrs">
     <div class="tools">
       <x-button icon="fto-plus" attrType="button" flat plain (click)="add()">增加</x-button>

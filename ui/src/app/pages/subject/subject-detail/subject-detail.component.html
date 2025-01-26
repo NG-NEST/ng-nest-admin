@@ -1,5 +1,6 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
   <h4 x-dialog-title class="title">{{ title() }}主体</h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
       <label>主体名称：</label>

@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'appZeroPrefix',
-    standalone: false
+  name: 'appZeroPrefix'
 })
 export class AppZeroPrefixPipe implements PipeTransform {
   transform(value: any, ...args: any[]): any {
