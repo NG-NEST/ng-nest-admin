@@ -4,14 +4,28 @@
   <div x-dialog-content class="content">
     <div class="item">
       <label>主体：</label>
-      <x-select formControlName="subjectId" (ngModelChange)="subjectChange()" [data]="subjects()" placeholder="请选择一个主体"
-        [clearable]="false"></x-select>
+      <x-select
+        formControlName="subjectId"
+        (ngModelChange)="subjectChange()"
+        [data]="subjects()"
+        placeholder="请选择一个主体"
+        [clearable]="false"
+      ></x-select>
     </div>
     <div class="item">
       <label>资源：</label>
-      <x-table [rowHeight]="0" [style.width.px]="600" [showPagination]="false" [allowSelectRow]="false" treeTable
-        bordered [columns]="columns()" [data]="resources()" [bodyColumnTpl]="{ permissions: permissionsTpl }"
-        [expandedLevel]="0">
+      <x-table
+        [rowHeight]="0"
+        [style.width.px]="600"
+        [showPagination]="false"
+        [allowSelectRow]="false"
+        treeTable
+        bordered
+        [columns]="columns()"
+        [data]="resources()"
+        [bodyColumnTpl]="{ permissions: permissionsTpl }"
+        [expandedLevel]="0"
+      >
       </x-table>
       <ng-template #permissionsTpl let-column="$column" let-row="$row" let-index="$index">
         <ng-container>
@@ -24,7 +38,14 @@
   </div>
   <div x-dialog-actions align="center" class="actions">
     <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
-    <x-button flat icon="fto-save" type="primary" attrType="submit" [loading]="saveLoading()"
-      [disabled]="!form.valid">保存</x-button>
+    <x-button
+      flat
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [loading]="saveLoading()"
+      [disabled]="!form.valid || !hasRolePermissionEdit()"
+      >保存</x-button
+    >
   </div>
 </form>

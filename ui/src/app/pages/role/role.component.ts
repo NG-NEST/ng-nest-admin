@@ -3,7 +3,7 @@ import { Component, signal, ViewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Role, RoleDescription, RoleService, RoleWhereInput } from '@ui/api';
-import { BaseDescription, BaseOrder, BasePagination } from '@ui/core';
+import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
@@ -25,7 +25,8 @@ import { RolePermissionComponent } from './role-permission/role-permission.compo
     XButtonComponent,
     XLoadingComponent,
     XTableComponent,
-    XLinkComponent
+    XLinkComponent,
+    AppAuthDirective
   ],
   templateUrl: './role.component.html',
   providers: [DatePipe]

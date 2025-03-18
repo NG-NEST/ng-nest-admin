@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -16,6 +16,7 @@ import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
 import { Permission, ResourceService, RoleService, SubjectService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, mergeMap, of, tap } from 'rxjs';
 import { XCheckboxComponent } from '@ng-nest/ui/checkbox';
+import { AppAuthService } from '@ui/core';
 
 @Component({
   selector: 'app-role-permission',
@@ -54,6 +55,10 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
     return this.form.get('permissions') as FormGroup;
   }
 
+  hasRolePermissionEdit = computed(() => {
+    return this.auth.hasPermission('role-permission-edit');
+  });
+
   rolePermisions = signal<Permission[]>([]);
 
   $destroy = new Subject<void>();
@@ -63,8 +68,9 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
     private subject: SubjectService,
     private resource: ResourceService,
     private fb: FormBuilder,
-    private message: XMessageService
-  ) { }
+    private message: XMessageService,
+    private auth: AppAuthService
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -92,11 +98,13 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
 
   subjectChange() {
     this.formLoading.set(true);
-    this.getRolePermissions().pipe(
-      finalize(() => {
-        this.formLoading.set(false);
-      })
-    ).subscribe()
+    this.getRolePermissions()
+      .pipe(
+        finalize(() => {
+          this.formLoading.set(false);
+        })
+      )
+      .subscribe();
   }
 
   getRolePermissions() {
@@ -139,6 +147,9 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
               resource.id,
               new FormControl(resourcePermissions.map((y) => y.id))
             );
+          }
+          if (!this.hasRolePermissionEdit()) {
+            this.permissions.disable();
           }
           this.resources.set(
             x.map((y) => {
