@@ -3,7 +3,15 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content attrs">
     <div class="tools">
-      <x-button icon="fto-plus" attrType="button" flat plain (click)="add()">增加</x-button>
+      <x-button
+        icon="fto-plus"
+        [app-auth]="'permission-edit'"
+        attrType="button"
+        flat
+        plain
+        (click)="add()"
+        >增加</x-button
+      >
     </div>
     <div class="attrs-table">
       <table>
@@ -30,7 +38,14 @@
               </td>
               <td><x-input formControlName="description"></x-input></td>
               <td>
-                <x-button icon="fto-trash-2" attrType="button" flat plain (click)="remove($index)">
+                <x-button
+                  icon="fto-trash-2"
+                  attrType="button"
+                  flat
+                  plain
+                  [disabled]="!hasPermissionEdit()"
+                  (click)="remove($index)"
+                >
                   删除
                 </x-button>
               </td>
@@ -53,7 +68,7 @@
       type="primary"
       attrType="submit"
       [loading]="saveLoading()"
-      [disabled]="!form.valid"
+      [disabled]="!form.valid || !hasPermissionEdit()"
       >保存</x-button
     >
   </div>

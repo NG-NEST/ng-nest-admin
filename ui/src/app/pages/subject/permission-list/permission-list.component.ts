@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -11,6 +11,7 @@ import { XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XEmptyComponent } from '@ng-nest/ui/empty';
+import { AppAuthDirective, AppAuthService } from '@ui/core';
 
 @Component({
   selector: 'app-permission-list',
@@ -21,7 +22,8 @@ import { XEmptyComponent } from '@ng-nest/ui/empty';
     XButtonComponent,
     XDialogModule,
     XInputNumberComponent,
-    XEmptyComponent
+    XEmptyComponent,
+    AppAuthDirective
   ],
   templateUrl: './permission-list.component.html'
 })
@@ -47,6 +49,10 @@ export class PermissionListComponent implements OnInit, OnDestroy {
     return !this.formLoading() && this.list.length === 0;
   }
 
+  hasPermissionEdit = computed(() => {
+    return this.auth.hasPermission('permission-edit');
+  });
+
   $destroy = new Subject<void>();
   constructor(
     @Inject(X_DIALOG_DATA)
@@ -59,7 +65,8 @@ export class PermissionListComponent implements OnInit, OnDestroy {
     },
     private permission: PermissionService,
     private fb: FormBuilder,
-    private message: XMessageService
+    private message: XMessageService,
+    private auth: AppAuthService
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +120,9 @@ export class PermissionListComponent implements OnInit, OnDestroy {
       tap((x) => {
         for (let permission of x) {
           this.add(permission);
+        }
+        if (!this.hasPermissionEdit()) {
+          this.list.disable();
         }
         this.form.patchValue({ list: x });
       })
