@@ -104,9 +104,9 @@ input {
 .app-tools,
 .app-table {
   padding: 1rem;
-  background-color: rgba(255, 255, 255);
+  background-color: $x-background;
   border-radius: $x-border-radius;
-  box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
+  box-shadow: $x-box-shadow var(--x-box-shadow-light-color);
 }
 
 .app-table {

@@ -11,3 +11,4 @@ export * from './logs';
 export * from './schema';
 export * from './aigc';
 export * from './upload';
+export * from './catalogue';

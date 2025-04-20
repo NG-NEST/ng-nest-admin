@@ -1,0 +1,10 @@
+{
+  "CatalogueIdIsNotEmpty": "id should not be empty",
+  "PidIsNotExist": "pid is not exist",
+  "NameIsNotEmpty": "name should not be empty",
+  "TypeIsNotEmpty": "type should not be empty",
+  "SortIsNotEmpty": "sort should not be empty",
+  "SortIsNotNumber": "sort should be number",
+  "ResourceIdIsNotEmpty": "resourceId should not be empty",
+  "ResourceIdIsNotExist": "resourceId is not exist"
+}

@@ -74,6 +74,7 @@ model Resource {
   parent      Resource?    @relation("children", fields: [pid], references: [id])
   children    Resource[]   @relation("children")
   subject     Subject      @relation(fields: [subjectId], references: [id])
+  Catalogue   Catalogue[]
 
   @@map("sys-resource")
 }
@@ -160,4 +161,27 @@ model File {
   updatedAt  DateTime   @updatedAt
 
   @@map("sys-file")
+}
+
+enum CatalogueType {
+  Folder
+  File
+}
+
+model Catalogue {
+  id          String        @id @default(uuid())
+  pid         String?
+  name        String
+  type        CatalogueType
+  resourceId  String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  description String?
+  sort        Int           @default(0)
+  parent      Catalogue?    @relation("children", fields: [pid], references: [id])
+  children    Catalogue[]   @relation("children")
+
+  resource Resource @relation(fields: [resourceId], references: [id])
+
+  @@map("sys-catalogue")
 }

@@ -1,0 +1,30 @@
+:host {
+  .app-inner {
+    display: flex;
+  }
+  .app-left,
+  .app-right {
+    height: calc(100vh - 4.25rem);
+    padding: 1rem;
+    background-color: var(--x-background);
+    border-radius: var(--x-border-radius);
+    box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
+  }
+  .app-left {
+    width: 28rem;
+    .form {
+      width: 100%;
+      .item {
+        display: flex;
+        align-items: center;
+      }
+      x-tree-select {
+        width: 100%;
+      }
+    }
+    .catalogue {
+      height: calc(100vh - 6rem);
+      overflow: auto;
+    }
+  }
+}

@@ -13,6 +13,162 @@ type Cache {
   value: String!
 }
 
+type Catalogue {
+  """Children"""
+  children: [Catalogue!]
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """CatalogueId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Parent"""
+  parent: Catalogue
+
+  """Pid"""
+  pid: ID
+
+  """Resource"""
+  resource: Resource!
+
+  """ResourceId"""
+  resourceId: String!
+
+  """Sort"""
+  sort: Float!
+
+  """Type"""
+  type: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input CatalogueOrderInput {
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """Resource"""
+  resource: SortOrder
+
+  """ResourceId"""
+  resourceId: SortOrder
+
+  """Sort"""
+  sort: SortOrder
+
+  """Type"""
+  type: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type CataloguePaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Catalogue!]!
+}
+
+type CatalogueSelectOutput {
+  """Children"""
+  children: [Catalogue!]
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """CatalogueId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Parent"""
+  parent: Catalogue
+
+  """Pid"""
+  pid: ID
+
+  """Sort"""
+  sort: Float!
+
+  """Type"""
+  type: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input CatalogueWhere {
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Pid"""
+  pid: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+
+  """Sort"""
+  sort: NumberFilter
+
+  """Type"""
+  type: StringFilter
+}
+
+input CatalogueWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [CatalogueWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [CatalogueWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [CatalogueWhere!]
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Pid"""
+  pid: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+
+  """Sort"""
+  sort: NumberFilter
+
+  """Type"""
+  type: StringFilter
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -474,6 +630,36 @@ type Query {
     """CacheKey"""
     key: String = "*"
   ): [String!]!
+
+  """Catalogue"""
+  catalogue(
+    """CatalogueId"""
+    id: ID!
+  ): Catalogue!
+
+  """CatalogueSelect. No Pagination"""
+  catalogueSelect(
+    """Sorting rule"""
+    orderBy: [CatalogueOrderInput!]
+
+    """Query condition"""
+    where: CatalogueWhereInput
+  ): [CatalogueSelectOutput!]!
+
+  """Catalogues"""
+  catalogues(
+    """Sorting rule"""
+    orderBy: [CatalogueOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: CatalogueWhereInput
+  ): CataloguePaginationOutput!
 
   """Dictionaries"""
   dictionaries(

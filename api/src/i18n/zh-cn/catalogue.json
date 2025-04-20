@@ -1,0 +1,10 @@
+{
+  "CatalogueIdIsNotEmpty": "目录编码不能为空",
+  "PidIsNotExist": "目录父节点编码不存在",
+  "NameIsNotEmpty": "目录名称不能为空",
+  "TypeIsNotEmpty": "目录类型不能为空",
+  "SortIsNotEmpty": "目录排序不能为空",
+  "SortIsNotNumber": "目录排序应为数字",
+  "ResourceIdIsNotEmpty": "资源编码不能为空",
+  "ResourceIdIsNotExist": "资源编码不存在"
+}

@@ -60,5 +60,16 @@ export const AppRoutes: Routes = [
     },
     loadChildren: () => import('./pages/aigc/aigc-routing.module').then((x) => x.AigcRoutes),
     canActivate: [AppCanLoad]
+  },
+  {
+    path: 'code-generate',
+    data: {
+      permission: 'code-generate-view'
+    },
+    loadChildren: () =>
+      import('./pages/code-generate/code-generate-routing.module').then(
+        (x) => x.CodeGenerateRoutes
+      ),
+    canActivate: [AppCanLoad]
   }
 ];

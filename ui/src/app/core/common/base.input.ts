@@ -15,6 +15,20 @@ export class StringFilter {
   not?: string;
 }
 
+export class EnumFilter<T> {
+  equals?: T;
+  in?: T[];
+  notIn?: T[];
+  lt?: T;
+  lte?: T;
+  gt?: T;
+  gte?: T;
+  contains?: T;
+  startsWith?: T;
+  endsWith?: T;
+  not?: T;
+}
+
 export class DateTimeFilter {
   equals?: Date;
   in?: Date[];

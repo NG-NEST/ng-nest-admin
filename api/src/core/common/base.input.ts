@@ -31,6 +31,32 @@ export class StringFilter {
 }
 
 @InputType()
+export class EnumFilter<Enum> {
+  @Field(() => String, { description: WhereDescription.Equals })
+  equals?: Enum;
+  @Field(() => [String], { description: WhereDescription.In })
+  in?: Enum[];
+  @Field(() => [String], { description: WhereDescription.NotIn })
+  notIn?: Enum[];
+  @Field(() => String, { description: WhereDescription.Lt })
+  lt?: Enum;
+  @Field(() => String, { description: WhereDescription.Lte })
+  lte?: Enum;
+  @Field(() => String, { description: WhereDescription.Gt })
+  gt?: Enum;
+  @Field(() => String, { description: WhereDescription.Gte })
+  gte?: Enum;
+  @Field(() => String, { description: WhereDescription.Contains })
+  contains?: Enum;
+  @Field(() => String, { description: WhereDescription.StartsWith })
+  startsWith?: Enum;
+  @Field(() => String, { description: WhereDescription.EndsWith })
+  endsWith?: Enum;
+  @Field(() => String, { description: WhereDescription.Not })
+  not?: Enum;
+}
+
+@InputType()
 export class DateTimeFilter {
   @Field(() => Date, { description: WhereDescription.Equals })
   equals?: Date;

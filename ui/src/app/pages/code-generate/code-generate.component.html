@@ -1,0 +1,27 @@
+<div class="app-inner">
+  <div class="app-left">
+    <form class="form" [formGroup]="form">
+      <div class="item">
+        <x-tree-select
+          formControlName="category"
+          [placeholder]="'请选择一个代码分类'"
+          [data]="categories()"
+          expandedLevel="3"
+          showPath
+        ></x-tree-select>
+        <x-button
+          icon="fto-plus"
+          [disabled]="!form.value.category"
+          type="primary"
+          (click)="action('add-root')"
+          text
+          >添加根节点</x-button
+        >
+      </div>
+    </form>
+    <div class="catalogue" [x-loading]="treeLoading()">
+      <x-tree [data]="treeData()" showLine expandedLevel="0"> </x-tree>
+    </div>
+  </div>
+  <div class="app-right"></div>
+</div>

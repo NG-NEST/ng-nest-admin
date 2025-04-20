@@ -35,6 +35,16 @@ export type I18nTranslations = {
         "CacheKeyIsNotEmpty": string;
         "CacheKeyIsNotExist": string;
     };
+    "catalogue": {
+        "CatalogueIdIsNotEmpty": string;
+        "PidIsNotExist": string;
+        "NameIsNotEmpty": string;
+        "TypeIsNotEmpty": string;
+        "SortIsNotEmpty": string;
+        "SortIsNotNumber": string;
+        "ResourceIdIsNotEmpty": string;
+        "ResourceIdIsNotExist": string;
+    };
     "dictionary": {
         "DictionaryIdIsNotEmpty": string;
         "PidIsNotExist": string;

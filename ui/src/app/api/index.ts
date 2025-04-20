@@ -9,3 +9,4 @@ export * from './role';
 export * from './schema';
 export * from './subject';
 export * from './user';
+export * from './catalogue';

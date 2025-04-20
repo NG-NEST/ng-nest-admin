@@ -12,3 +12,4 @@ export * from './schema';
 export * from './aigc';
 export * from './upload';
 export * from './file';
+export * from './catalogue';
