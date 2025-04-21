@@ -1,15 +1,15 @@
 export enum CatalogueDescription {
-  Catalogue = '目录',
+  Catalogue = '节点',
 
-  Id = '目录编码',
+  Id = '节点编码',
   Pid = '父节点编码',
-  Name = '目录名称',
-  Type = '目录类型',
-  Sort = '目录排序',
-  Description = '目录描述',
+  Name = '节点名称',
+  Type = '节点类型',
+  Sort = '节点排序',
+  Description = '节点描述',
 
-  Parent = '父目录',
-  Children = '子目录集合'
+  Parent = '父节点',
+  Children = '子节点集合'
 }
 
 export enum CatalogueType {
@@ -18,7 +18,7 @@ export enum CatalogueType {
 }
 
 export enum CatalogueMessage {
-  CreatedSuccess = '新增目录成功',
-  UpdatedSuccess = '更新目录成功',
-  DeletedSuccess = '删除目录成功'
+  CreatedSuccess = '新增节点成功',
+  UpdatedSuccess = '更新节点成功',
+  DeletedSuccess = '删除节点成功'
 }

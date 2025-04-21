@@ -27,4 +27,25 @@
       overflow: auto;
     }
   }
+
+  .tree-node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .label {
+      display: flex;
+      align-items: center;
+    }
+    .actions {
+      display: none;
+      align-items: center;
+    }
+    &:hover {
+      .actions {
+        display: flex;
+      }
+    }
+  }
 }

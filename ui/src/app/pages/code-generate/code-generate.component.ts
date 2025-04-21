@@ -1,13 +1,20 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { CatalogueService, ResourceService } from '@ui/api';
+import { Catalogue, CatalogueService, ResourceService } from '@ui/api';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
-import { delay, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
+import {
+  XIconComponent,
+  XLinkComponent,
+  XMessageBoxAction,
+  XMessageBoxService,
+  XMessageService
+} from '@ng-nest/ui';
 
 @Component({
   selector: 'app-code-generate',
@@ -16,7 +23,9 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
     XTreeComponent,
     XTreeSelectComponent,
     XButtonComponent,
-    XLoadingComponent
+    XLoadingComponent,
+    XIconComponent,
+    XLinkComponent
   ],
   templateUrl: './code-generate.component.html',
   styleUrls: ['./code-generate.component.scss'],
@@ -28,16 +37,15 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   });
   categories = signal<XTreeSelectNode[]>([]);
   treeLoading = signal(false);
-  treeData = signal<XTreeNode[]>([
-    { id: 1, label: '目录一' },
-    { id: 2, label: '目录二' },
-    { id: 3, label: '目录三' }
-  ]);
+  treeData = signal<XTreeNode[]>([]);
+  treeCom = viewChild.required<XTreeComponent>('treeCom');
 
   constructor(
     private formBuilder: FormBuilder,
     private resource: ResourceService,
     private catalogue: CatalogueService,
+    private messageBox: XMessageBoxService,
+    private message: XMessageService,
     private dialog: XDialogService
   ) {}
 
@@ -50,7 +58,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  action(type: string) {
+  action(type: string, data?: Catalogue & XTreeNode) {
     switch (type) {
       case 'add-root':
         this.dialog.create(CatalogueComponent, {
@@ -58,11 +66,55 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           data: {
             resourceId: this.form.value.category,
             type: type,
-            saveSuccess: () => {
-              console.log(111);
+            saveSuccess: (value: Catalogue & XTreeNode) => {
+              value.label = value.name;
+              this.treeCom().addNode(value);
             }
           }
         });
+        break;
+      case 'add-child':
+        this.dialog.create(CatalogueComponent, {
+          width: '30rem',
+          data: {
+            resourceId: this.form.value.category,
+            pid: data?.id,
+            type: type,
+            saveSuccess: (value: Catalogue & XTreeNode) => {
+              value.label = value.name;
+              this.treeCom().addNode(value);
+            }
+          }
+        });
+        break;
+      case 'edit':
+        this.dialog.create(CatalogueComponent, {
+          width: '30rem',
+          data: {
+            id: data?.id,
+            resourceId: this.form.value.category,
+            type: type,
+            saveSuccess: (value: Catalogue & XTreeNode) => {
+              value.label = value.name;
+              this.treeCom().updateNode(data!, value);
+            }
+          }
+        });
+        break;
+      case 'delete':
+        this.messageBox.confirm({
+          title: '删除角色',
+          content: `确认删除此节点吗？ [${data!.name}]`,
+          type: 'warning',
+          callback: (msg: XMessageBoxAction) => {
+            if (msg !== 'confirm') return;
+            this.catalogue.delete(data!.id).subscribe((x) => {
+              this.message.success(x);
+              this.treeCom().removeNode(data!);
+            });
+          }
+        });
+
         break;
     }
   }
@@ -75,7 +127,6 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
-        delay(2000),
         tap((y) =>
           this.treeData.set(
             y.map((z: any) => {

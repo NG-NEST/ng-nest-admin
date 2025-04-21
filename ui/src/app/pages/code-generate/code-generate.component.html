@@ -20,7 +20,29 @@
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">
-      <x-tree [data]="treeData()" showLine expandedLevel="0"> </x-tree>
+      <x-tree #treeCom [data]="treeData()" [labelTpl]="treeNode" showLine expandedLevel="0">
+      </x-tree>
+      <ng-template #treeNode let-node="$node">
+        <div class="tree-node">
+          <div class="label">
+            @if (node.type === 'Folder') {
+              <x-icon type="fto-folder"></x-icon>
+            } @else if (node.type === 'File') {
+              <x-icon type="fto-file"></x-icon>
+            }
+            <span>{{ node.label }}</span>
+          </div>
+          <div class="actions">
+            <x-link
+              type="primary"
+              icon="fto-plus-square"
+              (click)="action('add-child', node)"
+            ></x-link>
+            <x-link type="primary" icon="fto-edit" (click)="action('edit', node)"></x-link>
+            <x-link type="danger" icon="fto-minus-square" (click)="action('delete', node)"></x-link>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
   <div class="app-right"></div>

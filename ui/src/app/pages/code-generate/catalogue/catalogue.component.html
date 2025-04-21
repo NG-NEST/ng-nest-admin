@@ -3,6 +3,10 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item">
+      <label>父节点：</label>
+      <x-tree-select [data]="treeData()" showPath formControlName="pid"></x-tree-select>
+    </div>
+    <div class="item">
       <label>节点类型：</label>
       <x-radio
         [data]="[
@@ -16,6 +20,14 @@
     <div class="item">
       <label>{{ typeName }}：</label>
       <x-input formControlName="name" [placeholder]="'请输入' + typeName"></x-input>
+    </div>
+    <!-- <div class="item">
+      <label>排序：</label>
+      <x-input-number formControlName="sort"></x-input-number>
+    </div> -->
+    <div class="item">
+      <label>描述：</label>
+      <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">

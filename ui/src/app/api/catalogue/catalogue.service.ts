@@ -33,6 +33,9 @@ export class CatalogueService {
               id
               pid
               resourceId
+              parent {
+                name
+              }
             }
           }
         `
@@ -93,14 +96,12 @@ export class CatalogueService {
       .pipe(map((x) => cloneDeep(x.data?.catalogueSelect!)));
   }
 
-  create(input: CatalogueCreateInput): Observable<string> {
-    return this.http.post('/api/catalogue', input).pipe(map(() => CatalogueMessage.CreatedSuccess));
+  create(input: CatalogueCreateInput): Observable<Catalogue> {
+    return this.http.post<Catalogue>('/api/catalogue', input);
   }
 
-  update(input: CatalogueUpdateInput): Observable<string> {
-    return this.http
-      .patch(`/api/catalogue`, input)
-      .pipe(map(() => CatalogueMessage.UpdatedSuccess));
+  update(input: CatalogueUpdateInput): Observable<Catalogue> {
+    return this.http.patch<Catalogue>(`/api/catalogue`, input);
   }
 
   delete(id: string): Observable<string> {

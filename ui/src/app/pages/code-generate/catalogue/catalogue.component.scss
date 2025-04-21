@@ -1,2 +1,10 @@
 :host {
+  .app-dialog-form {
+    .item {
+      x-input,
+      x-tree-select {
+        width: 16rem;
+      }
+    }
+  }
 }
