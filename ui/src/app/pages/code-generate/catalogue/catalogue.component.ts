@@ -1,6 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit, inject, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { XRadioComponent, XTextareaComponent, XTreeNode, XTreeSelectComponent } from '@ng-nest/ui';
+import {
+  XInputNumberComponent,
+  XRadioComponent,
+  XTextareaComponent,
+  XTreeNode,
+  XTreeSelectComponent
+} from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -19,7 +25,7 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XDialogModule,
     XRadioComponent,
     XTreeSelectComponent,
-    // XInputNumberComponent,
+    XInputNumberComponent,
     XTextareaComponent
   ],
   templateUrl: './catalogue.component.html',
@@ -59,6 +65,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     public data: {
       id: string;
       type: string;
+      sort: number;
       resourceId: string;
       pid: string;
       saveSuccess: (node: Catalogue) => void;

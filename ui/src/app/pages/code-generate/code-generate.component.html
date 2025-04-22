@@ -20,7 +20,7 @@
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">
-      <x-tree #treeCom [data]="treeData()" [labelTpl]="treeNode" showLine expandedLevel="0">
+      <x-tree #treeCom [data]="treeData()"  [labelTpl]="treeNode" showLine expandedLevel="0">
       </x-tree>
       <ng-template #treeNode let-node="$node">
         <div class="tree-node">
