@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Catalogue, CatalogueService, ResourceService } from '@ui/api';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
@@ -15,17 +15,20 @@ import {
   XMessageBoxService,
   XMessageService
 } from '@ng-nest/ui';
+import { AppEditorComponent } from '@ui/core';
 
 @Component({
   selector: 'app-code-generate',
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     XTreeComponent,
     XTreeSelectComponent,
     XButtonComponent,
     XLoadingComponent,
     XIconComponent,
-    XLinkComponent
+    XLinkComponent,
+    AppEditorComponent
   ],
   templateUrl: './code-generate.component.html',
   styleUrls: ['./code-generate.component.scss'],
@@ -38,7 +41,9 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   categories = signal<XTreeSelectNode[]>([]);
   treeLoading = signal(false);
   treeData = signal<XTreeNode[]>([]);
+  filePath = signal('');
   treeCom = viewChild.required<XTreeComponent>('treeCom');
+  value = signal('');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,7 +63,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  action(type: string, data?: Catalogue & XTreeNode) {
+  action(event: Event, type: string, data?: Catalogue & XTreeNode) {
+    event.stopPropagation();
     switch (type) {
       case 'add-root':
         this.dialog.create(CatalogueComponent, {
@@ -117,6 +123,12 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
         break;
     }
+  }
+
+  onNodeClick(node: XTreeNode) {
+    console.log(node);
+    this.filePath.set(node.label);
+    this.value.set(node.label);
   }
 
   getCatalogues(resourceId: string) {

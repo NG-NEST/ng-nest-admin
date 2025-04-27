@@ -13,14 +13,21 @@
           icon="fto-plus"
           [disabled]="!form.value.category"
           type="primary"
-          (click)="action('add-root')"
+          (click)="action($event, 'add-root')"
           text
           >添加根节点</x-button
         >
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">
-      <x-tree #treeCom [data]="treeData()"  [labelTpl]="treeNode" showLine expandedLevel="0">
+      <x-tree
+        #treeCom
+        [data]="treeData()"
+        [labelTpl]="treeNode"
+        showLine
+        expandedLevel="0"
+        (nodeClick)="onNodeClick($event)"
+      >
       </x-tree>
       <ng-template #treeNode let-node="$node">
         <div class="tree-node">
@@ -36,14 +43,20 @@
             <x-link
               type="primary"
               icon="fto-plus-square"
-              (click)="action('add-child', node)"
+              (click)="action($event, 'add-child', node)"
             ></x-link>
-            <x-link type="primary" icon="fto-edit" (click)="action('edit', node)"></x-link>
-            <x-link type="danger" icon="fto-minus-square" (click)="action('delete', node)"></x-link>
+            <x-link type="primary" icon="fto-edit" (click)="action($event, 'edit', node)"></x-link>
+            <x-link
+              type="danger"
+              icon="fto-minus-square"
+              (click)="action($event, 'delete', node)"
+            ></x-link>
           </div>
         </div>
       </ng-template>
     </div>
   </div>
-  <div class="app-right"></div>
+  <div class="app-right">
+    <app-editor [(ngModel)]="value"></app-editor>
+  </div>
 </div>
