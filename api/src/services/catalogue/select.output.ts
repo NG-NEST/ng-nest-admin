@@ -34,4 +34,8 @@ export class CatalogueSelectOutput extends BaseAudit {
   @Field({ description: CatalogueDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
+
+  @Field({ description: CatalogueDescription.Content, nullable: true })
+  @IsOptional()
+  content?: string;
 }

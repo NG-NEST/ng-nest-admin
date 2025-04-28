@@ -7,6 +7,7 @@ export enum CatalogueDescription {
   Type = '节点类型',
   Sort = '节点排序',
   Description = '节点描述',
+  Content = '节点内容',
 
   Parent = '父节点',
   Children = '子节点集合'

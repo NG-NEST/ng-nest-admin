@@ -36,6 +36,10 @@ export class CatalogueUpdateInput {
   @IsOptional()
   description?: string;
 
+  @Field({ description: CatalogueDescription.Content, nullable: true })
+  @IsOptional()
+  content?: string;
+
   @Field(() => ID, { description: CatalogueDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('catalogue', {

@@ -7,6 +7,7 @@ export class Catalogue extends BaseModel {
   type!: CatalogueType;
   sort!: number;
   description?: string;
+  content?: string;
   resource!: CatalogueResource;
   resourceId!: string;
   parent?: Catalogue;

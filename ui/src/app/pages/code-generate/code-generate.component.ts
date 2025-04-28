@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Catalogue, CatalogueService, ResourceService } from '@ui/api';
+import { Catalogue, CatalogueMessage, CatalogueService, ResourceService } from '@ui/api';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
-import { finalize, tap } from 'rxjs';
+import { delay, finalize, tap } from 'rxjs';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import {
@@ -38,10 +38,14 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   form = this.formBuilder.group({
     category: ['']
   });
+  editorForm = this.formBuilder.group({
+    id: [''],
+    content: ['']
+  });
   categories = signal<XTreeSelectNode[]>([]);
   treeLoading = signal(false);
   treeData = signal<XTreeNode[]>([]);
-  filePath = signal('');
+  saveContentLoading = signal(false);
   treeCom = viewChild.required<XTreeComponent>('treeCom');
   value = signal('');
 
@@ -126,9 +130,24 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   }
 
   onNodeClick(node: XTreeNode) {
-    console.log(node);
-    this.filePath.set(node.label);
-    this.value.set(node.label);
+    this.catalogue.catalogueContent(node.id).subscribe((x) => {
+      this.editorForm.patchValue({ id: node.id, content: x });
+    });
+  }
+
+  saveContent() {
+    const value = this.editorForm.getRawValue();
+    if (!value.id) return;
+    this.saveContentLoading.set(true);
+    this.catalogue
+      .update({ id: value.id!, content: value.content! })
+      .pipe(
+        delay(2000),
+        finalize(() => this.saveContentLoading.set(false))
+      )
+      .subscribe(() => {
+        this.message.success(CatalogueMessage.UpdatedSuccess);
+      });
   }
 
   getCatalogues(resourceId: string) {

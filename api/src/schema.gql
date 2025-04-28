@@ -17,6 +17,9 @@ type Catalogue {
   """Children"""
   children: [Catalogue!]
 
+  """Content"""
+  content: String
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -86,6 +89,9 @@ type CatalogueSelectOutput {
   """Children"""
   children: [Catalogue!]
 
+  """Content"""
+  content: String
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -115,6 +121,9 @@ type CatalogueSelectOutput {
 }
 
 input CatalogueWhere {
+  """Content"""
+  content: StringFilter
+
   """Description"""
   description: StringFilter
 
@@ -146,6 +155,9 @@ input CatalogueWhereInput {
 
   """Logical OR, returns true if one or more conditions are met"""
   OR: [CatalogueWhere!]
+
+  """Content"""
+  content: StringFilter
 
   """Description"""
   description: StringFilter

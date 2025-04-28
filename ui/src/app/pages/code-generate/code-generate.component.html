@@ -56,7 +56,25 @@
       </ng-template>
     </div>
   </div>
-  <div class="app-right">
-    <app-editor [(ngModel)]="value"></app-editor>
-  </div>
+  <form
+    class="app-right"
+    [formGroup]="editorForm"
+    (ngSubmit)="saveContent()"
+    [x-loading]="saveContentLoading()"
+    background="rgba(0,0,0,0.4)"
+    color="rgba(170,170,170,1)"
+  >
+    <app-editor formControlName="content"></app-editor>
+    <div class="bottom-buttons">
+      <x-button
+        flat
+        icon="fto-save"
+        type="primary"
+        attrType="submit"
+        [loading]="saveContentLoading()"
+        [disabled]="!form.valid"
+        >保存</x-button
+      >
+    </div>
+  </form>
 </div>

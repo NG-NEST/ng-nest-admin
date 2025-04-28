@@ -43,6 +43,22 @@ export class CatalogueService {
       .pipe(map((x) => x.data?.catalogue));
   }
 
+  catalogueContent(id: string): Observable<string> {
+    return this.apollo
+      .query<{ catalogue: Catalogue }>({
+        variables: { id },
+        query: gql`
+          query catalogue($id: ID!) {
+            catalogue(id: $id) {
+              content
+              id
+            }
+          }
+        `
+      })
+      .pipe(map((x) => x.data?.catalogue.content!));
+  }
+
   catalogues(input: CataloguePaginationInput): Observable<BasePagination<Catalogue>> {
     return this.apollo
       .query<{ catalogues: BasePagination<Catalogue> }>({

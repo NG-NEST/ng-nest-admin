@@ -16,6 +16,7 @@ export enum CatalogueDescription {
   Type = 'Type',
   Sort = 'Sort',
   Description = 'Description',
+  Content = 'Content',
 
   Parent = 'Parent',
   Children = 'Children',

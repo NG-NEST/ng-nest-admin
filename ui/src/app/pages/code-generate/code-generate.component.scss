@@ -1,17 +1,17 @@
 :host {
   .app-inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 28rem 1fr;
   }
   .app-left,
   .app-right {
-    height: calc(100vh - 4.25rem);
     padding: 1rem;
     background-color: var(--x-background);
     border-radius: var(--x-border-radius);
     box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
   }
   .app-left {
-    width: 28rem;
+    height: calc(100vh - 4.25rem);
     .form {
       width: 100%;
       .item {
@@ -26,6 +26,10 @@
       height: calc(100vh - 8.5rem);
       overflow: auto;
     }
+  }
+  .app-right {
+    padding: 0;
+    height: calc(100vh - 7.5rem);
   }
 
   .tree-node {
@@ -58,5 +62,9 @@
         display: flex;
       }
     }
+  }
+  .bottom-buttons {
+    display: flex;
+    margin-top: 1rem;
   }
 }
