@@ -33,9 +33,13 @@
         <div class="tree-node">
           <div class="label">
             @if (node.type === 'Folder') {
-              <x-icon type="fto-folder"></x-icon>
+              @if (node.open) {
+                <x-icon type="admin:folder-open"></x-icon>
+              } @else {
+                <x-icon type="admin:folder"></x-icon>
+              }
             } @else if (node.type === 'File') {
-              <x-icon type="fto-file"></x-icon>
+              <x-icon [type]="node.label | appFileIcon"></x-icon>
             }
             <span>{{ node.label }}</span>
           </div>

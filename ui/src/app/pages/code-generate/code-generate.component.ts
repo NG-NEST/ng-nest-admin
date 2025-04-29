@@ -15,7 +15,7 @@ import {
   XMessageBoxService,
   XMessageService
 } from '@ng-nest/ui';
-import { AppEditorComponent } from '@ui/core';
+import { AppEditorComponent, AppFileIconPipe } from '@ui/core';
 
 @Component({
   selector: 'app-code-generate',
@@ -28,7 +28,8 @@ import { AppEditorComponent } from '@ui/core';
     XLoadingComponent,
     XIconComponent,
     XLinkComponent,
-    AppEditorComponent
+    AppEditorComponent,
+    AppFileIconPipe
   ],
   templateUrl: './code-generate.component.html',
   styleUrls: ['./code-generate.component.scss'],
