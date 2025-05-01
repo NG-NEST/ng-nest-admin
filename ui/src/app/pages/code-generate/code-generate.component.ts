@@ -49,6 +49,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   saveContentLoading = signal(false);
   treeCom = viewChild.required<XTreeComponent>('treeCom');
   value = signal('');
+  filename = signal('');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -130,9 +131,15 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onNodeClick(node: XTreeNode) {
+  onNodeClick(node: XTreeNode | Catalogue) {
+    if (node.type !== 'File') {
+      this.editorForm.patchValue({ id: null, content: '' });
+      return;
+    }
+
     this.catalogue.catalogueContent(node.id).subscribe((x) => {
       this.editorForm.patchValue({ id: node.id, content: x });
+      this.filename.set(node.name);
     });
   }
 

@@ -3,6 +3,8 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  computed,
+  effect,
   forwardRef,
   inject,
   input
@@ -24,20 +26,28 @@ import * as monaco from 'monaco-editor';
   ]
 })
 export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
-  language = input<string>('javascript');
-  theme = input<string>('vs-dark');
+  filename = input<string>('.plaintext');
+  theme = input<string>('vs');
   options = input<monaco.editor.IStandaloneEditorConstructionOptions>({});
 
   elementRef = inject(ElementRef);
+
+  language = computed(() => {
+    return this.getLanguageFromFilename(this.filename());
+  });
 
   private editor!: monaco.editor.IStandaloneCodeEditor;
   private onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      this.updateEditorLanguage(this.language());
+    });
+  }
 
   ngOnInit() {
-    console.log('MonacoEnvironment:', (window as any).MonacoEnvironment);
+    // console.log('MonacoEnvironment:', (window as any).MonacoEnvironment);
   }
 
   ngAfterViewInit(): void {
@@ -48,6 +58,46 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
     if (this.editor) {
       this.editor.dispose();
     }
+  }
+
+  private updateEditorLanguage(language: string) {
+    if (this.editor) {
+      const model = this.editor.getModel();
+      if (model) {
+        monaco.editor.setModelLanguage(model, language);
+      }
+    }
+  }
+
+  private getLanguageFromFilename(filename: string): string {
+    const extension = filename.split('.').pop()?.toLowerCase();
+
+    const languageMap: { [key: string]: string } = {
+      html: 'html',
+      htm: 'html',
+      js: 'javascript',
+      jsx: 'javascript',
+      ts: 'typescript',
+      tsx: 'typescript',
+      css: 'css',
+      scss: 'scss',
+      less: 'less',
+      json: 'json',
+      xml: 'xml',
+      java: 'java',
+      py: 'python',
+      md: 'markdown',
+      sql: 'sql',
+      php: 'php',
+      rb: 'ruby',
+      cpp: 'cpp',
+      cs: 'csharp',
+      go: 'go',
+      sh: 'shell',
+      vue: 'vue'
+    };
+
+    return extension ? languageMap[extension] || 'plaintext' : 'plaintext';
   }
 
   private initializeEditor(): void {
@@ -68,6 +118,8 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
   writeValue(value: string) {
     if (this.editor) {
       this.editor.setValue(value || '');
+      this.editor.setScrollTop(0);
+      this.editor.setScrollLeft(0);
     }
   }
 

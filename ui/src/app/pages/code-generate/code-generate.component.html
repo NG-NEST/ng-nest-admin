@@ -44,11 +44,13 @@
             <span>{{ node.label }}</span>
           </div>
           <div class="actions">
-            <x-link
-              type="primary"
-              icon="fto-plus-square"
-              (click)="action($event, 'add-child', node)"
-            ></x-link>
+            @if (node.type === 'Folder') {
+              <x-link
+                type="primary"
+                icon="fto-plus-square"
+                (click)="action($event, 'add-child', node)"
+              ></x-link>
+            }
             <x-link type="primary" icon="fto-edit" (click)="action($event, 'edit', node)"></x-link>
             <x-link
               type="danger"
@@ -68,7 +70,7 @@
     background="rgba(0,0,0,0.4)"
     color="rgba(170,170,170,1)"
   >
-    <app-editor formControlName="content"></app-editor>
+    <app-editor formControlName="content" [filename]="filename()"></app-editor>
     <div class="bottom-buttons">
       <x-button
         flat

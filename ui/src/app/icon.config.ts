@@ -14,5 +14,6 @@ export const IconConfig: { [key: string]: string } = {
   md: '/assets/file-icons/md.svg',
   svg: '/assets/file-icons/svg.svg',
   scss: '/assets/file-icons/scss.svg',
-  less: '/assets/file-icons/less.svg'
+  less: '/assets/file-icons/less.svg',
+  ts: '/assets/file-icons/ts.svg'
 };
