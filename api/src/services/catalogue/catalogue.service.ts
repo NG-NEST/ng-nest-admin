@@ -1,11 +1,13 @@
 import { BaseSelect, PrismaService } from '@api/core';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CataloguePaginationInput } from './pagination.input';
 import { Catalogue } from './catalogue.model';
 import { CatalogueUpdateInput } from './update.input';
 import { CatalogueCreateInput } from './create.input';
 import { CatalogueSelectInput } from './select.input';
 import { CataloguePaginationOutput } from './catalogue.output';
+import Handlebars from 'handlebars';
+import { CatalogueException } from './catalogue.enum';
 
 @Injectable()
 export class CatalogueService {
@@ -51,5 +53,21 @@ export class CatalogueService {
 
   async delete(id: string) {
     return await this.prisma.catalogue.delete({ where: { id } });
+  }
+
+  async content(id: string) {
+    const catalogue = (await this.prisma.catalogue.findUnique({
+      where: { id },
+      select: { content: true },
+    })) as Catalogue;
+    if (!catalogue) {
+      return '';
+    }
+    if (catalogue.content === null) {
+      throw new BadRequestException({ message: CatalogueException.ContentIsNull });
+    }
+    const template = Handlebars.compile(catalogue.content);
+    const ctx = template({ title: 'xxxx' });
+    return ctx;
   }
 }

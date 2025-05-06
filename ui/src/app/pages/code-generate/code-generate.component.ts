@@ -128,6 +128,11 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         });
 
         break;
+      case 'content':
+        this.catalogue.content(data!.id).subscribe((x) => {
+          console.log(x);
+        });
+        break;
     }
   }
 

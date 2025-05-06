@@ -7,7 +7,7 @@ import {
   CatalogueUpdateInput,
   CatalogueCacheClear,
 } from '@api/services';
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -32,5 +32,12 @@ export class CatalogueController {
   @CacheClear(...CatalogueCacheClear)
   async delete(@Param('id') id: string) {
     return await this.catalogueService.delete(id);
+  }
+
+  @Get('content/:id')
+  @Authorization(CatalogueAuth.CatalogueContent)
+  @CacheClear(...CatalogueCacheClear)
+  async content(@Param('id') id: string) {
+    return await this.catalogueService.content(id);
   }
 }

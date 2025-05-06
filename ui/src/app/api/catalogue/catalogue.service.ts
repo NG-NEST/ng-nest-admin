@@ -125,4 +125,8 @@ export class CatalogueService {
       .delete(`/api/catalogue/${id}`)
       .pipe(map(() => CatalogueMessage.DeletedSuccess));
   }
+
+  content(id: string): Observable<string> {
+    return this.http.get(`/api/catalogue/content/${id}`, { responseType: 'text' });
+  }
 }

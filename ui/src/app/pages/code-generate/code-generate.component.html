@@ -51,6 +51,13 @@
                 (click)="action($event, 'add-child', node)"
               ></x-link>
             }
+            @if (node.type === 'File') {
+              <x-link
+                type="primary"
+                icon="fto-hash"
+                (click)="action($event, 'content', node)"
+              ></x-link>
+            }
             <x-link type="primary" icon="fto-edit" (click)="action($event, 'edit', node)"></x-link>
             <x-link
               type="danger"

@@ -5,6 +5,7 @@ export enum CatalogueAuth {
   CatalogueCreate = 'catalogue-create',
   CatalogueUpdate = 'catalogue-update',
   CatalogueDelete = 'catalogue-delete',
+  CatalogueContent = 'catalogue-content',
 }
 
 export enum CatalogueDescription {
@@ -40,6 +41,10 @@ export enum CatalogueCache {
   Catalogue = 'Catalogue',
   Catalogues = 'Catalogues',
   CatalogueSelect = 'CatalogueSelect',
+}
+
+export enum CatalogueException {
+  ContentIsNull = 'content is null',
 }
 
 export const CatalogueCacheClear = Object.keys(CatalogueCache);

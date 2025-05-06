@@ -9,6 +9,7 @@ import { inject } from '@angular/core';
 import { XMessageRef, XMessageService } from '@ng-nest/ui/message';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { AppAuthService } from './auth.service';
+import { isString } from 'lodash-es';
 
 let messageRef: XMessageRef;
 
@@ -53,11 +54,17 @@ export function AppNoopInterceptor(
     }),
     catchError((x: HttpErrorResponse) => {
       let msg = '请求异常';
-      if (x.error && x.error.message) {
-        if (x.error.message instanceof Array) {
-          msg = x.error.message.join('\n');
+      let error = x.error;
+      if (isString(error)) {
+        try {
+          error = JSON.parse(error);
+        } catch (e) {}
+      }
+      if (error && error.message) {
+        if (error.message instanceof Array) {
+          msg = error.message.join('\n');
         } else {
-          msg = x.error.message;
+          msg = error.message;
         }
       }
       if (x.status === 401) {
