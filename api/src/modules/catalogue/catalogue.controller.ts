@@ -7,7 +7,17 @@ import {
   CatalogueUpdateInput,
   CatalogueCacheClear,
 } from '@api/services';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UploadedFiles,
+} from '@nestjs/common';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -39,5 +49,10 @@ export class CatalogueController {
   @CacheClear(...CatalogueCacheClear)
   async content(@Param('id') id: string) {
     return await this.catalogueService.content(id);
+  }
+
+  @Post('folder-upload')
+  async folderUpload(@UploadedFiles() files: Express.Multer.File[]): Promise<any> {
+    console.log(files);
   }
 }

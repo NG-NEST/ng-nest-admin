@@ -264,6 +264,18 @@ input {
   }
 }
 
+.app-help {
+  font-size: 1rem;
+}
+
+x-empty,
+.x-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 [class^='language-'] {
   background-color: #e9e9e9;
   padding: 0.5rem;

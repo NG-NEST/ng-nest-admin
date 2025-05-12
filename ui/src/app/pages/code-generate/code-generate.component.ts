@@ -1,19 +1,21 @@
-import { Component, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Catalogue, CatalogueMessage, CatalogueService, ResourceService } from '@ui/api';
-import { XButtonComponent } from '@ng-nest/ui/button';
+import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
-import { delay, finalize, tap } from 'rxjs';
+import { Subject, delay, finalize, fromEvent, of, takeUntil, tap } from 'rxjs';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import {
+  XEmptyComponent,
   XIconComponent,
   XLinkComponent,
   XMessageBoxAction,
   XMessageBoxService,
-  XMessageService
+  XMessageService,
+  XTooltipDirective
 } from '@ng-nest/ui';
 import { AppEditorComponent, AppFileIconPipe } from '@ui/core';
 
@@ -25,9 +27,12 @@ import { AppEditorComponent, AppFileIconPipe } from '@ui/core';
     XTreeComponent,
     XTreeSelectComponent,
     XButtonComponent,
+    XButtonsComponent,
     XLoadingComponent,
     XIconComponent,
     XLinkComponent,
+    XTooltipDirective,
+    XEmptyComponent,
     AppEditorComponent,
     AppFileIconPipe
   ],
@@ -50,6 +55,9 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   treeCom = viewChild.required<XTreeComponent>('treeCom');
   value = signal('');
   filename = signal('');
+  folderInput = viewChild.required<ElementRef<HTMLInputElement>>('folderInput');
+
+  $destroy = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,12 +70,22 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCategories().subscribe();
-    this.form.controls.category.valueChanges.subscribe((x) => {
+    this.form.controls.category.valueChanges.pipe(takeUntil(this.$destroy)).subscribe((x) => {
       this.getCatalogues(x!).subscribe();
     });
+
+    fromEvent(this.folderInput().nativeElement, 'change')
+      .pipe(takeUntil(this.$destroy))
+      .subscribe((event: any) => {
+        const files = event.target.files;
+        this.uploadFiles(files).subscribe();
+      });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.$destroy.next();
+    this.$destroy.complete();
+  }
 
   action(event: Event, type: string, data?: Catalogue & XTreeNode) {
     event.stopPropagation();
@@ -133,7 +151,20 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           console.log(x);
         });
         break;
+      case 'folder-upload':
+        this.folderInput().nativeElement.click();
+        break;
     }
+  }
+
+  uploadFiles(files: FileList) {
+    if (files.length === 0) return of('');
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append('files', file, file.webkitRelativePath);
+    });
+
+    return this.catalogue.folderUpload(formData).pipe(tap((x) => this.message.success(x)));
   }
 
   onNodeClick(node: XTreeNode | Catalogue) {

@@ -7,7 +7,14 @@
       <x-tree-select [data]="treeData()" showPath formControlName="pid"></x-tree-select>
     </div>
     <div class="item">
-      <label>节点类型：</label>
+      <label>
+        节点类型
+        <x-icon class="app-help" x-tooltip [content]="contentTpl" type="fto-help-circle"></x-icon>
+        ：
+        <ng-template #contentTpl>
+          <div class="app-help">文件夹类型可以添加子节点</div>
+        </ng-template>
+      </label>
       <x-radio
         [data]="[
           { id: 'Folder', label: '文件夹' },

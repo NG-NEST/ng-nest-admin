@@ -1,14 +1,14 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { FILE_METADATA } from '../decorators';
+import { FILES_METADATA } from '../decorators';
 
 @Injectable()
-export class FileInterceptor implements NestInterceptor {
+export class FilesInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
 
   async intercept(context: ExecutionContext, next: CallHandler<any>): Promise<Observable<any>> {
-    let keys = this.reflector.get(FILE_METADATA, context.getHandler()) as string[];
+    let keys = this.reflector.get(FILES_METADATA, context.getHandler()) as string[];
 
     if (!keys) {
       return next.handle();
@@ -17,7 +17,6 @@ export class FileInterceptor implements NestInterceptor {
       const req = context.switchToHttp().getRequest();
       const parts = req.parts();
       let body: { [key: string]: any } = {};
-      let file: Express.Multer.File;
       for await (let part of parts) {
         const { fieldname } = part;
         if (part.type === 'file' && keys.includes(fieldname)) {
@@ -34,13 +33,15 @@ export class FileInterceptor implements NestInterceptor {
             buffer: buffer,
             stream: part.file,
           };
-          req[fieldname] = file;
+          if (!req[`${fieldname}`]) {
+            req[`${fieldname}`] = [];
+          }
+          req[fieldname].push(file);
         } else if (part.type === 'field') {
           body[fieldname] = part.value;
         }
       }
 
-      if (file) req.file = file;
       if (Object.keys(body).length > 0) req.body = body;
 
       return next.handle();

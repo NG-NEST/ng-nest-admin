@@ -6,20 +6,45 @@
           formControlName="category"
           [placeholder]="'请选择一个代码分类'"
           [data]="categories()"
-          expandedLevel="3"
+          [expandedLevel]="3"
           showPath
         ></x-tree-select>
-        <x-button
-          icon="fto-plus"
-          [disabled]="!form.value.category"
-          type="primary"
-          (click)="action($event, 'add-root')"
-          text
-          >添加根节点</x-button
-        >
+        <x-buttons boxShadow="false">
+          <x-button
+            x-tooltip
+            [content]="'添加根节点'"
+            icon="fto-plus"
+            [disabled]="!form.value.category"
+            type="primary"
+            (click)="action($event, 'add-root')"
+            flat
+          ></x-button>
+          <x-button
+            x-tooltip
+            [content]="'文件夹上传'"
+            icon="fto-upload"
+            [disabled]="!form.value.category"
+            type="primary"
+            (click)="action($event, 'folder-upload')"
+            flat
+          ></x-button>
+          <input #folderInput type="file" [style.display]="'none'" webkitdirectory multiple />
+          <x-button
+            x-tooltip
+            [content]="'设置环境变量'"
+            icon="fto-settings"
+            [disabled]="!form.value.category"
+            type="primary"
+            (click)="action($event, 'set-env')"
+            flat
+          ></x-button>
+        </x-buttons>
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">
+      @if (!treeLoading() && treeData().length === 0) {
+        <x-empty></x-empty>
+      }
       <x-tree
         #treeCom
         [data]="treeData()"
@@ -46,6 +71,8 @@
           <div class="actions">
             @if (node.type === 'Folder') {
               <x-link
+                x-tooltip
+                [content]="'添加子节点'"
                 type="primary"
                 icon="fto-plus-square"
                 (click)="action($event, 'add-child', node)"
@@ -53,13 +80,23 @@
             }
             @if (node.type === 'File') {
               <x-link
+                x-tooltip
+                [content]="'查看生成代码'"
                 type="primary"
                 icon="fto-hash"
                 (click)="action($event, 'content', node)"
               ></x-link>
             }
-            <x-link type="primary" icon="fto-edit" (click)="action($event, 'edit', node)"></x-link>
             <x-link
+              x-tooltip
+              [content]="'编辑节点'"
+              type="primary"
+              icon="fto-edit"
+              (click)="action($event, 'edit', node)"
+            ></x-link>
+            <x-link
+              x-tooltip
+              [content]="'删除节点'"
               type="danger"
               icon="fto-minus-square"
               (click)="action($event, 'delete', node)"

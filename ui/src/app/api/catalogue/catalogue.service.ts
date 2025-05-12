@@ -129,4 +129,10 @@ export class CatalogueService {
   content(id: string): Observable<string> {
     return this.http.get(`/api/catalogue/content/${id}`, { responseType: 'text' });
   }
+
+  folderUpload(body: FormData): Observable<string> {
+    return this.http
+      .post(`/api/catalogue/folder-upload`, body, { responseType: 'arraybuffer' })
+      .pipe(map(() => CatalogueMessage.FolderUploadSuccess));
+  }
 }

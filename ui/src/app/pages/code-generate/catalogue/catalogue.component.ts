@@ -1,9 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit, inject, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
+  XIconComponent,
   XInputNumberComponent,
   XRadioComponent,
   XTextareaComponent,
+  XTooltipDirective,
   XTreeNode,
   XTreeSelectComponent
 } from '@ng-nest/ui';
@@ -26,7 +28,9 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XRadioComponent,
     XTreeSelectComponent,
     XInputNumberComponent,
-    XTextareaComponent
+    XTextareaComponent,
+    XIconComponent,
+    XTooltipDirective
   ],
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss']
