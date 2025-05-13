@@ -3,7 +3,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 import { UploadInput } from './upload.input';
 import { PutObjectResult } from 'cos-nodejs-sdk-v5';
-import { FileService, FileStatus } from '../file';
+import { FileService, FileStatus, File } from '../file';
+import { MultipartFile } from '@fastify/multipart';
+import { basename } from 'path';
 
 @Injectable()
 export class UploadService {
@@ -12,7 +14,7 @@ export class UploadService {
     private readonly file: FileService,
   ) {}
 
-  async uploadCos(file: Express.Multer.File, body: UploadInput) {
+  async uploadCosExpress(file: Express.Multer.File, body: UploadInput) {
     let { filepath, actualname, uid } = body;
     let { size, mimetype, originalname } = file;
     if (!uid) uid = v4();
@@ -45,6 +47,57 @@ export class UploadService {
         .catch((e) => {
           throw new BadRequestException(e);
         });
+    });
+  }
+
+  async uploadCosFastify(file: MultipartFile, body: UploadInput): Promise<File> {
+    let { filepath, actualname, uid } = body;
+    let { mimetype, filename } = file;
+    let buffer = await file.toBuffer();
+    let size = buffer.length;
+    if (!uid) uid = v4();
+
+    const name = decodeURIComponent(filename);
+    const key = `${filepath}/${uid}/${name}`;
+
+    if (!actualname) actualname = basename(name);
+
+    return new Promise(async (resolve) => {
+      resolve({
+        id: v4(),
+        size,
+        name,
+        actualname,
+        status: FileStatus.Completed,
+        mimetype,
+        key,
+        uid,
+        url: '',
+      });
+      // this.cos
+      //   .putObject({
+      //     Key: key,
+      //     Body: buffer,
+      //   })
+      //   .then(async (res: PutObjectResult) => {
+      //     const upload = {
+      //       size,
+      //       name,
+      //       actualname,
+      //       status: FileStatus.Completed,
+      //       mimetype,
+      //       key,
+      //       uid,
+      //       url: res.Location,
+      //     };
+
+      // const result = await this.file.create(upload);
+
+      //     resolve(result);
+      //   })
+      //   .catch((e) => {
+      //     throw new BadRequestException(e);
+      //   });
     });
   }
 }

@@ -2,7 +2,13 @@ import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@an
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Catalogue, CatalogueMessage, CatalogueService, ResourceService } from '@ui/api';
+import {
+  Catalogue,
+  CatalogueFolderFiles,
+  CatalogueMessage,
+  CatalogueService,
+  ResourceService
+} from '@ui/api';
 import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { Subject, delay, finalize, fromEvent, of, takeUntil, tap } from 'rxjs';
@@ -160,11 +166,19 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   uploadFiles(files: FileList) {
     if (files.length === 0) return of('');
     const formData = new FormData();
+    const category = this.form.getRawValue().category!;
+    formData.append('filepath', CatalogueFolderFiles);
+    formData.append('resourceId', category);
     Array.from(files).forEach((file) => {
-      formData.append('files', file, file.webkitRelativePath);
+      formData.append('files', file, encodeURIComponent(file.webkitRelativePath));
     });
 
-    return this.catalogue.folderUpload(formData).pipe(tap((x) => this.message.success(x)));
+    return this.catalogue.folderUpload(formData).pipe(
+      tap((x) => {
+        this.getCatalogues(category).subscribe();
+        this.message.success(x);
+      })
+    );
   }
 
   onNodeClick(node: XTreeNode | Catalogue) {

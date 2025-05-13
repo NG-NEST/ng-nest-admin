@@ -13,7 +13,7 @@ import { env } from 'node:process';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { WinstonModule } from 'nest-winston';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import * as multipart from '@fastify/multipart';
+import { fastifyMultipart } from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
@@ -32,7 +32,12 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.use(LoggerMiddleware);
 
-  app.register(multipart);
+  await app.register(fastifyMultipart, {
+    limits: {
+      fileSize: 1024 * 1024 * 10, // 限制文件大小为 5MB
+      files: 1000, // 最多允许 3 个文件
+    },
+  });
 
   // app.useWebSocketAdapter(new WsAdapter(app));
   const redisIoAdapter = new RedisIoAdapter(app);

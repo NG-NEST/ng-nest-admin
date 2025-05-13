@@ -7,17 +7,8 @@ import {
   CatalogueUpdateInput,
   CatalogueCacheClear,
 } from '@api/services';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Req,
-  UploadedFiles,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { FastifyRequest } from 'fastify';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -52,7 +43,8 @@ export class CatalogueController {
   }
 
   @Post('folder-upload')
-  async folderUpload(@UploadedFiles() files: Express.Multer.File[]): Promise<any> {
-    console.log(files);
+  @CacheClear(...CatalogueCacheClear)
+  async folderUpload(@Req() req: FastifyRequest): Promise<any> {
+    return await this.catalogueService.folderUpload(req);
   }
 }
