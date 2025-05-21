@@ -1,0 +1,82 @@
+<div class="string">
+  <form [formGroup]="form">
+    <div class="group enum-const">
+      <div class="item">
+        <label>枚举</label>
+        <x-switch formControlName="isEnum" (ngModelChange)="onIsEnumChange($event)"></x-switch>
+      </div>
+      <div class="item">
+        <label>常量</label>
+        <div class="const">
+          <x-switch formControlName="isConst" (ngModelChange)="onIsConstChange($event)"></x-switch>
+          @if (isConst) {
+            <x-input class="const-input" placeholder="常量值" formControlName="const"></x-input>
+          }
+        </div>
+      </div>
+    </div>
+    @if (isEnum) {
+      <div class="group enums">
+        <table formArrayName="enums" class="enum-table">
+          <tr>
+            <td>枚举值</td>
+            <td>说明</td>
+            <td width="75"></td>
+          </tr>
+          @for (item of enumFormArray.controls; track item) {
+            <tr [formGroupName]="$index">
+              <td>
+                <x-input placeholder="枚举值" formControlName="value"></x-input>
+              </td>
+              <td>
+                <x-input placeholder="说明" formControlName="description"></x-input>
+              </td>
+              <td>
+                <a x-tooltip content="添加相邻值" class="add-enum" (click)="addEnumRow($index)">
+                  <x-icon type="fto-plus-circle"></x-icon>
+                </a>
+                @if (enumFormArray.controls.length !== 1) {
+                  <a class="delete-enum" (click)="removeEnumRow($index)">
+                    <x-icon type="fto-minus-circle"></x-icon>
+                  </a>
+                }
+              </td>
+            </tr>
+          }
+        </table>
+      </div>
+    }
+    <div class="group">
+      <div class="item">
+        <label>format</label>
+        <x-select formControlName="format" [data]="formats"> </x-select>
+      </div>
+      <div class="item">
+        <label>行为</label>
+        <x-select formControlName="behavior" [data]="behaviors"> </x-select>
+      </div>
+      <div class="item">
+        <label>最小长度</label>
+        <x-input-number [min]="0" placeholder=">=0" formControlName="minLength"></x-input-number>
+      </div>
+      <div class="item">
+        <label>最大长度</label>
+        <x-input-number [min]="0" placeholder=">=0" formControlName="maxLength"></x-input-number>
+      </div>
+      <div class="item">
+        <label>默认值</label>
+        <x-input formControlName="default" placeholder="默认值"></x-input>
+      </div>
+      <div class="item">
+        <label>pattern</label>
+        <x-input formControlName="pattern" placeholder="^[A-Za-z0-9]+"></x-input>
+      </div>
+    </div>
+    <div class="group one">
+      <div class="item">
+        <label>示例值</label>
+        <x-select formControlName="examples" placeholder="示例值"></x-select>
+      </div>
+    </div>
+  </form>
+</div>

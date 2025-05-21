@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --hmr --port 8888",
+    "start": "ng serve --port 8888",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -24,8 +24,8 @@
     "@angular/service-worker": "^19.0.3",
     "@angular/ssr": "^19.0.4",
     "@apollo/client": "^3.11.8",
-    "@ng-nest/ui": "^19.0.6",
-    "apollo-angular": "^7.1.2",
+    "@ng-nest/ui": "^19.0.9",
+    "apollo-angular": "^10.0.3",
     "express": "^4.18.2",
     "graphql": "^16.9.0",
     "lodash-es": "^4.17.21",
@@ -37,6 +37,7 @@
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.7.5",
     "tslib": "^2.3.0",
+    "uuid": "^11.1.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

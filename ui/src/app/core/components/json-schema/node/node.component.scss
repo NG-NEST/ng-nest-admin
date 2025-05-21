@@ -1,0 +1,197 @@
+:host {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  form {
+    width: 100%;
+  }
+  .row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+  }
+  .right {
+    display: flex;
+    align-items: center;
+  }
+  .input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: var(--x-border-width);
+    border-bottom-color: transparent;
+    background-color: transparent;
+    outline: none;
+    height: var(--x-height-medium);
+    line-height: var(--x-height-medium);
+
+    &:active,
+    &:focus-visible {
+      outline: none;
+    }
+    &:focus,
+    &:hover {
+      border-bottom-color: var(--x-primary-300);
+    }
+  }
+  .dropdown {
+    display: flex;
+    align-items: center;
+  }
+  ::ng-deep .type {
+    width: 8rem;
+    .x-input-input {
+      &:hover {
+        .x-input-frame {
+          background-color: var(--x-primary-800);
+        }
+      }
+    }
+    .x-input-value-template-value {
+      color: var(--x-primary) !important;
+      border: none;
+      background-color: transparent;
+    }
+    .x-input-frame {
+      background-color: transparent;
+      padding-right: 0.75rem;
+    }
+    .x-input-row > .x-input-input > x-icon {
+      display: none;
+    }
+
+    &.string,
+    &.array {
+      .x-input-value-template-value {
+        color: var(--x-success) !important;
+      }
+    }
+    &.number,
+    &.integer,
+    &.null {
+      .x-input-value-template-value {
+        color: var(--x-danger) !important;
+      }
+    }
+  }
+  .items {
+    .label {
+      background-color: var(--x-primary-800);
+      line-height: 1rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      margin-right: 0.25rem;
+    }
+  }
+  .no-object {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 0.75rem;
+    min-height: var(--x-height-medium);
+    line-height: var(--x-height-medium);
+    padding: 0 var(--x-padding-medium);
+    span {
+      color: var(--x-text-500);
+    }
+    a {
+      margin-left: 1rem;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .deprecated {
+    text-decoration: line-through;
+  }
+  .actions {
+    margin-left: 0.125rem;
+    display: flex;
+    align-items: center;
+  }
+  a.icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.25rem;
+    margin: 0 0.125rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.125rem;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.05);
+    position: relative;
+    height: 1.875rem;
+    width: 1.875rem;
+    font-size: 1.125rem;
+    &:hover {
+      color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.07);
+    }
+
+    &.required {
+      font-size: 1.5rem;
+      > span {
+        position: absolute;
+        margin-top: 0.5rem;
+      }
+    }
+    &.nullable {
+      font-size: 0.875rem;
+    }
+    &.disabled {
+      cursor: not-allowed;
+    }
+    &.setting {
+      font-size: 0.875rem;
+    }
+    &.selected {
+      display: flex !important;
+      background-color: rgba(0, 0, 0, 0.08);
+      color: var(--x-danger);
+    }
+    &.selected-black {
+      display: flex !important;
+      color: var(--x-text);
+      background-color: rgba(0, 0, 0, 0.07);
+    }
+    &.description {
+      display: flex !important;
+      &:not(:hover) {
+        color: rgba(177, 177, 177, 0.8);
+      }
+    }
+    &.not-empty {
+      color: rgba(77, 209, 43, 0.8) !important;
+    }
+    &.delete {
+      display: flex !important;
+      &:not(:hover) {
+        color: rgba(177, 177, 177, 0.8);
+      }
+    }
+    &.delete-sure {
+      display: flex !important;
+      color: #ff4d4f;
+    }
+    &.add {
+      display: flex !important;
+    }
+    &.visibility {
+      display: flex !important;
+      visibility: hidden;
+      cursor: default;
+    }
+  }
+  &:hover {
+    .actions {
+      a {
+        display: flex;
+      }
+    }
+  }
+}

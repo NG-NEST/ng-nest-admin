@@ -10,6 +10,9 @@ export const NgNestConfig: XConfig = {
     },
     dialog: {
       width: '28rem'
+    },
+    switch: {
+      size: 'small'
     }
   },
   theme: {

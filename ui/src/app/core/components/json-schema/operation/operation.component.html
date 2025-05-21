@@ -1,0 +1,34 @@
+<x-button (click)="onJsonSchema()" plain flat icon="admin:json">JsonSchema</x-button>
+
+<ng-template #jsonSchemaTpl>
+  <form [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+    <h4 x-dialog-title class="title">JsonSchema 数据</h4>
+    <x-button
+      class="close"
+      icon="fto-x"
+      size="large"
+      flat
+      text
+      (click)="dialogRef?.close()"
+    ></x-button>
+    <div x-dialog-content class="content">
+      <div class="item">
+        <app-editor formControlName="jsonContent" [filename]="'jsonschema.json'"></app-editor>
+      </div>
+    </div>
+    <div x-dialog-actions align="center" class="actions">
+      <x-button icon="fto-x" attrType="button" flat plain (click)="dialogRef?.close()"
+        >取消</x-button
+      >
+      <x-button
+        flat
+        icon="fto-save"
+        type="primary"
+        attrType="submit"
+        [loading]="saveLoading"
+        [disabled]="!form.valid"
+        >保存</x-button
+      >
+    </div>
+  </form>
+</ng-template>

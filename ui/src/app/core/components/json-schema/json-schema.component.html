@@ -1,0 +1,16 @@
+<x-loading [x-loading]="loading()">
+  <app-operation></app-operation>
+  <form [formGroup]="form" class="json-schema">
+    <div formArrayName="tree">
+      <app-tree #tree [data]="treeData()" [nodeTpl]="nodeTpl"></app-tree>
+      <ng-template #nodeTpl let-node="$node" let-level="$level">
+        <app-node
+          [tree]="tree"
+          [node]="node"
+          [level]="level"
+          [form]="getTreeNodeForm(node)"
+        ></app-node>
+      </ng-template>
+    </div>
+  </form>
+</x-loading>

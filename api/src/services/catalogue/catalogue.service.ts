@@ -105,7 +105,6 @@ export class CatalogueService {
     const data = this.convertToCatalogueTree(results, resourceId);
     const transaction: any[] = [];
 
-    // 开启事务
     for (const item of data) {
       const { resourceId, pid, ...other } = item;
       const data = { ...other, resource: { connect: { id: resourceId } }, parent: {} };
@@ -136,7 +135,7 @@ export class CatalogueService {
         currentPath = currentPath ? `${currentPath}/${folderName}` : folderName;
 
         if (!folderMap.has(currentPath)) {
-          const folderId = v4(); // 可改为生成 UUID
+          const folderId = v4();
           const folder = {
             id: folderId,
             name: folderName,
@@ -152,7 +151,6 @@ export class CatalogueService {
         parentId = folderMap.get(currentPath);
       }
 
-      // 添加文件
       const fileNode = {
         id: v4(),
         name: parts[parts.length - 1],

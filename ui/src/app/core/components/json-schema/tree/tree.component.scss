@@ -1,0 +1,27 @@
+:host {
+  .node {
+    display: flex;
+    align-items: flex-start;
+  }
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.25rem;
+    margin: 0.125rem 0.125rem 0 0.125rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.125rem;
+    color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    height: 1.875rem;
+    width: 1.875rem;
+    font-size: 1.125rem;
+    cursor: pointer;
+    &:hover {
+      color: rgba(0, 0, 0, 0.9);
+    }
+    &.visibility {
+      visibility: hidden;
+    }
+  }
+}

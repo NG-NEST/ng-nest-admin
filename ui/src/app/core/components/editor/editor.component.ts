@@ -36,6 +36,8 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
     return this.getLanguageFromFilename(this.filename());
   });
 
+  value: any = '';
+
   private editor!: monaco.editor.IStandaloneCodeEditor;
   private onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
@@ -102,7 +104,7 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
 
   private initializeEditor(): void {
     this.editor = monaco.editor.create(this.elementRef.nativeElement, {
-      value: '',
+      value: this.value,
       language: this.language(),
       theme: this.theme(),
       automaticLayout: true,
@@ -111,11 +113,13 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
 
     this.editor.onDidChangeModelContent(() => {
       const value = this.editor.getValue();
+      this.value = value;
       this.onChange(value);
     });
   }
 
   writeValue(value: string) {
+    this.value = value;
     if (this.editor) {
       this.editor.setValue(value || '');
       this.editor.setScrollTop(0);

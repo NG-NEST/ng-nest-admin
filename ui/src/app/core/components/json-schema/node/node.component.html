@@ -1,0 +1,151 @@
+<form [formGroup]="form()">
+  <div class="row">
+    <div class="left">
+      @if (node().name !== '$root' && !node().isArray) {
+        <input
+          class="input"
+          formControlName="name"
+          appAdjustWidth
+          [minWidth]="200 - level() * 40"
+          [maxWidth]="200 - level() * 40 - 10"
+          [defaultValue]="node().name!"
+          placeholder="字段名"
+        />
+      }
+      @if (node().isArray) {
+        <div class="items" [style.width.px]="200 - level() * 40">
+          <span class="label">ITEMS</span>
+        </div>
+      }
+      <x-select
+        class="type {{ form().controls['type'].value }}"
+        [bordered]="false"
+        [clearable]="false"
+        formControlName="type"
+        [data]="typeList"
+      ></x-select>
+      <div class="actions">
+        <a
+          class="icon"
+          [class.selected-black]="getIsSetting(node())"
+          [style.order]="2"
+          x-popover
+          content="高级设置"
+          (click)="onSetting()"
+        >
+          <x-icon type="fto-settings"></x-icon>
+        </a>
+        @if (!isRoot && !node().isArray) {
+          <a
+            class="icon required"
+            [class.selected]="node().required"
+            [class.disabled]="node().isArray"
+            [style.order]="node().required ? 1 : 2"
+            (click)="!node().isArray && onRequired(node().required!)"
+            x-popover
+            content="是否必需"
+          >
+            <span>*</span>
+          </a>
+        }
+        <a
+          class="icon nullable"
+          [style.order]="1"
+          [class.selected]="node().nullable"
+          [class.disabled]="node().type === 'null'"
+          [style.order]="node().nullable ? 1 : 2"
+          (click)="node().type !== 'null' && onNullable(node().nullable!)"
+          x-popover
+          content="允许NULL"
+        >
+          <span>N</span>
+        </a>
+      </div>
+    </div>
+    <div class="right">
+      @if (!node().isArray) {
+        <input
+          formControlName="title"
+          placeholder="中文名"
+          class="input"
+          appAdjustWidth
+          [minWidth]="50"
+          [maxWidth]="140"
+          [defaultValue]="node().title!"
+          [title]="node().title"
+        />
+      }
+      <a
+        x-popover
+        [content]="descriptionTpl"
+        [(visible)]="showDescriptionPopover"
+        [maxWidth]="'18rem'"
+        [trigger]="'click'"
+        class="icon description"
+        (click)="onShowDescription()"
+        [class.not-empty]="!!node().description"
+      >
+        <x-icon type="fto-book-open"></x-icon>
+      </a>
+      <ng-template #descriptionTpl>
+        <x-textarea
+          #descriptionCtl
+          placeholder="说明"
+          [formControlName]="'description'"
+          [height]="'4rem'"
+        ></x-textarea>
+      </ng-template>
+      @if ((isRoot || node().isArray) && node().type === 'object') {
+        <a x-popover content="添加子节点" class="icon add" (click)="addSubNode(node())">
+          <x-icon type="fto-plus"></x-icon>
+        </a>
+      }
+      @if ((node().isArray && node().type !== 'object') || (isRoot && node().type !== 'object')) {
+        <a class="icon add visibility">
+          <x-icon type="fto-plus"></x-icon>
+        </a>
+      }
+      @if (!isRoot && node().type === 'object' && !node().isArray) {
+        <x-dropdown
+          class="dropdown"
+          [data]="[
+            { id: 1, label: '添加相邻节点' },
+            { id: 2, label: '添加子节点' }
+          ]"
+          (nodeClick)="dropdownClick($event, node())"
+        >
+          <a class="icon add">
+            <x-icon type="fto-plus"></x-icon>
+          </a>
+        </x-dropdown>
+      }
+      @if (!isRoot && node().type !== 'object' && !node().isArray) {
+        <a x-popover content="添加相邻节点" class="icon add" (click)="addAdjoinNode(node())">
+          <x-icon type="fto-plus"></x-icon>
+        </a>
+      }
+      @if (!isRoot && !isDeleteConfirm() && !node().isArray) {
+        <a class="icon delete" (click)="deleteConfirm()">
+          <x-icon type="fto-minus"></x-icon>
+        </a>
+      }
+      @if (!isRoot && isDeleteConfirm() && !node().isArray) {
+        <a class="icon delete-sure" (click)="deleteNode(node())">
+          <x-icon type="fto-check"></x-icon>
+        </a>
+      }
+      @if (isRoot || node().isArray) {
+        <a class="icon delete visibility">
+          <x-icon type="fto-minus"></x-icon>
+        </a>
+      }
+    </div>
+  </div>
+
+  @if (isObjectNull) {
+    <div class="row no-object">
+      <span>没有字段</span>
+      <a (click)="addSubNode(node())">添加</a>
+    </div>
+  }
+</form>

@@ -1,0 +1,30 @@
+<div class="string">
+  <form [formGroup]="form">
+    <div class="group">
+      <div class="item">
+        <label>最小属性个数</label>
+        <x-input-number
+          [min]="0"
+          placeholder=">=0"
+          formControlName="minProperties"
+        ></x-input-number>
+      </div>
+      <div class="item">
+        <label>最大属性个数</label>
+        <x-input-number
+          [min]="0"
+          placeholder=">=0"
+          formControlName="maxProperties"
+        ></x-input-number>
+      </div>
+      <div class="item">
+        <label>允许附加属性</label>
+        <x-switch formControlName="additionalProperties"></x-switch>
+      </div>
+      <div class="item">
+        <label>行为</label>
+        <x-select formControlName="behavior" [data]="behaviors"> </x-select>
+      </div>
+    </div>
+  </form>
+</div>

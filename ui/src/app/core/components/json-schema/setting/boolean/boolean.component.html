@@ -1,0 +1,14 @@
+<div class="string">
+  <form [formGroup]="form">
+    <div class="group">
+      <div class="item">
+        <label>默认值</label>
+        <x-select formControlName="default" [data]="defaultValues"> </x-select>
+      </div>
+      <div class="item">
+        <label>行为</label>
+        <x-select formControlName="behavior" [data]="behaviors"> </x-select>
+      </div>
+    </div>
+  </form>
+</div>

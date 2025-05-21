@@ -1,0 +1,24 @@
+:host {
+  .group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    &.one {
+      grid-template-columns: 1fr;
+    }
+    .item {
+      display: flex;
+      flex-direction: column;
+      label {
+        margin-bottom: 0.125rem;
+        text-align: left;
+        width: 100%;
+      }
+      x-input,
+      x-select,
+      x-input-number {
+        width: 100%;
+      }
+    }
+  }
+}

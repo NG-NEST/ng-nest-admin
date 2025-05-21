@@ -11,7 +11,18 @@ import {
 } from '@ui/api';
 import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
-import { Subject, delay, finalize, fromEvent, of, takeUntil, tap } from 'rxjs';
+import {
+  Subject,
+  delay,
+  finalize,
+  fromEvent,
+  of,
+  takeUntil,
+  tap,
+  mergeMap,
+  debounceTime,
+  Observable
+} from 'rxjs';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import {
@@ -23,7 +34,7 @@ import {
   XMessageService,
   XTooltipDirective
 } from '@ng-nest/ui';
-import { AppEditorComponent, AppFileIconPipe } from '@ui/core';
+import { AppEditorComponent, AppFileIconPipe, AppFileReader, AppParseGitignore } from '@ui/core';
 
 @Component({
   selector: 'app-code-generate',
@@ -84,7 +95,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.$destroy))
       .subscribe((event: any) => {
         const files = event.target.files;
-        this.uploadFiles(files).subscribe();
+        this.uploadFolder(files).subscribe();
       });
   }
 
@@ -160,16 +171,66 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
       case 'folder-upload':
         this.folderInput().nativeElement.click();
         break;
+      case 'toggle':
+        !this.treeCom().nodeOpen() && this.treeCom().onToggle(event, data as XTreeNode);
+        break;
     }
   }
 
-  uploadFiles(files: FileList) {
-    if (files.length === 0) return of('');
+  nodeOpen(open$: Observable<boolean>) {
+    return open$.pipe(debounceTime(100));
+  }
+
+  uploadFolder(fileList: FileList) {
+    const files = Array.from(fileList);
+    const strippedFiles = this.stripRootPath(files);
+    const fileMap = new Map(strippedFiles.map((f) => [f.path, f.file]));
+    const gitignoreFile = fileMap.get('.gitignore');
+
+    if (gitignoreFile) {
+      return AppFileReader(gitignoreFile).pipe(
+        mergeMap((text) => {
+          const gitignoreText = text;
+          const ignored = AppParseGitignore(gitignoreText, Array.from(fileMap.keys()));
+          const filesToUpload = strippedFiles.filter((f) => !ignored.has(f.path));
+          return this.uploadFiles(filesToUpload.map(({ file }) => file));
+        })
+      );
+    } else {
+      return this.uploadFiles(files);
+    }
+  }
+
+  stripRootPath(files: File[]) {
+    if (files.length === 0) return [];
+
+    const firstPath = files[0].webkitRelativePath;
+    const rootFolder = firstPath.split('/')[0];
+
+    return files.map((file) => {
+      const relativePath = file.webkitRelativePath;
+      const strippedPath = relativePath.startsWith(rootFolder + '/')
+        ? relativePath.slice(rootFolder.length + 1)
+        : relativePath;
+
+      return {
+        file,
+        path: strippedPath
+      };
+    });
+  }
+
+  uploadFiles(files: File[]) {
+    if (files.length === 0) {
+      this.message.warning(CatalogueMessage.NotFoundFiles);
+      return of('');
+    }
+
     const formData = new FormData();
     const category = this.form.getRawValue().category!;
     formData.append('filepath', CatalogueFolderFiles);
     formData.append('resourceId', category);
-    Array.from(files).forEach((file) => {
+    files.forEach((file) => {
       formData.append('files', file, encodeURIComponent(file.webkitRelativePath));
     });
 

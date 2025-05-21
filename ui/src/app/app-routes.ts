@@ -3,6 +3,10 @@ import { AppCanActivate, AppCanLoad } from '@ui/core';
 
 export const LayoutRoutes: Routes = [
   {
+    path: 'xxx',
+    loadChildren: () => import('./pages/json/json-routing.module').then((x) => x.JsonRoutes)
+  },
+  {
     path: '',
     loadChildren: () => import('./layout/index/index-routing.module').then((x) => x.IndexRoutes),
     canActivate: [AppCanActivate]
@@ -70,6 +74,14 @@ export const AppRoutes: Routes = [
       import('./pages/code-generate/code-generate-routing.module').then(
         (x) => x.CodeGenerateRoutes
       ),
+    canActivate: [AppCanLoad]
+  },
+  {
+    path: 'schema',
+    data: {
+      permission: 'schema-view'
+    },
+    loadChildren: () => import('./pages/schema/schema-routing.module').then((x) => x.SchemaRoutes),
     canActivate: [AppCanLoad]
   }
 ];

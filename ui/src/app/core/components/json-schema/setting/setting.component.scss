@@ -1,0 +1,53 @@
+:host {
+  .content {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+  ::ng-deep .type {
+    width: 100%;
+    .x-input-input {
+      &:hover {
+        .x-input-frame {
+          background-color: var(--x-primary-800);
+        }
+      }
+    }
+    .x-input-value-template-value {
+      color: var(--x-primary) !important;
+      border: none;
+      background-color: transparent;
+    }
+    .x-input-frame {
+      background-color: transparent;
+      padding-right: 0.75rem;
+    }
+
+    &.string,
+    &.array {
+      .x-input-value-template-value {
+        color: var(--x-success) !important;
+      }
+    }
+    &.number,
+    &.integer,
+    &.null {
+      .x-input-value-template-value {
+        color: var(--x-danger) !important;
+      }
+    }
+  }
+  .base {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    label {
+      margin-right: 0.375rem;
+      width: 100%;
+      text-align: left;
+    }
+  }
+}

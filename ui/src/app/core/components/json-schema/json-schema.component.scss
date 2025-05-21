@@ -1,0 +1,12 @@
+:host {
+  
+  ::ng-deep {
+    x-select {
+      .x-input-active {
+        .x-input-frame {
+          background-color: var(--x-primary-800);
+        }
+      }
+    }
+  }
+}

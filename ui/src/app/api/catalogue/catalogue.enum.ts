@@ -24,5 +24,6 @@ export enum CatalogueMessage {
   CreatedSuccess = '新增节点成功',
   UpdatedSuccess = '更新节点成功',
   DeletedSuccess = '删除节点成功',
-  FolderUploadSuccess = '文件夹上传成功'
+  FolderUploadSuccess = '文件夹上传成功',
+  NotFoundFiles = '找不到文件'
 }

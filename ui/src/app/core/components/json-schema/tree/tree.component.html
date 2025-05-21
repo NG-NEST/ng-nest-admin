@@ -1,0 +1,30 @@
+<cdk-tree
+  #tree
+  [dataSource]="dataSource()"
+  [childrenAccessor]="childrenAccessor"
+  [trackBy]="treeTrackBy"
+>
+  <cdk-tree-node
+    *cdkTreeNodeDef="let node; let level = level"
+    cdkTreeNodePadding
+    [style.display]="shouldRender(node) ? 'flex' : 'none'"
+    class="node"
+    [title]="node.id"
+  >
+    @if (node.children && node.children.length > 0) {
+      <x-icon
+        class="icon"
+        [type]="tree.isExpanded(node) ? 'fto-chevron-down' : 'fto-chevron-right'"
+        cdkTreeNodeToggle
+      ></x-icon>
+    } @else {
+      <x-icon
+        class="icon visibility"
+        [type]="tree.isExpanded(node) ? 'fto-chevron-down' : 'fto-chevron-right'"
+      ></x-icon>
+    }
+    <ng-container
+      *ngTemplateOutlet="nodeTpl(); context: { $node: node, $level: level }"
+    ></ng-container>
+  </cdk-tree-node>
+</cdk-tree>

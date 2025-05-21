@@ -1,0 +1,52 @@
+<form class="app-dialog-form" [formGroup]="form">
+  <h4 x-dialog-title class="title">高级设置</h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
+  <div x-dialog-content class="content">
+    <x-select
+      class="type {{ form.controls['type'].value }}"
+      formControlName="type"
+      [data]="typeList"
+      (ngModelChange)="onTypeChange($event)"
+      [clearable]="false"
+    >
+    </x-select>
+    <div class="base">
+      @if (node().name !== '$root' && !node().isArray) {
+        <div class="item">
+          <label>必需</label>
+          <x-switch formControlName="required"></x-switch>
+        </div>
+      }
+      <div class="item">
+        <label>允许NULL</label>
+        <x-switch formControlName="nullable"></x-switch>
+      </div>
+      <div class="item">
+        <label>废弃</label>
+        <x-switch formControlName="deprecated"></x-switch>
+      </div>
+    </div>
+    <div class="type-controls">
+      @switch (node().type) {
+        @case ('string') {
+          <app-string [node]="node()"></app-string>
+        }
+        @case ('integer') {
+          <app-integer [node]="node()"></app-integer>
+        }
+        @case ('boolean') {
+          <app-boolean [node]="node()"></app-boolean>
+        }
+        @case ('array') {
+          <app-array [node]="node()"></app-array>
+        }
+        @case ('object') {
+          <app-object [node]="node()"></app-object>
+        }
+        @case ('number') {
+          <app-number [node]="node()"></app-number>
+        }
+      }
+    </div>
+  </div>
+</form>
