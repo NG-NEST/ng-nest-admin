@@ -136,6 +136,7 @@ export class SchemaComponent {
         break;
       case 'add':
         this.dialog.create(SchemaDetailComponent, {
+          width: '60rem',
           data: {
             saveSuccess: () => {
               this.searchForm.reset();
@@ -147,6 +148,7 @@ export class SchemaComponent {
         break;
       case 'edit':
         this.dialog.create(SchemaDetailComponent, {
+          width: '60rem',
           data: {
             id: schema?.id,
             saveSuccess: () => {

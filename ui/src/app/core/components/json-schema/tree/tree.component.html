@@ -12,16 +12,17 @@
     [title]="node.id"
   >
     @if (node.children && node.children.length > 0) {
-      <x-icon
-        class="icon"
-        [type]="tree.isExpanded(node) ? 'fto-chevron-down' : 'fto-chevron-right'"
-        cdkTreeNodeToggle
-      ></x-icon>
+      @if (tree.isExpanded(node)) {
+        <x-icon class="icon" [type]="'fto-chevron-down'" cdkTreeNodeToggle></x-icon>
+      } @else {
+        <x-icon class="icon" [type]="'fto-chevron-right'" cdkTreeNodeToggle></x-icon>
+      }
     } @else {
-      <x-icon
-        class="icon visibility"
-        [type]="tree.isExpanded(node) ? 'fto-chevron-down' : 'fto-chevron-right'"
-      ></x-icon>
+      @if (tree.isExpanded(node)) {
+        <x-icon class="icon visibility" [type]="'fto-chevron-down'"></x-icon>
+      } @else {
+        <x-icon class="icon visibility" [type]="'fto-chevron-right'"></x-icon>
+      }
     }
     <ng-container
       *ngTemplateOutlet="nodeTpl(); context: { $node: node, $level: level }"

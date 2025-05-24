@@ -20,7 +20,7 @@ import { delay, finalize, Subject, takeUntil } from 'rxjs';
 import { AppNodeComponent } from './node/node.component';
 import { AppTreeComponent } from './tree/tree.component';
 import { XJsonSchema, XTreeData } from './json-schema.type';
-import { XJsonSchemaToTreeDataWorker } from './worker/worker';
+import { XJsonSchemaToTreeDataWorker, XTreeDataToJsonSchemaWorker } from './worker/worker';
 import { XIsChange, XLoadingComponent } from '@ng-nest/ui';
 import { AppOperationComponent } from './operation/operation.component';
 
@@ -96,5 +96,9 @@ export class AppJsonSchemaComponent implements OnInit, OnDestroy {
         }
         this.treeData.set(x);
       });
+  }
+
+  getJsonSchema() {
+    return XTreeDataToJsonSchemaWorker(this.treeData()).pipe(takeUntil(this.$destroy));
   }
 }

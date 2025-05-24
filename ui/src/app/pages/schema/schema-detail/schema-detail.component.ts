@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -6,8 +6,8 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { SchemaService } from '@ui/api';
-import { AppJsonSchemaComponent } from '@ui/core';
-import { Observable, Subject, finalize, tap } from 'rxjs';
+import { AppJsonSchemaComponent, XJsonSchema } from '@ui/core';
+import { Observable, Subject, finalize, mergeMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-schema-detail',
@@ -19,11 +19,22 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XDialogModule,
     AppJsonSchemaComponent
   ],
-  templateUrl: './schema-detail.component.html'
+  templateUrl: './schema-detail.component.html',
+  styleUrls: ['./schema-detail.component.scss']
 })
 export class SchemaDetailComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<SchemaDetailComponent>);
+  formBuild = inject(FormBuilder);
+  jsonSchemaCom = viewChild.required<AppJsonSchemaComponent>('jsonSchemaCom');
+
   id = signal('');
+
+  jsonSchema: XJsonSchema = {
+    title: '',
+    description: '',
+    type: 'object',
+    properties: {}
+  };
 
   formLoading = signal(false);
   saveLoading = signal(false);
@@ -34,15 +45,13 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
     private schema: SchemaService,
-    private fb: FormBuilder,
     private message: XMessageService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
+    this.form = this.formBuild.group({
       name: [null, [Validators.required]],
-      code: [null, [Validators.required]],
-      json: [null, [Validators.required]]
+      code: [null, [Validators.required]]
     });
     const { id } = this.data;
     this.id.set(id);
@@ -53,8 +62,11 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
         .pipe(
           tap((x) => {
             this.form.patchValue(x);
+            this.jsonSchema=JSON.parse(x.json);
           }),
-          finalize(() => this.formLoading.set(false))
+          finalize(() => 
+            this.formLoading.set(false)
+          )
         )
         .subscribe();
     }
@@ -67,10 +79,21 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
 
   save() {
     let rq!: Observable<string>;
+
     if (!this.id()) {
-      rq = this.schema.create(this.form.value);
+      rq = this.jsonSchemaCom()
+        .getJsonSchema()
+        .pipe(
+          mergeMap((json) => this.schema.create({ ...this.form.value, json: JSON.stringify(json) }))
+        );
     } else {
-      rq = this.schema.update({ id: this.id(), ...this.form.value });
+      rq = this.jsonSchemaCom()
+        .getJsonSchema()
+        .pipe(
+          mergeMap((json) =>
+            this.schema.update({ id: this.id(), ...this.form.value, json: JSON.stringify(json) })
+          )
+        );
     }
     this.saveLoading.set(true);
     rq.pipe(

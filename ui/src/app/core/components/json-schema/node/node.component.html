@@ -24,12 +24,12 @@
         formControlName="type"
         [data]="typeList"
       ></x-select>
-      <div class="actions">
+      <div class="operation">
         <a
           class="icon"
           [class.selected-black]="getIsSetting(node())"
           [style.order]="2"
-          x-popover
+          x-tooltip
           content="高级设置"
           (click)="onSetting()"
         >
@@ -42,7 +42,7 @@
             [class.disabled]="node().isArray"
             [style.order]="node().required ? 1 : 2"
             (click)="!node().isArray && onRequired(node().required!)"
-            x-popover
+            x-tooltip
             content="是否必需"
           >
             <span>*</span>
@@ -55,7 +55,7 @@
           [class.disabled]="node().type === 'null'"
           [style.order]="node().nullable ? 1 : 2"
           (click)="node().type !== 'null' && onNullable(node().nullable!)"
-          x-popover
+          x-tooltip
           content="允许NULL"
         >
           <span>N</span>
@@ -96,7 +96,7 @@
         ></x-textarea>
       </ng-template>
       @if ((isRoot || node().isArray) && node().type === 'object') {
-        <a x-popover content="添加子节点" class="icon add" (click)="addSubNode(node())">
+        <a x-tooltip content="添加子节点" class="icon add" (click)="addSubNode(node())">
           <x-icon type="fto-plus"></x-icon>
         </a>
       }
@@ -120,7 +120,7 @@
         </x-dropdown>
       }
       @if (!isRoot && node().type !== 'object' && !node().isArray) {
-        <a x-popover content="添加相邻节点" class="icon add" (click)="addAdjoinNode(node())">
+        <a x-tooltip content="添加相邻节点" class="icon add" (click)="addAdjoinNode(node())">
           <x-icon type="fto-plus"></x-icon>
         </a>
       }

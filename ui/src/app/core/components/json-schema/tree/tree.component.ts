@@ -1,12 +1,13 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   computed,
   inject,
   input,
   model,
-  OnInit,
   signal,
+  SimpleChanges,
   TemplateRef,
   viewChild,
   ViewContainerRef
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { AppJsonSchemaComponent } from '../json-schema.component';
 import { AppJsonSchemaService } from '../json-schema.service';
 import { XTreeData } from '../json-schema.type';
+import { XIsChange } from '@ng-nest/ui/core';
 
 function flattenNodes(nodes: XTreeData[]): XTreeData[] {
   const flattenedNodes = [];
@@ -35,11 +37,12 @@ function flattenNodes(nodes: XTreeData[]): XTreeData[] {
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.scss']
 })
-export class AppTreeComponent implements OnInit {
+export class AppTreeComponent implements AfterViewInit {
   tree = viewChild.required<CdkTree<XTreeData>>('tree');
 
   data = model.required<XTreeData[]>();
   nodeTpl = input.required<TemplateRef<any>>();
+  extendLevel = input<number>(1);
 
   cdr = inject(ChangeDetectorRef);
   viewContainerRef = inject(ViewContainerRef);
@@ -59,7 +62,14 @@ export class AppTreeComponent implements OnInit {
 
   hasChild = (_: number, node: XTreeData) => !!node.children?.length;
 
-  ngOnInit(): void {}
+  ngAfterViewInit() {
+    if (this.extendLevel()) this.treeExtendLevel(this.extendLevel());
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { data } = changes;
+    XIsChange(data) && this.treeExtendLevel(this.extendLevel());
+  }
 
   getParentNode(node: XTreeData) {
     for (const parent of flattenNodes(this.data())) {
@@ -128,5 +138,20 @@ export class AppTreeComponent implements OnInit {
       const isExpanded = this.tree().isExpanded(parentNode);
       if (!isExpanded) this.tree().toggle(parentNode);
     }
+  }
+
+  treeExtendLevel(level: number) {
+    const extendNode = (node: XTreeData) => {
+      if (!this.tree().isExpanded(node)) {
+        this.tree().expand(node);
+      }
+    };
+    setTimeout(() => {
+      for (let i = 0; i < this.data().length; i++) {
+        if (i < level) {
+          extendNode(this.data()[i]);
+        }
+      }
+    }, 100);
   }
 }

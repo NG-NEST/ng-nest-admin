@@ -178,6 +178,10 @@ input {
     gap: 2rem;
     padding: 1.25rem 0;
 
+    &.full {
+      padding: 0;
+    }
+
     .item {
       display: flex;
       align-items: flex-start;

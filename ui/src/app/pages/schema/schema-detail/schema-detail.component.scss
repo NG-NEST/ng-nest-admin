@@ -1,0 +1,16 @@
+:host {
+  .content {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .item {
+      label {
+      }
+    }
+
+    x-input {
+      width: 100%;
+    }
+  }
+}

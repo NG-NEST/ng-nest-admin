@@ -24,6 +24,7 @@ import { AppTreeComponent } from '../tree/tree.component';
 import { XJsonSchemaType, XJsonSchemaTypes, XTreeData } from '../json-schema.type';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { AppSettingComponent } from '../setting/setting.component';
+import { XTooltipDirective } from '@ng-nest/ui/tooltip';
 
 @Component({
   selector: 'app-node',
@@ -32,6 +33,7 @@ import { AppSettingComponent } from '../setting/setting.component';
     XSelectComponent,
     XIconComponent,
     XPopoverDirective,
+    XTooltipDirective,
     XTextareaComponent,
     XDropdownComponent,
     AdjustWidthDirective
@@ -130,6 +132,7 @@ export class AppNodeComponent implements OnInit, OnDestroy {
 
   onSetting() {
     this.dialog.create(AppSettingComponent, {
+      width: '36rem',
       data: {
         node: this.node(),
         typeChange: this.typeChange,

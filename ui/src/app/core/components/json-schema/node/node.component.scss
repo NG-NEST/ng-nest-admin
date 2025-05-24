@@ -92,10 +92,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-left: 0.75rem;
+    padding-left: 2.25rem;
     min-height: var(--x-height-medium);
     line-height: var(--x-height-medium);
-    padding: 0 var(--x-padding-medium);
     span {
       color: var(--x-text-500);
     }
@@ -109,7 +108,7 @@
   .deprecated {
     text-decoration: line-through;
   }
-  .actions {
+  .operation {
     margin-left: 0.125rem;
     display: flex;
     align-items: center;
@@ -188,7 +187,7 @@
     }
   }
   &:hover {
-    .actions {
+    .operation {
       a {
         display: flex;
       }

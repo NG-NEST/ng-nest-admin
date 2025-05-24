@@ -1,5 +1,20 @@
 :host {
-  
+  display: block;
+  width: 100%;
+  border: var(--x-border-width) var(--x-border-style) var(--x-border);
+  border-radius: var(--x-border-radius);
+
+  .operation {
+    padding: 1rem;
+    display: block;
+  }
+
+  .json-schema {
+    border-top: var(--x-border-width) var(--x-border-style) var(--x-border);
+    padding: 1rem;
+    min-height: 20rem;
+  }
+
   ::ng-deep {
     x-select {
       .x-input-active {
