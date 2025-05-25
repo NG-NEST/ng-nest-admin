@@ -27,6 +27,7 @@ export class CatalogueService {
           query catalogue($id: ID!) {
             catalogue(id: $id) {
               name
+              url
               type
               sort
               description
@@ -74,6 +75,7 @@ export class CatalogueService {
               count
               data {
                 name
+                url
                 type
                 sort
                 id
@@ -103,6 +105,7 @@ export class CatalogueService {
               pid
               id
               name
+              url
               type
               sort
             }

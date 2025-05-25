@@ -72,7 +72,7 @@ export class UploadService {
         mimetype,
         key,
         uid,
-        url: '',
+        url: 'https://ngnest.com/img/logo/logo-32x32.png',
       });
       // this.cos
       //   .putObject({
@@ -91,9 +91,9 @@ export class UploadService {
       //       url: res.Location,
       //     };
 
-      // const result = await this.file.create(upload);
+      //     const result = await this.file.create(upload);
 
-      //     resolve(result);
+      //     resolve(result as File);
       //   })
       //   .catch((e) => {
       //     throw new BadRequestException(e);

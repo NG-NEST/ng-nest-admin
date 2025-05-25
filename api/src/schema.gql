@@ -52,6 +52,9 @@ type Catalogue {
 
   """UpdatedAt"""
   updatedAt: DateTime
+
+  """Url"""
+  url: String
 }
 
 input CatalogueOrderInput {
@@ -118,6 +121,9 @@ type CatalogueSelectOutput {
 
   """UpdatedAt"""
   updatedAt: DateTime
+
+  """Url"""
+  url: String
 }
 
 input CatalogueWhere {
@@ -144,6 +150,9 @@ input CatalogueWhere {
 
   """Type"""
   type: StringFilter
+
+  """Url"""
+  url: StringFilter
 }
 
 input CatalogueWhereInput {
@@ -179,6 +188,9 @@ input CatalogueWhereInput {
 
   """Type"""
   type: StringFilter
+
+  """Url"""
+  url: StringFilter
 }
 
 """

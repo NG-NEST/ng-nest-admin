@@ -8,6 +8,7 @@ export enum FileDescription {
   Id = 'FileId',
   Uid = 'Uid',
   Name = 'Name',
+  Content = 'Content',
   Actualname = 'Actualname',
   Status = 'Status',
   Size = 'Size',

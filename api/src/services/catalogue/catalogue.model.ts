@@ -39,6 +39,10 @@ export class Catalogue extends BaseAudit {
   @IsOptional()
   content?: string;
 
+  @Field({ description: CatalogueDescription.Url, nullable: true })
+  @IsOptional()
+  url?: string;
+
   @Field({ description: ResourceDescription.Id })
   resourceId: string;
 

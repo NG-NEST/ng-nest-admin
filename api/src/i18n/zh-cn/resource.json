@@ -7,6 +7,6 @@
   "CodeIsExist": "资源编码已经存在",
   "SortIsNotEmpty": "资源排序不能为空",
   "SortIsNotNumber": "资源排序应为数字",
-  "SubjectIdIsNotEmpty": "主体编码不能为空",
-  "SubjectIdIsNotExist": "主体编码不存在"
+  "SubjectIdIsNotEmpty": "资源分类编码不能为空",
+  "SubjectIdIsNotExist": "资源分类编码不存在"
 }

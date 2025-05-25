@@ -18,6 +18,7 @@ export enum CatalogueDescription {
   Sort = 'Sort',
   Description = 'Description',
   Content = 'Content',
+  Url = 'Url',
 
   Parent = 'Parent',
   Children = 'Children',
@@ -45,6 +46,7 @@ export enum CatalogueCache {
 
 export enum CatalogueException {
   ContentIsNull = 'content is null',
+  FilesIsNull = 'files is null',
 }
 
 export const CatalogueCacheClear = Object.keys(CatalogueCache);

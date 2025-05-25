@@ -178,6 +178,7 @@ model Catalogue {
   updatedAt   DateTime      @updatedAt
   description String?
   content     String?       @db.Text
+  url         String?
   sort        Int           @default(0)
   parent      Catalogue?    @relation("children", fields: [pid], references: [id])
   children    Catalogue[]   @relation("children")

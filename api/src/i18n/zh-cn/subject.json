@@ -1,7 +1,7 @@
 {
-  "SubjectIdIsNotEmpty": "主体编码不能为空",
-  "NameIsNotEmpty": "主体名称不能为空",
-  "NameIsExist": "主体名称已经存在",
-  "CodeIsNotEmpty": "主体编码不能为空",
-  "CodeIsExist": "主体编码已经存在"
+  "SubjectIdIsNotEmpty": "资源分类编码不能为空",
+  "NameIsNotEmpty": "资源分类名称不能为空",
+  "NameIsExist": "资源分类名称已经存在",
+  "CodeIsNotEmpty": "资源分类编码不能为空",
+  "CodeIsExist": "资源分类编码已经存在"
 }

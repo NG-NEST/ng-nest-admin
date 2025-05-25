@@ -10,8 +10,8 @@ import Handlebars from 'handlebars';
 import { CatalogueException, CatalogueType } from './catalogue.enum';
 import { FastifyRequest } from 'fastify';
 import { UploadInput, UploadService } from '../upload';
-import { MultipartFile } from '@fastify/multipart';
 import { File } from '../file';
+import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
 
 @Injectable()
@@ -20,6 +20,10 @@ export class CatalogueService {
     private prisma: PrismaService,
     private uploadService: UploadService,
   ) {}
+
+  RESOURCE_FILE_TYPE = 'file-type';
+  RESOURCE_MEDIA_TYPE = 'media-type';
+  RESOURCE_TEXT_TYPE = 'text-type';
 
   async catalogues(
     input: CataloguePaginationInput,
@@ -82,6 +86,7 @@ export class CatalogueService {
   async folderUpload(req: FastifyRequest) {
     const body: UploadInput = { filepath: 'catalogue-folder' };
     const files: MultipartFile[] = [];
+
     let resourceId = '';
     for await (const part of req.parts()) {
       if (part.type === 'file') {
@@ -96,11 +101,24 @@ export class CatalogueService {
       }
     }
 
-    const results: any[] = [];
-
-    for (let file of files) {
-      results.push(await this.uploadService.uploadCosFastify(file, body));
+    if (files.length === 0) {
+      throw new BadRequestException({ message: CatalogueException.FilesIsNull });
     }
+
+    const { mediaTypes, textTypes } = await this.getFileTypes();
+
+    const results: any[] = await Promise.all(
+      files.map(async (file) => {
+        const ext = this.getFileExtension(file.filename);
+        if (mediaTypes.includes(ext)) {
+          return await this.uploadService.uploadCosFastify(file, body);
+        } else if (textTypes.includes(ext)) {
+          return await this.getFileText(file);
+        } else {
+          return await this.getFileText(file);
+        }
+      }),
+    );
 
     const data = this.convertToCatalogueTree(results, resourceId);
     const transaction: any[] = [];
@@ -126,7 +144,7 @@ export class CatalogueService {
     let sortCounter = 0;
 
     for (const file of files) {
-      const parts = file.name.split('/').slice(1);
+      const parts = decodeURIComponent(file.name).split('/').slice(1);
       let currentPath = '';
       let parentId: string | undefined = undefined;
 
@@ -154,12 +172,46 @@ export class CatalogueService {
       const fileNode = {
         id: v4(),
         name: parts[parts.length - 1],
+        content: file.content,
         type: CatalogueType.File,
         sort: sortCounter++,
+        url: file.url,
         resourceId,
         pid: parentId,
       };
       result.push(fileNode);
+    }
+
+    return result;
+  }
+
+  private getFileExtension(filename: string): string {
+    const lastDotIndex = filename.lastIndexOf('.');
+    return lastDotIndex === -1 ? '' : filename.slice(lastDotIndex);
+  }
+
+  private async getFileTypes() {
+    const fileTypes = await this.prisma.resource.findMany({
+      where: { pid: null, subject: { code: { equals: this.RESOURCE_FILE_TYPE } } },
+      include: { children: true },
+    });
+
+    const mediaFile = fileTypes.find((x) => x.code === this.RESOURCE_MEDIA_TYPE);
+    const textFile = fileTypes.find((x) => x.code === this.RESOURCE_TEXT_TYPE);
+
+    return {
+      mediaTypes: mediaFile?.children.map((x) => x.code),
+      textTypes: textFile?.children.map((x) => x.code),
+    };
+  }
+
+  private async getFileText(file: MultipartFile): Promise<File> {
+    const result: File = { name: file.filename };
+
+    try {
+      result.content = await file.toBuffer().then((x) => x.toString());
+    } catch (error) {
+      result.content = '';
     }
 
     return result;

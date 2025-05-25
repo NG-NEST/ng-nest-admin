@@ -40,6 +40,13 @@ export class CatalogueWhere {
   @IsOptional()
   content?: StringFilter;
 
+  @Field(() => BASE_STRING_FILTER, {
+    description: CatalogueDescription.Url,
+    nullable: true,
+  })
+  @IsOptional()
+  url?: StringFilter;
+
   @Field(() => BASE_STRING_FILTER, { description: CatalogueDescription.Pid, nullable: true })
   @IsOptional()
   pid?: StringFilter;

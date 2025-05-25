@@ -258,8 +258,8 @@ export class SubjectComponent {
       case 'delete':
         if (!subject) return;
         this.messageBox.confirm({
-          title: '删除主体',
-          content: `确认删除此主体吗？ [${subject.name}]`,
+          title: '删除资源分类',
+          content: `确认删除此资源分类吗？ [${subject.name}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

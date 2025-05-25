@@ -292,7 +292,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   getCategories() {
     return this.resource
       .resourceSelect({
-        where: { subject: { code: { equals: 'code-category' } } },
+        where: { subject: { code: { equals: 'code' } } },
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(

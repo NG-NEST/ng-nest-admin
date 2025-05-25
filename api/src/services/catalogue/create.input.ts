@@ -47,6 +47,10 @@ export class CatalogueCreateInput {
   @IsOptional()
   content?: string;
 
+  @Field({ description: CatalogueDescription.Url, nullable: true })
+  @IsOptional()
+  url?: string;
+
   @Field({ description: ResourceDescription.Id })
   @IsNotEmpty({
     message: I18N(`${CATALOGUE_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`),

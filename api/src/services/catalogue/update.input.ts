@@ -40,6 +40,10 @@ export class CatalogueUpdateInput {
   @IsOptional()
   content?: string;
 
+  @Field({ description: CatalogueDescription.Url, nullable: true })
+  @IsOptional()
+  url?: string;
+
   @Field(() => ID, { description: CatalogueDescription.Pid, nullable: true })
   @IsOptional()
   @IsNotExist('catalogue', {

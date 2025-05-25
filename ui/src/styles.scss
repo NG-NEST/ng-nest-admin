@@ -268,8 +268,15 @@ input {
   }
 }
 
-.app-help {
+.app-help-icon {
   font-size: 1rem;
+}
+
+.app-help-content {
+  .x-tooltip-portal > .x-tooltip-portal-inner {
+    min-width: 10rem;
+    max-width: 40rem;
+  }
 }
 
 x-empty,

@@ -9,10 +9,17 @@
     <div class="item">
       <label>
         节点类型
-        <x-icon class="app-help" x-tooltip [content]="contentTpl" type="fto-help-circle"></x-icon>
+        <x-icon
+          class="app-help-icon"
+          x-tooltip
+          [content]="contentTpl"
+          [panelClass]="'app-help-content'"
+          type="fto-help-circle"
+        ></x-icon>
         ：
         <ng-template #contentTpl>
-          <div class="app-help">文件夹类型可以添加子节点</div>
+          <p>文件夹类型可以添加子节点</p>
+          <p>根据文件后缀来指定文件类型</p>
         </ng-template>
       </label>
       <x-radio

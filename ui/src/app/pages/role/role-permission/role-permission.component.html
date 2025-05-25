@@ -3,12 +3,12 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item">
-      <label>主体：</label>
+      <label>资源分类：</label>
       <x-select
         formControlName="subjectId"
         (ngModelChange)="subjectChange()"
         [data]="subjects()"
-        placeholder="请选择一个主体"
+        placeholder="请选择一个资源分类"
         [clearable]="false"
       ></x-select>
     </div>

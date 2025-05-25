@@ -5,29 +5,32 @@ import { FileDescription, FileStatus } from './file.enum';
 @ObjectType()
 export class File extends BaseAudit {
   @Field(() => ID, { description: FileDescription.Id })
-  id: string;
+  id?: string;
 
   @Field({ description: FileDescription.Uid })
-  uid: string;
+  uid?: string;
 
   @Field({ description: FileDescription.Name })
-  name: string;
+  name?: string;
+
+  @Field({ description: FileDescription.Content })
+  content?: string;
 
   @Field({ description: FileDescription.Actualname })
-  actualname: string;
+  actualname?: string;
 
   @Field({ description: FileDescription.Status })
-  status: FileStatus;
+  status?: FileStatus;
 
   @Field({ description: FileDescription.Size })
-  size: number;
+  size?: number;
 
   @Field({ description: FileDescription.Mimetype })
-  mimetype: string;
+  mimetype?: string;
 
   @Field({ description: FileDescription.Mimetype })
-  key: string;
+  key?: string;
 
   @Field({ description: FileDescription.Mimetype })
-  url: string;
+  url?: string;
 }
