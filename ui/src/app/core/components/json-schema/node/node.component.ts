@@ -25,6 +25,7 @@ import { XJsonSchemaType, XJsonSchemaTypes, XTreeData } from '../json-schema.typ
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { AppSettingComponent } from '../setting/setting.component';
 import { XTooltipDirective } from '@ng-nest/ui/tooltip';
+import { AppJsonSchemaComponent } from '../json-schema.component';
 
 @Component({
   selector: 'app-node',
@@ -49,6 +50,7 @@ export class AppNodeComponent implements OnInit, OnDestroy {
   level = input.required<number>();
   dialog = inject(XDialogService);
   cdr = inject(ChangeDetectorRef);
+  schema = inject(AppJsonSchemaComponent);
   cdkTree = computed(() => this.tree().tree());
   descriptionCtl = viewChild<XTextareaComponent>('descriptionCtl');
   typeList = XJsonSchemaTypes;
@@ -139,6 +141,15 @@ export class AppNodeComponent implements OnInit, OnDestroy {
         nodeChange: this.nodeChange
       }
     });
+  }
+
+  onDragstart(_event: DragEvent, node: XTreeData) {
+    this.schema.dragNode.set(node);
+    this.schema.dragging.set(true);
+  }
+
+  onDragend() {
+    console.log('end');
   }
 
   deleteConfirm() {

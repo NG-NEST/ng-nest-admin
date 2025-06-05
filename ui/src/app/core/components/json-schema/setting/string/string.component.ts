@@ -99,7 +99,7 @@ export class StringComponent implements OnInit {
 
   onIsEnumChange(value: boolean) {
     if (value) {
-      this.form.patchValue({ isConst: false, const: null });
+      this.form.patchValue({ isConst: false, const: undefined });
     } else {
       this.enumFormArray.clear();
       this.enumFormArray.push(this.fb.group({ value: null, description: null }));
@@ -112,7 +112,7 @@ export class StringComponent implements OnInit {
       this.enumFormArray.push(this.fb.group({ value: null, description: null }));
       this.form.patchValue({ isEnum: false });
     } else {
-      this.form.patchValue({ const: null });
+      this.form.patchValue({ const: undefined });
     }
   }
 

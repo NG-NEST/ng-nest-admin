@@ -1,6 +1,11 @@
 <form [formGroup]="form()">
   <div class="row">
     <div class="left">
+      @if (node().name !== '$root') {
+        <div class="order" draggable="true" (dragstart)="onDragstart($event, node())" (dragend)="onDragend()">
+          <x-icon type="fto-grid"></x-icon>
+        </div>
+      }
       @if (node().name !== '$root' && !node().isArray) {
         <input
           class="input"

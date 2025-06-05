@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { XTreeData } from './json-schema.type';
+import { isArray, isObject } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class AppJsonSchemaService {
@@ -21,8 +22,10 @@ export class AppJsonSchemaService {
       ...other
     } = node;
 
-    if (isEnum) {
-      delete other.enums;
+    for (let key in other) {
+      if (isObject(other[key]) || isArray(other[key])) {
+        delete other[key];
+      }
     }
 
     const group = this.fb.group<XTreeData>({

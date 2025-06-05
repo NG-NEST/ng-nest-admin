@@ -186,7 +186,21 @@
       cursor: default;
     }
   }
+  .order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    margin-left: -1.875rem;
+    height: 1.875rem;
+    width: 1.875rem;
+    font-size: 1.125rem;
+    cursor: grab;
+  }
   &:hover {
+    .order {
+      display: flex;
+    }
     .operation {
       a {
         display: flex;

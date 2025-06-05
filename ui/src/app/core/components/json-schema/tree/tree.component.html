@@ -9,7 +9,12 @@
     cdkTreeNodePadding
     [style.display]="shouldRender(node) ? 'flex' : 'none'"
     class="node"
+    [class.dragging]="node.id === schema.dragNode()?.id"
     [title]="node.id"
+    (dragover)="onDragover($event)"
+    (dragenter)="onDragenter($event, node)"
+    (dragleave)="onDragleave($event)"
+    (drop)="onDrop($event)"
   >
     @if (node.children && node.children.length > 0) {
       @if (tree.isExpanded(node)) {

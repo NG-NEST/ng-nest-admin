@@ -2,6 +2,13 @@
   .node {
     display: flex;
     align-items: flex-start;
+    border-top: var(--x-border-width) var(--x-border-style) transparent;
+    border-left: var(--x-border-width) var(--x-border-style) transparent;
+    border-right: var(--x-border-width) var(--x-border-style) transparent;
+    border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+    &.dragging {
+      border: var(--x-border-width) dashed var(--x-primary);
+    }
   }
   .icon {
     display: flex;

@@ -1,8 +1,8 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   isDevMode,
-  provideExperimentalZonelessChangeDetection
+  provideAppInitializer,
+  provideZonelessChangeDetection
 } from '@angular/core';
 import {
   provideRouter,
@@ -26,7 +26,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideHttpClient(withFetch(), withInterceptors([AppNoopInterceptor])),
     provideRouter(
       LayoutRoutes,
@@ -39,11 +39,7 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: AppInitializer,
-      multi: true
-    },
+    provideAppInitializer(AppInitializer),
     {
       provide: APOLLO_OPTIONS,
       useFactory: CreateApollo,

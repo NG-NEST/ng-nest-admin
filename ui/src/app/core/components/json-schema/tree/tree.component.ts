@@ -19,6 +19,7 @@ import { AppJsonSchemaComponent } from '../json-schema.component';
 import { AppJsonSchemaService } from '../json-schema.service';
 import { XTreeData } from '../json-schema.type';
 import { XIsChange } from '@ng-nest/ui/core';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 function flattenNodes(nodes: XTreeData[]): XTreeData[] {
   const flattenedNodes = [];
@@ -69,6 +70,46 @@ export class AppTreeComponent implements AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     const { data } = changes;
     XIsChange(data) && this.treeExtendLevel(this.extendLevel());
+  }
+
+  onDrop(_event: DragEvent) {
+    // // 获取JSON数据
+    // let jsonData = event.dataTransfer?.getData('application/json');
+    // if (!jsonData) {
+    //   // 回退到文本格式
+    //   jsonData = event.dataTransfer?.getData('text/plain');
+    // }
+    // // 解析JSON数据
+    // const data = JSON.parse(jsonData!);
+    // console.log(data);
+
+    console.log('drop');
+  }
+
+  onDragover(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDragenter(event: DragEvent, node: XTreeData) {
+    event.preventDefault();
+    const ele = event.target as HTMLElement;
+    if (ele.tagName !== 'CDK-TREE-NODE') return;
+    const dragNode = this.schema.dragNode();
+    if (!dragNode) return;
+    if (node.id === dragNode.id) return;
+    const dragParentNode = this.getParentNode(dragNode);
+    const enterParentNode = this.getParentNode(node);
+    if (!dragParentNode || !enterParentNode || dragParentNode?.id !== enterParentNode?.id) return;
+    moveItemInArray(
+      dragParentNode.children!,
+      dragParentNode.children!.findIndex((x) => x.id === dragNode.id),
+      dragParentNode.children!.findIndex((x) => x.id === node.id)
+    );
+    this.dataChanged.update((x) => !x);
+  }
+
+  onDragleave(event: DragEvent) {
+    event.preventDefault();
   }
 
   getParentNode(node: XTreeData) {
