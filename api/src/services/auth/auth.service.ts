@@ -101,6 +101,7 @@ export class AuthService {
 
   async getUserById(id: string, select: BaseSelect) {
     const user = await this.prisma.user.findUnique({ where: { id }, ...select });
+    // console.log(user, select);
     // const permisions = await this.prisma.user.findUnique({
     //   where: { id },
     //   select: {
@@ -238,7 +239,7 @@ export class AuthService {
       },
     });
     const permissions = [
-      ...new Set(rolePermissions.map((permission) => permission.permission.code)),
+      ...Array.from(new Set(rolePermissions.map((permission) => permission.permission.code))),
     ];
     const roles = findUser.roles.map((role) => role.roleId);
     return { permissions, roles };

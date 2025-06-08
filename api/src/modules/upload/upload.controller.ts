@@ -9,7 +9,6 @@ export class UploadController {
   @Post()
   @FileControl('file')
   async upload(@UploadedFile() file: Express.Multer.File, @Body() body: UploadInput): Promise<any> {
-    console.log(file, body);
-    return this.uploadService.uploadCosExpress(file, body);
+    return this.uploadService.cosExpress(file, body);
   }
 }

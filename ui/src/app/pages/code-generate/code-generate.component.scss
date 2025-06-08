@@ -18,7 +18,7 @@
         display: flex;
         align-items: center;
       }
-      x-buttons {
+      x-dropdown {
         margin-left: 0.5rem;
       }
       x-tree-select {
@@ -26,7 +26,8 @@
       }
     }
     .catalogue {
-      height: calc(100vh - 8.5rem);
+      margin-top: 1rem;
+      height: calc(100vh - 9.5rem);
       overflow: auto;
     }
   }

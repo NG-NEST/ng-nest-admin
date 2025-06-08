@@ -138,4 +138,8 @@ export class CatalogueService {
       .post(`/api/catalogue/folder-upload`, body, { responseType: 'arraybuffer' })
       .pipe(map(() => CatalogueMessage.FolderUploadSuccess));
   }
+
+  categoryPreview(resourceId: string): Observable<Catalogue[]> {
+    return this.http.get<Catalogue[]>(`/api/catalogue/category-preview/${resourceId}`);
+  }
 }

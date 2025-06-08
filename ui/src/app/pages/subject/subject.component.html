@@ -25,7 +25,7 @@
       <div class="name-header">
         <span>{{ column.label }}</span>
         <x-button
-          [app-auth]="'subject-add'"
+          [app-auth]="'subject-create'"
           type="primary"
           icon="fto-plus"
           attrType="button"
@@ -41,7 +41,7 @@
         </div>
         <div class="operate">
           <x-link
-            [app-auth]="'subject-edit'"
+            [app-auth]="'subject-update'"
             type="primary"
             (click)="action('edit', row); $event.stopPropagation()"
             >修改</x-link
@@ -93,7 +93,7 @@
             >
           </div>
           <x-button
-            [app-auth]="'resource-add'"
+            [app-auth]="'resource-create'"
             type="primary"
             icon="fto-plus"
             attrType="button"
@@ -129,7 +129,7 @@
             (click)="resourceAction('permission', row)"
             >许可</x-link
           >
-          <x-link [app-auth]="'resource-edit'" type="primary" (click)="resourceAction('edit', row)"
+          <x-link [app-auth]="'resource-update'" type="primary" (click)="resourceAction('edit', row)"
             >修改</x-link
           >
           <x-link

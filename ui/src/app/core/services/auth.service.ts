@@ -132,7 +132,7 @@ export class AppAuthService {
   }
 
   logout() {
-    return of(true).pipe(
+    return this.auth.logout().pipe(
       finalize(() => {
         this.clear();
         this.toLoginPage();

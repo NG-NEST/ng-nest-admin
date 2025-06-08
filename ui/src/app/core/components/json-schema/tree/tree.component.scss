@@ -6,8 +6,12 @@
     border-left: var(--x-border-width) var(--x-border-style) transparent;
     border-right: var(--x-border-width) var(--x-border-style) transparent;
     border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
-    &.dragging {
+    &.drag-node {
+      opacity: 0.5;
       border: var(--x-border-width) dashed var(--x-primary);
+    }
+    &.object-children {
+      margin-right: 1.875rem;
     }
   }
   .icon {
@@ -15,7 +19,7 @@
     align-items: center;
     justify-content: center;
     line-height: 1.25rem;
-    margin: 0.125rem 0.125rem 0 0.125rem;
+    margin: 0.1875rem 1.875rem 0.1875rem 0.1875rem;
     padding: 0.125rem 0.25rem;
     border-radius: 0.125rem;
     color: rgba(0, 0, 0, 0.5);
@@ -29,6 +33,9 @@
     }
     &.visibility {
       visibility: hidden;
+    }
+    &.root {
+      margin: 0.1875rem;
     }
   }
 }

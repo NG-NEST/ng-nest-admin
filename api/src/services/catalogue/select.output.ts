@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Catalogue } from './catalogue.model';
-import { CatalogueDescription } from './catalogue.enum';
+import { CatalogueDescription, CatalogueFileType } from './catalogue.enum';
 import { BaseAudit } from '@api/core';
 import { IsOptional } from 'class-validator';
 import { CatalogueType } from '@prisma/client';
@@ -27,6 +27,9 @@ export class CatalogueSelectOutput extends BaseAudit {
 
   @Field(() => String, { description: CatalogueDescription.Type })
   type: CatalogueType;
+
+  @Field(() => String, { description: CatalogueDescription.FileType })
+  fileType?: CatalogueFileType;
 
   @Field({ description: CatalogueDescription.Sort })
   sort: number;

@@ -55,8 +55,8 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
     return this.form.get('permissions') as FormGroup;
   }
 
-  hasRolePermissionEdit = computed(() => {
-    return this.auth.hasPermission('role-permission-edit');
+  hasRolePermissionUpdate = computed(() => {
+    return this.auth.hasPermission('role-permission-update');
   });
 
   rolePermisions = signal<Permission[]>([]);
@@ -148,7 +148,7 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
               new FormControl(resourcePermissions.map((y) => y.id))
             );
           }
-          if (!this.hasRolePermissionEdit()) {
+          if (!this.hasRolePermissionUpdate()) {
             this.permissions.disable();
           }
           this.resources.set(

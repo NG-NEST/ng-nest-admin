@@ -45,9 +45,9 @@ export class AppJsonSchemaComponent implements OnInit, OnDestroy {
   treeData = signal<XTreeData[]>([]);
 
   loading = signal(false);
-
   dragging = signal(false);
   dragNode = signal<XTreeData | null>(null);
+  hoverNode = signal<XTreeData | null>(null);
 
   form = this.fb.group({
     tree: this.fb.array([])

@@ -14,6 +14,7 @@
   .left {
     display: flex;
     align-items: center;
+    position: relative;
   }
   .right {
     display: flex;
@@ -195,12 +196,13 @@
     height: 1.875rem;
     width: 1.875rem;
     font-size: 1.125rem;
+    color: rgba(0, 0, 0, 0.5);
     cursor: grab;
+    &:hover {
+      color: rgba(0, 0, 0, 0.9);
+    }
   }
   &:hover {
-    .order {
-      display: flex;
-    }
     .operation {
       a {
         display: flex;

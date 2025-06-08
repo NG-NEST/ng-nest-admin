@@ -3,24 +3,35 @@
   [dataSource]="dataSource()"
   [childrenAccessor]="childrenAccessor"
   [trackBy]="treeTrackBy"
+  [class.dragging]="schema.dragging()"
 >
   <cdk-tree-node
     *cdkTreeNodeDef="let node; let level = level"
     cdkTreeNodePadding
-    [style.display]="shouldRender(node) ? 'flex' : 'none'"
+    [cdkTreeNodePaddingIndent]="20"
     class="node"
-    [class.dragging]="node.id === schema.dragNode()?.id"
+    [style.display]="shouldRender(node) ? 'flex' : 'none'"
+    [class.drag-node]="schema.dragging() && node.id === schema.dragNode()?.id"
     [title]="node.id"
     (dragover)="onDragover($event)"
     (dragenter)="onDragenter($event, node)"
     (dragleave)="onDragleave($event)"
-    (drop)="onDrop($event)"
   >
     @if (node.children && node.children.length > 0) {
       @if (tree.isExpanded(node)) {
-        <x-icon class="icon" [type]="'fto-chevron-down'" cdkTreeNodeToggle></x-icon>
+        <x-icon
+          class="icon"
+          [class.root]="node.name === '$root'"
+          [type]="'fto-chevron-down'"
+          cdkTreeNodeToggle
+        ></x-icon>
       } @else {
-        <x-icon class="icon" [type]="'fto-chevron-right'" cdkTreeNodeToggle></x-icon>
+        <x-icon
+          class="icon"
+          [class.root]="node.name === '$root'"
+          [type]="'fto-chevron-right'"
+          cdkTreeNodeToggle
+        ></x-icon>
       }
     } @else {
       @if (tree.isExpanded(node)) {

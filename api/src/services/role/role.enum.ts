@@ -5,7 +5,7 @@ export enum RoleAuth {
   RoleCreate = 'role-create',
   RoleUpdate = 'role-update',
   RoleDelete = 'role-delete',
-  RolePermissions = 'role-permisions',
+  RolePermissionUpdate = 'role-permission-update',
 }
 
 export enum RoleDescription {

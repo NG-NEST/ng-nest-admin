@@ -2,7 +2,12 @@
   <div class="row">
     <div class="left">
       @if (node().name !== '$root') {
-        <div class="order" draggable="true" (dragstart)="onDragstart($event, node())" (dragend)="onDragend()">
+        <div
+          class="order"
+          draggable="true"
+          (dragstart)="onDragstart($event, node())"
+          (dragend)="onDragend()"
+        >
           <x-icon type="fto-grid"></x-icon>
         </div>
       }
@@ -11,14 +16,14 @@
           class="input"
           formControlName="name"
           appAdjustWidth
-          [minWidth]="200 - level() * 40"
-          [maxWidth]="200 - level() * 40 - 10"
+          [minWidth]="200 - level() * 20"
+          [maxWidth]="200 - level() * 20 - 10"
           [defaultValue]="node().name!"
           placeholder="字段名"
         />
       }
       @if (node().isArray) {
-        <div class="items" [style.width.px]="200 - level() * 40">
+        <div class="items" [style.width.px]="200 - level() * 20">
           <span class="label">ITEMS</span>
         </div>
       }

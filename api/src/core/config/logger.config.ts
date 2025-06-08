@@ -47,7 +47,7 @@ const dailyFormat = {
     winston.format.ms(),
     winston.format.splat(),
     winston.format.printf((info) => {
-      LOGGER_CONSOLE.info(info.message, info);
+      LOGGER_CONSOLE.info(info.message as string, info);
       return JSON.stringify(info);
     }),
   ),
@@ -63,7 +63,7 @@ const consoleFormat = {
       LOGS_SUBJECT.next(info);
       if (timestamp) {
         try {
-          if (timestamp === new Date(timestamp).toISOString()) {
+          if (timestamp === new Date(timestamp as number).toISOString()) {
             timestamp = new Date(timestamp).toLocaleString();
           }
         } catch (error) {}
@@ -76,8 +76,8 @@ const consoleFormat = {
         ` ${yellow(`${level.toUpperCase().padEnd(8)}`)}` +
         (timestamp ? ` ${timestamp}` : '') +
         (context ? ` ${yellow(`[${context}]`)}` : '') +
-        ` ${color(message)}` +
-        (ms ? ` ${yellow(ms)}` : '');
+        ` ${color(message as string)}` +
+        (ms ? ` ${yellow(ms as string)}` : '');
 
       return res;
     }),

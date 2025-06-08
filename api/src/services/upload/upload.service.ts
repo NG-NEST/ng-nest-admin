@@ -5,7 +5,8 @@ import { UploadInput } from './upload.input';
 import { PutObjectResult } from 'cos-nodejs-sdk-v5';
 import { FileService, FileStatus, File } from '../file';
 import { MultipartFile } from '@fastify/multipart';
-import { basename } from 'path';
+import { basename, join } from 'path';
+import { promises as fs } from 'fs';
 
 @Injectable()
 export class UploadService {
@@ -14,7 +15,7 @@ export class UploadService {
     private readonly file: FileService,
   ) {}
 
-  async uploadCosExpress(file: Express.Multer.File, body: UploadInput) {
+  async cosExpress(file: Express.Multer.File, body: UploadInput) {
     let { filepath, actualname, uid } = body;
     let { size, mimetype, originalname } = file;
     if (!uid) uid = v4();
@@ -50,7 +51,7 @@ export class UploadService {
     });
   }
 
-  async uploadCosFastify(file: MultipartFile, body: UploadInput): Promise<File> {
+  async cosFastify(file: MultipartFile, body: UploadInput): Promise<File> {
     let { filepath, actualname, uid } = body;
     let { mimetype, filename } = file;
     let buffer = await file.toBuffer();
@@ -99,5 +100,46 @@ export class UploadService {
       //     throw new BadRequestException(e);
       //   });
     });
+  }
+
+  async localFastify(file: MultipartFile, body: UploadInput, hostUrl?: string): Promise<File> {
+    let { filepath, actualname, uid } = body;
+    let { filename, mimetype } = file;
+    const buffer = await file.toBuffer();
+    const size = buffer.length;
+
+    if (!uid) uid = v4();
+
+    const name = decodeURIComponent(filename);
+    const key = `${filepath}/${uid}/${name}`;
+
+    if (!actualname) actualname = basename(name);
+
+    // 确保目标目录存在
+    const targetDir = join(__dirname, '../../../assets', filepath, uid);
+    await fs.mkdir(targetDir, { recursive: true });
+
+    // 写入文件到本地
+    const fullPath = join(targetDir, name);
+    await fs.writeFile(fullPath, buffer);
+
+    // 获取当前请求的协议和主机地址
+    const url = `${hostUrl}/assets/${filepath}/${uid}/${name}`;
+
+    const upload = {
+      id: v4(),
+      size,
+      name,
+      actualname,
+      status: FileStatus.Completed,
+      mimetype,
+      key,
+      uid,
+      url,
+    };
+
+    const result = await this.file.create(upload);
+
+    return result as File;
   }
 }

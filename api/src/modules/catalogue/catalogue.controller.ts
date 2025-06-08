@@ -37,12 +37,24 @@ export class CatalogueController {
 
   @Get('content/:id')
   @Authorization(CatalogueAuth.CatalogueContent)
-  @CacheClear(...CatalogueCacheClear)
   async content(@Param('id') id: string) {
     return await this.catalogueService.content(id);
   }
 
+  @Get('preview/:id')
+  @Authorization(CatalogueAuth.CataloguePreview)
+  async preview(@Param('id') id: string) {
+    return await this.catalogueService.preview(id);
+  }
+
+  @Get('category-preview/:resourceId')
+  @Authorization(CatalogueAuth.CatalogueCategoryPreview)
+  async categoryPreview(@Param('resourceId') resourceId: string) {
+    return await this.catalogueService.categoryPreview(resourceId);
+  }
+
   @Post('folder-upload')
+  @Authorization(CatalogueAuth.CatalogueFolderUpload)
   @CacheClear(...CatalogueCacheClear)
   async folderUpload(@Req() req: FastifyRequest): Promise<any> {
     return await this.catalogueService.folderUpload(req);

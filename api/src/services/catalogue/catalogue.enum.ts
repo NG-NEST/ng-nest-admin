@@ -6,6 +6,9 @@ export enum CatalogueAuth {
   CatalogueUpdate = 'catalogue-update',
   CatalogueDelete = 'catalogue-delete',
   CatalogueContent = 'catalogue-content',
+  CataloguePreview = 'catalogue-preview',
+  CatalogueCategoryPreview = 'catalogue-category-preview',
+  CatalogueFolderUpload = 'catalogue-folder-upload',
 }
 
 export enum CatalogueDescription {
@@ -15,6 +18,7 @@ export enum CatalogueDescription {
   Pid = 'Pid',
   Name = 'Name',
   Type = 'Type',
+  FileType = 'FileType',
   Sort = 'Sort',
   Description = 'Description',
   Content = 'Content',
@@ -38,6 +42,12 @@ export enum CatalogueType {
   File = 'File',
 }
 
+export enum CatalogueFileType {
+  Text = 'Text',
+  Media = 'Media',
+  UnKnown = 'UnKnown',
+}
+
 export enum CatalogueCache {
   Catalogue = 'Catalogue',
   Catalogues = 'Catalogues',
@@ -47,6 +57,7 @@ export enum CatalogueCache {
 export enum CatalogueException {
   ContentIsNull = 'content is null',
   FilesIsNull = 'files is null',
+  NoCategorySelected = 'no category selected',
 }
 
 export const CatalogueCacheClear = Object.keys(CatalogueCache);

@@ -49,8 +49,8 @@ export class PermissionListComponent implements OnInit, OnDestroy {
     return !this.formLoading() && this.list.length === 0;
   }
 
-  hasPermissionEdit = computed(() => {
-    return this.auth.hasPermission('permission-edit');
+  hasPermissionSaveMany = computed(() => {
+    return this.auth.hasPermission('permission-save-many');
   });
 
   $destroy = new Subject<void>();
@@ -121,7 +121,7 @@ export class PermissionListComponent implements OnInit, OnDestroy {
         for (let permission of x) {
           this.add(permission);
         }
-        if (!this.hasPermissionEdit()) {
+        if (!this.hasPermissionSaveMany()) {
           this.list.disable();
         }
         this.form.patchValue({ list: x });

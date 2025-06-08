@@ -6,24 +6,26 @@ import { CatalogueUpdateInput } from './update.input';
 import { CatalogueCreateInput } from './create.input';
 import { CatalogueSelectInput } from './select.input';
 import { CataloguePaginationOutput } from './catalogue.output';
-import Handlebars from 'handlebars';
-import { CatalogueException, CatalogueType } from './catalogue.enum';
+
+import { CatalogueException, CatalogueFileType, CatalogueType } from './catalogue.enum';
 import { FastifyRequest } from 'fastify';
 import { UploadInput, UploadService } from '../upload';
 import { File } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
+import { TemplateService } from '@api/core';
 
 @Injectable()
 export class CatalogueService {
   constructor(
     private prisma: PrismaService,
     private uploadService: UploadService,
+    private templateService: TemplateService,
   ) {}
 
   RESOURCE_FILE_TYPE = 'file-type';
-  RESOURCE_MEDIA_TYPE = 'media-type';
-  RESOURCE_TEXT_TYPE = 'text-type';
+  RESOURCE_MEDIA_TYPE = 'media';
+  RESOURCE_TEXT_TYPE = 'text';
 
   async catalogues(
     input: CataloguePaginationInput,
@@ -53,14 +55,27 @@ export class CatalogueService {
   }
 
   async create(input: CatalogueCreateInput) {
-    const { resourceId, pid, ...other } = input;
-    const data = { ...other, resource: { connect: { id: resourceId } }, parent: {} };
+    let { resourceId, pid, fileType, ...other } = input;
+    if (!fileType) {
+      fileType = await this.fileType(input.name);
+    }
+    const data = { ...other, fileType, resource: { connect: { id: resourceId } }, parent: {} };
     if (pid) {
       data.parent = { connect: { id: pid } };
     }
     return await this.prisma.catalogue.create({
       data,
     });
+  }
+
+  private async fileType(name: string) {
+    const ext = this.getFileExtension(name);
+    let fileType: CatalogueFileType = CatalogueFileType.UnKnown;
+    if (ext) {
+      const fileTypes = await this.getFileTypes();
+      fileType = this.toPascalCase(this.getFileType(ext, fileTypes)) as CatalogueFileType;
+    }
+    return fileType;
   }
 
   async delete(id: string) {
@@ -78,44 +93,82 @@ export class CatalogueService {
     if (catalogue.content === null) {
       throw new BadRequestException({ message: CatalogueException.ContentIsNull });
     }
-    const template = Handlebars.compile(catalogue.content);
-    const ctx = template({ title: 'xxxx' });
-    return ctx;
+
+    return this.templateService.generate(catalogue.content, { title: 'xxx' });
+  }
+
+  async preview(id: string) {
+    const catalogue = await this.prisma.catalogue.findUnique({
+      where: { id },
+    });
+
+    return catalogue;
+  }
+
+  async categoryPreview(resourceId: string) {
+    const catalogues = await this.prisma.catalogue.findMany({
+      where: { resourceId },
+    });
+    for (let catalogue of catalogues) {
+      const { content } = catalogue;
+      if (!content) break;
+
+      catalogue.content = this.templateService.generate(content, {});
+    }
+
+    return catalogues;
   }
 
   async folderUpload(req: FastifyRequest) {
     const body: UploadInput = { filepath: 'catalogue-folder' };
-    const files: MultipartFile[] = [];
+    const files: any[] = [];
+    const hostUrl = `${req.protocol}://${req.headers.host}`;
+
+    const parts = req.parts();
 
     let resourceId = '';
-    for await (const part of req.parts()) {
-      if (part.type === 'file') {
-        files.push(part);
+
+    let part;
+    while ((part = await parts.next())) {
+      if (part.done) break;
+
+      console.log(part.value.fieldname);
+
+      if (part.value.type === 'file') {
+        files.push(part.value);
       } else {
-        if (part.fieldname === 'filepath') {
-          body.filepath = part.value as string;
+        const value = await part.value.value; // 获取字段值
+        if (part.value.fieldname === 'filepath') {
+          body.filepath = value as string;
         }
-        if (part.fieldname === 'resourceId') {
-          resourceId = part.value as string;
+        if (part.value.fieldname === 'resourceId') {
+          resourceId = value as string;
         }
       }
+
+      console.log(files, body, resourceId);
+    }
+
+    console.log(222);
+
+    if (!resourceId) {
+      throw new BadRequestException({ message: CatalogueException.NoCategorySelected });
     }
 
     if (files.length === 0) {
       throw new BadRequestException({ message: CatalogueException.FilesIsNull });
     }
 
-    const { mediaTypes, textTypes } = await this.getFileTypes();
+    const fileTypes = await this.getFileTypes();
+    const { text } = fileTypes;
 
     const results: any[] = await Promise.all(
       files.map(async (file) => {
         const ext = this.getFileExtension(file.filename);
-        if (mediaTypes.includes(ext)) {
-          return await this.uploadService.uploadCosFastify(file, body);
-        } else if (textTypes.includes(ext)) {
+        if (text.includes(ext)) {
           return await this.getFileText(file);
         } else {
-          return await this.getFileText(file);
+          return await this.uploadService.localFastify(file, body, hostUrl);
         }
       }),
     );
@@ -196,13 +249,12 @@ export class CatalogueService {
       include: { children: true },
     });
 
-    const mediaFile = fileTypes.find((x) => x.code === this.RESOURCE_MEDIA_TYPE);
-    const textFile = fileTypes.find((x) => x.code === this.RESOURCE_TEXT_TYPE);
+    const result: { [fileType: string]: string[] } = {};
+    for (let item of fileTypes) {
+      result[item.code] = item.children.map((x) => x.code);
+    }
 
-    return {
-      mediaTypes: mediaFile?.children.map((x) => x.code),
-      textTypes: textFile?.children.map((x) => x.code),
-    };
+    return result;
   }
 
   private async getFileText(file: MultipartFile): Promise<File> {
@@ -215,5 +267,21 @@ export class CatalogueService {
     }
 
     return result;
+  }
+
+  private getFileType(ext: string, fileTypes: Record<string, string[]>): string | null {
+    for (const type in fileTypes) {
+      if (fileTypes[type].includes(ext)) {
+        return type;
+      }
+    }
+    return null;
+  }
+
+  private toPascalCase(str: string): string {
+    return str
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('');
   }
 }

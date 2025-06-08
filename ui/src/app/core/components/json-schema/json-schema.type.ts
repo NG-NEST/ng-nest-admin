@@ -374,7 +374,6 @@ export interface XTreeData {
   minLength?: number;
   maxLength?: number;
   default?: XJsonSchemaValue;
-  enums?: XJsonSchemaEnum[];
   pattern?: string;
   examples?: XJsonSchemaValue[];
   minimum?: number;
@@ -396,6 +395,9 @@ export interface XTreeData {
   isEnum?: boolean;
   isNumber?: boolean;
   isNullable?: boolean;
+
+  enums?: XJsonSchemaEnum[];
+  orders?: string[];
 
   [key: string]: any;
 }

@@ -5,7 +5,7 @@
     <div class="tools">
       <x-button
         icon="fto-plus"
-        [app-auth]="'permission-edit'"
+        [app-auth]="'permission-save-many'"
         attrType="button"
         flat
         plain
@@ -18,8 +18,8 @@
         <thead>
           <tr>
             <th>序号</th>
-            <th width="120">许可名称</th>
-            <th>编码</th>
+            <th width="160">许可名称</th>
+            <th width="200">编码</th>
             <th>排序</th>
             <th>描述</th>
             <th>操作</th>
@@ -43,7 +43,7 @@
                   attrType="button"
                   flat
                   plain
-                  [disabled]="!hasPermissionEdit()"
+                  [disabled]="!hasPermissionSaveMany()"
                   (click)="remove($index)"
                 >
                   删除
@@ -68,7 +68,7 @@
       type="primary"
       attrType="submit"
       [loading]="saveLoading()"
-      [disabled]="!form.valid || !hasPermissionEdit()"
+      [disabled]="!form.valid || !hasPermissionSaveMany()"
       >保存</x-button
     >
   </div>

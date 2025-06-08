@@ -149,7 +149,8 @@ export class AppNodeComponent implements OnInit, OnDestroy {
   }
 
   onDragend() {
-    console.log('end');
+    this.schema.dragNode.set(null);
+    this.schema.dragging.set(false);
   }
 
   deleteConfirm() {

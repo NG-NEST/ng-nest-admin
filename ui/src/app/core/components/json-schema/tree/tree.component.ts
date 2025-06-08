@@ -72,18 +72,9 @@ export class AppTreeComponent implements AfterViewInit {
     XIsChange(data) && this.treeExtendLevel(this.extendLevel());
   }
 
-  onDrop(_event: DragEvent) {
-    // // 获取JSON数据
-    // let jsonData = event.dataTransfer?.getData('application/json');
-    // if (!jsonData) {
-    //   // 回退到文本格式
-    //   jsonData = event.dataTransfer?.getData('text/plain');
-    // }
-    // // 解析JSON数据
-    // const data = JSON.parse(jsonData!);
-    // console.log(data);
-
-    console.log('drop');
+  onHover(node: XTreeData, toggle: boolean) {
+    if (toggle) this.schema.hoverNode.set(node);
+    else this.schema.hoverNode.set(null);
   }
 
   onDragover(event: DragEvent) {

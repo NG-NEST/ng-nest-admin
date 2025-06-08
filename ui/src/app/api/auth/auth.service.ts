@@ -54,6 +54,10 @@ export class AuthService {
     return this.http.post<Auth>('/api/auth/login', input, { headers });
   }
 
+  logout() {
+    return this.http.post('/api/auth/logout', {});
+  }
+
   refreshToken(input: RefreshTokenInput) {
     return this.http.post<Auth>('/api/auth/refresh-token', input);
   }

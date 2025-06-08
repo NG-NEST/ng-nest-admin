@@ -335,7 +335,7 @@ export class SubjectComponent {
       case 'permission':
         if (!resource) return;
         this.dialog.create(PermissionListComponent, {
-          width: '800px',
+          width: '900px',
           backdropClose: false,
           data: {
             id: resource.id,

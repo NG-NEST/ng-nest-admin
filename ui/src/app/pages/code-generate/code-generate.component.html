@@ -9,36 +9,11 @@
           [expandedLevel]="3"
           showPath
         ></x-tree-select>
-        <x-buttons boxShadow="false">
-          <x-button
-            x-tooltip
-            [content]="'添加根节点'"
-            icon="fto-plus"
-            [disabled]="!form.value.category"
-            type="primary"
-            (click)="action($event, 'add-root')"
-            flat
-          ></x-button>
-          <x-button
-            x-tooltip
-            [content]="'文件夹上传'"
-            icon="fto-upload"
-            [disabled]="!form.value.category"
-            type="primary"
-            (click)="action($event, 'folder-upload')"
-            flat
-          ></x-button>
-          <input #folderInput type="file" [style.display]="'none'" webkitdirectory multiple />
-          <x-button
-            x-tooltip
-            [content]="'设置环境变量'"
-            icon="fto-settings"
-            [disabled]="!form.value.category"
-            type="primary"
-            (click)="action($event, 'set-env')"
-            flat
-          ></x-button>
-        </x-buttons>
+        <x-dropdown [data]="dropdownMenu()" (nodeClick)="onDropdownClick($event)" >
+          <x-button icon="fto-more-horizontal" type="primary" flat></x-button>
+        </x-dropdown>
+
+        <input #folderInput type="file" [style.display]="'none'" webkitdirectory multiple />
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">

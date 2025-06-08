@@ -21,7 +21,7 @@
           >
         </div>
         <x-button
-          [app-auth]="'user-add'"
+          [app-auth]="'user-create'"
           type="primary"
           icon="fto-plus"
           attrType="button"
@@ -53,7 +53,7 @@
     ></x-table>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
-        <x-link [app-auth]="'user-edit'" type="primary" (click)="action('edit', row)">修改</x-link>
+        <x-link [app-auth]="'user-update'" type="primary" (click)="action('edit', row)">修改</x-link>
         <x-link [app-auth]="'user-reset-password'"  type="primary" (click)="action('reset-password', row)">重置密码</x-link>
         <x-link [app-auth]="'user-delete'"  type="danger" (click)="action('delete', row)">删除</x-link>
       </div>

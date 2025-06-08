@@ -1,7 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
-import { CatalogueDescription, CATALOGUE_I18N } from './catalogue.enum';
+import { CatalogueDescription, CATALOGUE_I18N, CatalogueFileType } from './catalogue.enum';
 import { CatalogueType } from '@prisma/client';
 
 @InputType()
@@ -19,6 +19,10 @@ export class CatalogueUpdateInput {
   @Field(() => String, { description: CatalogueDescription.Type, nullable: true })
   @IsOptional()
   type?: CatalogueType;
+
+  @Field(() => String, { description: CatalogueDescription.FileType, nullable: true })
+  @IsOptional()
+  fileType?: CatalogueFileType;
 
   @Field({ description: CatalogueDescription.Sort, nullable: true })
   @IsOptional()

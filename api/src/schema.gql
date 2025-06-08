@@ -26,6 +26,9 @@ type Catalogue {
   """Description"""
   description: String
 
+  """FileType"""
+  fileType: String
+
   """CatalogueId"""
   id: ID!
 
@@ -100,6 +103,9 @@ type CatalogueSelectOutput {
 
   """Description"""
   description: String
+
+  """FileType"""
+  fileType: String!
 
   """CatalogueId"""
   id: ID!

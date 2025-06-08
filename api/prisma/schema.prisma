@@ -168,11 +168,18 @@ enum CatalogueType {
   File
 }
 
+enum CatalogueFileType {
+  Media
+  Text
+  UnKonwn
+}
+
 model Catalogue {
   id          String        @id @default(uuid())
   pid         String?
   name        String
   type        CatalogueType
+  fileType    String?
   resourceId  String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

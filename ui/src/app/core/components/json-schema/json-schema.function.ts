@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import { XJsonSchema, XJsonSchemaType, XJsonSchemaValue, XTreeData } from './json-schema.type';
+import { sortBy } from 'lodash-es';
 
 export function XTreeDataToJsonSchema(tree: XTreeData[]): XJsonSchema {
   const root = tree.find((node) => node.name === '$root');
@@ -46,6 +47,7 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
     items,
     name,
     required,
+    orders,
     ...other
   } = node;
 
@@ -80,16 +82,23 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
     schema.type = nullable ? ['object', 'null'] : 'object';
     schema.properties = {};
     const required: string[] = [];
+    const orders: string[] = [];
 
     for (const child of children || []) {
       schema.properties[child.name!] = convertNodeToSchema(child);
       if (child.required) {
         required.push(child.name!);
       }
+      orders.push(child.name!);
     }
 
     if (required.length > 0) {
       schema.required = required;
+    }
+    if (orders.length > 0) {
+      if (!schema['x-ng-nest']) schema['x-ng-nest'] = {};
+      const ngNest = schema['x-ng-nest'];
+      Object.assign(ngNest, { orders });
     }
   } else if (type === 'array') {
     const childItem = (children || []).find((child) => child.name === '[items]' || !child.name);
@@ -173,9 +182,12 @@ function convertJsonSchemaToTree(
 
   // 处理对象属性
   if (isObject && properties) {
-    node.children = Object.entries(properties).map(([propName, propSchema]) =>
+    node.orders = ngNest?.orders ?? Object.keys(properties);
+    const children = Object.entries(properties).map(([propName, propSchema]) =>
       convertJsonSchemaToTree(propSchema, propName, required?.includes(propName) ?? false)
     );
+    const orderMap = new Map(node.orders.map((name, index) => [name, index]));
+    node.children = sortBy(children, (child) => orderMap.get(child.name!) ?? Infinity);
   }
 
   // 处理数组元素

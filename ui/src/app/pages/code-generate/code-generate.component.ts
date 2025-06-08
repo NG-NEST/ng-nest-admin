@@ -9,7 +9,7 @@ import {
   CatalogueService,
   ResourceService
 } from '@ui/api';
-import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
+import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import {
   Subject,
@@ -26,6 +26,8 @@ import {
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import {
+  XDropdownComponent,
+  XDropdownNode,
   XEmptyComponent,
   XIconComponent,
   XLinkComponent,
@@ -44,12 +46,12 @@ import { AppEditorComponent, AppFileIconPipe, AppFileReader, AppParseGitignore }
     XTreeComponent,
     XTreeSelectComponent,
     XButtonComponent,
-    XButtonsComponent,
     XLoadingComponent,
     XIconComponent,
     XLinkComponent,
     XTooltipDirective,
     XEmptyComponent,
+    XDropdownComponent,
     AppEditorComponent,
     AppFileIconPipe
   ],
@@ -75,6 +77,14 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   folderInput = viewChild.required<ElementRef<HTMLInputElement>>('folderInput');
 
   $destroy = new Subject<void>();
+
+  dropdownMenu = signal<XDropdownNode[]>([
+    { id: 'add-root', label: '添加根节点', icon: 'fto-plus' },
+    { id: 'folder-upload', label: '文件夹上传', icon: 'fto-upload' },
+    { id: 'set-env', label: '变量设置', icon: 'fto-settings' },
+    { id: 'category-preview', label: '生成预览', icon: 'fto-eye' },
+    { id: 'code-download', label: '代码下载', icon: 'fto-download' }
+  ]);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -104,8 +114,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     this.$destroy.complete();
   }
 
-  action(event: Event, type: string, data?: Catalogue & XTreeNode) {
-    event.stopPropagation();
+  action(event: Event | null, type: string, data?: Catalogue & XTreeNode) {
+    event?.stopPropagation();
     switch (type) {
       case 'add-root':
         this.dialog.create(CatalogueComponent, {
@@ -174,7 +184,16 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
       case 'toggle':
         !this.treeCom().nodeOpen() && this.treeCom().onToggle(event, data as XTreeNode);
         break;
+      case 'category-preview':
+        this.catalogue.categoryPreview(this.form.value.category!).subscribe((x) => {
+          console.log(x);
+        });
+        break;
     }
+  }
+
+  onDropdownClick(event: XDropdownNode) {
+    this.action(null, event.id);
   }
 
   nodeOpen(open$: Observable<boolean>) {
@@ -231,7 +250,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     formData.append('filepath', CatalogueFolderFiles);
     formData.append('resourceId', category);
     files.forEach((file) => {
-      formData.append('files', file, encodeURIComponent(file.webkitRelativePath));
+      formData.append(`files`, file, encodeURIComponent(file.webkitRelativePath));
     });
 
     return this.catalogue.folderUpload(formData).pipe(
