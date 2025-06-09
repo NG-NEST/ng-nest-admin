@@ -6,3 +6,5 @@ export * from './current-user.decorator';
 export * from './gql-current-user.decorator';
 export * from './file.decorator';
 export * from './files.decorator';
+export * from './upload-body.decorator';
+export * from './upload-formdata.decorator';

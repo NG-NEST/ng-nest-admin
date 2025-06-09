@@ -2,7 +2,13 @@ import { ExceptionFilter, Catch, HttpException, HttpStatus, ArgumentsHost } from
 import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import { getRequestLogs } from '../config';
-import { ClearCustomHeaders, ContextType, HEADER_EXCEPTION_DATA } from '../common';
+import {
+  ClearCustomHeaders,
+  ClearMultipartFiles,
+  ContextType,
+  HEADER_EXCEPTION_DATA,
+  SafeStringify,
+} from '../common';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -51,7 +57,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
       ClearCustomHeaders(request);
 
-      request.headers[HEADER_EXCEPTION_DATA] = JSON.stringify({
+      const contentType = request.headers['content-type']?.toLowerCase();
+      const isMultipart = contentType?.includes('multipart/form-data');
+      if (isMultipart) {
+        ClearMultipartFiles(request);
+      }
+
+      request.headers[HEADER_EXCEPTION_DATA] = SafeStringify({
         ...msg,
         requset: getRequestLogs(request),
         response: res,

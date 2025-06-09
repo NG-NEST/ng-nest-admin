@@ -44,6 +44,7 @@ async function bootstrap() {
       files: 200,
       fields: 100,
     },
+    attachFieldsToBody: true,
   });
 
   await app.listen(env['PORT'] || 3000, '0.0.0.0');

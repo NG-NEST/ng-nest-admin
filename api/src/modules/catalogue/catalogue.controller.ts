@@ -1,4 +1,4 @@
-import { CacheClear } from '@api/core';
+import { CacheClear, UploadBody, UploadFormData } from '@api/core';
 import {
   CatalogueCreateInput,
   Authorization,
@@ -7,8 +7,8 @@ import {
   CatalogueUpdateInput,
   CatalogueCacheClear,
 } from '@api/services';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
-import { FastifyRequest } from 'fastify';
+import { MultipartFile } from '@fastify/multipart';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -56,7 +56,10 @@ export class CatalogueController {
   @Post('folder-upload')
   @Authorization(CatalogueAuth.CatalogueFolderUpload)
   @CacheClear(...CatalogueCacheClear)
-  async folderUpload(@Req() req: FastifyRequest): Promise<any> {
-    return await this.catalogueService.folderUpload(req);
+  async folderUpload(
+    @UploadFormData('files') files: MultipartFile[],
+    @UploadBody() body: { filepath: string; resourceId: string },
+  ): Promise<any> {
+    return await this.catalogueService.folderUpload(files, body);
   }
 }

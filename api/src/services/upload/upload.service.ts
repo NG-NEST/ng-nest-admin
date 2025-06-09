@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 import { UploadInput } from './upload.input';
 import { PutObjectResult } from 'cos-nodejs-sdk-v5';
-import { FileService, FileStatus, File } from '../file';
+import { FileService, FileStatus, File as UploadFile } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { basename, join } from 'path';
 import { promises as fs } from 'fs';
@@ -51,7 +51,7 @@ export class UploadService {
     });
   }
 
-  async cosFastify(file: MultipartFile, body: UploadInput): Promise<File> {
+  async cosFastify(file: MultipartFile, body: UploadInput): Promise<UploadFile> {
     let { filepath, actualname, uid } = body;
     let { mimetype, filename } = file;
     let buffer = await file.toBuffer();
@@ -102,15 +102,14 @@ export class UploadService {
     });
   }
 
-  async localFastify(file: MultipartFile, body: UploadInput, hostUrl?: string): Promise<File> {
+  async localFastify(file: File, body: UploadInput, hostUrl?: string): Promise<UploadFile> {
     let { filepath, actualname, uid } = body;
-    let { filename, mimetype } = file;
-    const buffer = await file.toBuffer();
-    const size = buffer.length;
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const size = buffer.byteLength;
 
     if (!uid) uid = v4();
 
-    const name = decodeURIComponent(filename);
+    const name = decodeURIComponent(file.name);
     const key = `${filepath}/${uid}/${name}`;
 
     if (!actualname) actualname = basename(name);
@@ -120,11 +119,12 @@ export class UploadService {
     await fs.mkdir(targetDir, { recursive: true });
 
     // 写入文件到本地
-    const fullPath = join(targetDir, name);
+    const fullPath = join(targetDir, actualname);
+    console.log(fullPath);
     await fs.writeFile(fullPath, buffer);
 
     // 获取当前请求的协议和主机地址
-    const url = `${hostUrl}/assets/${filepath}/${uid}/${name}`;
+    const url = `${hostUrl}/assets/${filepath}/${uid}/${actualname}`;
 
     const upload = {
       id: v4(),
@@ -132,7 +132,7 @@ export class UploadService {
       name,
       actualname,
       status: FileStatus.Completed,
-      mimetype,
+      mimetype: file.type,
       key,
       uid,
       url,
@@ -140,6 +140,6 @@ export class UploadService {
 
     const result = await this.file.create(upload);
 
-    return result as File;
+    return result as UploadFile;
   }
 }

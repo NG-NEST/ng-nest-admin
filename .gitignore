@@ -2,6 +2,7 @@ api/node_modules
 api/dist
 api/logs
 api/.env
+api/assets
 ui/node_modules
 ui/dist
 ui/.angular/cache

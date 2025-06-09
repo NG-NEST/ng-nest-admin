@@ -8,9 +8,8 @@ import { CatalogueSelectInput } from './select.input';
 import { CataloguePaginationOutput } from './catalogue.output';
 
 import { CatalogueException, CatalogueFileType, CatalogueType } from './catalogue.enum';
-import { FastifyRequest } from 'fastify';
-import { UploadInput, UploadService } from '../upload';
-import { File } from '../file';
+import { UploadService } from '../upload';
+import { File as UploadFile } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
 import { TemplateService } from '@api/core';
@@ -119,38 +118,8 @@ export class CatalogueService {
     return catalogues;
   }
 
-  async folderUpload(req: FastifyRequest) {
-    const body: UploadInput = { filepath: 'catalogue-folder' };
-    const files: any[] = [];
-    const hostUrl = `${req.protocol}://${req.headers.host}`;
-
-    const parts = req.parts();
-
-    let resourceId = '';
-
-    let part;
-    while ((part = await parts.next())) {
-      if (part.done) break;
-
-      console.log(part.value.fieldname);
-
-      if (part.value.type === 'file') {
-        files.push(part.value);
-      } else {
-        const value = await part.value.value; // 获取字段值
-        if (part.value.fieldname === 'filepath') {
-          body.filepath = value as string;
-        }
-        if (part.value.fieldname === 'resourceId') {
-          resourceId = value as string;
-        }
-      }
-
-      console.log(files, body, resourceId);
-    }
-
-    console.log(222);
-
+  async folderUpload(files: MultipartFile[], body: { filepath: string; resourceId: string }) {
+    const { filepath, resourceId } = body;
     if (!resourceId) {
       throw new BadRequestException({ message: CatalogueException.NoCategorySelected });
     }
@@ -159,16 +128,20 @@ export class CatalogueService {
       throw new BadRequestException({ message: CatalogueException.FilesIsNull });
     }
 
+    const hostUrl = ``;
+
     const fileTypes = await this.getFileTypes();
     const { text } = fileTypes;
 
     const results: any[] = await Promise.all(
-      files.map(async (file) => {
-        const ext = this.getFileExtension(file.filename);
+      files.map(async (file: any) => {
+        console.log(file);
+        const ext = this.getFileExtension(file.name);
+
         if (text.includes(ext)) {
           return await this.getFileText(file);
         } else {
-          return await this.uploadService.localFastify(file, body, hostUrl);
+          return await this.uploadService.localFastify(file, { filepath }, hostUrl);
         }
       }),
     );
@@ -191,7 +164,7 @@ export class CatalogueService {
     return await this.prisma.$transaction(transaction);
   }
 
-  private convertToCatalogueTree(files: File[], resourceId: string) {
+  private convertToCatalogueTree(files: UploadFile[], resourceId: string) {
     const result: any[] = [];
     const folderMap: Map<string, string> = new Map();
     let sortCounter = 0;
@@ -257,11 +230,11 @@ export class CatalogueService {
     return result;
   }
 
-  private async getFileText(file: MultipartFile): Promise<File> {
-    const result: File = { name: file.filename };
+  private async getFileText(file: File): Promise<UploadFile> {
+    const result: UploadFile = { name: file.name };
 
     try {
-      result.content = await file.toBuffer().then((x) => x.toString());
+      result.content = Buffer.from(await file.arrayBuffer()).toString();
     } catch (error) {
       result.content = '';
     }
