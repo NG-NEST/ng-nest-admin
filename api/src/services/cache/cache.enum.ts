@@ -13,6 +13,10 @@ export enum CacheDescription {
   Key = 'CacheKey',
   Value = 'Value',
   Expiretime = 'Expiretime',
+
+  Id = 'Id',
+  Type = 'Type',
+  Keys = 'Keys',
 }
 
 export enum CacheResolverName {

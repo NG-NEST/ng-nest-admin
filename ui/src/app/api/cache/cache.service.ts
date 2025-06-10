@@ -7,6 +7,7 @@ import { Cache } from './cache.model';
 import { cloneDeep } from 'lodash-es';
 import { CacheMessage } from './cache.enum';
 import { CacheUpdateInput } from './update.input';
+import { CacheGroup } from './cache-group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CacheService {
@@ -15,17 +16,21 @@ export class CacheService {
     private http: HttpClient
   ) {}
 
-  cacheKeys(input?: CacheKeysInput): Observable<string[]> {
+  cacheKeys(input?: CacheKeysInput): Observable<CacheGroup[]> {
     return this.apollo
-      .query<{ cacheKeys: string[] }>({
+      .query<{ cacheKeys: CacheGroup[] }>({
         variables: input,
         query: gql`
           query Cache($key: String) {
-            cacheKeys(key: $key)
+            cacheKeys(key: $key) {
+              id
+              type
+              keys
+            }
           }
         `
       })
-      .pipe(map((x) => x.data?.cacheKeys));
+      .pipe(map((x) => cloneDeep(x.data?.cacheKeys)));
   }
 
   cache(key: string): Observable<Cache> {

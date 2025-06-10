@@ -1,0 +1,9 @@
+:host {
+  .roles {
+    display: inline-flex;
+    flex-direction: column;
+    x-tag:not(:first-child) {
+      margin-top: 0.125rem;
+    }
+  }
+}

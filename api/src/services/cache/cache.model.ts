@@ -12,3 +12,5 @@ export class Cache {
   @Field(() => String, { description: CacheDescription.Expiretime })
   expiretime: string;
 }
+
+

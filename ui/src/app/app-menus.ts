@@ -8,7 +8,8 @@ export const AppMenus: XMenuNode[] = [
   { id: 400, pid: 200, label: '角色管理', icon: 'fto-users', routerLink: './role' },
   { id: 500, pid: 200, label: '资源管理', icon: 'fto-list', routerLink: './resource' },
   { id: 600, pid: 200, label: '代码生成', icon: 'fto-code', routerLink: './code-generate' },
-  { id: 700, pid: 200, label: '数据模型', icon: 'admin:json', routerLink: './schema' }
+  { id: 700, pid: 200, label: '数据模型', icon: 'admin:json', routerLink: './schema' },
+  { id: 800, pid: 200, label: '缓存管理', icon: 'fto-hard-drive', routerLink: './cache' }
 ];
 
 if (typeof Worker !== 'undefined') {

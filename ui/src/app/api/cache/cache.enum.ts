@@ -3,7 +3,10 @@ export enum CacheDescription {
 
   Key = 'CacheKey',
   Value = 'Value',
-  Expiretime = 'Expiretime'
+  Expiretime = 'Expiretime',
+
+  Type = '分类',
+  Keys = '类型'
 }
 
 export enum CacheMessage {

@@ -1,14 +1,14 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { Cache, CacheKeysInput, CacheResolverName, CacheService } from '@api/services';
+import { Cache, CacheGroup, CacheKeysInput, CacheResolverName, CacheService } from '@api/services';
 
 @Resolver(() => Cache)
 export class CacheResolver {
   constructor(private readonly cacheService: CacheService) {}
 
-  @Query(() => [String], {
+  @Query(() => [CacheGroup], {
     description: CacheResolverName.CacheKeys,
   })
-  async cacheKeys(@Args() input: CacheKeysInput): Promise<string[]> {
+  async cacheKeys(@Args() input: CacheKeysInput): Promise<CacheGroup[]> {
     return await this.cacheService.cacheKeys(input);
   }
 

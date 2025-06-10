@@ -83,5 +83,13 @@ export const AppRoutes: Routes = [
     },
     loadChildren: () => import('./pages/schema/schema-routing.module').then((x) => x.SchemaRoutes),
     canActivate: [AppCanLoad]
+  },
+  {
+    path: 'cache',
+    data: {
+      permission: 'cache-view'
+    },
+    loadChildren: () => import('./pages/cache/cache-routing.module').then((x) => x.CacheRoutes),
+    canActivate: [AppCanLoad]
   }
 ];

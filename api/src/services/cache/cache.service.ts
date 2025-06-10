@@ -5,6 +5,7 @@ import { Cache } from './cache.model';
 import { CacheUpdateInput } from './update.input';
 import { isEmpty } from 'class-validator';
 import { CacheDescription, CACHE_I18N } from './cache.enum';
+import { orderBy } from 'lodash-es';
 
 @Injectable()
 export class CacheService {
@@ -16,9 +17,32 @@ export class CacheService {
     const { key } = input;
     const keys = await this.redisService.keys(`${CACHE_PREFIX}:${key}:*`);
     const regex = new RegExp(`^${CACHE_PREFIX}:`);
-    return keys.map((key) => {
-      return key.replace(regex, '');
-    });
+
+    const grouped = keys
+      .map((key) => {
+        return key.replace(regex, '');
+      })
+      .reduce(
+        (acc, str) => {
+          const [prefix, suffix] = str.split(':');
+          if (!acc[prefix]) {
+            acc[prefix] = [];
+          }
+          acc[prefix].push(suffix);
+          return acc;
+        },
+        {} as Record<string, string[]>,
+      );
+
+    return orderBy(
+      Object.entries(grouped).map(([type, keys]) => ({
+        id: type,
+        type,
+        keys,
+      })),
+      'type',
+      'asc',
+    );
   }
 
   async cache(key: string): Promise<Cache> {
