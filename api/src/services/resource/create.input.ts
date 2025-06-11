@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { IsExist, IsNotExist, ValidatorDescription, I18N } from '@api/core';
+import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
 import { ResourceDescription, RESOURCE_I18N } from './resource.enum';
 import { SubjectDescription } from '../subject';
 
@@ -10,17 +10,11 @@ export class ResourceCreateInput {
   @IsNotEmpty({
     message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Name}${ValidatorDescription.IsNotEmpty}`),
   })
-  @IsExist('resource', {
-    message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Name}${ValidatorDescription.IsExist}`),
-  })
   name: string;
 
   @Field({ description: ResourceDescription.Code })
   @IsNotEmpty({
     message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Code}${ValidatorDescription.IsNotEmpty}`),
-  })
-  @IsExist('resource', {
-    message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Code}${ValidatorDescription.IsExist}`),
   })
   code: string;
 

@@ -4,6 +4,7 @@ export enum CacheAuth {
   CacheCreate = 'cache-create',
   CacheUpdate = 'cache-update',
   CacheDelete = 'cache-delete',
+  CacheDeleteType = 'cache-delete-type',
   CacheDeleteAll = 'cache-delete-all',
 }
 

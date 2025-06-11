@@ -1,0 +1,36 @@
+<form [x-loading]="formLoading()" class="app-dialog-form">
+  <h4 x-dialog-title class="title">缓存信息</h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
+  <div x-dialog-content class="content attrs">
+    <div class="item">
+      <label>分类：</label>
+      <span>{{ typeMap.get(type()) ?? type() }} </span>
+    </div>
+    <div class="attrs-table app-table">
+      <table>
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>查询条件</th>
+            <th width="160">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of list(); track item.key) {
+            <tr>
+              <td class="index">{{ $index + 1 }}</td>
+              <td>{{ item.json }}</td>
+              <td class="operate">
+                <x-link type="primary" (click)="action('view', item.key)">查看数据</x-link>
+                <x-link type="danger" (click)="action('delete', item.key)"> 删除 </x-link>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div x-dialog-actions align="center" class="actions">
+    <x-button size="large" icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+  </div>
+</form>

@@ -6,7 +6,7 @@ export enum CacheDescription {
   Expiretime = 'Expiretime',
 
   Type = '分类',
-  Keys = '类型'
+  Keys = '查询条件'
 }
 
 export enum CacheMessage {

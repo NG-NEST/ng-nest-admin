@@ -1,17 +1,12 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, OnDestroy, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
-import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { CacheService } from '@ui/api';
+import { CacheService, Cache } from '@ui/api';
+import { AppEditorComponent } from '@ui/core';
 import { Subject, finalize } from 'rxjs';
 
 @Component({
@@ -19,48 +14,45 @@ import { Subject, finalize } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     XLoadingComponent,
-    XInputComponent,
     XButtonComponent,
-    XDialogModule
+    XDialogModule,
+    DatePipe,
+    AppEditorComponent
   ],
   templateUrl: './cache-detail.component.html'
 })
-export class CacheDetailComponent implements OnInit, OnDestroy {
+export class CacheDetailComponent implements OnDestroy {
   dialogRef = inject(XDialogRef<CacheDetailComponent>);
   cache = inject(CacheService);
   fb = inject(FormBuilder);
   message = inject(XMessageService);
 
-  id = signal('');
+  key = signal<string>('');
 
   formLoading = signal(false);
   saveLoading = signal(false);
 
-  form!: FormGroup;
-
+  form = this.fb.group({
+    jsonContent: ['']
+  });
+  typeMap = new Map<string, string>();
   $destroy = new Subject<void>();
 
-  constructor(@Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void }) {}
+  item = signal<Cache | null>(null);
+
+  constructor(@Inject(X_DIALOG_DATA) public data: { key: string }) {
+    const { key } = this.data;
+    this.key.set(key);
+  }
 
   ngOnInit(): void {
-    const { id } = this.data;
-    this.id.set(id);
-    if (!id) {
-      this.form = this.fb.group({
-        name: [null, [Validators.required]]
-      });
-      return;
-    } else {
-      this.form = this.fb.group({
-        name: [null, [Validators.required]]
-      });
-    }
     this.formLoading.set(true);
     this.cache
-      .cache(this.id())
+      .cache(this.key())
       .pipe(finalize(() => this.formLoading.set(false)))
       .subscribe((x) => {
-        this.form.patchValue({ ...x });
+        this.item.set(x);
+        this.form.patchValue({ jsonContent: JSON.stringify(JSON.parse(x.value), null, 2) });
       });
   }
 
@@ -68,17 +60,4 @@ export class CacheDetailComponent implements OnInit, OnDestroy {
     this.$destroy.next();
     this.$destroy.complete();
   }
-
-  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true };
-    } else if (!this.passwordCheck(control.value)) {
-      return { confirm: true, error: true };
-    }
-    return {};
-  };
-
-  passwordCheck = (value: string) => {
-    return value === this.form.controls['password'].value;
-  };
 }

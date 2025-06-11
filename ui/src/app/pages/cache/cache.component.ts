@@ -1,25 +1,21 @@
 import { DatePipe } from '@angular/common';
 import { Component, signal, ViewChild } from '@angular/core';
-// import { XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
-import { Cache, CacheDescription, CacheGroup, CacheService } from '@ui/api';
-import {
-  AppAuthDirective,
-  AppBase64ToStringPipe,
-  BaseDescription,
-  BaseOrder,
-  BasePagination
-} from '@ui/core';
+import { CacheDescription, CacheGroup, CacheService, ResourceService } from '@ui/api';
+import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
-// import { CacheDetailComponent } from './cache-detail/cache-detail.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-// import { XDialogService } from '@ng-nest/ui/dialog';
-// import { XMessageService } from '@ng-nest/ui/message';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
-import { XTagComponent } from '@ng-nest/ui/tag';
+import {
+  XDialogService,
+  XMessageBoxAction,
+  XMessageBoxService,
+  XMessageService
+} from '@ng-nest/ui';
+import { CacheGroupComponent } from './cache-group/cache-group.component';
 
 @Component({
   selector: 'app-cache',
@@ -30,9 +26,7 @@ import { XTagComponent } from '@ng-nest/ui/tag';
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
-    XTagComponent,
-    AppAuthDirective,
-    AppBase64ToStringPipe
+    AppAuthDirective
   ],
   templateUrl: './cache.component.html',
   styleUrls: ['./cache.component.scss'],
@@ -45,8 +39,9 @@ export class CacheComponent {
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', label: BaseDescription.Index, width: 70 },
-    { id: 'type', label: CacheDescription.Type, width: 120 },
-    { id: 'keys', label: CacheDescription.Keys }
+    { id: 'type', label: CacheDescription.Type, flex: 1 },
+    { id: 'keys', label: CacheDescription.Keys, width: 100 },
+    { id: 'operate', label: BaseDescription.Operate, width: 100, right: 0 }
   ]);
 
   total = signal(0);
@@ -57,16 +52,21 @@ export class CacheComponent {
   searchLoading = signal(false);
   clearAllLoading = signal(false);
   data = signal<CacheGroup[]>([]);
+  typeMap = new Map<string, string>();
 
   @ViewChild('tableCom') tableCom!: XTableComponent;
 
   constructor(
     private cacheService: CacheService,
-    private fb: FormBuilder
-    // private dialog: XDialogService
+    private fb: FormBuilder,
+    private resource: ResourceService,
+    private messageBox: XMessageBoxService,
+    private message: XMessageService,
+    private dialog: XDialogService
   ) {}
 
   ngOnInit() {
+    this.getTypes().subscribe();
     this.getTableData();
   }
 
@@ -124,7 +124,7 @@ export class CacheComponent {
     this.data.set(list);
   }
 
-  action(type: string, cache?: Cache) {
+  action(type: string, cache?: CacheGroup) {
     switch (type) {
       case 'search':
         this.searchLoading.set(true);
@@ -138,45 +138,66 @@ export class CacheComponent {
         this.getTableData();
         break;
       case 'clear-all':
-        this.clearAllLoading.set(true);
-        this.cacheService
-          .deleteAll()
-          .pipe(finalize(() => this.clearAllLoading.set(false)))
-          .subscribe(() => {
-            this.searchForm.reset();
-            this.index.set(1);
-            this.getTableData();
-          });
+        this.messageBox.confirm({
+          title: '清除缓存',
+          content: `确认清除所有缓存吗？`,
+          type: 'warning',
+          callback: (data: XMessageBoxAction) => {
+            if (data !== 'confirm') return;
+            this.clearAllLoading.set(true);
+            this.cacheService
+              .deleteAll()
+              .pipe(finalize(() => this.clearAllLoading.set(false)))
+              .subscribe(() => {
+                this.searchForm.reset();
+                this.index.set(1);
+                this.getTableData();
+              });
+          }
+        });
 
         break;
-      case 'edit':
-        // this.dialog.create(CacheDetailComponent, {
-        //   data: {
-        //     id: cache?.id,
-        //     saveSuccess: () => {
-        //       this.getTableData();
-        //     }
-        //   }
-        // });
+      case 'view':
+        this.dialog.create(CacheGroupComponent, {
+          width: '80rem',
+          data: {
+            item: cache
+          }
+        });
         break;
       case 'delete':
         if (!cache) return;
-        // this.messageBox.confirm({
-        //   title: '删除用户',
-        //   content: `确认删除此用户吗？ [${cache.name}]`,
-        //   type: 'warning',
-        //   callback: (data: XMessageBoxAction) => {
-        //     if (data !== 'confirm') return;
-        //     this.cacheService.delete(cache.id).subscribe((x) => {
-        //       this.message.success(x);
-        //       if (this.data().length === 1 && this.index() > 1) {
-        //         this.index.update((x) => --x);
-        //       }
-        //       this.getTableData();
-        //     });
-        //   }
-        // });
+        this.messageBox.confirm({
+          title: '删除缓存',
+          content: `确认删除此缓存吗？ [${this.typeMap.get(cache.type) ?? cache.type}]`,
+          type: 'warning',
+          callback: (data: XMessageBoxAction) => {
+            if (data !== 'confirm') return;
+            this.cacheService.deleteType(cache.type).subscribe((x) => {
+              this.message.success(x);
+              if (this.data().length === 1 && this.index() > 1) {
+                this.index.update((x) => --x);
+              }
+              this.getTableData();
+            });
+          }
+        });
         break;
     }
+  }
+
+  getTypes() {
+    return this.resource
+      .resourceSelect({
+        where: { subject: { code: { equals: 'cache-type' } } },
+        orderBy: [{ sort: 'asc' }]
+      })
+      .pipe(
+        tap((x) => {
+          for (let resource of x) {
+            this.typeMap.set(resource.code, resource.name);
+          }
+        })
+      );
   }
 }

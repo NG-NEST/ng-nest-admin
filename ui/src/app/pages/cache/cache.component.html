@@ -1,27 +1,19 @@
 <div class="app-inner">
   <div class="app-tools">
     <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
-      <div class="list">
-        <div class="item">
-          <label>用户名称：</label>
-          <x-input formControlName="name" placeholder="请输入用户名称"></x-input>
-        </div>
-      </div>
-      <div class="buttons">
+      <div class="buttons" [style.marginTop.px]="0">
         <div>
-          <x-button type="primary" icon="fto-search" attrType="submit" [loading]="searchLoading()"
-            >搜索</x-button
-          >
-          <x-button
-            icon="fto-refresh-cw"
-            attrType="button"
-            (click)="action('reset')"
-            [loading]="resetLoading()"
-            >重置</x-button
+          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()"
+            >刷新</x-button
           >
         </div>
-        <x-button type="primary" icon="fto-trash-2" attrType="button" (click)="action('clear-all')"
-          >清除所有缓存</x-button
+        <x-button
+          type="primary"
+          icon="fto-trash-2"
+          type="danger"
+          attrType="button"
+          (click)="action('clear-all')"
+          >删除所有缓存</x-button
         >
       </div>
     </form>
@@ -35,38 +27,32 @@
       [(index)]="index"
       [(size)]="size"
       [(total)]="total"
-      [showSize]="true"
       [showEmpty]="!tableLoading()"
+      [showPagination]="false"
       [rowHeight]="0"
-      [sizeData]="[10, 20, 50, 100]"
-      [showJump]="true"
-      [scroll]="{ x: 1200, y: 400 }"
-      [virtualScroll]="true"
-      [bodyColumnTpl]="{ keys: keysTpl }"
+      [bodyColumnTpl]="{ keys: keysTpl, type: typeTpl, operate: operateTpl }"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
     ></x-table>
+    <ng-template #typeTpl let-column="$column" let-row="$row">
+      <div class="type">
+        {{ this.typeMap.get(row.type) ?? row.type }}&nbsp;&nbsp;&nbsp;&nbsp;
+        {{ this.typeMap.get(row.type) ? '[ ' + row.type + ' ]' : '' }}
+      </div>
+    </ng-template>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
-        <x-link [app-auth]="'cache-update'" type="primary" (click)="action('edit', row)"
-          >修改</x-link
-        >
-        <x-link
-          [app-auth]="'cache-reset-password'"
-          type="primary"
-          (click)="action('reset-password', row)"
-          >重置密码</x-link
-        >
-        <x-link [app-auth]="'cache-delete'" type="danger" (click)="action('delete', row)"
-          >删除</x-link
-        >
+        <x-link [app-auth]="'cache-view'" type="primary" (click)="action('view', row)">查看</x-link>
+        <x-link [app-auth]="'cache-delete'" type="danger" (click)="action('delete', row)">
+          删除
+        </x-link>
       </div>
     </ng-template>
     <ng-template #keysTpl let-column="$column" let-row="$row">
       <div class="keys">
-        @for (tag of row.keys; track tag) {
-          <x-tag type="primary" size="small">{{ tag | appBase64ToString }}</x-tag>
-        }
+        <x-button size="small" text type="primary" (click)="action('view', row)">
+          {{ row.keys.length }}条
+        </x-button>
       </div>
     </ng-template>
   </div>

@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { IsExist, IsNotExist, ValidatorDescription, I18N } from '@api/core';
+import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
 import { ResourceDescription, RESOURCE_I18N } from './resource.enum';
 
 @InputType()
@@ -13,16 +13,10 @@ export class ResourceUpdateInput {
 
   @Field({ description: ResourceDescription.Name, nullable: true })
   @IsOptional()
-  @IsExist('resource', {
-    message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Name}${ValidatorDescription.IsExist}`),
-  })
   name?: string;
 
   @Field({ description: ResourceDescription.Code, nullable: true })
   @IsOptional()
-  @IsExist('resource', {
-    message: I18N(`${RESOURCE_I18N}.${ResourceDescription.Code}${ValidatorDescription.IsExist}`),
-  })
   code?: string;
 
   @Field({ description: ResourceDescription.Sort, nullable: true })

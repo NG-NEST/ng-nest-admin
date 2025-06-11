@@ -15,7 +15,7 @@ export class AppBase64ToStringPipe implements PipeTransform {
           .join('')
       );
     } catch (e) {
-      return value; // 或者处理异常情况
+      return value;
     }
   }
 }

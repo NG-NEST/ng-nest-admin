@@ -12,7 +12,7 @@ export class AppFileIconPipe implements PipeTransform {
   transform(value: string): any {
     const filename = value;
     if (filename.indexOf('.') >= 0) {
-      const ext = filename.split('.').pop();
+      const ext = filename.split('.').pop()?.toLocaleLowerCase();
       if (ext && Object.keys(IconConfig).includes(ext)) {
         return `admin:${ext}`;
       }

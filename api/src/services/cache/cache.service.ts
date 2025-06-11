@@ -75,6 +75,15 @@ export class CacheService {
     return 0;
   }
 
+  async deleteType(type: string) {
+    const cacheKey = `${CACHE_PREFIX}:${type}:*`;
+    const keys = await this.redisService.keys(cacheKey);
+    if (keys.length > 0) {
+      return await this.redisService.del(keys);
+    }
+    return 0;
+  }
+
   async update(input: CacheUpdateInput): Promise<string> {
     const { key, value, expiretime } = input;
     const cacheKey = `${CACHE_PREFIX}:${key}`;

@@ -60,6 +60,10 @@ export class CacheService {
       .pipe(map(() => CacheMessage.DeletedSuccess));
   }
 
+  deleteType(type: string): Observable<string> {
+    return this.http.delete(`/api/cache/type/${type}`).pipe(map(() => CacheMessage.DeletedSuccess));
+  }
+
   deleteAll(): Observable<string> {
     return this.http.delete(`/api/cache/all`).pipe(map(() => CacheMessage.DeletedAllSuccess));
   }

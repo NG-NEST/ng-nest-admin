@@ -63,8 +63,8 @@ model Permission {
 model Resource {
   id          String       @id @default(uuid())
   pid         String?
-  name        String       @unique
-  code        String       @unique
+  name        String
+  code        String
   subjectId   String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
