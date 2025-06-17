@@ -1,0 +1,7 @@
+{
+  "VariableCategoryIdIsNotEmpty": "变量分类编码不能为空",
+  "NameIsNotEmpty": "变量分类名称不能为空",
+  "CodeIsNotEmpty": "变量分类标识不能为空",
+  "ResourceIdIsNotEmpty": "资源编码不能为空",
+  "ResourceIdIsNotExist": "资源编码不存在"
+}

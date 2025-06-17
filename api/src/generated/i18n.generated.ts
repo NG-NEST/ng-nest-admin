@@ -133,6 +133,21 @@ export type I18nTranslations = {
         "EmailIsExist": string;
         "PhoneIsExist": string;
     };
+    "variable-category": {
+        "VariableCategoryIdIsNotEmpty": string;
+        "NameIsNotEmpty": string;
+        "CodeIsNotEmpty": string;
+        "ResourceIdIsNotEmpty": string;
+        "ResourceIdIsNotExist": string;
+    };
+    "variable": {
+        "VariableIdIsNotEmpty": string;
+        "CodeIsNotEmpty": string;
+        "ResourceIdIsNotEmpty": string;
+        "ResourceIdIsNotExist": string;
+        "VariableCategoryIdIsNotEmpty": string;
+        "VariableCategoryIdIsNotExist": string;
+    };
 };
 /* prettier-ignore */
 export type I18nPath = Path<I18nTranslations>;

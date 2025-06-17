@@ -1,0 +1,7 @@
+{
+  "VariableCategoryIdIsNotEmpty": "id should not be empty",
+  "NameIsNotEmpty": "name should not be empty",
+  "CodeIsNotEmpty": "code should not be empty",
+  "ResourceIdIsNotEmpty": "resourceId should not be empty",
+  "ResourceIdIsNotExist": "resourceId is not exist"
+}

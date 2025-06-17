@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { Component, Inject, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XLinkComponent } from '@ng-nest/ui';
@@ -18,8 +17,7 @@ import { CacheDetailComponent } from '../cache-detail/cache-detail.component';
     XLoadingComponent,
     XButtonComponent,
     XLinkComponent,
-    XDialogModule,
-    JsonPipe
+    XDialogModule
   ],
   templateUrl: './cache-group.component.html',
   styleUrl: './cache-group.component.scss',

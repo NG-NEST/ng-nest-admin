@@ -5,7 +5,6 @@ import { CacheDescription, CacheGroup, CacheService, ResourceService } from '@ui
 import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { XInputComponent } from '@ng-nest/ui/input';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
@@ -21,7 +20,6 @@ import { CacheGroupComponent } from './cache-group/cache-group.component';
   selector: 'app-cache',
   imports: [
     ReactiveFormsModule,
-    XInputComponent,
     XButtonComponent,
     XLoadingComponent,
     XTableComponent,

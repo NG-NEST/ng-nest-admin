@@ -15,6 +15,8 @@ import {
   AigcModule,
   UploadModule,
   CatalogueModule,
+  VariableModule,
+  VariableCategoryModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GlobalModule, grapgQLConfig, I18N_CONFING } from '@api/core';
@@ -46,6 +48,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     AigcModule,
     UploadModule,
     CatalogueModule,
+    VariableModule,
+    VariableCategoryModule,
   ],
 })
 export class AppModule {}

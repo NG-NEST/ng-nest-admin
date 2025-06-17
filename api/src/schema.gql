@@ -959,6 +959,66 @@ type Query {
     """Query condition"""
     where: UserWhereInput
   ): UserPaginationOutput!
+
+  """Variable"""
+  variable(
+    """VariableId"""
+    id: ID!
+  ): Variable!
+
+  """VariableCategory"""
+  variableCategory(
+    """VariableCategoryId"""
+    id: ID!
+  ): VariableCategory!
+
+  """VariableCategorySelect. No Pagination"""
+  variableCategorySelect(
+    """Sorting rule"""
+    orderBy: [VariableCategoryOrderInput!]
+
+    """Query condition"""
+    where: VariableCategoryWhereInput
+  ): [VariableCategorySelectOutput!]!
+
+  """VariableCategorys"""
+  variableCategorys(
+    """Sorting rule"""
+    orderBy: [VariableCategoryOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: VariableCategoryWhereInput
+  ): VariableCategoryPaginationOutput!
+
+  """VariableSelect. No Pagination"""
+  variableSelect(
+    """Sorting rule"""
+    orderBy: [VariableOrderInput!]
+
+    """Query condition"""
+    where: VariableWhereInput
+  ): [VariableSelectOutput!]!
+
+  """Variables"""
+  variables(
+    """Sorting rule"""
+    orderBy: [VariableOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: VariableWhereInput
+  ): VariablePaginationOutput!
 }
 
 type Resource {
@@ -1606,4 +1666,274 @@ input UserWhereInput {
 
   """UpdatedAt"""
   updatedAt: DateTimeFilter
+}
+
+type Variable {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """VariableId"""
+  id: ID!
+
+  """Resource"""
+  resource: Resource!
+
+  """ResourceId"""
+  resourceId: String!
+
+  """Type"""
+  type: String
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
+  """Value"""
+  value: String
+
+  """VariableCategory"""
+  variableCategory: VariableCategory!
+
+  """VariableCategoryId"""
+  variableCategoryId: String!
+}
+
+type VariableCategory {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """VariableCategoryId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """Resource"""
+  resource: Resource!
+
+  """ResourceId"""
+  resourceId: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input VariableCategoryOrderInput {
+  """Code"""
+  Code: SortOrder
+
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """Resource"""
+  resource: SortOrder
+
+  """ResourceId"""
+  resourceId: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type VariableCategoryPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [VariableCategory!]!
+}
+
+type VariableCategorySelectOutput {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """VariableCategoryId"""
+  id: ID!
+
+  """Name"""
+  name: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input VariableCategoryWhere {
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+}
+
+input VariableCategoryWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [VariableCategoryWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [VariableCategoryWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [VariableCategoryWhere!]
+
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+}
+
+input VariableOrderInput {
+  """Code"""
+  code: SortOrder
+
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Resource"""
+  resource: SortOrder
+
+  """ResourceId"""
+  resourceId: SortOrder
+
+  """Type"""
+  type: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+
+  """VariableCategory"""
+  variableCategory: SortOrder
+
+  """VariableCategoryId"""
+  variableCategoryId: SortOrder
+}
+
+type VariablePaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Variable!]!
+}
+
+type VariableSelectOutput {
+  """Code"""
+  code: String!
+
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """VariableId"""
+  id: ID!
+
+  """Type"""
+  type: String
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
+  """Value"""
+  value: String
+}
+
+input VariableWhere {
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+
+  """Type"""
+  type: StringFilter
+
+  """Value"""
+  value: StringFilter
+
+  """VariableCategory"""
+  variableCategory: VariableCategoryWhereInput
+
+  """VariableCategoryId"""
+  variableCategoryId: StringFilter
+}
+
+input VariableWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [VariableWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [VariableWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [VariableWhere!]
+
+  """Code"""
+  code: StringFilter
+
+  """Description"""
+  description: StringFilter
+
+  """Resource"""
+  resource: ResourceWhereInput
+
+  """ResourceId"""
+  resourceId: StringFilter
+
+  """Type"""
+  type: StringFilter
+
+  """Value"""
+  value: StringFilter
+
+  """VariableCategory"""
+  variableCategory: VariableCategoryWhereInput
+
+  """VariableCategoryId"""
+  variableCategoryId: StringFilter
 }

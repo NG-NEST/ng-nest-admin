@@ -61,20 +61,22 @@ model Permission {
 }
 
 model Resource {
-  id          String       @id @default(uuid())
-  pid         String?
-  name        String
-  code        String
-  subjectId   String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  description String?
-  sort        Int          @default(0)
-  permissions Permission[]
-  parent      Resource?    @relation("children", fields: [pid], references: [id])
-  children    Resource[]   @relation("children")
-  subject     Subject      @relation(fields: [subjectId], references: [id])
-  Catalogue   Catalogue[]
+  id               String             @id @default(uuid())
+  pid              String?
+  name             String
+  code             String
+  subjectId        String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  description      String?
+  sort             Int                @default(0)
+  permissions      Permission[]
+  parent           Resource?          @relation("children", fields: [pid], references: [id])
+  children         Resource[]         @relation("children")
+  subject          Subject            @relation(fields: [subjectId], references: [id])
+  Catalogue        Catalogue[]
+  Variable         Variable[]
+  VariableCategory VariableCategory[]
 
   @@map("sys-resource")
 }
@@ -189,8 +191,39 @@ model Catalogue {
   sort        Int           @default(0)
   parent      Catalogue?    @relation("children", fields: [pid], references: [id])
   children    Catalogue[]   @relation("children")
+  resource    Resource      @relation(fields: [resourceId], references: [id])
+
+  @@map("sys-catalogue")
+}
+
+model VariableCategory {
+  id          String     @id @default(uuid())
+  resourceId  String
+  name        String
+  code        String
+  description String?
+  variable    Variable[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   resource Resource @relation(fields: [resourceId], references: [id])
 
-  @@map("sys-catalogue")
+  @@map("sys-variable-category")
+}
+
+model Variable {
+  id                 String   @id @default(uuid())
+  variableCategoryId String
+  code               String
+  type               String?
+  value              Json?
+  description        String?
+  resourceId         String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  variableCategory VariableCategory @relation(fields: [variableCategoryId], references: [id])
+  resource         Resource         @relation(fields: [resourceId], references: [id])
+
+  @@map("sys-variable")
 }

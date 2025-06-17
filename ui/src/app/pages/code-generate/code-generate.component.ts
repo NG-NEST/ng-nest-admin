@@ -37,6 +37,8 @@ import {
   XTooltipDirective
 } from '@ng-nest/ui';
 import { AppEditorComponent, AppFileIconPipe, AppFileReader, AppParseGitignore } from '@ui/core';
+import { VariableSettingComponent } from './variable-setting/variable-setting.component';
+import { CategoryPreviewComponent } from './category-preview/category-preview.component';
 
 @Component({
   selector: 'app-code-generate',
@@ -81,7 +83,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   dropdownMenu = signal<XDropdownNode[]>([
     { id: 'add-root', label: '添加根节点', icon: 'fto-plus' },
     { id: 'folder-upload', label: '文件夹上传', icon: 'fto-upload' },
-    { id: 'set-env', label: '变量设置', icon: 'fto-settings' },
+    { id: 'variable-setting', label: '变量设置', icon: 'fto-settings' },
     { id: 'category-preview', label: '生成预览', icon: 'fto-eye' },
     { id: 'code-download', label: '代码下载', icon: 'fto-download' }
   ]);
@@ -185,8 +187,20 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         !this.treeCom().nodeOpen() && this.treeCom().onToggle(event, data as XTreeNode);
         break;
       case 'category-preview':
-        this.catalogue.categoryPreview(this.form.value.category!).subscribe((x) => {
-          console.log(x);
+        this.dialog.create(CategoryPreviewComponent, {
+          width: '70rem',
+          data: {
+            resourceId: this.form.value.category
+          }
+        });
+        break;
+      case 'variable-setting':
+        this.dialog.create(VariableSettingComponent, {
+          className: 'variable-setting',
+          width: '70rem',
+          data: {
+            resourceId: this.form.value.category
+          }
         });
         break;
     }
@@ -315,14 +329,17 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
-        tap((x) =>
+        tap((x) => {
           this.categories.set(
             x.map((y: any) => {
               y.label = y.name;
               return y;
             })
-          )
-        )
+          );
+          if (this.categories().length > 0) {
+            this.form.patchValue({ category: this.categories()[0].id });
+          }
+        })
       );
   }
 }

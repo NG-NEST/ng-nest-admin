@@ -1,0 +1,27 @@
+:host {
+  .content {
+    display: flex;
+    padding: 0;
+  }
+  .left {
+    width: 10rem;
+  }
+  .right {
+    flex: 1;
+  }
+  .attrs {
+    display: grid;
+    padding: 0;
+  }
+  .attrs-table {
+    width: 100%;
+  }
+  .global {
+  }
+}
+
+.variable-setting {
+  ::ng-deep .x-dialog-portal {
+    padding: 0;
+  }
+}

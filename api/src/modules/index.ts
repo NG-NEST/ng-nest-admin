@@ -13,3 +13,5 @@ export * from './aigc';
 export * from './upload';
 export * from './catalogue';
 export * from './file';
+export * from './variable';
+export * from './variable-category';
