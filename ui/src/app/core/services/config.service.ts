@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { XCrumbNode } from '@ng-nest/ui/crumb';
 import { filter } from 'rxjs';
@@ -6,11 +6,12 @@ import { AppMenus } from 'src/app/app-menus';
 
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
+  private router = inject(Router);
   readonly menus = signal(AppMenus);
   readonly crumbs: WritableSignal<XCrumbNode[]> = signal([]);
   readonly menuActivatedId = signal('');
 
-  constructor(private router: Router) {
+  constructor() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {

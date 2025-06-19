@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { XSelectComponent, XSelectNode } from '@ng-nest/ui';
+import { XEmptyComponent, XSelectComponent, XSelectNode } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
-import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
+import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { Catalogue, Variable, VariableCategoryService } from '@ui/api';
-import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
+import { Variable, VariableCategory, VariableCategoryService, VariableService } from '@ui/api';
+import { Subject, finalize, tap } from 'rxjs';
+import { VariableCategoryComponent } from '../variable-category/variable-category.component';
 
 @Component({
   selector: 'app-variable-setting',
@@ -17,6 +18,7 @@ import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
     XInputComponent,
     XButtonComponent,
     XSelectComponent,
+    XEmptyComponent,
     XDialogModule
   ],
   templateUrl: './variable-setting.component.html',
@@ -24,18 +26,29 @@ import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
 })
 export class VariableSettingComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<VariableSettingComponent>);
+  dialog = inject(XDialogService);
   data = inject<{ resourceId: string }>(X_DIALOG_DATA);
   variableCategoryService = inject(VariableCategoryService);
+  variableService = inject(VariableService);
   fb = inject(FormBuilder);
   message = inject(XMessageService);
 
   resourceId = signal('');
   formLoading = signal(false);
   saveLoading = signal(false);
+  tableLoading = signal(false);
 
   form!: FormGroup;
 
   variableCategorys = signal<XSelectNode[]>([]);
+
+  get many() {
+    return this.form.controls['many'] as FormArray;
+  }
+
+  get variableCategoryIsEmpty() {
+    return !this.form.getRawValue()['variableCategoryId'];
+  }
 
   $destroy = new Subject<void>();
   constructor() {
@@ -43,38 +56,14 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
     this.resourceId.set(resourceId);
   }
 
-  get global() {
-    return this.form.controls['global'] as FormArray;
-  }
-
   ngOnInit(): void {
     this.form = this.fb.group({
       variableCategoryId: ['', [Validators.required]],
       resourceId: [this.resourceId(), [Validators.required]],
-      global: this.fb.array([])
+      many: this.fb.array([])
     });
 
-    forkJoin([
-      this.variableCategoryService
-        .variableCategorySelect({
-          where: { resourceId: { equals: this.resourceId() } }
-        })
-        .pipe(
-          tap((x) => {
-            console.log(x);
-            this.variableCategorys.set(
-              x.map((y: any) => {
-                y.label = y.name;
-                return y;
-              })
-            );
-          })
-        )
-    ]).subscribe();
-
-    if (this.resourceId()) {
-      // this.formLoading.set(true);
-    }
+    this.getVariableCategory().subscribe();
   }
 
   ngOnDestroy(): void {
@@ -82,37 +71,82 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
     this.$destroy.complete();
   }
 
-  save() {
-    let rq!: Observable<Catalogue>;
-    const value = this.form.getRawValue();
-    value;
-    let msg = '';
-    // if (!this.resou()) {
-    //   msg = CatalogueMessage.CreatedSuccess;
-    //   rq = this.catalogue.create(value);
-    // } else {
-    //   msg = CatalogueMessage.UpdatedSuccess;
-    //   rq = this.catalogue.update({ id: this.id(), ...value });
-    // }
-    this.saveLoading.set(true);
-    rq.pipe(
-      tap(() => {
-        this.message.success(msg);
-        this.dialogRef.close();
-        // this.data.saveSuccess(x);
-      }),
-      finalize(() => {
-        this.saveLoading.set(false);
+  getVariableCategory() {
+    return this.variableCategoryService
+      .variableCategorySelect({
+        where: { resourceId: { equals: this.resourceId() } }
       })
-    ).subscribe();
+      .pipe(
+        tap((x) => {
+          this.variableCategorys.set(
+            x.map((y: any) => {
+              y.label = y.name;
+              return y;
+            })
+          );
+          if (!this.form.getRawValue().variableCategoryId && this.variableCategorys().length > 0) {
+            this.form.patchValue({ variableCategoryId: this.variableCategorys()[0].id });
+            this.variableCategoryChange(this.variableCategorys()[0].id);
+          }
+        })
+      );
+  }
+
+  save() {
+    const value = this.form.getRawValue();
+    let msg = '';
+    this.saveLoading.set(true);
+    this.variableService
+      .saveMany(value)
+      .pipe(
+        tap(() => {
+          this.message.success(msg);
+        }),
+        finalize(() => {
+          this.saveLoading.set(false);
+        })
+      )
+      .subscribe();
   }
 
   variableCategoryChange(value: string) {
-    console.log(value);
+    if (!value) return;
+
+    this.many.clear();
+    this.tableLoading.set(true);
+    this.variableService
+      .variableSelect({
+        where: { variableCategoryId: { equals: value } }
+      })
+      .pipe(
+        tap((x) => {
+          for (let item of x) {
+            this.add(item);
+          }
+        }),
+        finalize(() => {
+          this.tableLoading.set(false);
+        })
+      )
+      .subscribe();
+  }
+
+  createCategory() {
+    this.dialog.create(VariableCategoryComponent, {
+      width: '30rem',
+      data: {
+        resourceId: this.resourceId(),
+        saveSuccess: (variableCategory: VariableCategory) => {
+          this.getVariableCategory().subscribe(() => {
+            this.form.patchValue({ variableCategoryId: variableCategory.id });
+          });
+        }
+      }
+    });
   }
 
   add(variable?: Variable) {
-    this.global.push(
+    this.many.push(
       this.fb.group({
         id: [variable?.id ?? ''],
         code: [variable?.code ?? '', [Validators.required]],
@@ -128,6 +162,6 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   }
 
   remove(i: number) {
-    this.global.removeAt(i);
+    this.many.removeAt(i);
   }
 }

@@ -8,7 +8,6 @@ import { IconConfig } from 'src/app/icon.config';
 export class AppFileIconPipe implements PipeTransform {
   iconService = inject(XIconService);
 
-  constructor() {}
   transform(value: string): any {
     const filename = value;
     if (filename.indexOf('.') >= 0) {

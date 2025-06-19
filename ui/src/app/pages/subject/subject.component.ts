@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, inject } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent, XTableRow } from '@ng-nest/ui/table';
 import {
@@ -44,6 +44,14 @@ import { PermissionListComponent } from './permission-list/permission-list.compo
   providers: [DatePipe]
 })
 export class SubjectComponent {
+  datePipe = inject(DatePipe);
+  subjectService = inject(SubjectService);
+  resourceService = inject(ResourceService);
+  message = inject(XMessageService);
+  dialog = inject(XDialogService);
+  fb = inject(FormBuilder);
+  messageBox = inject(XMessageBoxService);
+
   searchForm = this.fb.group({
     name: [null]
   });
@@ -81,15 +89,7 @@ export class SubjectComponent {
   resourceSearchLoading = signal(false);
   resourceData = signal<Resource[]>([]);
 
-  constructor(
-    private datePipe: DatePipe,
-    private subjectService: SubjectService,
-    private resourceService: ResourceService,
-    private fb: FormBuilder,
-    private dialog: XDialogService,
-    private message: XMessageService,
-    private messageBox: XMessageBoxService
-  ) {
+  constructor() {
     effect(() => {
       if (this.enabled()) {
         this.resourceSearchForm.enable();

@@ -1681,9 +1681,6 @@ type Variable {
   """VariableId"""
   id: ID!
 
-  """Resource"""
-  resource: Resource!
-
   """ResourceId"""
   resourceId: String!
 
@@ -1695,9 +1692,6 @@ type Variable {
 
   """Value"""
   value: String
-
-  """VariableCategory"""
-  variableCategory: VariableCategory!
 
   """VariableCategoryId"""
   variableCategoryId: String!
@@ -1867,6 +1861,9 @@ type VariableSelectOutput {
   """VariableId"""
   id: ID!
 
+  """ResourceId"""
+  resourceId: String
+
   """Type"""
   type: String
 
@@ -1875,6 +1872,9 @@ type VariableSelectOutput {
 
   """Value"""
   value: String
+
+  """VariableCategoryId"""
+  variableCategoryId: String
 }
 
 input VariableWhere {

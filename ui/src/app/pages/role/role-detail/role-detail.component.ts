@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -9,17 +9,21 @@ import { RoleService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
-    selector: 'app-role-detail',
-    imports: [
-        ReactiveFormsModule,
-        XLoadingComponent,
-        XInputComponent,
-        XButtonComponent,
-        XDialogModule
-    ],
-    templateUrl: './role-detail.component.html'
+  selector: 'app-role-detail',
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XDialogModule
+  ],
+  templateUrl: './role-detail.component.html'
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
+  role = inject(RoleService);
+  fb = inject(FormBuilder);
+  message = inject(XMessageService);
   dialogRef = inject(XDialogRef<RoleDetailComponent>);
   id = signal('');
 
@@ -29,12 +33,6 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
-    private role: RoleService,
-    private fb: FormBuilder,
-    private message: XMessageService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { CacheDescription, CacheGroup, CacheService, ResourceService } from '@ui/api';
 import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
@@ -31,6 +31,12 @@ import { CacheGroupComponent } from './cache-group/cache-group.component';
   providers: [DatePipe]
 })
 export class CacheComponent {
+  private cacheService = inject(CacheService);
+  private fb = inject(FormBuilder);
+  private resource = inject(ResourceService);
+  private messageBox = inject(XMessageBoxService);
+  private message = inject(XMessageService);
+  private dialog = inject(XDialogService);
   searchForm = this.fb.group({
     name: [null]
   });
@@ -52,16 +58,7 @@ export class CacheComponent {
   data = signal<CacheGroup[]>([]);
   typeMap = new Map<string, string>();
 
-  @ViewChild('tableCom') tableCom!: XTableComponent;
-
-  constructor(
-    private cacheService: CacheService,
-    private fb: FormBuilder,
-    private resource: ResourceService,
-    private messageBox: XMessageBoxService,
-    private message: XMessageService,
-    private dialog: XDialogService
-  ) {}
+  tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
     this.getTypes().subscribe();

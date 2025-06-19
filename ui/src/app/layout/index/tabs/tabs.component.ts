@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { XIconComponent } from '@ng-nest/ui/icon';
 import { XCrumbComponent } from '@ng-nest/ui/crumb';
 import { AppAuthService, AppConfigService } from '@ui/core';
@@ -19,6 +19,8 @@ import { XAvatarComponent } from '@ng-nest/ui/avatar';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent {
+  config = inject(AppConfigService);
+  auth = inject(AppAuthService);
   userFirstName = computed(() => {
     const user = this.auth.userInfo();
     if (user && user.name) {
@@ -32,10 +34,6 @@ export class TabsComponent {
       label: '退出'
     }
   ];
-  constructor(
-    public config: AppConfigService,
-    public auth: AppAuthService
-  ) {}
 
   onUserMenuClick(node: XDropdownNode) {
     if (node.id === 'exit') {

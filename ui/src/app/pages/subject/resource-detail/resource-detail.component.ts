@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -29,6 +29,14 @@ import { XTextareaComponent } from '@ng-nest/ui/textarea';
   templateUrl: './resource-detail.component.html'
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; title: string; subjectId: string; saveSuccess: () => void }>(
+    X_DIALOG_DATA
+  );
+  resource = inject(ResourceService);
+  subject = inject(SubjectService);
+  fb = inject(FormBuilder);
+  message = inject(XMessageService);
+
   dialogRef = inject(XDialogRef<ResourceDetailComponent>);
   id = signal('');
   title = signal('');
@@ -42,14 +50,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA)
-    public data: { id: string; title: string; subjectId: string; saveSuccess: () => void },
-    private resource: ResourceService,
-    private subject: SubjectService,
-    private fb: FormBuilder,
-    private message: XMessageService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({

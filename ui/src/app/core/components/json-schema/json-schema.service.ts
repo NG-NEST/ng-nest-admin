@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { XTreeData } from './json-schema.type';
 import { isArray, isObject } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class AppJsonSchemaService {
-  constructor(private fb: FormBuilder) {}
+  fb = inject(FormBuilder);
 
   createNodeForm(node: XTreeData): FormGroup {
     const {

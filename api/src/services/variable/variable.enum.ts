@@ -15,6 +15,10 @@ export enum VariableDescription {
   Type = 'Type',
   Value = 'Value',
   Description = 'Description',
+  ResourceId = 'ResourceId',
+  VariableCategoryId = 'VariableCategoryId',
+
+  Many = 'Many',
 }
 
 export enum VariableResolverName {

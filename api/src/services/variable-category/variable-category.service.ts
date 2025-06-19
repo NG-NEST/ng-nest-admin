@@ -53,7 +53,7 @@ export class VariableCategoryService {
 
   async create(input: VariableCategoryCreateInput) {
     let { resourceId, ...other } = input;
-    const data = { ...other, resource: { connect: { id: resourceId } }, parent: {} };
+    const data = { ...other, resource: { connect: { id: resourceId } } };
     return await this.prisma.variableCategory.create({
       data,
     });

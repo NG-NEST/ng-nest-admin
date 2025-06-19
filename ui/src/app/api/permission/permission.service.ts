@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
@@ -15,10 +15,8 @@ import { PermessionSaveManyInput } from './save-many.input';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   permission(id: string): Observable<Permission> {
     return this.apollo

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XLinkComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -29,6 +29,8 @@ export class CacheGroupComponent implements OnDestroy {
   fb = inject(FormBuilder);
   message = inject(XMessageService);
   dialog = inject(XDialogService);
+  data = inject<{ item: CacheGroup }>(X_DIALOG_DATA);
+  resource = inject(ResourceService);
   base64ToString = inject(AppBase64ToStringPipe);
 
   type = signal<string>('');
@@ -41,10 +43,7 @@ export class CacheGroupComponent implements OnDestroy {
 
   $destroy = new Subject<void>();
 
-  constructor(
-    @Inject(X_DIALOG_DATA) public data: { item: CacheGroup },
-    private resource: ResourceService
-  ) {
+  constructor() {
     const { item } = this.data;
     if (!item) return;
     const { type, keys } = item;

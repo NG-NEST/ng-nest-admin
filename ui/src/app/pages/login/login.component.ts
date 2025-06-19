@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -12,10 +12,10 @@ import { isEmpty } from 'lodash-es';
 import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
 @Component({
-    selector: 'app-login',
-    imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+  selector: 'app-login',
+  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   auth = inject(AppAuthService);
@@ -32,7 +32,7 @@ export class LoginComponent {
   codekey = signal('');
   redirect = signal('');
 
-  @ViewChild('svgEle', { static: true }) svgEle!: ElementRef<HTMLDivElement>;
+  svgEle = viewChild.required<ElementRef<HTMLDivElement>>('svgEle');
 
   form!: FormGroup;
 
@@ -53,7 +53,7 @@ export class LoginComponent {
   getCaptcha() {
     this.codekey.set(Math.random().toString(36).slice(2));
     this.authService.captcha(this.codekey()).subscribe((x) => {
-      this.svgEle.nativeElement.innerHTML = x;
+      this.svgEle().nativeElement.innerHTML = x;
     });
   }
 

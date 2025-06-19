@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Schema, SchemaDescription, SchemaService, SchemaWhereInput } from '@ui/api';
@@ -31,6 +31,13 @@ import { XLinkComponent } from '@ng-nest/ui/link';
   providers: [DatePipe]
 })
 export class SchemaComponent {
+  datePipe = inject(DatePipe);
+  schemaService = inject(SchemaService);
+  fb = inject(FormBuilder);
+  message = inject(XMessageService);
+  messageBox = inject(XMessageBoxService);
+  dialog = inject(XDialogService);
+
   searchForm = this.fb.group({
     name: [null]
   });
@@ -52,16 +59,7 @@ export class SchemaComponent {
   searchLoading = signal(false);
   data = signal<Schema[]>([]);
 
-  @ViewChild('tableCom') tableCom!: XTableComponent;
-
-  constructor(
-    private datePipe: DatePipe,
-    private schemaService: SchemaService,
-    private fb: FormBuilder,
-    private dialog: XDialogService,
-    private message: XMessageService,
-    private messageBox: XMessageBoxService
-  ) {}
+  tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
     this.getTableData();

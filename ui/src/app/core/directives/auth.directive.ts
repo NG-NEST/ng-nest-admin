@@ -1,10 +1,14 @@
-import { Directive, ElementRef, Renderer2, input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, inject, input } from '@angular/core';
 import { AppAuthService } from '../services/auth.service';
 
 @Directive({
   selector: '[app-auth]'
 })
 export class AppAuthDirective {
+  ele = inject(ElementRef);
+  authService = inject(AppAuthService);
+  renderer = inject(Renderer2);
+
   auth = input.required<string>({ alias: 'app-auth' });
 
   and = input<boolean | null>(null);
@@ -14,12 +18,6 @@ export class AppAuthDirective {
   hidden = input(true);
 
   isGrant: boolean = false;
-
-  constructor(
-    public ele: ElementRef,
-    public authService: AppAuthService,
-    public renderer: Renderer2
-  ) {}
 
   ngOnInit() {
     if (!this.auth()) return;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LoginInput } from './login.input';
 import { Auth } from './auth.model';
 import { HttpClient } from '@angular/common/http';
@@ -11,10 +11,8 @@ import { VerifyTokenOutput } from './verify-token.output';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   userInfo(): Observable<User> {
     return this.apollo

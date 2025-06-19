@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -33,6 +33,14 @@ import { AppAuthService } from '@ui/core';
   styleUrls: ['./role-permission.component.scss']
 })
 export class RolePermissionComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
+  role = inject(RoleService);
+  subject = inject(SubjectService);
+  resource = inject(ResourceService);
+  fb = inject(FormBuilder);
+  message = inject(XMessageService);
+  auth = inject(AppAuthService);
+
   dialogRef = inject(XDialogRef<RolePermissionComponent>);
   id = signal('');
   subjects = signal<XData<XSelectNode>>([]);
@@ -62,15 +70,6 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   rolePermisions = signal<Permission[]>([]);
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
-    private role: RoleService,
-    private subject: SubjectService,
-    private resource: ResourceService,
-    private fb: FormBuilder,
-    private message: XMessageService,
-    private auth: AppAuthService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({

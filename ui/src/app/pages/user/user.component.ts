@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
@@ -34,6 +34,13 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
   providers: [DatePipe]
 })
 export class UserComponent {
+  datePipe = inject(DatePipe);
+  userService = inject(UserService);
+  fb = inject(FormBuilder);
+  dialog = inject(XDialogService);
+  message = inject(XMessageService);
+  messageBox = inject(XMessageBoxService);
+
   searchForm = this.fb.group({
     name: [null]
   });
@@ -56,16 +63,7 @@ export class UserComponent {
   searchLoading = signal(false);
   data = signal<User[]>([]);
 
-  @ViewChild('tableCom') tableCom!: XTableComponent;
-
-  constructor(
-    private datePipe: DatePipe,
-    private userService: UserService,
-    private fb: FormBuilder,
-    private dialog: XDialogService,
-    private message: XMessageService,
-    private messageBox: XMessageBoxService
-  ) {}
+  tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
     this.getTableData();

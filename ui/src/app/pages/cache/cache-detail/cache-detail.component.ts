@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -25,6 +25,7 @@ export class CacheDetailComponent implements OnDestroy {
   dialogRef = inject(XDialogRef<CacheDetailComponent>);
   cache = inject(CacheService);
   fb = inject(FormBuilder);
+  data = inject<{ key: string }>(X_DIALOG_DATA);
   message = inject(XMessageService);
 
   key = signal<string>('');
@@ -40,7 +41,7 @@ export class CacheDetailComponent implements OnDestroy {
 
   item = signal<Cache | null>(null);
 
-  constructor(@Inject(X_DIALOG_DATA) public data: { key: string }) {
+  constructor() {
     const { key } = this.data;
     this.key.set(key);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
@@ -16,10 +16,8 @@ import { RolePermissionOutput } from './role-permissions.output';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) { }
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   role(id: string): Observable<Role> {
     return this.apollo

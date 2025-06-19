@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -62,6 +62,13 @@ import { CategoryPreviewComponent } from './category-preview/category-preview.co
   animations: []
 })
 export class CodeGenerateComponent implements OnInit, OnDestroy {
+  formBuilder = inject(FormBuilder);
+  resource = inject(ResourceService);
+  catalogue = inject(CatalogueService);
+  messageBox = inject(XMessageBoxService);
+  message = inject(XMessageService);
+  dialog = inject(XDialogService);
+
   form = this.formBuilder.group({
     category: ['']
   });
@@ -87,15 +94,6 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     { id: 'category-preview', label: '生成预览', icon: 'fto-eye' },
     { id: 'code-download', label: '代码下载', icon: 'fto-download' }
   ]);
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private resource: ResourceService,
-    private catalogue: CatalogueService,
-    private messageBox: XMessageBoxService,
-    private message: XMessageService,
-    private dialog: XDialogService
-  ) {}
 
   ngOnInit(): void {
     this.getCategories().subscribe();
@@ -196,7 +194,6 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'variable-setting':
         this.dialog.create(VariableSettingComponent, {
-          className: 'variable-setting',
           width: '70rem',
           data: {
             resourceId: this.form.value.category

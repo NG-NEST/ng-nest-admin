@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { CacheKeysInput } from './cache-keys.input';
@@ -11,10 +11,8 @@ import { CacheGroup } from './cache-group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CacheService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   cacheKeys(input?: CacheKeysInput): Observable<CacheGroup[]> {
     return this.apollo

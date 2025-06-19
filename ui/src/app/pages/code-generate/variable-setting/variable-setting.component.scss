@@ -15,8 +15,18 @@
   }
   .attrs-table {
     width: 100%;
+    padding: 0 1.25rem 1.25rem 1.25rem;
   }
-  .global {
+  .tools {
+    padding: 0 1.25rem;
+  }
+  .query {
+    padding: 1.25rem;
+    border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+  }
+
+  .empty {
+    padding: 2rem;
   }
 }
 

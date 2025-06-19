@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import { Role, RoleDescription, RoleService, RoleWhereInput } from '@ui/api';
@@ -32,6 +32,13 @@ import { RolePermissionComponent } from './role-permission/role-permission.compo
   providers: [DatePipe]
 })
 export class RoleComponent {
+  datePipe = inject(DatePipe);
+  roleService = inject(RoleService);
+  fb = inject(FormBuilder);
+  dialog = inject(XDialogService);
+  message = inject(XMessageService);
+  messageBox = inject(XMessageBoxService);
+
   searchForm = this.fb.group({
     name: [null]
   });
@@ -53,16 +60,7 @@ export class RoleComponent {
   searchLoading = signal(false);
   data = signal<Role[]>([]);
 
-  @ViewChild('tableCom') tableCom!: XTableComponent;
-
-  constructor(
-    private datePipe: DatePipe,
-    private roleService: RoleService,
-    private fb: FormBuilder,
-    private dialog: XDialogService,
-    private message: XMessageService,
-    private messageBox: XMessageBoxService
-  ) {}
+  tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
     this.getTableData();

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -23,6 +23,10 @@ import { Observable, Subject, finalize, mergeMap, tap } from 'rxjs';
   styleUrls: ['./schema-detail.component.scss']
 })
 export class SchemaDetailComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
+  schema = inject(SchemaService);
+  message = inject(XMessageService);
+
   dialogRef = inject(XDialogRef<SchemaDetailComponent>);
   formBuild = inject(FormBuilder);
   jsonSchemaCom = viewChild.required<AppJsonSchemaComponent>('jsonSchemaCom');
@@ -42,11 +46,6 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void },
-    private schema: SchemaService,
-    private message: XMessageService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuild.group({
@@ -62,11 +61,9 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
         .pipe(
           tap((x) => {
             this.form.patchValue(x);
-            this.jsonSchema=JSON.parse(x.json);
+            this.jsonSchema = JSON.parse(x.json);
           }),
-          finalize(() => 
-            this.formLoading.set(false)
-          )
+          finalize(() => this.formLoading.set(false))
         )
         .subscribe();
     }

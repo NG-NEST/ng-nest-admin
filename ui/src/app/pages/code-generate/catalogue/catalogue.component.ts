@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   XIconComponent,
@@ -37,6 +37,17 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
   dialogRef = inject(XDialogRef<CatalogueComponent>);
+  data = inject<{
+    id: string;
+    type: string;
+    resourceId: string;
+    pid: string;
+    saveSuccess: (node: Catalogue) => void;
+  }>(X_DIALOG_DATA);
+  private catalogue = inject(CatalogueService);
+  private fb = inject(FormBuilder);
+  private message = inject(XMessageService);
+
   id = signal('');
   resourceId = signal('');
   pid = signal<null | string>(null);
@@ -64,20 +75,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA)
-    public data: {
-      id: string;
-      type: string;
-      sort: number;
-      resourceId: string;
-      pid: string;
-      saveSuccess: (node: Catalogue) => void;
-    },
-    private catalogue: CatalogueService,
-    private fb: FormBuilder,
-    private message: XMessageService
-  ) {
+  constructor() {
     const { id, resourceId, pid, type } = this.data;
     this.id.set(id);
     this.type.set(type);

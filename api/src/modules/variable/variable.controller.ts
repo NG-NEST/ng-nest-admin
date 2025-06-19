@@ -6,12 +6,20 @@ import {
   VariableService,
   VariableUpdateInput,
   VariableCacheClear,
+  VariableSaveManyInput,
 } from '@api/services';
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('variable')
 export class VariableController {
   constructor(private variableService: VariableService) {}
+
+  @Post('many')
+  @Authorization(VariableAuth.VariableUpdate)
+  @CacheClear(...VariableCacheClear)
+  async saveMany(@Body() data: VariableSaveManyInput) {
+    return await this.variableService.saveMany(data);
+  }
 
   @Patch()
   @Authorization(VariableAuth.VariableUpdate)

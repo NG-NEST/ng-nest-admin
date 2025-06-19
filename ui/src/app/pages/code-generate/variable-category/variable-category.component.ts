@@ -1,34 +1,38 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { XTextareaComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { XTextareaComponent } from '@ng-nest/ui/textarea';
-import { SubjectService } from '@ui/api';
+import { VariableCategory, VariableCategoryMessage, VariableCategoryService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-subject-detail',
+  selector: 'app-variable-category',
   imports: [
     ReactiveFormsModule,
     XLoadingComponent,
     XInputComponent,
     XButtonComponent,
-    XDialogModule,
-    XTextareaComponent
+    XTextareaComponent,
+    XDialogModule
   ],
-  templateUrl: './subject-detail.component.html'
+  templateUrl: './variable-category.component.html'
 })
-export class SubjectDetailComponent implements OnInit, OnDestroy {
-  data = inject<{ id: string; title: string; saveSuccess: () => void }>(X_DIALOG_DATA);
-  subject = inject(SubjectService);
+export class VariableCategoryComponent implements OnInit, OnDestroy {
+  dialogRef = inject(XDialogRef<VariableCategoryComponent>);
+  data = inject<{
+    id: string;
+    resourceId: string;
+    saveSuccess: (variableCategory: VariableCategory) => void;
+  }>(X_DIALOG_DATA);
   fb = inject(FormBuilder);
+  variableCategory = inject(VariableCategoryService);
   message = inject(XMessageService);
-  dialogRef = inject(XDialogRef<SubjectDetailComponent>);
   id = signal('');
-  title = signal('');
+  resourceId = signal('');
 
   formLoading = signal(false);
   saveLoading = signal(false);
@@ -36,22 +40,28 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
+  constructor() {
+    const { id, resourceId } = this.data;
+    this.id.set(id);
+    this.resourceId.set(resourceId);
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
-      description: [null]
+      description: [null],
+      resourceId: [this.resourceId(), [Validators.required]]
     });
-    const { id, title } = this.data;
-    this.id.set(id);
-    this.title.set(title);
+
     if (this.id()) {
       this.formLoading.set(true);
-      this.subject
-        .subject(this.id())
+      this.variableCategory
+        .variableCategory(this.id())
         .pipe(
-          tap((x) => this.form.patchValue(x)),
+          tap((x) => {
+            this.form.patchValue(x);
+          }),
           finalize(() => this.formLoading.set(false))
         )
         .subscribe();
@@ -64,18 +74,21 @@ export class SubjectDetailComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    let rq!: Observable<string>;
+    let rq!: Observable<VariableCategory>;
+    let msg = '';
     if (!this.id()) {
-      rq = this.subject.create(this.form.value);
+      rq = this.variableCategory.create(this.form.value);
+      msg = VariableCategoryMessage.CreatedSuccess;
     } else {
-      rq = this.subject.update({ id: this.id(), ...this.form.value });
+      rq = this.variableCategory.update({ id: this.id(), ...this.form.value });
+      msg = VariableCategoryMessage.UpdatedSuccess;
     }
     this.saveLoading.set(true);
     rq.pipe(
       tap((x) => {
-        this.message.success(x);
+        this.message.success(msg);
         this.dialogRef.close();
-        this.data.saveSuccess();
+        this.data.saveSuccess(x);
       }),
       finalize(() => {
         this.saveLoading.set(false);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
@@ -11,13 +11,12 @@ import { VariableUpdateInput } from './update.input';
 import { VariableSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { VariableSelectInput } from './select.input';
+import { VariableSaveManyInput } from './save-many.input';
 
 @Injectable({ providedIn: 'root' })
 export class VariableService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   variable(id: string): Observable<Variable> {
     return this.apollo
@@ -86,6 +85,9 @@ export class VariableService {
               code
               type
               value
+              description
+              resourceId
+              variableCategoryId
             }
           }
         `
@@ -103,5 +105,11 @@ export class VariableService {
 
   delete(id: string): Observable<string> {
     return this.http.delete(`/api/variable/${id}`).pipe(map(() => VariableMessage.DeletedSuccess));
+  }
+
+  saveMany(input: VariableSaveManyInput): Observable<string> {
+    return this.http
+      .post(`/api/variable/many`, input)
+      .pipe(map(() => VariableMessage.UpdatedSuccess));
   }
 }

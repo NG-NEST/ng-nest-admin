@@ -6,6 +6,7 @@ import { VariableUpdateInput } from './update.input';
 import { VariableCreateInput } from './create.input';
 import { VariableSelectInput } from './select.input';
 import { VariablePaginationOutput } from './variable.output';
+import { VariableSaveManyInput } from './save-many.input';
 
 @Injectable()
 export class VariableService {
@@ -40,6 +41,35 @@ export class VariableService {
       data,
       where: { id },
     });
+  }
+
+  async saveMany(input: VariableSaveManyInput) {
+    const { many, resourceId, variableCategoryId } = input;
+    const currentMany = await this.prisma.variable.findMany({
+      where: { resourceId: resourceId, variableCategoryId: variableCategoryId },
+    });
+    let transaction = [];
+    const updateMany = many.filter((x) => x.id);
+    for (let data of updateMany) {
+      transaction.push(this.prisma.variable.update({ data, where: { id: data.id } }));
+    }
+    const deleteMany = currentMany.filter((x) => !updateMany.map((y) => y.id).includes(x.id));
+    if (deleteMany.length > 0) {
+      transaction.push(
+        this.prisma.variable.deleteMany({ where: { id: { in: deleteMany.map((x) => x.id) } } }),
+      );
+    }
+    const createMany = many
+      .filter((x) => !x.id)
+      .map((x) => {
+        const { id, ...data } = x;
+        return data;
+      });
+    for (let data of createMany) {
+      transaction.push(this.prisma.variable.create({ data }));
+    }
+
+    return await this.prisma.$transaction(transaction);
   }
 
   async create(input: VariableCreateInput) {

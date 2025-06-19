@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
@@ -14,10 +14,8 @@ import { LanguageSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   language(id: string): Observable<Language> {
     return this.apollo

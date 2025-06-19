@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 import { BasePagination } from '@ui/core';
@@ -14,10 +14,8 @@ import { VariableCategorySelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
 export class VariableCategoryService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient
-  ) {}
+  apollo = inject(Apollo);
+  http = inject(HttpClient);
 
   variableCategory(id: string): Observable<VariableCategory> {
     return this.apollo
@@ -54,7 +52,7 @@ export class VariableCategoryService {
             $where: VariableCategoryWhereInput
             $orderBy: [VariableCategoryOrderInput!]
           ) {
-            variable-categorys(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
+            variableCategorys(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
                 code
@@ -77,13 +75,15 @@ export class VariableCategoryService {
   variableCategorySelect(
     input: VariableCategorySelectInput
   ): Observable<VariableCategorySelectOutput[]> {
-    console.log(input);
     return this.apollo
       .query<{ variableCategorySelect: VariableCategorySelectOutput[] }>({
         variables: input,
         query: gql`
-          query VariableCategorySelect($where: VariableCategoryWhereInput, $orderBy: [VariableCategoryOrderInput!]) {
-            variable-categorySelect(where: $where, orderBy: $orderBy) {
+          query VariableCategorySelect(
+            $where: VariableCategoryWhereInput
+            $orderBy: [VariableCategoryOrderInput!]
+          ) {
+            variableCategorySelect(where: $where, orderBy: $orderBy) {
               id
               name
               code

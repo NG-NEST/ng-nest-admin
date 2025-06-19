@@ -2,6 +2,8 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { VariableDescription } from './variable.enum';
 import { BaseAudit } from '@api/core';
 import { IsOptional } from 'class-validator';
+import { ResourceDescription } from '../resource';
+import { VariableCategoryDescription } from '../variable-category';
 
 @ObjectType()
 export class VariableSelectOutput extends BaseAudit {
@@ -22,4 +24,12 @@ export class VariableSelectOutput extends BaseAudit {
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
+
+  @Field({ description: ResourceDescription.Id, nullable: true })
+  @IsOptional()
+  resourceId?: string;
+
+  @Field({ description: VariableCategoryDescription.Id, nullable: true })
+  @IsOptional()
+  variableCategoryId?: string;
 }

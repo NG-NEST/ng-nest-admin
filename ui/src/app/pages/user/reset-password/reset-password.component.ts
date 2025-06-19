@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -26,6 +26,7 @@ import { Subject, finalize, tap } from 'rxjs';
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
   dialogRef = inject(XDialogRef<ResetPasswordComponent>);
   user = inject(UserService);
   fb = inject(FormBuilder);
@@ -39,8 +40,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-
-  constructor(@Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void }) {}
 
   ngOnInit(): void {
     const { id } = this.data;

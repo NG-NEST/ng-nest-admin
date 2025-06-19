@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,18 +17,19 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
 import { XData } from '@ng-nest/ui/core';
 
 @Component({
-    selector: 'app-user-detail',
-    imports: [
-        ReactiveFormsModule,
-        XLoadingComponent,
-        XInputComponent,
-        XButtonComponent,
-        XSelectComponent,
-        XDialogModule
-    ],
-    templateUrl: './user-detail.component.html'
+  selector: 'app-user-detail',
+  imports: [
+    ReactiveFormsModule,
+    XLoadingComponent,
+    XInputComponent,
+    XButtonComponent,
+    XSelectComponent,
+    XDialogModule
+  ],
+  templateUrl: './user-detail.component.html'
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
+  data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
   dialogRef = inject(XDialogRef<UserDetailComponent>);
   user = inject(UserService);
   fb = inject(FormBuilder);
@@ -44,8 +45,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   $destroy = new Subject<void>();
-
-  constructor(@Inject(X_DIALOG_DATA) public data: { id: string; saveSuccess: () => void }) {}
 
   ngOnInit(): void {
     this.role.roleSelect({}).subscribe((x) => {

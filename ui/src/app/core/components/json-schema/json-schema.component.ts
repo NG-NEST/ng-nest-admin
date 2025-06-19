@@ -1,5 +1,6 @@
 import {
   Component,
+  inject,
   model,
   OnDestroy,
   OnInit,
@@ -38,6 +39,8 @@ import { AppOperationComponent } from './operation/operation.component';
   styleUrls: ['./json-schema.component.scss']
 })
 export class AppJsonSchemaComponent implements OnInit, OnDestroy {
+  fb = inject(FormBuilder);
+  jss = inject(AppJsonSchemaService);
   data = model<XJsonSchema>({});
 
   treeCom = viewChild.required<XTreeComponent>('treeCom');
@@ -62,11 +65,6 @@ export class AppJsonSchemaComponent implements OnInit, OnDestroy {
   }
 
   $destroy = new Subject<void>();
-
-  constructor(
-    private fb: FormBuilder,
-    private jss: AppJsonSchemaService
-  ) {}
 
   ngOnInit() {
     this.setTreeData();

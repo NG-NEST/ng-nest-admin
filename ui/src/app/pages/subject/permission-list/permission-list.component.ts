@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -28,6 +28,18 @@ import { AppAuthDirective, AppAuthService } from '@ui/core';
   templateUrl: './permission-list.component.html'
 })
 export class PermissionListComponent implements OnInit, OnDestroy {
+  data = inject<{
+    id: string;
+    code: string;
+    title: string;
+    subjectId: string;
+    saveSuccess: () => void;
+  }>(X_DIALOG_DATA);
+  permission = inject(PermissionService);
+  fb = inject(FormBuilder);
+  message = inject(XMessageService);
+  auth = inject(AppAuthService);
+
   dialogRef = inject(XDialogRef<PermissionListComponent>);
   id = signal('');
   code = signal('');
@@ -54,20 +66,6 @@ export class PermissionListComponent implements OnInit, OnDestroy {
   });
 
   $destroy = new Subject<void>();
-  constructor(
-    @Inject(X_DIALOG_DATA)
-    public data: {
-      id: string;
-      code: string;
-      title: string;
-      subjectId: string;
-      saveSuccess: () => void;
-    },
-    private permission: PermissionService,
-    private fb: FormBuilder,
-    private message: XMessageService,
-    private auth: AppAuthService
-  ) {}
 
   ngOnInit(): void {
     const { id, title, code } = this.data;
