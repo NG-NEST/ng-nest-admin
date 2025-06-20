@@ -1055,6 +1055,9 @@ type Resource {
   """SubjectId"""
   subjectId: String!
 
+  """Type"""
+  type: String
+
   """UpdatedAt"""
   updatedAt: DateTime
 }
@@ -1082,6 +1085,9 @@ input ResourceOrderInput {
 
   """SubjectId"""
   subjectId: SortOrder
+
+  """Type"""
+  type: SortOrder
 
   """UpdatedAt"""
   updatedAt: SortOrder
@@ -1126,6 +1132,9 @@ type ResourceSelectOutput {
   """Sort"""
   sort: Float!
 
+  """Type"""
+  type: String
+
   """UpdatedAt"""
   updatedAt: DateTime
 }
@@ -1151,6 +1160,9 @@ input ResourceWhere {
 
   """SubjectId"""
   subjectId: StringFilter
+
+  """Type"""
+  type: StringFilter
 }
 
 input ResourceWhereInput {
@@ -1183,6 +1195,9 @@ input ResourceWhereInput {
 
   """SubjectId"""
   subjectId: StringFilter
+
+  """Type"""
+  type: StringFilter
 }
 
 type Role {
@@ -1691,7 +1706,7 @@ type Variable {
   updatedAt: DateTime
 
   """Value"""
-  value: String
+  value: JSON
 
   """VariableCategoryId"""
   variableCategoryId: String!
@@ -1871,7 +1886,7 @@ type VariableSelectOutput {
   updatedAt: DateTime
 
   """Value"""
-  value: String
+  value: JSON
 
   """VariableCategoryId"""
   variableCategoryId: String

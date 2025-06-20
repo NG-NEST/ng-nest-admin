@@ -4,7 +4,11 @@
   <div x-dialog-content class="content">
     <div class="item required">
       <label>资源分类：</label>
-      <x-select formControlName="subjectId" [data]="subjects()" placeholder="请选择资源分类"></x-select>
+      <x-select
+        formControlName="subjectId"
+        [data]="subjects()"
+        placeholder="请选择资源分类"
+      ></x-select>
     </div>
     <div class="item">
       <label>父资源：</label>

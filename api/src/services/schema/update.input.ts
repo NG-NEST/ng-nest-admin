@@ -3,6 +3,7 @@ import { IsNotEmpty, IsOptional, IsJSON } from 'class-validator';
 import { IsExist, ValidatorDescription, I18N } from '@api/core';
 import { SchemaDescription, SCHEMA_I18N } from './schema.enum';
 import { GraphQLJSON } from 'graphql-scalars';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @InputType()
 export class SchemaUpdateInput {
@@ -29,5 +30,5 @@ export class SchemaUpdateInput {
   @Field(() => GraphQLJSON, { description: SchemaDescription.Json, nullable: true })
   @IsOptional()
   @IsJSON()
-  json?: object;
+  json?: JsonValue;
 }

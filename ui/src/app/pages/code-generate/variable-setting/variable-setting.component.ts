@@ -6,8 +6,14 @@ import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-ne
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { Variable, VariableCategory, VariableCategoryService, VariableService } from '@ui/api';
-import { Subject, finalize, tap } from 'rxjs';
+import {
+  ResourceService,
+  Variable,
+  VariableCategory,
+  VariableCategoryService,
+  VariableService
+} from '@ui/api';
+import { Subject, concatMap, finalize, tap } from 'rxjs';
 import { VariableCategoryComponent } from '../variable-category/variable-category.component';
 
 @Component({
@@ -32,6 +38,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   variableService = inject(VariableService);
   fb = inject(FormBuilder);
   message = inject(XMessageService);
+  resource = inject(ResourceService);
 
   resourceId = signal('');
   formLoading = signal(false);
@@ -41,6 +48,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   variableCategorys = signal<XSelectNode[]>([]);
+  typeList = signal<XSelectNode[]>([]);
 
   get many() {
     return this.form.controls['many'] as FormArray;
@@ -63,7 +71,9 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
       many: this.fb.array([])
     });
 
-    this.getVariableCategory().subscribe();
+    this.getVariableCategory()
+      .pipe(concatMap(() => this.getTypeList()))
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -88,6 +98,24 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
             this.form.patchValue({ variableCategoryId: this.variableCategorys()[0].id });
             this.variableCategoryChange(this.variableCategorys()[0].id);
           }
+        })
+      );
+  }
+
+  getTypeList() {
+    return this.resource
+      .resourceSelect({
+        where: { subject: { code: { equals: 'variable-type' } } },
+        orderBy: [{ sort: 'asc' }]
+      })
+      .pipe(
+        tap((x) => {
+          this.typeList.set(
+            x.map((y: any) => {
+              y.label = y.name;
+              return y;
+            })
+          );
         })
       );
   }

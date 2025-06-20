@@ -1,7 +1,9 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, I18N } from '@api/core';
 import { VariableDescription, VARIABLE_I18N } from './variable.enum';
+import { GraphQLJSON } from 'graphql-scalars';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @InputType()
 export class VariableUpdateInput {
@@ -18,9 +20,10 @@ export class VariableUpdateInput {
   @IsOptional()
   type?: string;
 
-  @Field({ description: VariableDescription.Value, nullable: true })
+  @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
-  value?: string;
+  @IsJSON()
+  value?: JsonValue;
 
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()

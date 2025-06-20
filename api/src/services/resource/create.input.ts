@@ -32,6 +32,10 @@ export class ResourceCreateInput {
   )
   sort: number;
 
+  @Field({ description: ResourceDescription.Type, nullable: true })
+  @IsOptional()
+  type?: string;
+
   @Field({ description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: string;

@@ -48,14 +48,18 @@
             @for (item of many.controls; track item) {
               <tr [formGroupName]="$index">
                 <td class="index">{{ $index + 1 }}</td>
-                <td><x-input formControlName="code"></x-input></td>
                 <td>
-                  <x-input formControlName="type"></x-input>
+                  <x-input formControlName="code"></x-input>
+                </td>
+                <td>
+                  <x-select [data]="typeList()" formControlName="type"></x-select>
                 </td>
                 <td>
                   <x-input formControlName="value"></x-input>
                 </td>
-                <td><x-input formControlName="description"></x-input></td>
+                <td>
+                  <x-input formControlName="description"></x-input>
+                </td>
                 <td>
                   <x-button
                     icon="fto-trash-2"
@@ -68,6 +72,13 @@
                   </x-button>
                 </td>
               </tr>
+            }
+            @if (many.getRawValue().length === 0) {
+              <x-empty [content]="contentTemp">
+                <ng-template #contentTemp>
+                  <span>没有变量数据</span>
+                </ng-template>
+              </x-empty>
             }
           </tbody>
         </table>
@@ -83,7 +94,8 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid"
-      >保存</x-button
     >
+      保存
+    </x-button>
   </div>
 </form>

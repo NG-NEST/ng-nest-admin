@@ -9,9 +9,7 @@
       </div>
       <div class="buttons">
         <div>
-          <x-button icon="fto-search" attrType="submit" [loading]="searchLoading()"
-            >搜索</x-button
-          >
+          <x-button icon="fto-search" attrType="submit" [loading]="searchLoading()">搜索</x-button>
           <x-button
             icon="fto-refresh-cw"
             attrType="button"
@@ -47,9 +45,15 @@
     ></x-table>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
-        <x-link [app-auth]="'role-permission-view'" type="primary" (click)="action('auth', row)">权限</x-link>
-        <x-link [app-auth]="'role-update'" type="primary" (click)="action('edit', row)">修改</x-link>
-        <x-link [app-auth]="'role-delete'" type="danger" (click)="action('delete', row)">删除</x-link>
+        <x-link [app-auth]="'role-permission-view'" type="primary" (click)="action('auth', row)"
+          >权限</x-link
+        >
+        <x-link [app-auth]="'role-update'" type="primary" (click)="action('edit', row)"
+          >修改</x-link
+        >
+        <x-link [app-auth]="'role-delete'" type="danger" (click)="action('delete', row)"
+          >删除</x-link
+        >
       </div>
     </ng-template>
   </div>

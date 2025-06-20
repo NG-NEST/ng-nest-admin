@@ -1,9 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
 import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
 import { VariableDescription, VARIABLE_I18N } from './variable.enum';
 import { ResourceDescription } from '../resource';
 import { VariableCategoryDescription } from '../variable-category';
+import { GraphQLJSON } from 'graphql-scalars';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @InputType()
 export class VariableCreateInput {
@@ -17,9 +19,10 @@ export class VariableCreateInput {
   @IsOptional()
   type?: string;
 
-  @Field(() => String, { description: VariableDescription.Value, nullable: true })
+  @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
-  value?: string;
+  @IsJSON()
+  value?: JsonValue;
 
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()

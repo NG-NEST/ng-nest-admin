@@ -1,9 +1,11 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { VariableDescription } from './variable.enum';
 import { BaseAudit } from '@api/core';
-import { IsOptional } from 'class-validator';
+import { IsJSON, IsOptional } from 'class-validator';
 import { ResourceDescription } from '../resource';
 import { VariableCategoryDescription } from '../variable-category';
+import { GraphQLJSON } from 'graphql-scalars';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @ObjectType()
 export class VariableSelectOutput extends BaseAudit {
@@ -17,9 +19,10 @@ export class VariableSelectOutput extends BaseAudit {
   @IsOptional()
   type?: string;
 
-  @Field({ description: VariableDescription.Value, nullable: true })
+  @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
-  value?: string;
+  @IsJSON()
+  value?: JsonValue;
 
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()

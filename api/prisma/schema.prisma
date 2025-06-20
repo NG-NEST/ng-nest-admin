@@ -63,6 +63,7 @@ model Permission {
 model Resource {
   id               String             @id @default(uuid())
   pid              String?
+  type             String?
   name             String
   code             String
   subjectId        String

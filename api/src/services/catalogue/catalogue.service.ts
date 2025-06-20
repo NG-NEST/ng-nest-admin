@@ -13,6 +13,7 @@ import { File as UploadFile } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
 import { TemplateService } from '@api/core';
+import { set } from 'lodash-es';
 
 @Injectable()
 export class CatalogueService {
@@ -84,7 +85,7 @@ export class CatalogueService {
   async content(id: string) {
     const catalogue = (await this.prisma.catalogue.findUnique({
       where: { id },
-      select: { content: true },
+      select: { content: true, resourceId: true },
     })) as Catalogue;
     if (!catalogue) {
       return '';
@@ -93,7 +94,12 @@ export class CatalogueService {
       throw new BadRequestException({ message: CatalogueException.ContentIsNull });
     }
 
-    return this.templateService.generate(catalogue.content, { title: 'xxx' });
+    console.log(catalogue.content);
+
+    return this.templateService.generate(
+      catalogue.content,
+      await this.getResourceVars(catalogue.resourceId),
+    );
   }
 
   async preview(id: string) {
@@ -112,7 +118,10 @@ export class CatalogueService {
       const { content } = catalogue;
       if (!content) break;
 
-      catalogue.content = this.templateService.generate(content, {});
+      catalogue.content = this.templateService.generate(
+        content,
+        await this.getResourceVars(resourceId),
+      );
     }
 
     return catalogues;
@@ -135,7 +144,6 @@ export class CatalogueService {
 
     const results: any[] = await Promise.all(
       files.map(async (file: any) => {
-        console.log(file);
         const ext = this.getFileExtension(file.name);
 
         if (text.includes(ext)) {
@@ -209,6 +217,23 @@ export class CatalogueService {
     }
 
     return result;
+  }
+
+  private async getResourceVars(resourceId: string): Promise<{ [code: string]: any }> {
+    const variables = await this.prisma.variable.findMany({
+      where: { resourceId: { equals: resourceId } },
+      select: { code: true, value: true, variableCategory: { select: { code: true } } },
+    });
+
+    const vars: { [code: string]: any } = {};
+    for (let variable of variables) {
+      const { code, value, variableCategory } = variable;
+      set(vars, `${variableCategory.code}.${code}`, value);
+    }
+
+    console.log(vars);
+
+    return vars;
   }
 
   private getFileExtension(filename: string): string {

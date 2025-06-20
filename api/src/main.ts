@@ -38,7 +38,7 @@ async function bootstrap() {
   await redisIoAdapter.connectToRedis();
   app.useWebSocketAdapter(redisIoAdapter);
 
-  app.register(fastifyMultipart, {
+  app.register(fastifyMultipart as any, {
     limits: {
       fileSize: 1024 * 1024 * 10, // 10MB limit
       files: 200,
