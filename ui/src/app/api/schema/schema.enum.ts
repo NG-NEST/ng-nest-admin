@@ -12,6 +12,7 @@ export enum SchemaDescription {
   Id = 'SchemaId',
   Name = '名称',
   Code = '编码',
+  Description = '描述',
   Json = '模型数据'
 }
 

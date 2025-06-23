@@ -58,7 +58,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   title = computed(() => {
     if (this.type() === 'add-root') return '添加根节点';
     if (this.type() === 'add-child') return '添加子节点';
-    if (this.type() === 'edit') return '编辑节点';
+    if (this.type() === 'edit') return '修改节点';
     return '';
   });
 

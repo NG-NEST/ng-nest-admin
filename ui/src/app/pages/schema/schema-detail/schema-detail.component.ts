@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { XTextareaComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -17,6 +18,7 @@ import { Observable, Subject, finalize, mergeMap, tap } from 'rxjs';
     XInputComponent,
     XButtonComponent,
     XDialogModule,
+    XTextareaComponent,
     AppJsonSchemaComponent
   ],
   templateUrl: './schema-detail.component.html',
@@ -50,7 +52,8 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.formBuild.group({
       name: [null, [Validators.required]],
-      code: [null, [Validators.required]]
+      code: [null, [Validators.required]],
+      description: [null]
     });
     const { id } = this.data;
     this.id.set(id);

@@ -1,6 +1,6 @@
 :host {
   .content {
-    padding: 1rem;
+    padding: 2rem 1.25rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
 
@@ -9,8 +9,9 @@
       }
     }
 
-    x-input {
-      width: 100%;
+    x-input,
+    x-textarea {
+      flex: 1;
     }
   }
 }

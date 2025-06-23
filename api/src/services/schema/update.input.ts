@@ -20,6 +20,10 @@ export class SchemaUpdateInput {
   })
   name?: string;
 
+  @Field({ description: SchemaDescription.Description, nullable: true })
+  @IsOptional()
+  description?: string;
+
   @Field({ description: SchemaDescription.Code, nullable: true })
   @IsOptional()
   @IsExist('schema', {

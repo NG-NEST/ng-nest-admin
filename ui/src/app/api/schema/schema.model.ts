@@ -4,5 +4,6 @@ export class Schema extends BaseAudit {
   id!: string;
   name!: string;
   code!: string;
+  description?: string;
   json!: string;
 }

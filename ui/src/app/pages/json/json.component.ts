@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 // import { SchemaDetailComponent } from '../schema/schema-detail/schema-detail.component';
 import { XDialogService } from '@ng-nest/ui/dialog';
-import { AppJsonSchemaComponent, XJsonSchema } from '@ui/core';
+import { AppJsonSchemaComponent, AppSchemaFormComponent, XJsonSchema } from '@ui/core';
 
 @Component({
   selector: 'app-json',
   templateUrl: './json.component.html',
   styleUrls: ['./json.component.scss'],
-  imports: [AppJsonSchemaComponent]
+  imports: [AppJsonSchemaComponent, AppSchemaFormComponent]
 })
 export class JsonComponent {
   jsonSchema: XJsonSchema = {

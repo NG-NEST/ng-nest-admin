@@ -14,74 +14,123 @@
         </x-empty>
       </div>
     } @else {
-      <div class="query">
-        <div class="item">
-          <label [style.width]="'inherit'">变量分类：</label>
-          <x-select
-            [style.width.rem]="15"
-            formControlName="variableCategoryId"
-            (ngModelChange)="variableCategoryChange($event)"
-            [data]="variableCategorys()"
-            placeholder="请选择一个变量分类"
-            [clearable]="false"
-          ></x-select>
-          &nbsp;
-          <x-button icon="fto-plus" flat plain (click)="createCategory()"> </x-button>
+      <div class="left">
+        <div class="list">
+          <x-button icon="fto-plus" flat plain (click)="createCategory()"> 新增分类 </x-button>
+          @for (item of variableCategorys(); track item.id) {
+            <div
+              class="item"
+              [class.selected]="form.getRawValue().variableCategoryId === item.id"
+              (click)="form.patchValue({ variableCategoryId: item.id })"
+            >
+              <span>
+                {{ item.name }} <br />
+                {{ item.code }}
+              </span>
+              <span class="operations">
+                <x-link
+                  x-tooltip
+                  [content]="'修改'"
+                  type="primary"
+                  icon="fto-edit"
+                  (click)="action($event, 'edit', item)"
+                ></x-link>
+                <x-link
+                  x-tooltip
+                  [content]="'删除'"
+                  type="danger"
+                  icon="fto-minus-square"
+                  (click)="action($event, 'delete', item)"
+                ></x-link>
+              </span>
+            </div>
+          }
         </div>
+        <!-- <div class="query">
+          <div class="item">
+            <label [style.width]="'inherit'">变量分类：</label>
+            <x-select
+              [style.width.rem]="15"
+              formControlName="variableCategoryId"
+              (ngModelChange)="variableCategoryChange($event)"
+              [data]="variableCategorys()"
+              placeholder="请选择一个变量分类"
+              [clearable]="false"
+            ></x-select>
+            &nbsp;
+           
+          </div>
+        </div> -->
       </div>
-      <div class="tools">
-        <x-button icon="fto-plus" attrType="button" flat plain (click)="add()">增加</x-button>
-      </div>
-      <div class="attrs-table">
-        <table>
-          <thead>
-            <tr>
-              <th width="30">序号</th>
-              <th width="200">变量名</th>
-              <th width="200">数据类型</th>
-              <th width="200">值</th>
-              <th>说明</th>
-              <th width="80">操作</th>
-            </tr>
-          </thead>
-          <tbody [x-loading]="tableLoading()" formArrayName="many">
-            @for (item of many.controls; track item) {
-              <tr [formGroupName]="$index">
-                <td class="index">{{ $index + 1 }}</td>
-                <td>
-                  <x-input formControlName="code"></x-input>
-                </td>
-                <td>
-                  <x-select [data]="typeList()" formControlName="type"></x-select>
-                </td>
-                <td>
-                  <x-input formControlName="value"></x-input>
-                </td>
-                <td>
-                  <x-input formControlName="description"></x-input>
-                </td>
-                <td>
-                  <x-button
-                    icon="fto-trash-2"
-                    attrType="button"
-                    flat
-                    plain
-                    (click)="remove($index)"
-                  >
-                    删除
-                  </x-button>
-                </td>
+      <div class="right">
+        <div class="tools">
+          <x-button icon="fto-plus" attrType="button" flat plain (click)="add()">增加</x-button>
+        </div>
+        <div class="attrs-table">
+          <table>
+            <thead>
+              <tr>
+                <th width="200" class="required">变量名</th>
+                <th width="160">数据类型</th>
+                <th width="200">值</th>
+                <th>说明</th>
+                <th width="80">操作</th>
               </tr>
-            }
-            @if (many.getRawValue().length === 0) {
-              <x-empty [content]="contentTemp">
-                <ng-template #contentTemp>
-                  <span>没有变量数据</span>
-                </ng-template>
-              </x-empty>
-            }
-          </tbody>
-        </table>
+            </thead>
+            <tbody [x-loading]="tableLoading()" formArrayName="many">
+              @for (item of many.controls; track item) {
+                <tr [formGroupName]="$index">
+                  <td>
+                    <x-input formControlName="code"></x-input>
+                  </td>
+                  <td>
+                    <x-select
+                      [data]="typeList()"
+                      formControlName="type"
+                      [clearable]="false"
+                    ></x-select>
+                  </td>
+                  <td>
+                    @if (item.getRawValue().type === 'json-schema') {
+                      <x-select
+                        [data]="schemaList()"
+                        formControlName="value"
+                        [clearable]="false"
+                      ></x-select>
+                    } @else {
+                      <x-input formControlName="value"></x-input>
+                    }
+                  </td>
+                  <td>
+                    <x-input formControlName="description"></x-input>
+                  </td>
+                  <td>
+                    <x-button
+                      icon="fto-trash-2"
+                      attrType="button"
+                      flat
+                      plain
+                      (click)="remove($index)"
+                    >
+                      删除
+                    </x-button>
+                  </td>
+                </tr>
+              }
+              @if (many.getRawValue().length === 0) {
+                <tr>
+                  <td colspan="6">
+                    <x-empty [content]="contentTemp">
+                      <ng-template #contentTemp>
+                        <span>没有变量数据</span>
+                      </ng-template>
+                    </x-empty>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     }
   </div>

@@ -1326,6 +1326,9 @@ type Schema {
   """CreatedAt"""
   createdAt: DateTime
 
+  """Description"""
+  description: String
+
   """SchemaId"""
   id: ID!
 
@@ -1368,6 +1371,9 @@ type SchemaSelectOutput {
   """CreatedAt"""
   createdAt: DateTime
 
+  """Description"""
+  description: String
+
   """SchemaId"""
   id: ID!
 
@@ -1385,6 +1391,9 @@ input SchemaWhere {
   """Code"""
   code: StringFilter
 
+  """Description"""
+  description: StringFilter
+
   """Name"""
   name: StringFilter
 }
@@ -1401,6 +1410,9 @@ input SchemaWhereInput {
 
   """Code"""
   code: StringFilter
+
+  """Description"""
+  description: StringFilter
 
   """Name"""
   name: StringFilter

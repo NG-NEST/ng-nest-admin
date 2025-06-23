@@ -133,14 +133,25 @@ model Language {
 }
 
 model Schema {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  name      String
-  json      Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String?
+  json        Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("sys-schema")
+}
+
+model SchemaData {
+  id         String   @id @default(uuid())
+  jsonSchema Json
+  data       Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("sys-schema-data")
 }
 
 enum FileStatus {

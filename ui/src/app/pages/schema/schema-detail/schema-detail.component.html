@@ -3,12 +3,16 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label>名称：</label>
+      <label [style.width.rem]="5">名称：</label>
       <x-input formControlName="name" placeholder="请输入名称" required></x-input>
     </div>
     <div class="item required">
-      <label>编码：</label>
+      <label [style.width.rem]="5">编码：</label>
       <x-input formControlName="code" placeholder="请输入编码" required></x-input>
+    </div>
+    <div class="item" [style.gridColumn]="'1 / -1'">
+      <label [style.width.rem]="5">描述：</label>
+      <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
     </div>
     <div class="item" [style.gridColumn]="'1 / -1'">
       <app-json-schema #jsonSchemaCom [data]="jsonSchema"></app-json-schema>

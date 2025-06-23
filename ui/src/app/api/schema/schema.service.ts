@@ -27,6 +27,7 @@ export class SchemaService {
               id
               name
               code
+              description
               json
             }
           }

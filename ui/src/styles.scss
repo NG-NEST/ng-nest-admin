@@ -176,7 +176,7 @@ input {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 1.25rem 0;
+    padding: 2rem 0;
 
     &.full {
       padding: 0;
@@ -233,6 +233,16 @@ input {
             &:not(:first-child) {
               border-left: $x-border-base;
             }
+            &.required {
+              &::before {
+                display: inline-block;
+                margin-right: 0.25rem;
+                color: $x-danger;
+                line-height: 1;
+                font-size: $x-font-size-small;
+                content: '*';
+              }
+            }
           }
         }
 
@@ -244,7 +254,8 @@ input {
               border-left: $x-border-base;
             }
 
-            x-input {
+            x-input,
+            x-select {
               width: 100%;
             }
 
@@ -282,6 +293,7 @@ input {
 x-empty,
 .x-empty {
   height: 100%;
+  min-height: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -9,6 +9,10 @@ export class SchemaWhere {
   @IsOptional()
   name?: StringFilter;
 
+  @Field(() => BASE_STRING_FILTER, { description: SchemaDescription.Description, nullable: true })
+  @IsOptional()
+  description?: StringFilter;
+
   @Field(() => BASE_STRING_FILTER, { description: SchemaDescription.Code, nullable: true })
   @IsOptional()
   code?: StringFilter;

@@ -1,6 +1,14 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { XEmptyComponent, XSelectComponent, XSelectNode } from '@ng-nest/ui';
+import {
+  XEmptyComponent,
+  XLinkComponent,
+  XMessageBoxAction,
+  XMessageBoxService,
+  XSelectComponent,
+  XSelectNode,
+  XTooltipDirective
+} from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -8,12 +16,13 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import {
   ResourceService,
+  SchemaService,
   Variable,
   VariableCategory,
   VariableCategoryService,
   VariableService
 } from '@ui/api';
-import { Subject, concatMap, finalize, tap } from 'rxjs';
+import { Subject, concatMap, finalize, takeUntil, tap } from 'rxjs';
 import { VariableCategoryComponent } from '../variable-category/variable-category.component';
 
 @Component({
@@ -25,6 +34,8 @@ import { VariableCategoryComponent } from '../variable-category/variable-categor
     XButtonComponent,
     XSelectComponent,
     XEmptyComponent,
+    XLinkComponent,
+    XTooltipDirective,
     XDialogModule
   ],
   templateUrl: './variable-setting.component.html',
@@ -39,6 +50,9 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   message = inject(XMessageService);
   resource = inject(ResourceService);
+  schema = inject(SchemaService);
+  messageBox = inject(XMessageBoxService);
+  cdr = inject(ChangeDetectorRef);
 
   resourceId = signal('');
   formLoading = signal(false);
@@ -47,8 +61,9 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
 
-  variableCategorys = signal<XSelectNode[]>([]);
+  variableCategorys = signal<VariableCategory[]>([]);
   typeList = signal<XSelectNode[]>([]);
+  schemaList = signal<XSelectNode[]>([]);
 
   get many() {
     return this.form.controls['many'] as FormArray;
@@ -71,8 +86,19 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
       many: this.fb.array([])
     });
 
+    this.form.controls['variableCategoryId'].valueChanges
+      .pipe(takeUntil(this.$destroy))
+      .subscribe((x) => {
+        this.variableCategoryChange(x);
+      });
+
+    this.formLoading.set(true);
     this.getVariableCategory()
-      .pipe(concatMap(() => this.getTypeList()))
+      .pipe(
+        concatMap(() => this.getTypeList()),
+        concatMap(() => this.getSchemaList()),
+        finalize(() => this.formLoading.set(false))
+      )
       .subscribe();
   }
 
@@ -81,22 +107,62 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
     this.$destroy.complete();
   }
 
+  action($event: Event, type: string, item: any) {
+    $event.stopPropagation();
+    switch (type) {
+      case 'edit':
+        this.dialog.create(VariableCategoryComponent, {
+          width: '30rem',
+          data: {
+            resourceId: this.resourceId(),
+            id: item.id,
+            saveSuccess: (variableCategory: VariableCategory) => {
+              this.getVariableCategory().subscribe(() => {
+                this.form.patchValue({ variableCategoryId: variableCategory.id });
+              });
+            }
+          }
+        });
+        break;
+      case 'delete':
+        this.messageBox.confirm({
+          title: '删除分类',
+          content: `确认删除此分类吗？ [${item.name}]`,
+          type: 'warning',
+          callback: (msg: XMessageBoxAction) => {
+            if (msg !== 'confirm') return;
+            this.variableCategoryService.delete(item.id).subscribe((x) => {
+              this.message.success(x);
+              this.variableCategorys.update((y) => {
+                const index = y.indexOf(item);
+                y.splice(index, 1);
+                return y;
+              });
+              const { variableCategoryId } = this.form.getRawValue();
+              if (variableCategoryId === item.id && this.variableCategorys().length > 0) {
+                this.form.patchValue({
+                  variableCategoryId: this.variableCategorys()[0].id
+                });
+              }
+              this.cdr.detectChanges();
+            });
+          }
+        });
+        break;
+    }
+  }
+
   getVariableCategory() {
     return this.variableCategoryService
       .variableCategorySelect({
-        where: { resourceId: { equals: this.resourceId() } }
+        where: { resourceId: { equals: this.resourceId() } },
+        orderBy: [{ createdAt: 'asc' }]
       })
       .pipe(
         tap((x) => {
-          this.variableCategorys.set(
-            x.map((y: any) => {
-              y.label = y.name;
-              return y;
-            })
-          );
+          this.variableCategorys.set(x);
           if (!this.form.getRawValue().variableCategoryId && this.variableCategorys().length > 0) {
             this.form.patchValue({ variableCategoryId: this.variableCategorys()[0].id });
-            this.variableCategoryChange(this.variableCategorys()[0].id);
           }
         })
       );
@@ -112,6 +178,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
         tap((x) => {
           this.typeList.set(
             x.map((y: any) => {
+              y.id = y.code;
               y.label = y.name;
               return y;
             })
@@ -120,15 +187,28 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
       );
   }
 
+  getSchemaList() {
+    return this.schema.schemaSelect({}).pipe(
+      tap((x) => {
+        this.schemaList.set(
+          x.map((y: any) => {
+            y.id = y.code;
+            y.label = y.name;
+            return y;
+          })
+        );
+      })
+    );
+  }
+
   save() {
     const value = this.form.getRawValue();
-    let msg = '';
     this.saveLoading.set(true);
     this.variableService
       .saveMany(value)
       .pipe(
-        tap(() => {
-          this.message.success(msg);
+        tap((x) => {
+          this.message.success(x);
         }),
         finalize(() => {
           this.saveLoading.set(false);
@@ -139,7 +219,6 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
 
   variableCategoryChange(value: string) {
     if (!value) return;
-
     this.many.clear();
     this.tableLoading.set(true);
     this.variableService
