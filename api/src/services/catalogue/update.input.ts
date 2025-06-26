@@ -3,6 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
 import { CatalogueDescription, CATALOGUE_I18N, CatalogueFileType } from './catalogue.enum';
 import { CatalogueType } from '@prisma/client';
+import { VariableDescription } from '../variable';
 
 @InputType()
 export class CatalogueUpdateInput {
@@ -19,6 +20,10 @@ export class CatalogueUpdateInput {
   @Field(() => String, { description: CatalogueDescription.Type, nullable: true })
   @IsOptional()
   type?: CatalogueType;
+
+  @Field(() => Boolean, { description: CatalogueDescription.Many, nullable: true })
+  @IsOptional()
+  many?: boolean;
 
   @Field(() => String, { description: CatalogueDescription.FileType, nullable: true })
   @IsOptional()
@@ -57,4 +62,12 @@ export class CatalogueUpdateInput {
     context: { relation: 'id' },
   })
   pid?: string;
+
+  @Field({ description: VariableDescription.Id, nullable: true })
+  @IsOptional()
+  @IsNotExist('variable', {
+    message: I18N(`${CATALOGUE_I18N}.${VariableDescription.Id}${ValidatorDescription.IsNotExist}`),
+    context: { relation: 'id' },
+  })
+  variableId?: string;
 }

@@ -1,4 +1,6 @@
 import { BaseModel } from '@ui/core';
+import { VariableCategory } from '../variable-category';
+import { Resource } from '../resource';
 
 export class Variable extends BaseModel {
   code!: string;
@@ -11,12 +13,6 @@ export class Variable extends BaseModel {
   variableCategoryId!: string;
 }
 
-export class VariableResource {
-  id!: string;
-  name!: string;
-}
+export class VariableResource extends Resource {}
 
-export class VariableVariableCategory {
-  id!: string;
-  name!: string;
-}
+export class VariableVariableCategory extends VariableCategory {}

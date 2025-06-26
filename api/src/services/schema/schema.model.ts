@@ -20,6 +20,10 @@ export class Schema extends BaseAudit {
   @IsOptional()
   description?: string;
 
+  @Field({ description: SchemaDescription.Version, nullable: true })
+  @IsOptional()
+  version?: string;
+
   @Field(() => GraphQLJSON, { description: SchemaDescription.Json })
   json: JsonValue;
 }

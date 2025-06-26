@@ -34,6 +34,10 @@ export class Resource extends BaseAudit {
   @IsOptional()
   type?: string;
 
+  @Field({ description: ResourceDescription.Icon, nullable: true })
+  @IsOptional()
+  icon?: string;
+
   @Field({ description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: string;

@@ -14,6 +14,8 @@ import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
 import { TemplateService } from '@api/core';
 import { set } from 'lodash-es';
+import * as archiver from 'archiver';
+import { FastifyReply } from 'fastify';
 
 @Injectable()
 export class CatalogueService {
@@ -55,13 +57,22 @@ export class CatalogueService {
   }
 
   async create(input: CatalogueCreateInput) {
-    let { resourceId, pid, fileType, ...other } = input;
+    let { resourceId, variableId, pid, fileType, ...other } = input;
     if (!fileType) {
       fileType = await this.fileType(input.name);
     }
-    const data = { ...other, fileType, resource: { connect: { id: resourceId } }, parent: {} };
+    const data = {
+      ...other,
+      fileType,
+      resource: { connect: { id: resourceId } },
+      parent: {},
+      variable: {},
+    };
     if (pid) {
       data.parent = { connect: { id: pid } };
+    }
+    if (variableId) {
+      data.variable = { connect: { id: variableId } };
     }
     return await this.prisma.catalogue.create({
       data,
@@ -82,30 +93,22 @@ export class CatalogueService {
     return await this.prisma.catalogue.delete({ where: { id } });
   }
 
-  async content(id: string) {
+  async preview(id: string) {
     const catalogue = (await this.prisma.catalogue.findUnique({
       where: { id },
       select: { content: true, resourceId: true },
     })) as Catalogue;
     if (!catalogue) {
-      return '';
+      return null;
     }
     if (catalogue.content === null) {
       throw new BadRequestException({ message: CatalogueException.ContentIsNull });
     }
 
-    console.log(catalogue.content);
-
-    return this.templateService.generate(
+    catalogue.content = this.templateService.generate(
       catalogue.content,
       await this.getResourceVars(catalogue.resourceId),
     );
-  }
-
-  async preview(id: string) {
-    const catalogue = await this.prisma.catalogue.findUnique({
-      where: { id },
-    });
 
     return catalogue;
   }
@@ -125,6 +128,53 @@ export class CatalogueService {
     }
 
     return catalogues;
+  }
+
+  async categoryDownload(resourceId: string, reply: FastifyReply) {
+    const resource = await this.prisma.resource.findUnique({ where: { id: resourceId } });
+
+    const catalogues = await this.categoryPreview(resourceId);
+
+    const archive = archiver('zip', {
+      zlib: { level: 9 },
+    });
+
+    reply.header('Content-Type', 'application/zip');
+    reply.header('Content-Disposition', `attachment; filename=${resource.name}.zip`);
+
+    archive.pipe(reply.raw);
+
+    const buildTree = (pid: string | null): Catalogue[] => {
+      return catalogues
+        .filter((catalogue) => catalogue.pid === pid)
+        .map(
+          (catalogue) =>
+            ({
+              ...catalogue,
+              children: buildTree(catalogue.id),
+            }) as Catalogue,
+        );
+    };
+
+    const rootNodes = buildTree(null);
+
+    const addToArchive = (node: Catalogue, path = '') => {
+      const currentPath = path ? `${path}/${node.name}` : node.name;
+      if (node.children?.length) {
+        archive.directory(null, currentPath);
+        node.children.forEach((child: Catalogue) => addToArchive(child, currentPath));
+      } else {
+        if (node.content) {
+          archive.append(node.content, { name: currentPath });
+        }
+      }
+    };
+
+    rootNodes.forEach((node) => addToArchive(node));
+
+    await archive.finalize();
+
+    return reply;
   }
 
   async folderUpload(files: MultipartFile[], body: { filepath: string; resourceId: string }) {
@@ -230,8 +280,6 @@ export class CatalogueService {
       const { code, value, variableCategory } = variable;
       set(vars, `${variableCategory.code}.${code}`, value);
     }
-
-    console.log(vars);
 
     return vars;
   }

@@ -59,7 +59,14 @@
                 [content]="'查看生成代码'"
                 type="primary"
                 icon="fto-hash"
-                (click)="action($event, 'content', node)"
+                (click)="action($event, 'preview', node)"
+              ></x-link>
+              <x-link
+                x-tooltip
+                [content]="'下载代码'"
+                type="primary"
+                icon="fto-download"
+                (click)="action($event, 'download', node)"
               ></x-link>
             }
             <x-link

@@ -9,6 +9,7 @@ export * from './language';
 export * from './cache';
 export * from './logs';
 export * from './schema';
+export * from './schema-data';
 export * from './aigc';
 export * from './upload';
 export * from './catalogue';

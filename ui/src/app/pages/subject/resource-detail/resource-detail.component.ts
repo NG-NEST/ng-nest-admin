@@ -12,6 +12,8 @@ import { XData } from '@ng-nest/ui/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
+import { XRadioComponent, XRadioNode } from '@ng-nest/ui/radio';
+import { XSwitchComponent } from '@ng-nest/ui/switch';
 
 @Component({
   selector: 'app-resource-detail',
@@ -24,7 +26,9 @@ import { XTextareaComponent } from '@ng-nest/ui/textarea';
     XDialogModule,
     XTreeSelectComponent,
     XInputNumberComponent,
-    XTextareaComponent
+    XTextareaComponent,
+    XRadioComponent,
+    XSwitchComponent
   ],
   templateUrl: './resource-detail.component.html'
 })
@@ -43,6 +47,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   subjectId = signal('');
   subjects = signal<XData<XSelectNode>>([]);
   resources = signal<XData<XTreeSelectNode>>([]);
+  typeList = signal<XData<XRadioNode>>([]);
 
   formLoading = signal(false);
   saveLoading = signal(false);
@@ -51,12 +56,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
   $destroy = new Subject<void>();
 
-  ngOnInit(): void {
+  constructor() {
     this.form = this.fb.group({
+      type: ['string', [Validators.required]],
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
       pid: [null],
       sort: [0, [Validators.required]],
+      icon: [null],
       description: [null],
       subjectId: [null, [Validators.required]]
     });
@@ -65,7 +72,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     this.title.set(title);
     this.subjectId.set(subjectId);
     if (subjectId) this.form.patchValue({ subjectId });
-    const request: Observable<any>[] = [this.getSubjectSelect(), this.getResourceSelect()];
+  }
+
+  ngOnInit(): void {
+    const request: Observable<any>[] = [
+      this.getSubjectSelect(),
+      this.getResourceSelect(),
+      this.getTypeList()
+    ];
     this.form.controls['subjectId'].disable();
     if (this.id()) {
       request.push(this.getResource());
@@ -136,5 +150,18 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
           );
         })
       );
+  }
+
+  getTypeList() {
+    return this.resource.resourceSelect({ where: { subjectId: { equals: 'resource-type' } } }).pipe(
+      tap((x) => {
+        this.typeList.set(
+          x.map((y) => ({
+            label: y.name,
+            id: y.code
+          }))
+        );
+      })
+    );
   }
 }

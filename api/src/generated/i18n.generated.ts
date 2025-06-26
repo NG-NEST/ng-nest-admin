@@ -44,6 +44,7 @@ export type I18nTranslations = {
         "SortIsNotNumber": string;
         "ResourceIdIsNotEmpty": string;
         "ResourceIdIsNotExist": string;
+        "VariableIdIsNotExist": string;
     };
     "dictionary": {
         "DictionaryIdIsNotEmpty": string;
@@ -110,6 +111,12 @@ export type I18nTranslations = {
         "CodeIsNotEmpty": string;
         "CodeIsExist": string;
         "JsonIsNotEmpty": string;
+    };
+    "schema-data": {     
+        "SchemaDataIdIsNotEmpty": string;
+        "DataIsNotEmpty": string;
+        "SchemaIdIsNotEmpty": string;
+        "SchemaIdIsNotExist": string;
     };
     "subject": {
         "SubjectIdIsNotEmpty": string;

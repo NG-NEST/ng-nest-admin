@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
+  XCascadeComponent,
+  XCascadeNode,
   XEmptyComponent,
   XLinkComponent,
   XMessageBoxAction,
@@ -16,6 +18,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import {
   ResourceService,
+  Schema,
   SchemaService,
   Variable,
   VariableCategory,
@@ -24,6 +27,8 @@ import {
 } from '@ui/api';
 import { Subject, concatMap, finalize, takeUntil, tap } from 'rxjs';
 import { VariableCategoryComponent } from '../variable-category/variable-category.component';
+import { first, groupBy } from 'lodash-es';
+import { AppSortVersions } from '@ui/core';
 
 @Component({
   selector: 'app-variable-setting',
@@ -36,6 +41,7 @@ import { VariableCategoryComponent } from '../variable-category/variable-categor
     XEmptyComponent,
     XLinkComponent,
     XTooltipDirective,
+    XCascadeComponent,
     XDialogModule
   ],
   templateUrl: './variable-setting.component.html',
@@ -63,7 +69,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
 
   variableCategorys = signal<VariableCategory[]>([]);
   typeList = signal<XSelectNode[]>([]);
-  schemaList = signal<XSelectNode[]>([]);
+  schemaList = signal<XCascadeNode[]>([]);
 
   get many() {
     return this.form.controls['many'] as FormArray;
@@ -190,13 +196,20 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   getSchemaList() {
     return this.schema.schemaSelect({}).pipe(
       tap((x) => {
-        this.schemaList.set(
-          x.map((y: any) => {
-            y.id = y.code;
-            y.label = y.name;
-            return y;
-          })
-        );
+        const res = x.map((y: any) => {
+          y.label = y.name;
+          return y;
+        });
+        const group = groupBy(res, (y) => y.code);
+        const list: XCascadeNode[] = [];
+        for (let key in group) {
+          const one = first(group[key]) as Schema;
+          list.push({ id: one.code, label: one.name });
+          for (let item of AppSortVersions(group[key], 'desc')) {
+            list.push({ id: item.id, label: item.version, pid: one.code });
+          }
+        }
+        this.schemaList.set(list);
       })
     );
   }

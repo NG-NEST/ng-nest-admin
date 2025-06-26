@@ -3,6 +3,8 @@ export enum ResourceDescription {
 
   Id = '资源编码',
   Pid = '父节点编码',
+  Type = '资源类型',
+  Icon = '资源图标',
   Name = '资源名称',
   Code = '资源标识',
   Sort = '资源排序',

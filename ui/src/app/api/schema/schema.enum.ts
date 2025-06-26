@@ -13,6 +13,7 @@ export enum SchemaDescription {
   Name = '名称',
   Code = '编码',
   Description = '描述',
+  Version = '版本',
   Json = '模型数据'
 }
 

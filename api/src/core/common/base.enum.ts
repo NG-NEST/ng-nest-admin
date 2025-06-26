@@ -56,4 +56,10 @@ export enum WhereDescription {
   Contains = 'Contains the given value',
   StartsWith = 'Starts with the given value',
   EndsWith = 'Ends with the given value',
+
+  Path = 'JsonFilter path',
+  Mode = 'JsonFilter mode (default | insensitive)',
+  ArrayContains = 'JsonFilter array contains the given value',
+  ArrayStartsWith = 'JsonFilter array starts with the given value',
+  ArrayEndsWith = 'JsonFilter array ends with the given value',
 }

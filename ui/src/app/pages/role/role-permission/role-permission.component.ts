@@ -156,7 +156,7 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
                 id: y.id,
                 pid: y.pid,
                 name: y.name,
-                code: y.code,
+                code: y.code as string,
                 permissions: y.permissions!.map((z) => {
                   return { id: z.id, label: z.name };
                 })

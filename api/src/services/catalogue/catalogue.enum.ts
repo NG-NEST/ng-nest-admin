@@ -7,7 +7,9 @@ export enum CatalogueAuth {
   CatalogueDelete = 'catalogue-delete',
   CatalogueContent = 'catalogue-content',
   CataloguePreview = 'catalogue-preview',
+  CatalogueDownload = 'catalogue-download',
   CatalogueCategoryPreview = 'catalogue-category-preview',
+  CatalogueCategoryDownload = 'catalogue-category-download',
   CatalogueFolderUpload = 'catalogue-folder-upload',
 }
 
@@ -18,6 +20,7 @@ export enum CatalogueDescription {
   Pid = 'Pid',
   Name = 'Name',
   Type = 'Type',
+  Many = 'Many',
   FileType = 'FileType',
   Sort = 'Sort',
   Description = 'Description',

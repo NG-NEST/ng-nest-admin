@@ -6,5 +6,6 @@
   "SortIsNotEmpty": "sort should not be empty",
   "SortIsNotNumber": "sort should be number",
   "ResourceIdIsNotEmpty": "resourceId should not be empty",
-  "ResourceIdIsNotExist": "resourceId is not exist"
+  "ResourceIdIsNotExist": "resourceId is not exist",
+  "VariableIdIsNotExist": "variableId is not exist"
 }

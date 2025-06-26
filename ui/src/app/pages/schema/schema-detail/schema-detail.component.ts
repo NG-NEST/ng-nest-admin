@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { XTextareaComponent } from '@ng-nest/ui';
+import { XIconComponent, XTextareaComponent, XTooltipDirective } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -8,7 +8,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { SchemaService } from '@ui/api';
 import { AppJsonSchemaComponent, XJsonSchema } from '@ui/core';
-import { Observable, Subject, finalize, mergeMap, tap } from 'rxjs';
+import { Observable, Subject, concatMap, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-schema-detail',
@@ -19,6 +19,8 @@ import { Observable, Subject, finalize, mergeMap, tap } from 'rxjs';
     XButtonComponent,
     XDialogModule,
     XTextareaComponent,
+    XIconComponent,
+    XTooltipDirective,
     AppJsonSchemaComponent
   ],
   templateUrl: './schema-detail.component.html',
@@ -53,7 +55,9 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
     this.form = this.formBuild.group({
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
-      description: [null]
+      version: [{ disabled: true, value: null }, []],
+      description: [null],
+      json: [null]
     });
     const { id } = this.data;
     this.id.set(id);
@@ -84,15 +88,27 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
       rq = this.jsonSchemaCom()
         .getJsonSchema()
         .pipe(
-          mergeMap((json) => this.schema.create({ ...this.form.value, json: JSON.stringify(json) }))
+          concatMap((value) => {
+            const json = JSON.stringify(value);
+            return this.schema.create({ ...this.form.value, json });
+          })
         );
     } else {
       rq = this.jsonSchemaCom()
         .getJsonSchema()
         .pipe(
-          mergeMap((json) =>
-            this.schema.update({ id: this.id(), ...this.form.value, json: JSON.stringify(json) })
-          )
+          concatMap((value) => {
+            const json = JSON.stringify(value);
+            if (json !== this.form.value.json) {
+              return this.schema.create({ ...this.form.value, json });
+            } else {
+              return this.schema.update({
+                id: this.id(),
+                ...this.form.value,
+                json
+              });
+            }
+          })
         );
     }
     this.saveLoading.set(true);

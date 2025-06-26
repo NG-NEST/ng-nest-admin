@@ -6,5 +6,6 @@
   "SortIsNotEmpty": "节点排序不能为空",
   "SortIsNotNumber": "节点排序应为数字",
   "ResourceIdIsNotEmpty": "资源编码不能为空",
-  "ResourceIdIsNotExist": "资源编码不存在"
+  "ResourceIdIsNotExist": "资源编码不存在",
+  "VariableIdIsNotExist": "变量编码不存在"
 }

@@ -46,21 +46,6 @@
             </div>
           }
         </div>
-        <!-- <div class="query">
-          <div class="item">
-            <label [style.width]="'inherit'">变量分类：</label>
-            <x-select
-              [style.width.rem]="15"
-              formControlName="variableCategoryId"
-              (ngModelChange)="variableCategoryChange($event)"
-              [data]="variableCategorys()"
-              placeholder="请选择一个变量分类"
-              [clearable]="false"
-            ></x-select>
-            &nbsp;
-           
-          </div>
-        </div> -->
       </div>
       <div class="right">
         <div class="tools">
@@ -92,11 +77,12 @@
                   </td>
                   <td>
                     @if (item.getRawValue().type === 'json-schema') {
-                      <x-select
+                      <x-cascade
                         [data]="schemaList()"
+                        nodeTrigger="hover"
+                        
                         formControlName="value"
-                        [clearable]="false"
-                      ></x-select>
+                      ></x-cascade>
                     } @else {
                       <x-input formControlName="value"></x-input>
                     }

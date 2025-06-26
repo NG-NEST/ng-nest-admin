@@ -1,9 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import {
+  BASE_BOOLEAN_FILTER,
   BASE_NUMBER_FILTER,
   BASE_STRING_FILTER,
   BaseWhereInput,
+  BooleanFilter,
   EnumFilter,
   NumberFilter,
   StringFilter,
@@ -11,6 +13,7 @@ import {
 import { CatalogueDescription } from './catalogue.enum';
 import { ResourceDescription, ResourceWhereInput } from '../resource';
 import { CatalogueType } from '@prisma/client';
+import { VariableDescription, VariableWhereInput } from '../variable';
 
 @InputType()
 export class CatalogueWhere {
@@ -25,6 +28,14 @@ export class CatalogueWhere {
   @Field(() => BASE_NUMBER_FILTER, { description: CatalogueDescription.Sort, nullable: true })
   @IsOptional()
   sort?: NumberFilter;
+
+  @Field(() => BASE_BOOLEAN_FILTER, { description: CatalogueDescription.Many, nullable: true })
+  @IsOptional()
+  many?: BooleanFilter;
+
+  @Field(() => BASE_STRING_FILTER, { description: CatalogueDescription.FileType, nullable: true })
+  @IsOptional()
+  fileType?: StringFilter;
 
   @Field(() => BASE_STRING_FILTER, {
     description: CatalogueDescription.Description,
@@ -58,6 +69,14 @@ export class CatalogueWhere {
   @Field(() => ResourceWhereInput, { description: ResourceDescription.Resource, nullable: true })
   @IsOptional()
   resource?: ResourceWhereInput;
+
+  @Field({ description: VariableDescription.Id, nullable: true })
+  @IsOptional()
+  variableId?: StringFilter;
+
+  @Field(() => VariableWhereInput, { description: VariableDescription.Variable, nullable: true })
+  @IsOptional()
+  variable?: VariableWhereInput;
 }
 
 @InputType()

@@ -16,6 +16,10 @@ export class SchemaWhere {
   @Field(() => BASE_STRING_FILTER, { description: SchemaDescription.Code, nullable: true })
   @IsOptional()
   code?: StringFilter;
+
+  @Field(() => BASE_STRING_FILTER, { description: SchemaDescription.Version, nullable: true })
+  @IsOptional()
+  version?: StringFilter;
 }
 
 @InputType()

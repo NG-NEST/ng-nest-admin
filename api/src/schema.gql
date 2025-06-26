@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input BooleanFilter {
+  """Equals the given value"""
+  equals: Boolean
+
+  """Does not equal the given value"""
+  not: Boolean
+}
+
 type Cache {
   """Expiretime"""
   expiretime: String!
@@ -43,6 +51,9 @@ type Catalogue {
   """CatalogueId"""
   id: ID!
 
+  """Many"""
+  many: Boolean
+
   """Name"""
   name: String!
 
@@ -69,11 +80,23 @@ type Catalogue {
 
   """Url"""
   url: String
+
+  """Variable"""
+  variable: Variable
+
+  """VariableId"""
+  variableId: String
 }
 
 input CatalogueOrderInput {
   """CreatedAt"""
   createdAt: SortOrder
+
+  """FileType"""
+  fileType: SortOrder
+
+  """Many"""
+  many: SortOrder
 
   """Name"""
   name: SortOrder
@@ -92,6 +115,12 @@ input CatalogueOrderInput {
 
   """UpdatedAt"""
   updatedAt: SortOrder
+
+  """Variable"""
+  variable: SortOrder
+
+  """VariableId"""
+  variableId: SortOrder
 }
 
 type CataloguePaginationOutput {
@@ -116,10 +145,13 @@ type CatalogueSelectOutput {
   description: String
 
   """FileType"""
-  fileType: String!
+  fileType: String
 
   """CatalogueId"""
   id: ID!
+
+  """Many"""
+  many: Boolean
 
   """Name"""
   name: String!
@@ -129,6 +161,12 @@ type CatalogueSelectOutput {
 
   """Pid"""
   pid: ID
+
+  """Resource"""
+  resource: Resource!
+
+  """ResourceId"""
+  resourceId: String!
 
   """Sort"""
   sort: Float!
@@ -141,6 +179,12 @@ type CatalogueSelectOutput {
 
   """Url"""
   url: String
+
+  """Variable"""
+  variable: Variable
+
+  """VariableId"""
+  variableId: String
 }
 
 input CatalogueWhere {
@@ -149,6 +193,12 @@ input CatalogueWhere {
 
   """Description"""
   description: StringFilter
+
+  """FileType"""
+  fileType: StringFilter
+
+  """Many"""
+  many: BooleanFilter
 
   """Name"""
   name: StringFilter
@@ -170,6 +220,12 @@ input CatalogueWhere {
 
   """Url"""
   url: StringFilter
+
+  """Variable"""
+  variable: VariableWhereInput
+
+  """VariableId"""
+  variableId: StringFilter
 }
 
 input CatalogueWhereInput {
@@ -188,6 +244,12 @@ input CatalogueWhereInput {
   """Description"""
   description: StringFilter
 
+  """FileType"""
+  fileType: StringFilter
+
+  """Many"""
+  many: BooleanFilter
+
   """Name"""
   name: StringFilter
 
@@ -208,6 +270,12 @@ input CatalogueWhereInput {
 
   """Url"""
   url: StringFilter
+
+  """Variable"""
+  variable: VariableWhereInput
+
+  """VariableId"""
+  variableId: StringFilter
 }
 
 """
@@ -377,6 +445,50 @@ input DictionaryWhereInput {
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input JsonFilter {
+  """JsonFilter array contains the given value"""
+  array_contains: JSON
+
+  """JsonFilter array ends with the given value"""
+  array_ends_with: JSON
+
+  """JsonFilter array starts with the given value"""
+  array_starts_with: JSON
+
+  """Equals the given value"""
+  equals: JSON
+
+  """Greater than the given value"""
+  gt: JSON
+
+  """Greater than or equal to the given value"""
+  gte: JSON
+
+  """Less than the given value"""
+  lt: JSON
+
+  """Less than or equal to the given value"""
+  lte: JSON
+
+  """JsonFilter mode (default | insensitive)"""
+  mode: String
+
+  """Does not equal the given value"""
+  not: JSON
+
+  """JsonFilter path"""
+  path: [String!]
+
+  """Contains the given value"""
+  string_contains: String
+
+  """Ends with the given value"""
+  string_ends_with: String
+
+  """Starts with the given value"""
+  string_starts_with: String
+}
 
 type Language {
   """CreatedAt"""
@@ -873,6 +985,36 @@ type Query {
     id: ID!
   ): Schema!
 
+  """SchemaData"""
+  schemaData(
+    """SchemaDataId"""
+    id: ID!
+  ): SchemaData!
+
+  """SchemaDataSelect. No Pagination"""
+  schemaDataSelect(
+    """Sorting rule"""
+    orderBy: [SchemaDataOrderInput!]
+
+    """Query condition"""
+    where: SchemaDataWhereInput
+  ): [SchemaDataSelectOutput!]!
+
+  """SchemaDatas"""
+  schemaDatas(
+    """Sorting rule"""
+    orderBy: [SchemaDataOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: SchemaDataWhereInput
+  ): SchemaDataPaginationOutput!
+
   """SchemaSelect. No Pagination"""
   schemaSelect(
     """Sorting rule"""
@@ -1034,6 +1176,9 @@ type Resource {
   """Description"""
   description: String
 
+  """Icon"""
+  icon: String
+
   """ResourceId"""
   id: ID!
 
@@ -1073,6 +1218,9 @@ input ResourceOrderInput {
 
   """CreatedAt"""
   createdAt: SortOrder
+
+  """Icon"""
+  icon: SortOrder
 
   """Name"""
   name: SortOrder
@@ -1114,6 +1262,9 @@ type ResourceSelectOutput {
   """Description"""
   description: String
 
+  """Icon"""
+  icon: String
+
   """ResourceId"""
   id: ID!
 
@@ -1145,6 +1296,9 @@ input ResourceWhere {
 
   """Description"""
   description: StringFilter
+
+  """Icon"""
+  icon: StringFilter
 
   """Name"""
   name: StringFilter
@@ -1180,6 +1334,9 @@ input ResourceWhereInput {
 
   """Description"""
   description: StringFilter
+
+  """Icon"""
+  icon: StringFilter
 
   """Name"""
   name: StringFilter
@@ -1340,6 +1497,102 @@ type Schema {
 
   """UpdatedAt"""
   updatedAt: DateTime
+
+  """Version"""
+  version: String
+}
+
+type SchemaData {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Data"""
+  data: JSON!
+
+  """SchemaDataId"""
+  id: ID!
+
+  """Schema"""
+  schema: Schema!
+
+  """SchemaId"""
+  schemaId: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input SchemaDataOrderInput {
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Schema"""
+  schema: SortOrder
+
+  """SchemaId"""
+  schemaId: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type SchemaDataPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [SchemaData!]!
+}
+
+type SchemaDataSelectOutput {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Data"""
+  data: JSON!
+
+  """SchemaDataId"""
+  id: ID!
+
+  """Schema"""
+  schema: Schema!
+
+  """SchemaId"""
+  schemaId: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input SchemaDataWhere {
+  """Data"""
+  data: JsonFilter
+
+  """Schema"""
+  schema: SchemaWhereInput
+
+  """SchemaId"""
+  schemaId: StringFilter
+}
+
+input SchemaDataWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [SchemaDataWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [SchemaDataWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [SchemaDataWhere!]
+
+  """Data"""
+  data: JsonFilter
+
+  """Schema"""
+  schema: SchemaWhereInput
+
+  """SchemaId"""
+  schemaId: StringFilter
 }
 
 input SchemaOrderInput {
@@ -1349,11 +1602,17 @@ input SchemaOrderInput {
   """CreatedAt"""
   createdAt: SortOrder
 
+  """Description"""
+  description: SortOrder
+
   """Name"""
   name: SortOrder
 
   """UpdatedAt"""
   updatedAt: SortOrder
+
+  """Version"""
+  version: SortOrder
 }
 
 type SchemaPaginationOutput {
@@ -1385,6 +1644,9 @@ type SchemaSelectOutput {
 
   """UpdatedAt"""
   updatedAt: DateTime
+
+  """Version"""
+  version: String
 }
 
 input SchemaWhere {
@@ -1396,6 +1658,9 @@ input SchemaWhere {
 
   """Name"""
   name: StringFilter
+
+  """Version"""
+  version: StringFilter
 }
 
 input SchemaWhereInput {
@@ -1416,6 +1681,9 @@ input SchemaWhereInput {
 
   """Name"""
   name: StringFilter
+
+  """Version"""
+  version: StringFilter
 }
 
 enum SortOrder {
@@ -1888,6 +2156,9 @@ type VariableSelectOutput {
   """VariableId"""
   id: ID!
 
+  """Resource"""
+  resource: Resource
+
   """ResourceId"""
   resourceId: String
 
@@ -1899,6 +2170,9 @@ type VariableSelectOutput {
 
   """Value"""
   value: JSON
+
+  """VariableCategory"""
+  variableCategory: VariableCategory
 
   """VariableCategoryId"""
   variableCategoryId: String

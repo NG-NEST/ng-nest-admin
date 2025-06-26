@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit, inject, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
+  XCascadeComponent,
+  XCascadeNode,
   XIconComponent,
   XInputNumberComponent,
   XRadioComponent,
@@ -14,7 +16,8 @@ import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { Catalogue, CatalogueMessage, CatalogueService } from '@ui/api';
+import { Catalogue, CatalogueMessage, CatalogueService, VariableService } from '@ui/api';
+import { first, groupBy } from 'lodash-es';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
@@ -30,7 +33,8 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XInputNumberComponent,
     XTextareaComponent,
     XIconComponent,
-    XTooltipDirective
+    XTooltipDirective,
+    XCascadeComponent
   ],
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss']
@@ -45,6 +49,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     saveSuccess: (node: Catalogue) => void;
   }>(X_DIALOG_DATA);
   private catalogue = inject(CatalogueService);
+  private variable = inject(VariableService);
   private fb = inject(FormBuilder);
   private message = inject(XMessageService);
 
@@ -54,6 +59,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   type = signal('');
 
   treeData = signal<XTreeNode[]>([]);
+  variableList = signal<XCascadeNode[]>([]);
 
   title = computed(() => {
     if (this.type() === 'add-root') return '添加根节点';
@@ -81,19 +87,21 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.type.set(type);
     this.resourceId.set(resourceId);
     this.pid.set(pid);
-  }
-
-  ngOnInit(): void {
     this.form = this.fb.group({
       type: ['Folder', [Validators.required]],
       pid: [{ disabled: true, value: this.pid() }],
       name: ['', [Validators.required]],
+      many: [false, [Validators.required]],
+      variableId: [null],
       resourceId: [this.resourceId(), [Validators.required]],
       sort: [0, [Validators.required]],
       description: ['']
     });
+  }
 
+  ngOnInit(): void {
     this.getCatalogues(this.resourceId()).subscribe();
+    this.getVariables(this.resourceId()).subscribe();
 
     if (this.id()) {
       this.formLoading.set(true);
@@ -130,6 +138,21 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           )
         )
       );
+  }
+
+  getVariables(resourceId: string) {
+    return this.variable.variableSelect({ where: { resourceId: { equals: resourceId! } } }).pipe(
+      tap((x) => {
+        const group = groupBy(x, (y) => {
+          y.variableCategoryId;
+        });
+        const variables: XCascadeNode[] = [];
+        for (let key in group) {
+          const one = first(group[key])!;
+          variables.push({ id: one.variableCategory.id, label: one.variableCategory.name });
+        }
+      })
+    );
   }
 
   save() {

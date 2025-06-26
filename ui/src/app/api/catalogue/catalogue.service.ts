@@ -28,10 +28,12 @@ export class CatalogueService {
               url
               type
               sort
+              many
               description
               id
               pid
               resourceId
+              variableId
               parent {
                 name
               }
@@ -127,8 +129,12 @@ export class CatalogueService {
       .pipe(map(() => CatalogueMessage.DeletedSuccess));
   }
 
-  content(id: string): Observable<string> {
-    return this.http.get(`/api/catalogue/content/${id}`, { responseType: 'text' });
+  preview(id: string): Observable<string> {
+    return this.http.get(`/api/catalogue/preview/${id}`, { responseType: 'text' });
+  }
+
+  download(id: string): Observable<ArrayBuffer> {
+    return this.http.get(`/api/catalogue/download/${id}`, { responseType: 'arraybuffer' });
   }
 
   folderUpload(body: FormData): Observable<string> {
@@ -139,5 +145,11 @@ export class CatalogueService {
 
   categoryPreview(resourceId: string): Observable<Catalogue[]> {
     return this.http.get<Catalogue[]>(`/api/catalogue/category-preview/${resourceId}`);
+  }
+
+  categoryDownload(resourceId: string): Observable<ArrayBuffer> {
+    return this.http.get(`/api/catalogue/category-download/${resourceId}`, {
+      responseType: 'arraybuffer'
+    });
   }
 }

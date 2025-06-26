@@ -4,6 +4,7 @@ import { IsOptional } from 'class-validator';
 import { CatalogueDescription, CatalogueFileType } from './catalogue.enum';
 import { Resource, ResourceDescription } from '../resource';
 import { CatalogueType } from '@prisma/client';
+import { Variable, VariableDescription } from '../variable';
 
 @ObjectType()
 export class Catalogue extends BaseAudit {
@@ -28,7 +29,8 @@ export class Catalogue extends BaseAudit {
   @Field(() => String, { description: CatalogueDescription.Type })
   type: CatalogueType;
 
-  @Field(() => String, { description: CatalogueDescription.FileType })
+  @Field(() => String, { description: CatalogueDescription.FileType, nullable: true })
+  @IsOptional()
   fileType?: CatalogueFileType;
 
   @Field({ description: CatalogueDescription.Sort })
@@ -51,4 +53,16 @@ export class Catalogue extends BaseAudit {
 
   @Field(() => Resource, { description: ResourceDescription.Resource })
   resource: Resource;
+
+  @Field(() => Boolean, { description: CatalogueDescription.Many, nullable: true })
+  @IsOptional()
+  many?: boolean;
+
+  @Field({ description: VariableDescription.Id, nullable: true })
+  @IsOptional()
+  variableId?: string;
+
+  @Field(() => Variable, { description: VariableDescription.Variable, nullable: true })
+  @IsOptional()
+  variable?: Variable;
 }

@@ -3,8 +3,10 @@ import { Permission } from '../permission';
 
 export class Resource extends BaseModel {
   pid?: string;
+  type?: string;
+  icon?: string;
   name!: string;
-  code!: string;
+  code!: ResourceCode;
   sort!: number;
   description?: string;
   permissions?: Permission[];
@@ -19,3 +21,5 @@ export class ResourceSubject {
   id!: string;
   name!: string;
 }
+
+export type ResourceCode = string | number | boolean;

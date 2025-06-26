@@ -19,16 +19,40 @@
       ></x-tree-select>
     </div>
     <div class="item required">
+      <label>资源类型：</label>
+      <x-radio [data]="typeList()" formControlName="type"></x-radio>
+    </div>
+    <div class="item required">
       <label>资源名称：</label>
       <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
     </div>
-    <div class="item required">
-      <label>资源编码：</label>
-      <x-input formControlName="code" placeholder="请输入资源编码"></x-input>
-    </div>
+    @switch (form.value.type) {
+      @case ('number') {
+        <div class="item required">
+          <label>数字：</label>
+          <x-input-number formControlName="code"></x-input-number>
+        </div>
+      }
+      @case ('boolean') {
+        <div class="item required">
+          <label>布尔：</label>
+          <x-switch formControlName="code" checkedText="true" unCheckedText="false"></x-switch>
+        </div>
+      }
+      @default {
+        <div class="item required">
+          <label>字符串：</label>
+          <x-input formControlName="code" placeholder="请输入字符串"></x-input>
+        </div>
+      }
+    }
     <div class="item required">
       <label>资源排序：</label>
       <x-input-number formControlName="sort"></x-input-number>
+    </div>
+    <div class="item">
+      <label>资源图标：</label>
+      <x-input formControlName="icon" placeholder="可选择一个资源图标"></x-input>
     </div>
     <div class="item">
       <label>资源描述：</label>

@@ -5,7 +5,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { CacheGroup, CacheMessage, CacheService, ResourceService } from '@ui/api';
+import { CacheGroup, CacheMessage, CacheService, ResourceCode, ResourceService } from '@ui/api';
 import { AppBase64ToStringPipe } from '@ui/core';
 import { Subject, tap } from 'rxjs';
 import { CacheDetailComponent } from '../cache-detail/cache-detail.component';
@@ -39,7 +39,7 @@ export class CacheGroupComponent implements OnDestroy {
   formLoading = signal(false);
   saveLoading = signal(false);
 
-  typeMap = new Map<string, string>();
+  typeMap = new Map<ResourceCode, string>();
 
   $destroy = new Subject<void>();
 

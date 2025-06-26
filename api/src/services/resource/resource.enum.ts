@@ -13,6 +13,7 @@ export enum ResourceDescription {
   Id = 'ResourceId',
   Pid = 'Pid',
   Type = 'Type',
+  Icon = 'Icon',
   Name = 'Name',
   Code = 'Code',
   Sort = 'Sort',

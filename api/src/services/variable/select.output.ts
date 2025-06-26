@@ -2,8 +2,8 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { VariableDescription } from './variable.enum';
 import { BaseAudit } from '@api/core';
 import { IsJSON, IsOptional } from 'class-validator';
-import { ResourceDescription } from '../resource';
-import { VariableCategoryDescription } from '../variable-category';
+import { Resource, ResourceDescription } from '../resource';
+import { VariableCategory, VariableCategoryDescription } from '../variable-category';
 import { GraphQLJSON } from 'graphql-scalars';
 import { JsonValue } from '@prisma/client/runtime/library';
 
@@ -32,7 +32,18 @@ export class VariableSelectOutput extends BaseAudit {
   @IsOptional()
   resourceId?: string;
 
+  @Field(() => Resource, { description: ResourceDescription.Resource, nullable: true })
+  @IsOptional()
+  resource?: Resource;
+
   @Field({ description: VariableCategoryDescription.Id, nullable: true })
   @IsOptional()
   variableCategoryId?: string;
+
+  @Field(() => VariableCategory, {
+    description: VariableCategoryDescription.VariableCategory,
+    nullable: true,
+  })
+  @IsOptional()
+  variableCategory?: VariableCategory;
 }

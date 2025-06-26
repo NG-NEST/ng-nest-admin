@@ -14,6 +14,7 @@ export enum SchemaDescription {
   Name = 'Name',
   Code = 'Code',
   Description = 'Description',
+  Version = 'Version',
   Json = 'Json',
 }
 

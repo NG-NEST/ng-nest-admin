@@ -22,6 +22,10 @@ export class ResourceOrderInput extends BaseOrder {
   @IsOptional()
   type?: SortOrder;
 
+  @Field(() => SortOrder, { description: ResourceDescription.Icon, nullable: true })
+  @IsOptional()
+  icon?: SortOrder;
+
   @Field(() => SortOrder, { description: SubjectDescription.Id, nullable: true })
   @IsOptional()
   subjectId?: SortOrder;

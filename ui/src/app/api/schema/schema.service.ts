@@ -27,6 +27,7 @@ export class SchemaService {
               id
               name
               code
+              version
               description
               json
             }
@@ -53,7 +54,7 @@ export class SchemaService {
                 id
                 name
                 code
-                json
+                version
                 createdAt
                 updatedAt
               }
@@ -74,6 +75,7 @@ export class SchemaService {
               id
               name
               code
+              version
             }
           }
         `

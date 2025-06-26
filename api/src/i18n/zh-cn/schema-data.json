@@ -1,0 +1,6 @@
+{
+  "SchemaDataIdIsNotEmpty": "数据编码不能为空",
+  "DataIsNotEmpty": "数据不能为空",
+  "SchemaIdIsNotEmpty": "模型编码不能为空",
+  "SchemaIdIsNotExist": "模型编码不存在"
+}

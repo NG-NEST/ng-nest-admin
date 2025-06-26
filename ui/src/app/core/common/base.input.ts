@@ -51,6 +51,11 @@ export class NumberFilter {
   not?: number;
 }
 
+export class BooleanFilter {
+  equals?: boolean;
+  not?: boolean;
+}
+
 export class BaseOrder {
   createdAt?: SortOrder;
   updatedAt?: SortOrder;

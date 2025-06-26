@@ -8,7 +8,8 @@ import {
   CatalogueCacheClear,
 } from '@api/services';
 import { MultipartFile } from '@fastify/multipart';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
+import { FastifyReply } from 'fastify';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -35,22 +36,32 @@ export class CatalogueController {
     return await this.catalogueService.delete(id);
   }
 
-  @Get('content/:id')
-  @Authorization(CatalogueAuth.CatalogueContent)
-  async content(@Param('id') id: string) {
-    return await this.catalogueService.content(id);
-  }
-
   @Get('preview/:id')
   @Authorization(CatalogueAuth.CataloguePreview)
   async preview(@Param('id') id: string) {
     return await this.catalogueService.preview(id);
   }
 
+  @Get('download/:id')
+  @Authorization(CatalogueAuth.CatalogueDownload)
+  async download(@Param('id') id: string, @Res() reply: FastifyReply) {
+    const catalogue = await this.catalogueService.preview(id);
+    const { name, content } = catalogue;
+    reply.header('Content-Disposition', `attachment; filename=${encodeURIComponent(name)}`);
+    reply.header('Content-Type', 'application/octet-stream');
+    reply.send(content);
+  }
+
   @Get('category-preview/:resourceId')
   @Authorization(CatalogueAuth.CatalogueCategoryPreview)
   async categoryPreview(@Param('resourceId') resourceId: string) {
     return await this.catalogueService.categoryPreview(resourceId);
+  }
+
+  @Get('category-download/:resourceId')
+  @Authorization(CatalogueAuth.CatalogueCategoryDownload)
+  async categoryDownload(@Param('resourceId') resourceId: string, @Res() reply: FastifyReply) {
+    await this.catalogueService.categoryDownload(resourceId, reply);
   }
 
   @Post('folder-upload')

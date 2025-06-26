@@ -36,6 +36,34 @@
       <x-input formControlName="name" [placeholder]="'请输入' + typeName"></x-input>
     </div>
     <div class="item">
+      <label>
+        生成多次
+        <x-icon
+          class="app-help-icon"
+          x-tooltip
+          [content]="contentTpl"
+          [panelClass]="'app-help-content'"
+          type="fto-help-circle"
+        ></x-icon>
+        ：
+        <ng-template #contentTpl>
+          <p>默认只生成一次</p>
+          <p>生成多次，需要指定一个数组变量</p>
+        </ng-template>
+      </label>
+      <x-radio
+        [data]="[
+          { id: true, label: '是' },
+          { id: false, label: '否' }
+        ]"
+        button
+        formControlName="many"
+      ></x-radio>
+      @if (form.value.many) {
+        <x-cascade [data]="variableList()" formControlName="variableId"></x-cascade>
+      }
+    </div>
+    <div class="item">
       <label>排序：</label>
       <x-input-number formControlName="sort"></x-input-number>
     </div>

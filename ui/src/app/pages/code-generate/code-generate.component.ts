@@ -1,4 +1,13 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  DOCUMENT,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  viewChild
+} from '@angular/core';
 import { XTreeSelectComponent, XTreeSelectNode } from '@ng-nest/ui/tree-select';
 import { XTreeComponent, XTreeNode } from '@ng-nest/ui/tree';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +48,7 @@ import {
 import { AppEditorComponent, AppFileIconPipe, AppFileReader, AppParseGitignore } from '@ui/core';
 import { VariableSettingComponent } from './variable-setting/variable-setting.component';
 import { CategoryPreviewComponent } from './category-preview/category-preview.component';
+import { AppDownloadArrayBuffer } from 'src/app/core/functions/download';
 
 @Component({
   selector: 'app-code-generate',
@@ -68,6 +78,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   messageBox = inject(XMessageBoxService);
   message = inject(XMessageService);
   dialog = inject(XDialogService);
+  document = inject(DOCUMENT);
 
   form = this.formBuilder.group({
     category: ['']
@@ -92,7 +103,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     { id: 'folder-upload', label: '文件夹上传', icon: 'fto-upload' },
     { id: 'variable-setting', label: '变量设置', icon: 'fto-settings' },
     { id: 'category-preview', label: '生成预览', icon: 'fto-eye' },
-    { id: 'code-download', label: '代码下载', icon: 'fto-download' }
+    { id: 'category-download', label: '代码下载', icon: 'fto-download' }
   ]);
 
   ngOnInit(): void {
@@ -173,9 +184,14 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         });
 
         break;
-      case 'content':
-        this.catalogue.content(data!.id).subscribe((x) => {
+      case 'preview':
+        this.catalogue.preview(data!.id).subscribe((x) => {
           console.log(x);
+        });
+        break;
+      case 'download':
+        this.catalogue.download(data!.id).subscribe((x) => {
+          AppDownloadArrayBuffer(x, data!.name, this.document);
         });
         break;
       case 'folder-upload':
@@ -192,6 +208,15 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           }
         });
         break;
+      case 'category-download':
+        this.catalogue.categoryDownload(this.form.value.category!).subscribe((x) => {
+          AppDownloadArrayBuffer(
+            x,
+            `${this.getCategoryName(this.form.value.category!)}.zip`,
+            this.document
+          );
+        });
+        break;
       case 'variable-setting':
         this.dialog.create(VariableSettingComponent, {
           width: '70rem',
@@ -201,6 +226,12 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         });
         break;
     }
+  }
+
+  getCategoryName(category: string) {
+    const one = this.categories().find((x) => x.id === category);
+    if (one) return one.label;
+    return '';
   }
 
   onDropdownClick(event: XDropdownNode) {

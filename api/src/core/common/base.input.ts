@@ -3,6 +3,8 @@ import { IncludeDescription, SortOrder, WhereDescription } from './base.enum';
 import { IsOptional, Max, Min } from 'class-validator';
 import { BaseDescription, PaginationDescription } from './base.enum';
 import { Type } from '@nestjs/common';
+import { GraphQLJSON } from 'graphql-scalars';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @InputType()
 export class StringFilter {
@@ -96,9 +98,51 @@ export class NumberFilter {
   not?: number;
 }
 
+@InputType()
+export class BooleanFilter {
+  @Field(() => Boolean, { description: WhereDescription.Equals })
+  equals?: boolean;
+  @Field(() => Boolean, { description: WhereDescription.Not })
+  not?: boolean;
+}
+
+@InputType()
+export class JsonFilter {
+  @Field(() => GraphQLJSON, { description: WhereDescription.Equals })
+  equals?: JsonValue;
+  @Field(() => [String], { description: WhereDescription.Path })
+  path?: string[];
+  @Field(() => String, { description: WhereDescription.Mode })
+  mode?: 'default' | 'insensitive';
+  @Field(() => GraphQLJSON, { description: WhereDescription.Lt })
+  lt?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.Lte })
+  lte?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.Gt })
+  gt?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.Gte })
+  gte?: JsonValue;
+  @Field(() => String, { description: WhereDescription.Contains })
+  string_contains?: string;
+  @Field(() => String, { description: WhereDescription.StartsWith })
+  string_starts_with?: string;
+  @Field(() => String, { description: WhereDescription.EndsWith })
+  string_ends_with?: string;
+  @Field(() => GraphQLJSON, { description: WhereDescription.ArrayContains })
+  array_contains?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.ArrayStartsWith })
+  array_starts_with?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.ArrayEndsWith })
+  array_ends_with?: JsonValue;
+  @Field(() => GraphQLJSON, { description: WhereDescription.Not })
+  not?: JsonValue;
+}
+
 export const BASE_STRING_FILTER: Type<StringFilter> = StringFilter;
 export const BASE_DATETIME_FILTER: Type<DateTimeFilter> = DateTimeFilter;
 export const BASE_NUMBER_FILTER: Type<NumberFilter> = NumberFilter;
+export const BASE_BOOLEAN_FILTER: Type<BooleanFilter> = BooleanFilter;
+export const BASE_JSON_FILTER: Type<JsonFilter> = JsonFilter;
 
 @InputType()
 export class BaseOrder {

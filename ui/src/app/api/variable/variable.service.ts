@@ -88,6 +88,10 @@ export class VariableService {
               description
               resourceId
               variableCategoryId
+              variableCategory {
+                name
+                code
+              }
             }
           }
         `

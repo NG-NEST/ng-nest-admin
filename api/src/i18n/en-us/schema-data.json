@@ -1,0 +1,6 @@
+{
+  "SchemaDataIdIsNotEmpty": "id should not be empty",
+  "DataIsNotEmpty": "name should not be empty",
+  "SchemaIdIsNotEmpty": "schemaId should not be empty",
+  "SchemaIdIsNotExist": "schemaId is not exist"
+}

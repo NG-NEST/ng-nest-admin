@@ -28,6 +28,10 @@ export class ResourceWhere {
   @IsOptional()
   type?: StringFilter;
 
+  @Field(() => BASE_STRING_FILTER, { description: ResourceDescription.Icon, nullable: true })
+  @IsOptional()
+  icon?: StringFilter;
+
   @Field(() => BASE_STRING_FILTER, { description: ResourceDescription.Description, nullable: true })
   @IsOptional()
   description?: StringFilter;

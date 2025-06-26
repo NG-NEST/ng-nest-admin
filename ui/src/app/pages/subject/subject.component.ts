@@ -76,6 +76,7 @@ export class SubjectComponent {
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
     { id: 'name', label: ResourceDescription.Name },
     { id: 'code', label: ResourceDescription.Code },
+    { id: 'type', label: ResourceDescription.Type },
     { id: 'sort', label: ResourceDescription.Sort },
     { id: 'parentName', label: ResourceDescription.Parent },
     { id: 'subjectName', label: SubjectDescription.Name },
@@ -88,6 +89,7 @@ export class SubjectComponent {
   resourceResetLoading = signal(false);
   resourceSearchLoading = signal(false);
   resourceData = signal<Resource[]>([]);
+  resourceTypeMap = new Map<string | number | boolean, string>();
 
   constructor() {
     effect(() => {
@@ -100,6 +102,7 @@ export class SubjectComponent {
   }
 
   ngOnInit() {
+    this.getResourceTypeMap().subscribe();
     this.getTableData();
   }
 
@@ -187,6 +190,18 @@ export class SubjectComponent {
         })
       )
       .subscribe();
+  }
+
+  getResourceTypeMap() {
+    return this.resourceService
+      .resourceSelect({ where: { subjectId: { equals: 'resource-type' } } })
+      .pipe(
+        tap((x) => {
+          for (let { name, code } of x) {
+            this.resourceTypeMap.set(code, name);
+          }
+        })
+      );
   }
 
   setResourceParams(index: number, size: number) {

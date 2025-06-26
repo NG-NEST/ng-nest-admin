@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
-import { CacheDescription, CacheGroup, CacheService, ResourceService } from '@ui/api';
+import { CacheDescription, CacheGroup, CacheService, ResourceCode, ResourceService } from '@ui/api';
 import { AppAuthDirective, BaseDescription, BaseOrder, BasePagination } from '@ui/core';
 import { delay, finalize, tap } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -56,7 +56,7 @@ export class CacheComponent {
   searchLoading = signal(false);
   clearAllLoading = signal(false);
   data = signal<CacheGroup[]>([]);
-  typeMap = new Map<string, string>();
+  typeMap = new Map<ResourceCode, string>();
 
   tableCom = viewChild.required<XTableComponent>('tableCom');
 

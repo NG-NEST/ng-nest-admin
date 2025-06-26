@@ -1,7 +1,11 @@
+import { ResourceCode } from './resource.model';
+
 export class ResourceUpdateInput {
   id!: string;
+  type?: string;
+  icon?: string;
   name!: string;
-  code!: string;
+  code!: ResourceCode;
   sort!: number;
   description?: string;
   subjectId!: string;

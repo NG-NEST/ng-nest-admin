@@ -36,6 +36,7 @@ export class SchemaService {
   }
 
   async create(data: SchemaCreateInput) {
+    data.version = await this.getNewVersion(data.code);
     return await this.prisma.schema.create({
       data,
     });
@@ -43,5 +44,30 @@ export class SchemaService {
 
   async delete(id: string) {
     return await this.prisma.schema.delete({ where: { id } });
+  }
+
+  async getNewVersion(code: string) {
+    const schema = await this.prisma.schema.findFirst({
+      where: { code: { equals: code } },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (schema) {
+      const { version } = schema;
+      const versionParts = version.split('.').map(Number);
+      for (let i = versionParts.length - 1; i >= 0; i--) {
+        if (versionParts[i] < 9) {
+          versionParts[i]++;
+          break;
+        } else {
+          versionParts[i] = 0;
+          if (i === 0) {
+            versionParts.unshift(1);
+          }
+        }
+      }
+      return versionParts.join('.');
+    } else {
+      return '0.0.1';
+    }
   }
 }

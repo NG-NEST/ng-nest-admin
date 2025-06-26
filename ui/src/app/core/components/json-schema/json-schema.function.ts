@@ -116,6 +116,7 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
   }
 
   if (Object.keys(other).length > 0) {
+    delete other['x-ng-nest'];
     Object.assign(schema, other);
   }
 

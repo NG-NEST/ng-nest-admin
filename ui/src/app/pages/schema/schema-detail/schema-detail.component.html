@@ -10,6 +10,18 @@
       <label [style.width.rem]="5">编码：</label>
       <x-input formControlName="code" placeholder="请输入编码" required></x-input>
     </div>
+    <div class="item">
+      <label [style.width.rem]="5">
+        <x-icon
+          class="tooltip"
+          x-tooltip
+          content="修改 JsonSchema 后会创建新的版本"
+          type="fto-alert-circle"
+        ></x-icon
+        >版本：
+      </label>
+      <x-input formControlName="version" placeholder="自动生成"></x-input>
+    </div>
     <div class="item" [style.gridColumn]="'1 / -1'">
       <label [style.width.rem]="5">描述：</label>
       <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>

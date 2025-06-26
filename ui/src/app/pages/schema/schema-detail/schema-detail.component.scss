@@ -2,12 +2,7 @@
   .content {
     padding: 2rem 1.25rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    .item {
-      label {
-      }
-    }
+    grid-template-columns: 1fr 1fr 1fr;
 
     x-input,
     x-textarea {

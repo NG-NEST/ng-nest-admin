@@ -39,13 +39,15 @@ export class SchemaComponent {
   dialog = inject(XDialogService);
 
   searchForm = this.fb.group({
-    name: [null]
+    name: [null],
+    code: [null]
   });
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
     { id: 'name', label: SchemaDescription.Name },
     { id: 'code', label: SchemaDescription.Code },
+    { id: 'version', label: SchemaDescription.Version, width: 100 },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
     { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
@@ -96,8 +98,9 @@ export class SchemaComponent {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: SchemaWhereInput = {};
 
-    const { name } = this.searchForm.value;
+    const { name, code } = this.searchForm.value;
     if (!XIsEmpty(name)) where.name = { contains: name! };
+    if (!XIsEmpty(code)) where.code = { contains: code! };
 
     return {
       skip: (index - 1) * size,
@@ -146,7 +149,7 @@ export class SchemaComponent {
         break;
       case 'edit':
         this.dialog.create(SchemaDetailComponent, {
-          width: '60rem',
+          width: '70rem',
           data: {
             id: schema?.id,
             saveSuccess: () => {

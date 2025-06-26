@@ -24,6 +24,8 @@ export class ResourceService {
         query: gql`
           query resource($id: ID!) {
             resource(id: $id) {
+              type
+              icon
               name
               code
               sort
@@ -52,6 +54,8 @@ export class ResourceService {
             resources(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
+                type
+                icon
                 name
                 code
                 sort
@@ -81,6 +85,8 @@ export class ResourceService {
             resourceSelect(where: $where, orderBy: $orderBy) {
               pid
               id
+              type
+              icon
               name
               code
               sort
