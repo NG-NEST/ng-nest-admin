@@ -60,7 +60,10 @@ export class CatalogueController {
 
   @Get('category-download/:resourceId')
   @Authorization(CatalogueAuth.CatalogueCategoryDownload)
-  async categoryDownload(@Param('resourceId') resourceId: string, @Res() reply: FastifyReply) {
+  async categoryDownload(
+    @Param('resourceId') resourceId: string,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ) {
     await this.catalogueService.categoryDownload(resourceId, reply);
   }
 

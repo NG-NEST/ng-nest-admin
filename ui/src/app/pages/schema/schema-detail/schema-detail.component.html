@@ -12,13 +12,15 @@
     </div>
     <div class="item">
       <label [style.width.rem]="5">
+        版本
         <x-icon
-          class="tooltip"
+          class="app-help-icon"
           x-tooltip
-          content="修改 JsonSchema 后会创建新的版本"
-          type="fto-alert-circle"
-        ></x-icon
-        >版本：
+          [content]="'修改 JsonSchema 后会创建新的版本'"
+          [panelClass]="'app-help-content'"
+          type="fto-help-circle"
+        ></x-icon>
+        ：
       </label>
       <x-input formControlName="version" placeholder="自动生成"></x-input>
     </div>

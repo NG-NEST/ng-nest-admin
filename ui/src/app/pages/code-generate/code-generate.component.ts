@@ -213,7 +213,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           AppDownloadArrayBuffer(
             x,
             `${this.getCategoryName(this.form.value.category!)}.zip`,
-            this.document
+            this.document,
+            false
           );
         });
         break;

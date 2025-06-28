@@ -16,6 +16,8 @@ import { TemplateService } from '@api/core';
 import { set } from 'lodash-es';
 import * as archiver from 'archiver';
 import { FastifyReply } from 'fastify';
+import { createWriteStream, mkdtemp, promises, readFile, rm } from 'fs-extra';
+import { join } from 'node:path';
 
 @Injectable()
 export class CatalogueService {
@@ -96,7 +98,7 @@ export class CatalogueService {
   async preview(id: string) {
     const catalogue = (await this.prisma.catalogue.findUnique({
       where: { id },
-      select: { content: true, resourceId: true },
+      select: { content: true, name: true, resourceId: true },
     })) as Catalogue;
     if (!catalogue) {
       return null;
@@ -113,7 +115,7 @@ export class CatalogueService {
     return catalogue;
   }
 
-  async categoryPreview(resourceId: string) {
+  async categoryPreview(resourceId: string): Promise<Catalogue[]> {
     const catalogues = await this.prisma.catalogue.findMany({
       where: { resourceId },
     });
@@ -127,7 +129,7 @@ export class CatalogueService {
       );
     }
 
-    return catalogues;
+    return catalogues as Catalogue[];
   }
 
   async categoryDownload(resourceId: string, reply: FastifyReply) {
@@ -135,46 +137,145 @@ export class CatalogueService {
 
     const catalogues = await this.categoryPreview(resourceId);
 
+    // 创建临时目录
+    const tempPath = join(process.cwd(), 'temp');
+    await promises.mkdir(tempPath, { recursive: true });
+    const tempDir = await mkdtemp(join(tempPath, 'catalogue-'));
+
+    // 生成临时压缩文件路径
+    const zipFilePath = `${tempDir}.zip`;
+    const output = createWriteStream(zipFilePath);
     const archive = archiver('zip', {
       zlib: { level: 9 },
     });
 
-    reply.header('Content-Type', 'application/zip');
-    reply.header('Content-Disposition', `attachment; filename=${resource.name}.zip`);
+    try {
+      // 构建树状结构并写入文件
+      const rootNodes = this.buildCatalogueTree(catalogues);
+      await this.writeCatalogueToDisk(rootNodes, tempDir);
 
-    archive.pipe(reply.raw);
+      // 压缩目录到临时文件
+      archive.pipe(output);
+      archive.directory(tempDir, false);
 
-    const buildTree = (pid: string | null): Catalogue[] => {
-      return catalogues
-        .filter((catalogue) => catalogue.pid === pid)
-        .map(
-          (catalogue) =>
-            ({
-              ...catalogue,
-              children: buildTree(catalogue.id),
-            }) as Catalogue,
-        );
-    };
+      // 合并压缩完成和文件写入完成的监听
+      await new Promise((resolve, reject) => {
+        let archiveFinished = false;
+        let outputClosed = false;
 
-    const rootNodes = buildTree(null);
+        const checkCompletion = () => {
+          if (archiveFinished && outputClosed) {
+            resolve('zip file created');
+          }
+        };
 
-    const addToArchive = (node: Catalogue, path = '') => {
-      const currentPath = path ? `${path}/${node.name}` : node.name;
-      if (node.children?.length) {
-        archive.directory(null, currentPath);
-        node.children.forEach((child: Catalogue) => addToArchive(child, currentPath));
-      } else {
-        if (node.content) {
-          archive.append(node.content, { name: currentPath });
-        }
+        archive.on('finish', () => {
+          console.log('archive finished');
+          archiveFinished = true;
+          checkCompletion();
+        });
+        archive.on('error', (err) => {
+          console.error('Archiver error:', err);
+          reject(err);
+        });
+
+        output.on('close', () => {
+          console.log('zip file completed');
+          outputClosed = true;
+          checkCompletion();
+        });
+        output.on('error', (err) => {
+          console.error('Write stream error:', err);
+          reject(err);
+        });
+
+        // 确保开始压缩
+        archive.finalize();
+      });
+
+      // 检查压缩文件大小
+      const { size } = await promises.stat(zipFilePath);
+      if (size === 0) {
+        throw new Error('Generated zip file is empty');
       }
-    };
 
-    rootNodes.forEach((node) => addToArchive(node));
+      const stream = await readFile(zipFilePath);
+      reply.header('Content-Type', 'application/zip');
+      reply.header(
+        `Content-Disposition`,
+        `attachment; filename=${encodeURIComponent(resource.name)}.zip`,
+      );
+      reply.header('Content-Length', size);
 
-    await archive.finalize();
+      reply.send(stream);
 
-    return reply;
+      // // 返回压缩文件
+      // reply.header('Content-Type', 'application/octet-stream');
+      // reply.header(
+      //   `Content-Disposition`,
+      //   `attachment; filename=${encodeURIComponent(resource.name)}.zip`,
+      // );
+      // reply.header('Content-Length', size.toString());
+
+      // // 发送压缩文件
+      // const readableStream = ReadableStream.from(stream);
+      // const response = new Response(readableStream, {
+      //   status: 200,
+      //   headers: { 'content-type': 'application/octet-stream' },
+      // });
+      // reply.send(response);
+      // reply.send(ReadableStream.from(createReadStream(zipFilePath)));
+    } catch (error) {
+      console.error('Error during processing:', error);
+      // 清理临时目录
+      try {
+        await rm(tempDir, { recursive: true, force: true });
+      } catch (rmErr) {
+        console.error('Error removing temp directory:', rmErr);
+      }
+      throw new Error('Failed to process and zip catalogues.');
+    } finally {
+      // 清理临时目录
+
+      await rm(tempDir, { recursive: true, force: true });
+      await rm(zipFilePath, { recursive: true, force: true });
+    }
+  }
+
+  buildCatalogueTree(catalogues: Catalogue[]): Catalogue[] {
+    const map = new Map<string, Catalogue & { children?: Catalogue[] }>();
+
+    catalogues.forEach((node) => {
+      map.set(node.id, { ...node, children: [] });
+    });
+
+    const roots: Catalogue[] = [];
+
+    catalogues.forEach((node) => {
+      const current = map.get(node.id)!;
+      if (node.pid && map.has(node.pid)) {
+        map.get(node.pid)?.children?.push(current);
+      } else {
+        roots.push(current);
+      }
+    });
+
+    return roots;
+  }
+
+  async writeCatalogueToDisk(nodes: (Catalogue & { children?: any })[], basePath: string) {
+    for (const node of nodes) {
+      const path = join(basePath, node.name);
+
+      if (node.type === CatalogueType.Folder) {
+        await promises.mkdir(path, { recursive: true });
+        if (node.children?.length) {
+          await this.writeCatalogueToDisk(node.children, path);
+        }
+      } else if (node.type === CatalogueType.File) {
+        await promises.writeFile(path, node.content ?? '', 'utf8');
+      }
+    }
   }
 
   async folderUpload(files: MultipartFile[], body: { filepath: string; resourceId: string }) {

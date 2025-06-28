@@ -1,8 +1,13 @@
-export function AppDownloadArrayBuffer(x: ArrayBuffer, filename: string, document: Document) {
+export function AppDownloadArrayBuffer(
+  x: ArrayBuffer,
+  filename: string,
+  document: Document,
+  isText = true
+) {
   let blob: Blob;
   if (typeof x === 'string') {
     blob = new Blob([x], { type: 'text/plain;charset=utf-8' });
-  } else if (x instanceof ArrayBuffer) {
+  } else if (x instanceof ArrayBuffer && isText) {
     const decoder = new TextDecoder('utf-8');
     const text = decoder.decode(x);
     blob = new Blob([text], { type: 'text/plain;charset=utf-8' });

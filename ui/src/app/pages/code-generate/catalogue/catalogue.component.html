@@ -48,7 +48,7 @@
         ：
         <ng-template #contentTpl>
           <p>默认只生成一次</p>
-          <p>生成多次，需要指定一个数组变量</p>
+          <p>生成多次，需要指定数组变量</p>
         </ng-template>
       </label>
       <x-radio
@@ -59,10 +59,17 @@
         button
         formControlName="many"
       ></x-radio>
-      @if (form.value.many) {
-        <x-cascade [data]="variableList()" formControlName="variableId"></x-cascade>
-      }
     </div>
+    @if (form.value.many) {
+      <div class="item required">
+        <label>数组变量：</label>
+        <x-cascade
+          [data]="variableList()"
+          nodeTrigger="hover"
+          formControlName="variableId"
+        ></x-cascade>
+      </div>
+    }
     <div class="item">
       <label>排序：</label>
       <x-input-number formControlName="sort"></x-input-number>

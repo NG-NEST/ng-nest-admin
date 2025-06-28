@@ -266,19 +266,22 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   }
 
   add(variable?: Variable) {
-    this.many.push(
-      this.fb.group({
-        id: [variable?.id ?? ''],
-        code: [variable?.code ?? '', [Validators.required]],
-        type: [variable?.type ?? ''],
-        value: [variable?.value ?? ''],
-        description: [variable?.description ?? ''],
-        resourceId: [variable?.resourceId ?? this.resourceId()],
-        variableCategoryId: [
-          variable?.variableCategoryId ?? this.form.getRawValue()['variableCategoryId']
-        ]
-      })
-    );
+    const group = this.fb.group({
+      id: [variable?.id ?? ''],
+      code: [variable?.code ?? '', [Validators.required]],
+      type: [variable?.type ?? ''],
+      value: [variable?.value ?? ''],
+      description: [variable?.description ?? ''],
+      resourceId: [variable?.resourceId ?? this.resourceId()],
+      variableCategoryId: [
+        variable?.variableCategoryId ?? this.form.getRawValue()['variableCategoryId']
+      ]
+    });
+    this.many.push(group);
+
+    group.controls.type.valueChanges.pipe(takeUntil(this.$destroy)).subscribe(() => {
+      group.controls.value.patchValue('');
+    });
   }
 
   remove(i: number) {

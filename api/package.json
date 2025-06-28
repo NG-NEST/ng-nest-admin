@@ -24,6 +24,7 @@
     "@apollo/server": "^4.12.2",
     "@as-integrations/fastify": "^2.1.1",
     "@fastify/multipart": "^9.0.3",
+    "@fastify/static": "^8.2.0",
     "@graphql-tools/utils": "^10.8.6",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/cache-manager": "^3.0.1",

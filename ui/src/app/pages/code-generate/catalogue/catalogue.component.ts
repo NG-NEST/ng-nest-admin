@@ -18,7 +18,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { Catalogue, CatalogueMessage, CatalogueService, VariableService } from '@ui/api';
 import { first, groupBy } from 'lodash-es';
-import { Observable, Subject, finalize, tap } from 'rxjs';
+import { Observable, Subject, finalize, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-catalogue',
@@ -110,16 +110,32 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         .pipe(
           tap((x) => {
             this.form.patchValue(x);
+
+            this.setManyChange();
           }),
           finalize(() => this.formLoading.set(false))
         )
         .subscribe();
+    } else {
+      this.setManyChange();
     }
   }
 
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+  }
+
+  setManyChange() {
+    this.form.controls['many'].valueChanges.pipe(takeUntil(this.$destroy)).subscribe((x) => {
+      const { variableId } = this.form.controls;
+      variableId.clearValidators();
+      if (x === true) {
+        variableId.addValidators(Validators.required);
+      }
+      variableId.patchValue(null);
+      this.form.updateValueAndValidity();
+    });
   }
 
   getCatalogues(resourceId: string) {
@@ -150,7 +166,12 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         for (let key in group) {
           const one = first(group[key])!;
           variables.push({ id: one.variableCategory.id, label: one.variableCategory.name });
+          for (let item of group[key]) {
+            variables.push({ pid: one.variableCategory.id, id: item.id, label: item.code });
+          }
         }
+
+        this.variableList.set(variables);
       })
     );
   }
