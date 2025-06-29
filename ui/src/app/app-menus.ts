@@ -5,7 +5,7 @@ export const AppMenus: XMenuNode[] = [
   { id: 200, label: 'AIGC', icon: 'fto-send', routerLink: './aigc' },
   { id: 300, label: '领域数据', icon: 'fto-settings' },
   { id: 500, pid: 300, label: '数据定义', icon: 'admin:json', routerLink: './schema' },
-  { id: 600, pid: 300, label: '数据集', icon: 'fto-settings', routerLink: './schema-data' },
+  { id: 600, pid: 300, label: '数据集', icon: 'fto-settings', routerLink: './data' },
   { id: 700, pid: 300, label: '代码生成', icon: 'fto-code', routerLink: './code-generate' },
   { id: 9999, label: '基本信息', icon: 'fto-settings' },
   { id: 9001, pid: 9999, label: '用户管理', icon: 'fto-user', routerLink: './user' },

@@ -107,10 +107,11 @@ export class CatalogueService {
       throw new BadRequestException({ message: CatalogueException.ContentIsNull });
     }
 
-    catalogue.content = this.templateService.generate(
-      catalogue.content,
-      await this.getResourceVars(catalogue.resourceId),
-    );
+    const vars = await this.getResourceVars(catalogue.resourceId);
+
+    catalogue.content = this.templateService.generate(catalogue.content, vars);
+
+    catalogue.name = this.templateService.generate(catalogue.name, vars);
 
     return catalogue;
   }
@@ -119,14 +120,15 @@ export class CatalogueService {
     const catalogues = await this.prisma.catalogue.findMany({
       where: { resourceId },
     });
+    const vars = await this.getResourceVars(resourceId);
     for (let catalogue of catalogues) {
-      const { content } = catalogue;
-      if (!content) break;
-
-      catalogue.content = this.templateService.generate(
-        content,
-        await this.getResourceVars(resourceId),
-      );
+      const { content, type, name } = catalogue;
+      if (type === 'File') {
+        catalogue.content = this.templateService.generate(content, vars);
+        catalogue.name = this.templateService.generate(name, vars);
+      } else if (type === 'Folder') {
+        catalogue.name = this.templateService.generate(name, vars);
+      }
     }
 
     return catalogues as Catalogue[];
@@ -208,23 +210,6 @@ export class CatalogueService {
       reply.header('Content-Length', size);
 
       reply.send(stream);
-
-      // // 返回压缩文件
-      // reply.header('Content-Type', 'application/octet-stream');
-      // reply.header(
-      //   `Content-Disposition`,
-      //   `attachment; filename=${encodeURIComponent(resource.name)}.zip`,
-      // );
-      // reply.header('Content-Length', size.toString());
-
-      // // 发送压缩文件
-      // const readableStream = ReadableStream.from(stream);
-      // const response = new Response(readableStream, {
-      //   status: 200,
-      //   headers: { 'content-type': 'application/octet-stream' },
-      // });
-      // reply.send(response);
-      // reply.send(ReadableStream.from(createReadStream(zipFilePath)));
     } catch (error) {
       console.error('Error during processing:', error);
       // 清理临时目录

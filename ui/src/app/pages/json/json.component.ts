@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 // import { SchemaDetailComponent } from '../schema/schema-detail/schema-detail.component';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { AppJsonSchemaComponent, AppSchemaFormComponent, XJsonSchema } from '@ui/core';
@@ -94,6 +95,9 @@ export class JsonComponent {
     required: ['userId', 'userName', 'email']
   };
   dialog = inject(XDialogService);
+
+  formBuilder = inject(FormBuilder);
+  form = this.formBuilder.group({});
 
   ngAfterViewInit() {
     // this.dialog.create(SchemaDetailComponent, {

@@ -9,7 +9,7 @@ import { cloneDeep } from 'lodash-es';
 import { CatalogueMessage } from './catalogue.enum';
 import { CatalogueUpdateInput } from './update.input';
 import { CatalogueSelectOutput } from './select.output';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { CatalogueSelectInput } from './select.input';
 
 @Injectable({ providedIn: 'root' })
@@ -129,12 +129,15 @@ export class CatalogueService {
       .pipe(map(() => CatalogueMessage.DeletedSuccess));
   }
 
-  preview(id: string): Observable<string> {
-    return this.http.get(`/api/catalogue/preview/${id}`, { responseType: 'text' });
+  preview(id: string): Observable<Catalogue> {
+    return this.http.get<Catalogue>(`/api/catalogue/preview/${id}`);
   }
 
-  download(id: string): Observable<ArrayBuffer> {
-    return this.http.get(`/api/catalogue/download/${id}`, { responseType: 'arraybuffer' });
+  download(id: string): Observable<HttpResponse<ArrayBuffer>> {
+    return this.http.get(`/api/catalogue/download/${id}`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    });
   }
 
   folderUpload(body: FormData): Observable<string> {
@@ -147,9 +150,10 @@ export class CatalogueService {
     return this.http.get<Catalogue[]>(`/api/catalogue/category-preview/${resourceId}`);
   }
 
-  categoryDownload(resourceId: string): Observable<ArrayBuffer> {
+  categoryDownload(resourceId: string): Observable<HttpResponse<ArrayBuffer>> {
     return this.http.get(`/api/catalogue/category-download/${resourceId}`, {
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      observe: 'response'
     });
   }
 }

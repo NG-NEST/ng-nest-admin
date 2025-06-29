@@ -58,7 +58,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.form = this.fb.group({
-      type: ['string', [Validators.required]],
+      type: ['string', []],
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
       pid: [null],
@@ -153,15 +153,20 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   }
 
   getTypeList() {
-    return this.resource.resourceSelect({ where: { subjectId: { equals: 'resource-type' } } }).pipe(
-      tap((x) => {
-        this.typeList.set(
-          x.map((y) => ({
-            label: y.name,
-            id: y.code
-          }))
-        );
+    return this.resource
+      .resourceSelect({
+        where: { subject: { code: { equals: 'resource-type' } } },
+        orderBy: [{ sort: 'asc' }]
       })
-    );
+      .pipe(
+        tap((x) => {
+          this.typeList.set(
+            x.map((y) => ({
+              label: y.name,
+              id: y.code
+            }))
+          );
+        })
+      );
   }
 }

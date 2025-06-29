@@ -1,12 +1,11 @@
 <form [formGroup]="formGroup()" class="app-dialog-form">
-  <h4 class="title">{{ title().title }}</h4>
   <div class="content">
     @for (node of formTree(); track node.id!) {
       <div class="item" [class.required]="node.required!">
-        <label>{{ node.title }}£º</label>
+        <label>{{ node.title }}ï¼š</label>
         <x-input
           [formControlName]="node.name!"
-          placeholder="ÇëÊäÈëÃû³Æ"
+          placeholder=""
           [required]="node.required!"
         ></x-input>
       </div>

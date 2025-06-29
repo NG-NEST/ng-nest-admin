@@ -57,7 +57,19 @@
               <tr>
                 <th width="200" class="required">变量名</th>
                 <th width="160">数据类型</th>
-                <th width="200">值</th>
+                <th width="200">
+                  值<x-icon
+                    class="app-help-icon"
+                    x-tooltip
+                    [content]="contentValueTpl"
+                    [panelClass]="'app-help-content'"
+                    type="fto-help-circle"
+                  ></x-icon>
+
+                  <ng-template #contentValueTpl>
+                    <p>如果数据类型是数据定义，生成代码时需要指定一个对应定义的具体数据</p>
+                  </ng-template>
+                </th>
                 <th>说明</th>
                 <th width="80">操作</th>
               </tr>

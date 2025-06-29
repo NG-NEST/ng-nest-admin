@@ -1,0 +1,57 @@
+<div class="app-inner">
+  <div class="app-tools">
+    <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
+      <div class="list">
+        <div class="item">
+          <label>数据定义：</label>
+          <x-cascade
+            [data]="schemaList()"
+            nodeTrigger="hover"
+            formControlName="schemaId"
+            [style.width.rem]="15"
+          ></x-cascade>
+        </div>
+      </div>
+      <div class="buttons">
+        <x-button
+          [app-auth]="'schema-data-create'"
+          type="primary"
+          icon="fto-plus"
+          attrType="button"
+          (click)="action('add')"
+          >新增</x-button
+        >
+      </div>
+    </form>
+  </div>
+  <div class="app-table" [x-loading]="tableLoading()">
+    <x-table
+      ngSkipHydration
+      #tableCom
+      [data]="data()"
+      [columns]="columns()"
+      [(index)]="index"
+      [(size)]="size"
+      [(total)]="total"
+      [showSize]="true"
+      [showEmpty]="!tableLoading()"
+      [sizeData]="[10, 20, 50, 100]"
+      [showJump]="true"
+      [scroll]="{ x: 800, y: 400 }"
+      [virtualScroll]="true"
+      [bodyColumnTpl]="{ operate: operateTpl }"
+      (indexChange)="indexChange()"
+      (sizeChange)="sizeChange()"
+    ></x-table>
+    <ng-template #operateTpl let-column="$column" let-row="$row">
+      <div class="operate">
+        <x-link [app-auth]="'schema-data-update'" type="primary" (click)="action('edit', row)">
+          修改
+        </x-link>
+        <x-link [app-auth]="'schema-data-delete'" type="danger" (click)="action('delete', row)">
+          删除
+        </x-link>
+      </div>
+    </ng-template>
+  </div>
+</div>

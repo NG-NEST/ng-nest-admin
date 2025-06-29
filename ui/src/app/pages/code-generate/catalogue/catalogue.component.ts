@@ -165,9 +165,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         const variables: XCascadeNode[] = [];
         for (let key in group) {
           const one = first(group[key])!;
-          variables.push({ id: one.variableCategory.id, label: one.variableCategory.name });
+          variables.push({ id: one.variableCategoryId, label: one.variableCategory.name });
           for (let item of group[key]) {
-            variables.push({ pid: one.variableCategory.id, id: item.id, label: item.code });
+            variables.push({ pid: one.variableCategoryId, id: item.id, label: item.code });
           }
         }
 

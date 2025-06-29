@@ -49,6 +49,8 @@ import { AppEditorComponent, AppFileIconPipe, AppFileReader, AppParseGitignore }
 import { VariableSettingComponent } from './variable-setting/variable-setting.component';
 import { CategoryPreviewComponent } from './category-preview/category-preview.component';
 import { AppDownloadArrayBuffer } from 'src/app/core/functions/download';
+import { DatePipe } from '@angular/common';
+import { PreviewComponent } from './preview/preview.component';
 
 @Component({
   selector: 'app-code-generate',
@@ -69,7 +71,8 @@ import { AppDownloadArrayBuffer } from 'src/app/core/functions/download';
   ],
   templateUrl: './code-generate.component.html',
   styleUrls: ['./code-generate.component.scss'],
-  animations: []
+  animations: [],
+  providers: [DatePipe]
 })
 export class CodeGenerateComponent implements OnInit, OnDestroy {
   formBuilder = inject(FormBuilder);
@@ -78,6 +81,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   messageBox = inject(XMessageBoxService);
   message = inject(XMessageService);
   dialog = inject(XDialogService);
+  datePipe = inject(DatePipe);
   document = inject(DOCUMENT);
 
   form = this.formBuilder.group({
@@ -130,7 +134,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     switch (type) {
       case 'add-root':
         this.dialog.create(CatalogueComponent, {
-          width: '30rem',
+          width: '55rem',
           data: {
             resourceId: this.form.value.category,
             type: type,
@@ -143,7 +147,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'add-child':
         this.dialog.create(CatalogueComponent, {
-          width: '30rem',
+          width: '55rem',
           data: {
             resourceId: this.form.value.category,
             pid: data?.id,
@@ -157,7 +161,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'edit':
         this.dialog.create(CatalogueComponent, {
-          width: '30rem',
+          width: '55rem',
           data: {
             id: data?.id,
             resourceId: this.form.value.category,
@@ -185,13 +189,15 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
         break;
       case 'preview':
-        this.catalogue.preview(data!.id).subscribe((x) => {
-          console.log(x);
+        this.dialog.create(PreviewComponent, {
+          width: '100%',
+          height: '100%',
+          data: { id: data!.id }
         });
         break;
       case 'download':
         this.catalogue.download(data!.id).subscribe((x) => {
-          AppDownloadArrayBuffer(x, data!.name, this.document);
+          AppDownloadArrayBuffer(x, this.document);
         });
         break;
       case 'folder-upload':
@@ -210,12 +216,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'category-download':
         this.catalogue.categoryDownload(this.form.value.category!).subscribe((x) => {
-          AppDownloadArrayBuffer(
-            x,
-            `${this.getCategoryName(this.form.value.category!)}.zip`,
-            this.document,
-            false
-          );
+          AppDownloadArrayBuffer(x, this.document, false);
         });
         break;
       case 'variable-setting':

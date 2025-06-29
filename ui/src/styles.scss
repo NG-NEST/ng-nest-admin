@@ -176,7 +176,11 @@ input {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 2rem;
+
+    &.grid-1-1 {
+      grid-template-columns: 1fr 1fr;
+    }
 
     &.full {
       padding: 0;
@@ -201,6 +205,14 @@ input {
           font-size: $x-font-size-small;
           content: '*';
         }
+      }
+
+      x-input,
+      x-select,
+      x-cascade,
+      x-textarea,
+      x-tree-select {
+        flex: 1;
       }
     }
   }

@@ -85,6 +85,15 @@ export const AppRoutes: Routes = [
     canActivate: [AppCanLoad]
   },
   {
+    path: 'data',
+    data: {
+      permission: 'schema-data-view'
+    },
+    loadChildren: () =>
+      import('./pages/schema-data/schema-data-routing.module').then((x) => x.SchemaDataRoutes),
+    canActivate: [AppCanLoad]
+  },
+  {
     path: 'cache',
     data: {
       permission: 'cache-view'

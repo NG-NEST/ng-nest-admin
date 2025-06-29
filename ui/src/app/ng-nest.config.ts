@@ -9,7 +9,7 @@ export const NgNestConfig: XConfig = {
       rowHeight: 38
     },
     dialog: {
-      width: '28rem'
+      width: '40rem'
     },
     switch: {
       size: 'small'

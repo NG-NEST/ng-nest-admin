@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import { SortOrder } from './base.enum';
+import { JsonValue } from './base.output';
 
 export class StringFilter {
   equals?: string;
@@ -49,6 +50,23 @@ export class NumberFilter {
   gt?: number;
   gte?: number;
   not?: number;
+}
+
+export class JsonFilter {
+  equals?: JsonValue;
+  path?: string[];
+  mode?: 'default' | 'insensitive';
+  lt?: JsonValue;
+  lte?: JsonValue;
+  gt?: JsonValue;
+  gte?: JsonValue;
+  string_contains?: string;
+  string_starts_with?: string;
+  string_ends_with?: string;
+  array_contains?: JsonValue;
+  array_starts_with?: JsonValue;
+  array_ends_with?: JsonValue;
+  not?: JsonValue;
 }
 
 export class BooleanFilter {

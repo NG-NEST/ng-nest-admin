@@ -20,7 +20,7 @@
     </div>
     <div class="item required">
       <label>资源类型：</label>
-      <x-radio [data]="typeList()" formControlName="type"></x-radio>
+      <x-radio button [data]="typeList()" formControlName="type"></x-radio>
     </div>
     <div class="item required">
       <label>资源名称：</label>
@@ -29,19 +29,19 @@
     @switch (form.value.type) {
       @case ('number') {
         <div class="item required">
-          <label>数字：</label>
+          <label>资源标识：</label>
           <x-input-number formControlName="code"></x-input-number>
         </div>
       }
       @case ('boolean') {
         <div class="item required">
-          <label>布尔：</label>
+          <label>资源标识：</label>
           <x-switch formControlName="code" checkedText="true" unCheckedText="false"></x-switch>
         </div>
       }
       @default {
         <div class="item required">
-          <label>字符串：</label>
+          <label>资源标识：</label>
           <x-input formControlName="code" placeholder="请输入字符串"></x-input>
         </div>
       }

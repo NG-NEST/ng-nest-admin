@@ -5,7 +5,6 @@ import Handlebars from 'handlebars';
 export class TemplateService {
   generate(content: string, vars: { [key: string]: any }) {
     if (!content) return '';
-    console.log(content, vars);
     const template = Handlebars.compile(content);
     const ctx = template(vars);
 

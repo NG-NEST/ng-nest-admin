@@ -51,8 +51,8 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   columns = signal<XTableColumn[]>([
-    { id: 'name', label: '资源', type: 'expand', flex: 1 },
-    { id: 'permissions', label: '许可', flex: 2 }
+    { id: 'name', label: '资源', type: 'expand', width: 200 },
+    { id: 'permissions', label: '许可', flex: 1 }
   ]);
 
   resources = signal<

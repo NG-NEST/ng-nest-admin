@@ -148,6 +148,7 @@ function convertJsonSchemaToTree(
   name: string = '$root',
   isRequired: boolean = false
 ): XTreeData {
+  if (!schema) return {};
   const { type, title, description, properties, readOnly, writeOnly, required, ...other } = schema;
 
   const types = Array.isArray(type) ? type : [type ?? 'any'];
