@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
-import { XJsonSchema, XJsonSchemaType, XJsonSchemaValue, XTreeData } from './json-schema.type';
+import type { XJsonSchema, XJsonSchemaType, XJsonSchemaValue, XTreeData } from './json-schema.type';
 import { sortBy } from 'lodash-es';
+import type { XTableColumn } from '@ng-nest/ui/table';
 
 export function XTreeDataToJsonSchema(tree: XTreeData[]): XJsonSchema {
   const root = tree.find((node) => node.name === '$root');
@@ -226,4 +227,19 @@ function cleanObject<T extends object>(obj: T): T {
     }
     return acc;
   }, {} as T);
+}
+
+export function XJsonSchemaToTableColumns(schema: XJsonSchema) {
+  const columns: XTableColumn[] = [];
+  if (!schema) return columns;
+  const { properties } = schema;
+  if (!properties) return columns;
+  Object.entries(properties).forEach(([key, value]) => {
+    columns.push({
+      id: key,
+      label: value.title,
+      width: 160
+    });
+  });
+  return columns;
 }

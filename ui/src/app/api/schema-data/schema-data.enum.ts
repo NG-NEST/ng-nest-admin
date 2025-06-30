@@ -14,7 +14,7 @@ export enum SchemaDataDescription {
 }
 
 export enum SchemaDataMessage {
-  CreatedSuccess = '新增数据模型成功',
-  UpdatedSuccess = '更新数据模型成功',
-  DeletedSuccess = '删除数据模型成功'
+  CreatedSuccess = '新增数据成功',
+  UpdatedSuccess = '更新数据成功',
+  DeletedSuccess = '删除数据成功'
 }

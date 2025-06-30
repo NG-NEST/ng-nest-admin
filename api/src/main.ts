@@ -4,18 +4,20 @@ import {
   AllExceptionsFilter,
   // WsAdapter,
   LOGGER_INSTANCE,
+  LOGS,
   LoggerMiddleware,
   RedisIoAdapter,
   TransformInterceptor,
   responseBodyFormatter,
 } from '@api/core';
-import { env } from 'node:process';
+import { env, hrtime } from 'node:process';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { WinstonModule } from 'nest-winston';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import * as fastifyMultipart from '@fastify/multipart';
 
 async function bootstrap() {
+  const readyStart = hrtime();
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
     cors: true,
     logger: WinstonModule.createLogger({
@@ -52,6 +54,10 @@ async function bootstrap() {
   const port = await app.getUrl();
   const serverUrl = port.replace(/\/$/, '');
 
-  console.log(`Application is running on: ${serverUrl}`);
+  const end = hrtime(readyStart);
+  LOGS.info(`Application is running on: ${serverUrl}`, {
+    context: 'NestApplication',
+    ms: `+${(end[1] / 1000000).toFixed(0)}ms`,
+  });
 }
 bootstrap();

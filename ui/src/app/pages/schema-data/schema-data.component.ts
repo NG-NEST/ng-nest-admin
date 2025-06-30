@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, signal, viewChild, computed } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
 import {
@@ -14,9 +14,11 @@ import {
   AppSortVersions,
   BaseDescription,
   BaseOrder,
-  BasePagination
+  BasePagination,
+  XJsonSchema,
+  XJsonSchemaToTableColumns
 } from '@ui/core';
-import { delay, finalize, Subject, takeUntil, tap } from 'rxjs';
+import { concatMap, delay, finalize, of, Subject, takeUntil, tap } from 'rxjs';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { SchemaDataDetailComponent } from './schema-data-detail/schema-data-detail.component';
@@ -56,11 +58,34 @@ export class SchemaDataComponent {
     schemaId: [null]
   });
 
-  columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+  schemaJson = signal<XJsonSchema | null>(null);
 
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
-  ]);
+  columns = computed<XTableColumn[]>(() => {
+    let columns: XTableColumn[] = [];
+    const schemaJson = this.schemaJson();
+    if (!schemaJson) return columns;
+    const cols = XJsonSchemaToTableColumns(schemaJson);
+    if (cols) {
+      const createdAt = cols.find((x) => x.id === 'createdAt');
+      const updatedAt = cols.find((x) => x.id === 'updatedAt');
+      if (createdAt) {
+        createdAt.width = 200;
+      } else {
+        cols.push({ id: 'createdAt', label: BaseDescription.CreatedAt, width: 200 });
+      }
+      if (updatedAt) {
+        updatedAt.width = 200;
+      } else {
+        cols.push({ id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 200 });
+      }
+    }
+    columns = [
+      { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+      ...cols,
+      { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    ];
+    return columns;
+  });
 
   total = signal(0);
   index = signal(1);
@@ -75,10 +100,19 @@ export class SchemaDataComponent {
   $destroy = new Subject<void>();
 
   ngOnInit() {
-    this.searchForm.controls.schemaId.valueChanges.pipe(takeUntil(this.$destroy)).subscribe(() => {
-      this.index.set(1);
-      this.getTableData();
-    });
+    this.searchForm.controls.schemaId.valueChanges
+      .pipe(
+        concatMap((x) => this.getSchema(x!)),
+        concatMap(() => {
+          this.index.set(1);
+          this.tableLoading.set(true);
+          return this.getTableData().pipe(finalize(() => this.tableLoading.set(false)));
+        }),
+
+        takeUntil(this.$destroy)
+      )
+      .subscribe();
+
     this.getSchemaList().subscribe();
   }
 
@@ -88,32 +122,39 @@ export class SchemaDataComponent {
   }
 
   indexChange() {
-    this.getTableData();
+    this.tableLoading.set(true);
+    this.getTableData()
+      .pipe(finalize(() => this.tableLoading.set(false)))
+      .subscribe();
   }
 
   sizeChange() {
     this.index.set(1);
-    this.getTableData();
+    this.tableLoading.set(true);
+    this.getTableData()
+      .pipe(finalize(() => this.tableLoading.set(false)))
+      .subscribe();
+  }
+
+  getSchema(id: string) {
+    if (!id) return of(null);
+    return this.schemaService.schema(id).pipe(
+      tap((x) => {
+        const { json } = x;
+        this.schemaJson.set(JSON.parse(json));
+      })
+    );
   }
 
   getTableData() {
     const { schemaId } = this.searchForm.getRawValue();
-    if (!schemaId) return;
-    this.tableLoading.set(true);
-    this.schemaDataService
-      .schemaDatas(this.setParams(this.index(), this.size()))
-      .pipe(
-        delay(300),
-        tap((x) => {
-          return this.resultConvert(x);
-        }),
-        finalize(() => {
-          this.tableLoading.set(false);
-          this.resetLoading.set(false);
-          this.searchLoading.set(false);
-        })
-      )
-      .subscribe();
+    if (!schemaId) return of({ count: 0, data: [] });
+    return this.schemaDataService.schemaDatas(this.setParams(this.index(), this.size())).pipe(
+      delay(300),
+      tap((x) => {
+        return this.resultConvert(x);
+      })
+    );
   }
 
   setParams(index: number, size: number) {
@@ -134,8 +175,14 @@ export class SchemaDataComponent {
   resultConvert(body: BasePagination<SchemaData>) {
     const { data, count } = body;
     const list = data.map((x) => {
-      x.createdAt = this.datePipe.transform(x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
-      x.updatedAt = this.datePipe.transform(x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
+      const dt = JSON.parse(x.data);
+      x.createdAt = this.datePipe.transform(dt.createdAt ?? x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
+      x.updatedAt = this.datePipe.transform(dt.updatedAt ?? x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
+      delete dt.createdAt;
+      delete dt.updatedAt;
+      Object.assign(x, dt);
+
+      console.log(x);
       return x;
     });
 
@@ -175,14 +222,19 @@ export class SchemaDataComponent {
     switch (type) {
       case 'search':
         this.searchLoading.set(true);
+        this.tableLoading.set(true);
         this.index.set(1);
-        this.getTableData();
+        this.getTableData()
+          .pipe(finalize(() => (this.tableLoading.set(false), this.searchLoading.set(false))))
+          .subscribe();
         break;
       case 'reset':
         this.resetLoading.set(true);
+        this.tableLoading.set(true);
         this.index.set(1);
-        this.searchForm.reset();
-        this.getTableData();
+        this.getTableData()
+          .pipe(finalize(() => (this.tableLoading.set(false), this.resetLoading.set(false))))
+          .subscribe();
         break;
       case 'add':
         this.dialog.create(SchemaDataDetailComponent, {
@@ -192,7 +244,10 @@ export class SchemaDataComponent {
             schemaId: this.searchForm.controls.schemaId.value,
             saveSuccess: () => {
               this.index.set(1);
-              this.getTableData();
+              this.tableLoading.set(true);
+              this.getTableData()
+                .pipe(finalize(() => this.tableLoading.set(false)))
+                .subscribe();
             }
           }
         });
@@ -205,7 +260,10 @@ export class SchemaDataComponent {
             id: schemaData?.id,
             schemaId: this.searchForm.controls.schemaId.value,
             saveSuccess: () => {
-              this.getTableData();
+              this.tableLoading.set(true);
+              this.getTableData()
+                .pipe(finalize(() => this.tableLoading.set(false)))
+                .subscribe();
             }
           }
         });

@@ -6,7 +6,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { SchemaDataService, SchemaService } from '@ui/api';
 import { AppSchemaFormComponent, JsonValue, XJsonSchema } from '@ui/core';
-import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
+import { Observable, Subject, concatMap, finalize, map, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-schema-data-detail',
@@ -51,18 +51,15 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const reqs: Observable<any>[] = [this.getSchema()];
-
-    this.getSchema();
-
-    if (this.id()) {
-      reqs.push(this.getSchemaData());
-    }
+    const req: Observable<any> = this.getSchema().pipe(
+      concatMap(() => {
+        if (this.id()) return this.getSchemaData();
+        return of();
+      })
+    );
 
     this.formLoading.set(true);
-    forkJoin(reqs)
-      .pipe(finalize(() => this.formLoading.set(false)))
-      .subscribe();
+    req.pipe(finalize(() => this.formLoading.set(false))).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -72,7 +69,7 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
 
   getSchema() {
     return this.schema.schema(this.schemaId()!).pipe(
-      tap((x) => {
+      map((x) => {
         this.schemaJson.set(JSON.parse(x.json));
       })
     );
@@ -82,8 +79,8 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
     return this.schemaData.schemaData(this.id()!).pipe(
       tap((x) => {
         const { data } = x;
-        console.log(data);
         this.form.patchValue(JSON.parse(data as string));
+        console.log('123123', this.form.getRawValue());
       })
     );
   }
@@ -100,8 +97,8 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
       rq = this.schemaData.create({ ...val });
     } else {
       rq = this.schemaData.update({
-        id: this.id(),
-        ...this.form.value
+        id: this.id()!,
+        ...val
       });
     }
     this.saveLoading.set(true);
