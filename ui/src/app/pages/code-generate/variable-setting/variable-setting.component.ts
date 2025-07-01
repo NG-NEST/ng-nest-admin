@@ -4,6 +4,7 @@ import {
   XCascadeComponent,
   XCascadeNode,
   XEmptyComponent,
+  XIconComponent,
   XLinkComponent,
   XMessageBoxAction,
   XMessageBoxService,
@@ -42,6 +43,7 @@ import { AppSortVersions } from '@ui/core';
     XLinkComponent,
     XTooltipDirective,
     XCascadeComponent,
+    XIconComponent,
     XDialogModule
   ],
   templateUrl: './variable-setting.component.html',

@@ -110,7 +110,6 @@ export class CatalogueService {
     const vars = await this.getResourceVars(catalogue.resourceId);
 
     catalogue.content = this.templateService.generate(catalogue.content, vars);
-
     catalogue.name = this.templateService.generate(catalogue.name, vars);
 
     return catalogue;
@@ -358,7 +357,7 @@ export class CatalogueService {
   private async getResourceVars(resourceId: string): Promise<{ [code: string]: any }> {
     const variables = await this.prisma.variable.findMany({
       where: { resourceId: { equals: resourceId } },
-      select: { code: true, value: true, variableCategory: { select: { code: true } } },
+      select: { code: true, value: true, type: true, variableCategory: { select: { code: true } } },
     });
 
     const vars: { [code: string]: any } = {};

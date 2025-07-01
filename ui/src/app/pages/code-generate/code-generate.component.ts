@@ -16,7 +16,8 @@ import {
   CatalogueFolderFiles,
   CatalogueMessage,
   CatalogueService,
-  ResourceService
+  ResourceService,
+  VariableService
 } from '@ui/api';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
@@ -51,6 +52,8 @@ import { CategoryPreviewComponent } from './category-preview/category-preview.co
 import { AppDownloadArrayBuffer } from 'src/app/core/functions/download';
 import { DatePipe } from '@angular/common';
 import { PreviewComponent } from './preview/preview.component';
+import { filter } from 'lodash-es';
+import { VariableGuideComponent } from './variable-guide/variable-guide.component';
 
 @Component({
   selector: 'app-code-generate',
@@ -78,6 +81,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   formBuilder = inject(FormBuilder);
   resource = inject(ResourceService);
   catalogue = inject(CatalogueService);
+  variable = inject(VariableService);
   messageBox = inject(XMessageBoxService);
   message = inject(XMessageService);
   dialog = inject(XDialogService);
@@ -189,11 +193,33 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
         break;
       case 'preview':
-        this.dialog.create(PreviewComponent, {
-          width: '100%',
-          height: '100%',
-          data: { id: data!.id }
-        });
+        this.variable
+          .variableSelect({ where: { resourceId: { equals: this.form.value.category! } } })
+          .subscribe((x) => {
+            const jsonshemaVariables = filter(
+              x,
+              (item) => item.type === 'json-schema' && item.value
+            );
+            if (jsonshemaVariables.length > 0) {
+              this.dialog.create(VariableGuideComponent, {
+                width: '100%',
+                height: '100%',
+                data: { title: '预览指引', variables: x }
+              });
+            } else {
+              this.dialog.create(PreviewComponent, {
+                width: '100%',
+                height: '100%',
+                data: { id: data!.id }
+              });
+            }
+          });
+        PreviewComponent;
+        // this.dialog.create(PreviewComponent, {
+        //   width: '100%',
+        //   height: '100%',
+        //   data: { id: data!.id }
+        // });
         break;
       case 'download':
         this.catalogue.download(data!.id).subscribe((x) => {
