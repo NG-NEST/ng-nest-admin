@@ -4,6 +4,7 @@ export enum VariableCategoryDescription {
   Id = '变量分类编码',
   Name = '变量分类名称',
   Code = '变量分类标识',
+  Sort = '排序',
   Description = '变量描述'
 }
 

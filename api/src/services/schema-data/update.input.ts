@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsJSON, IsNotEmpty } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, I18N, IsNotExist } from '@api/core';
 import { SchemaDataDescription, SCHEMA_DATA_I18N } from './schema-data.enum';
 import { GraphQLJSON } from 'graphql-scalars';
@@ -34,4 +34,8 @@ export class SchemaDataUpdateInput {
     context: { relation: 'id' },
   })
   schemaId: string;
+
+  @Field({ description: SchemaDataDescription.FormId, nullable: true })
+  @IsOptional()
+  formId?: string;
 }

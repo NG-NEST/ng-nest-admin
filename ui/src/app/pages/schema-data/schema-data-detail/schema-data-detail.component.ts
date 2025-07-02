@@ -4,7 +4,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { SchemaDataService, SchemaService } from '@ui/api';
+import { SchemaData, SchemaDataMessage, SchemaDataService, SchemaService } from '@ui/api';
 import { AppSchemaFormComponent, JsonValue, XJsonSchema } from '@ui/core';
 import { Observable, Subject, concatMap, finalize, map, of, tap } from 'rxjs';
 
@@ -46,8 +46,6 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
     const { id, schemaId } = this.data;
     this.id.set(id);
     this.schemaId.set(schemaId);
-
-    console.log(this.id(), this.schemaId());
   }
 
   ngOnInit(): void {
@@ -80,22 +78,24 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
       tap((x) => {
         const { data } = x;
         this.form.patchValue(JSON.parse(data as string));
-        console.log('123123', this.form.getRawValue());
       })
     );
   }
 
   save() {
-    let rq!: Observable<string>;
+    let rq!: Observable<SchemaData>;
     const data = JSON.stringify(this.form.getRawValue());
     const val = {
       schemaId: this.schemaId()!,
       data
     };
+    let msg = '';
 
     if (!this.id()) {
+      msg = SchemaDataMessage.CreatedSuccess;
       rq = this.schemaData.create({ ...val });
     } else {
+      msg = SchemaDataMessage.UpdatedSuccess;
       rq = this.schemaData.update({
         id: this.id()!,
         ...val
@@ -103,8 +103,8 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
     }
     this.saveLoading.set(true);
     rq.pipe(
-      tap((x) => {
-        this.message.success(x);
+      tap(() => {
+        this.message.success(msg);
         this.dialogRef.close();
         this.data.saveSuccess();
       }),

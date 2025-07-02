@@ -13,17 +13,21 @@ import { AppEditorComponent } from '@ui/core';
 })
 export class PreviewComponent {
   dialogRef = inject(XDialogRef<PreviewComponent>);
-  data = inject<{ id: string }>(X_DIALOG_DATA);
+  data = inject<{ id: string; schemaDataIds?: string[] }>(X_DIALOG_DATA);
   formBuilder = inject(FormBuilder);
   catalogue = inject(CatalogueService);
   id = signal('');
   filename = signal('');
+  schemaDataIds = signal<string[] | undefined>(undefined);
 
   form!: FormGroup;
 
   constructor() {
-    const { id } = this.data;
+    const { id, schemaDataIds } = this.data;
     this.id.set(id);
+    if (schemaDataIds) {
+      this.schemaDataIds.set(schemaDataIds);
+    }
 
     this.form = this.formBuilder.group({
       content: ['']
@@ -31,7 +35,8 @@ export class PreviewComponent {
   }
 
   ngOnInit(): void {
-    this.catalogue.preview(this.id()).subscribe(({ name, content }) => {
+    const params = this.schemaDataIds() ? { schemaDataIds: this.schemaDataIds() } : undefined;
+    this.catalogue.preview(this.id(), params).subscribe(({ name, content }) => {
       this.filename.set(name);
       this.form.patchValue({ content });
     });

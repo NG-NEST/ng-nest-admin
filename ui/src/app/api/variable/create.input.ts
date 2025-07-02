@@ -1,7 +1,8 @@
 export class VariableCreateInput {
   code!: string;
   type?: string;
-  value?: number;
+  value?: string;
+  sort?: number;
   description?: string;
   resourceId!: string;
   variableCategoryId!: string;

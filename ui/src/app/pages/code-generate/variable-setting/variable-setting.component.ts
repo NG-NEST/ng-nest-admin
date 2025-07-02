@@ -6,6 +6,7 @@ import {
   XEmptyComponent,
   XIconComponent,
   XLinkComponent,
+  XListModule,
   XMessageBoxAction,
   XMessageBoxService,
   XSelectComponent,
@@ -44,7 +45,8 @@ import { AppSortVersions } from '@ui/core';
     XTooltipDirective,
     XCascadeComponent,
     XIconComponent,
-    XDialogModule
+    XDialogModule,
+    XListModule
   ],
   templateUrl: './variable-setting.component.html',
   styleUrls: ['./variable-setting.component.scss']
@@ -218,6 +220,10 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
 
   save() {
     const value = this.form.getRawValue();
+    const { many } = value;
+    for (let i = 0; i < many.length; i++) {
+      many[i].sort = 100 * (i + 1);
+    }
     this.saveLoading.set(true);
     this.variableService
       .saveMany(value)
@@ -238,7 +244,8 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
     this.tableLoading.set(true);
     this.variableService
       .variableSelect({
-        where: { variableCategoryId: { equals: value } }
+        where: { variableCategoryId: { equals: value } },
+        orderBy: [{ sort: 'asc' }]
       })
       .pipe(
         tap((x) => {
@@ -273,6 +280,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
       code: [variable?.code ?? '', [Validators.required]],
       type: [variable?.type ?? ''],
       value: [variable?.value ?? ''],
+      sort: [variable?.sort ?? 0],
       description: [variable?.description ?? ''],
       resourceId: [variable?.resourceId ?? this.resourceId()],
       variableCategoryId: [

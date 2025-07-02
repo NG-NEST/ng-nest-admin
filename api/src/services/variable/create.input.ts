@@ -28,6 +28,10 @@ export class VariableCreateInput {
   @IsOptional()
   description?: string;
 
+  @Field({ description: VariableDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
   @Field({ description: ResourceDescription.Id })
   @IsNotEmpty({
     message: I18N(`${VARIABLE_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`),

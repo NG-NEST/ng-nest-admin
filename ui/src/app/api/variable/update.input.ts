@@ -3,5 +3,6 @@ export class VariableUpdateInput {
   code!: string;
   type?: string;
   value?: string;
+  sort?: number;
   description?: string;
 }

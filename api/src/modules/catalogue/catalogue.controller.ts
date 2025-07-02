@@ -8,8 +8,9 @@ import {
   CatalogueCacheClear,
 } from '@api/services';
 import { MultipartFile } from '@fastify/multipart';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
+import { isString } from 'lodash-es';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -38,14 +39,27 @@ export class CatalogueController {
 
   @Get('preview/:id')
   @Authorization(CatalogueAuth.CataloguePreview)
-  async preview(@Param('id') id: string) {
-    return await this.catalogueService.preview(id);
+  async preview(
+    @Param('id') id: string,
+    @Query('schemaDataIds') schemaDataIds?: string[] | string,
+  ) {
+    return await this.catalogueService.preview(
+      id,
+      isString(schemaDataIds) ? [schemaDataIds] : schemaDataIds,
+    );
   }
 
   @Get('download/:id')
   @Authorization(CatalogueAuth.CatalogueDownload)
-  async download(@Param('id') id: string, @Res() reply: FastifyReply) {
-    const catalogue = await this.catalogueService.preview(id);
+  async download(
+    @Param('id') id: string,
+    @Res() reply: FastifyReply,
+    @Query('schemaDataIds') schemaDataIds?: string[] | string,
+  ) {
+    const catalogue = await this.catalogueService.preview(
+      id,
+      isString(schemaDataIds) ? [schemaDataIds] : schemaDataIds,
+    );
     const { name, content } = catalogue;
     reply.header('Content-Disposition', `attachment; filename=${encodeURIComponent(name)}`);
     reply.header('Content-Type', 'application/octet-stream');
@@ -54,8 +68,14 @@ export class CatalogueController {
 
   @Get('category-preview/:resourceId')
   @Authorization(CatalogueAuth.CatalogueCategoryPreview)
-  async categoryPreview(@Param('resourceId') resourceId: string) {
-    return await this.catalogueService.categoryPreview(resourceId);
+  async categoryPreview(
+    @Param('resourceId') resourceId: string,
+    @Query('schemaDataIds') schemaDataIds?: string[] | string,
+  ) {
+    return await this.catalogueService.categoryPreview(
+      resourceId,
+      isString(schemaDataIds) ? [schemaDataIds] : schemaDataIds,
+    );
   }
 
   @Get('category-download/:resourceId')
@@ -63,8 +83,13 @@ export class CatalogueController {
   async categoryDownload(
     @Param('resourceId') resourceId: string,
     @Res({ passthrough: true }) reply: FastifyReply,
+    @Query('schemaDataIds') schemaDataIds?: string[] | string,
   ) {
-    await this.catalogueService.categoryDownload(resourceId, reply);
+    await this.catalogueService.categoryDownload(
+      resourceId,
+      reply,
+      isString(schemaDataIds) ? [schemaDataIds] : schemaDataIds,
+    );
   }
 
   @Post('folder-upload')

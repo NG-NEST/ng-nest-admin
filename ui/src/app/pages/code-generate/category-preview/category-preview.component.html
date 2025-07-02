@@ -1,0 +1,43 @@
+<form [formGroup]="form" class="app-dialog-form">
+  <h4 x-dialog-title class="title">下载预览</h4>
+  <x-button
+    class="close"
+    icon="fto-x"
+    size="large"
+    flat
+    text
+    (click)="dialogRef!.close()"
+  ></x-button>
+  <div x-dialog-content class="content full">
+    <div class="left">
+      <x-tree
+        #treeCom
+        [data]="treeData()"
+        [labelTpl]="treeNode"
+        showLine
+        expandedLevel="0"
+        (nodeClick)="onNodeClick($event)"
+      >
+      </x-tree>
+      <ng-template #treeNode let-node="$node">
+        <div class="tree-node">
+          <div class="label">
+            @if (node.type === 'Folder') {
+              @if (node.open) {
+                <x-icon type="admin:folder-open"></x-icon>
+              } @else {
+                <x-icon type="admin:folder"></x-icon>
+              }
+            } @else if (node.type === 'File') {
+              <x-icon [type]="node.label | appFileIcon"></x-icon>
+            }
+            <span>{{ node.label }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="right">
+      <app-editor formControlName="content" [filename]="filename()"></app-editor>
+    </div>
+  </div>
+</form>

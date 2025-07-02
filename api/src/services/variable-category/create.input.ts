@@ -22,16 +22,24 @@ export class VariableCategoryCreateInput {
   })
   code: string;
 
+  @Field({ description: VariableCategoryDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
   @Field({ description: VariableCategoryDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
 
   @Field({ description: ResourceDescription.Id })
   @IsNotEmpty({
-    message: I18N(`${VARIABLE_CATEGORY_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(
+      `${VARIABLE_CATEGORY_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotEmpty}`,
+    ),
   })
   @IsNotExist('resource', {
-    message: I18N(`${VARIABLE_CATEGORY_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotExist}`),
+    message: I18N(
+      `${VARIABLE_CATEGORY_I18N}.${ResourceDescription.Id}${ValidatorDescription.IsNotExist}`,
+    ),
     context: { relation: 'id' },
   })
   resourceId: string;

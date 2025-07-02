@@ -129,12 +129,16 @@ export class CatalogueService {
       .pipe(map(() => CatalogueMessage.DeletedSuccess));
   }
 
-  preview(id: string): Observable<Catalogue> {
-    return this.http.get<Catalogue>(`/api/catalogue/preview/${id}`);
+  preview(id: string, params?: { schemaDataIds?: string[] }): Observable<Catalogue> {
+    return this.http.get<Catalogue>(`/api/catalogue/preview/${id}`, { params });
   }
 
-  download(id: string): Observable<HttpResponse<ArrayBuffer>> {
+  download(
+    id: string,
+    params?: { schemaDataIds?: string[] }
+  ): Observable<HttpResponse<ArrayBuffer>> {
     return this.http.get(`/api/catalogue/download/${id}`, {
+      params,
       responseType: 'arraybuffer',
       observe: 'response'
     });
@@ -146,12 +150,19 @@ export class CatalogueService {
       .pipe(map(() => CatalogueMessage.FolderUploadSuccess));
   }
 
-  categoryPreview(resourceId: string): Observable<Catalogue[]> {
-    return this.http.get<Catalogue[]>(`/api/catalogue/category-preview/${resourceId}`);
+  categoryPreview(
+    resourceId: string,
+    params?: { schemaDataIds?: string[] }
+  ): Observable<Catalogue[]> {
+    return this.http.get<Catalogue[]>(`/api/catalogue/category-preview/${resourceId}`, { params });
   }
 
-  categoryDownload(resourceId: string): Observable<HttpResponse<ArrayBuffer>> {
+  categoryDownload(
+    resourceId: string,
+    params?: { schemaDataIds?: string[] }
+  ): Observable<HttpResponse<ArrayBuffer>> {
     return this.http.get(`/api/catalogue/category-download/${resourceId}`, {
+      params,
       responseType: 'arraybuffer',
       observe: 'response'
     });

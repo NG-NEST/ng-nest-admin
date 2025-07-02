@@ -19,6 +19,10 @@ export class VariableSelectOutput extends BaseAudit {
   @IsOptional()
   type?: string;
 
+  @Field({ description: VariableDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
   @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
   @IsJSON()

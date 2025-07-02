@@ -4,6 +4,7 @@ import { SchemaDataDescription } from './schema-data.enum';
 import { JsonValue } from '@prisma/client/runtime/library';
 import { Schema, SchemaDescription } from '../schema';
 import { GraphQLJSON } from 'graphql-scalars';
+import { IsOptional } from 'class-validator';
 
 @ObjectType()
 export class SchemaData extends BaseAudit {
@@ -18,4 +19,8 @@ export class SchemaData extends BaseAudit {
 
   @Field(() => Schema, { description: SchemaDescription.Schema })
   schema: Schema;
+
+  @Field({ description: SchemaDataDescription.FormId, nullable: true })
+  @IsOptional()
+  formId?: string;
 }

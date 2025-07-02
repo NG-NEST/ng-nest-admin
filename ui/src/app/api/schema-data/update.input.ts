@@ -4,4 +4,5 @@ export class SchemaDataUpdateInput {
   id!: string;
   data?: JsonValue;
   schemaId?: string;
+  formId?: string;
 }

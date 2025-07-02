@@ -13,6 +13,7 @@ export enum VariableCategoryDescription {
   Id = 'VariableCategoryId',
   Name = 'Name',
   Code = 'Code',
+  Sort = 'Sort',
   Description = 'Description',
 }
 

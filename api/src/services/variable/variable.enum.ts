@@ -14,6 +14,7 @@ export enum VariableDescription {
   Code = 'Code',
   Type = 'Type',
   Value = 'Value',
+  Sort = 'Sort',
   Description = 'Description',
   ResourceId = 'ResourceId',
   VariableCategoryId = 'VariableCategoryId',

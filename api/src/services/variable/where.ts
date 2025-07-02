@@ -1,6 +1,12 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { BASE_STRING_FILTER, BaseWhereInput, StringFilter } from '@api/core';
+import {
+  BASE_NUMBER_FILTER,
+  BASE_STRING_FILTER,
+  BaseWhereInput,
+  NumberFilter,
+  StringFilter,
+} from '@api/core';
 import { VariableDescription } from './variable.enum';
 import { ResourceDescription, ResourceWhereInput } from '../resource';
 import { VariableCategoryDescription, VariableCategoryWhereInput } from '../variable-category';
@@ -18,6 +24,10 @@ export class VariableWhere {
   @Field(() => BASE_STRING_FILTER, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
   value?: StringFilter;
+
+  @Field(() => BASE_NUMBER_FILTER, { description: VariableDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: NumberFilter;
 
   @Field(() => BASE_STRING_FILTER, {
     description: VariableDescription.Description,

@@ -27,6 +27,7 @@ export class VariableCategoryService {
               id
               name
               code
+              sort
               description
               resourceId
               resource {
@@ -57,6 +58,7 @@ export class VariableCategoryService {
               data {
                 code
                 name
+                sort
                 description
                 id
                 resource {
@@ -87,6 +89,7 @@ export class VariableCategoryService {
               id
               name
               code
+              sort
             }
           }
         `

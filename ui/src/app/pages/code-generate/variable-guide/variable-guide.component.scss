@@ -1,0 +1,23 @@
+:host {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    x-steps {
+      margin-top: 2rem;
+    }
+
+    ::ng-deep {
+      .x-tabs-block.x-tabs-top > .x-tabs-contents {
+        background-color: var(--x-background);
+      }
+    }
+
+    .form {
+      min-width: 40rem;
+      border: var(--x-border-width) var(--x-border-style) var(--x-border);
+      border-radius: var(--x-border-radius);
+    }
+  }
+}

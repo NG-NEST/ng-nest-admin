@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="app-dialog-form">
+<form [formGroup]="form()" class="app-dialog-form" (ngSubmit)="save()">
   <h4 x-dialog-title class="title">{{ title() }}</h4>
   <x-button
     class="close"
@@ -10,6 +10,39 @@
   ></x-button>
   <div x-dialog-content class="content full">
     <x-steps [data]="steps()" [activatedIndex]="stepIndex()"> </x-steps>
-    <div class="item"></div>
+    <x-tabs [activatedIndex]="stepIndex()" sliderHidden>
+      @for (item of formList(); track item.variableId) {
+        <x-tab>
+          <div class="form">
+            <app-schema-form
+              [data]="item.jsonSchema"
+              [form]="getForm(item.variableId)"
+            ></app-schema-form>
+          </div>
+        </x-tab>
+      }
+    </x-tabs>
+  </div>
+  <div x-dialog-actions align="center" class="actions">
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    @if (stepIndex() > 0) {
+      <x-button attrType="button" (click)="pre()" flat plain>上一步</x-button>
+    }
+    @if (stepIndex() < formList().length - 1) {
+      <x-button attrType="button" (click)="next()" [disabled]="nextDisabled" flat plain
+        >下一步</x-button
+      >
+    }
+    @if (stepIndex() === formList().length - 1) {
+      <x-button
+        flat
+        icon="fto-save"
+        type="primary"
+        attrType="submit"
+        [loading]="saveLoading()"
+        [disabled]="!form().valid"
+        >提交</x-button
+      >
+    }
   </div>
 </form>

@@ -1,4 +1,4 @@
-import { BaseSelect, PrismaService } from '@api/core';
+import { BaseSelect, LOGS, PrismaService } from '@api/core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CataloguePaginationInput } from './pagination.input';
 import { Catalogue } from './catalogue.model';
@@ -18,6 +18,7 @@ import * as archiver from 'archiver';
 import { FastifyReply } from 'fastify';
 import { createWriteStream, mkdtemp, promises, readFile, rm } from 'fs-extra';
 import { join } from 'node:path';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class CatalogueService {
@@ -95,7 +96,7 @@ export class CatalogueService {
     return await this.prisma.catalogue.delete({ where: { id } });
   }
 
-  async preview(id: string) {
+  async preview(id: string, schemaDataIds?: string[]) {
     const catalogue = (await this.prisma.catalogue.findUnique({
       where: { id },
       select: { content: true, name: true, resourceId: true },
@@ -107,7 +108,7 @@ export class CatalogueService {
       throw new BadRequestException({ message: CatalogueException.ContentIsNull });
     }
 
-    const vars = await this.getResourceVars(catalogue.resourceId);
+    const vars = await this.getResourceVars(catalogue.resourceId, schemaDataIds);
 
     catalogue.content = this.templateService.generate(catalogue.content, vars);
     catalogue.name = this.templateService.generate(catalogue.name, vars);
@@ -115,11 +116,11 @@ export class CatalogueService {
     return catalogue;
   }
 
-  async categoryPreview(resourceId: string): Promise<Catalogue[]> {
+  async categoryPreview(resourceId: string, schemaDataIds?: string[]): Promise<Catalogue[]> {
     const catalogues = await this.prisma.catalogue.findMany({
       where: { resourceId },
     });
-    const vars = await this.getResourceVars(resourceId);
+    const vars = await this.getResourceVars(resourceId, schemaDataIds);
     for (let catalogue of catalogues) {
       const { content, type, name } = catalogue;
       if (type === 'File') {
@@ -133,10 +134,10 @@ export class CatalogueService {
     return catalogues as Catalogue[];
   }
 
-  async categoryDownload(resourceId: string, reply: FastifyReply) {
+  async categoryDownload(resourceId: string, reply: FastifyReply, schemaDataIds?: string[]) {
     const resource = await this.prisma.resource.findUnique({ where: { id: resourceId } });
 
-    const catalogues = await this.categoryPreview(resourceId);
+    const catalogues = await this.categoryPreview(resourceId, schemaDataIds);
 
     // 创建临时目录
     const tempPath = join(process.cwd(), 'temp');
@@ -354,16 +355,42 @@ export class CatalogueService {
     return result;
   }
 
-  private async getResourceVars(resourceId: string): Promise<{ [code: string]: any }> {
+  private async getResourceVars(
+    resourceId: string,
+    schemaDataIds?: string[],
+  ): Promise<{ [code: string]: any }> {
     const variables = await this.prisma.variable.findMany({
       where: { resourceId: { equals: resourceId } },
-      select: { code: true, value: true, type: true, variableCategory: { select: { code: true } } },
+      select: {
+        id: true,
+        code: true,
+        value: true,
+        type: true,
+        variableCategory: { select: { code: true } },
+      },
     });
+    let schemaDatas: { data: JsonValue; schemaId: string; formId: string }[] = [];
+    if (schemaDataIds && schemaDataIds.length > 0) {
+      schemaDatas = await this.prisma.schemaData.findMany({
+        where: { id: { in: schemaDataIds } },
+        select: { data: true, schemaId: true, formId: true },
+      });
+    }
 
     const vars: { [code: string]: any } = {};
     for (let variable of variables) {
-      const { code, value, variableCategory } = variable;
-      set(vars, `${variableCategory.code}.${code}`, value);
+      const { id, code, value, type, variableCategory } = variable;
+      if (type === 'json-schema' && value) {
+        try {
+          const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
+          if (!schemaData) continue;
+          set(vars, `${variableCategory.code}.${code}`, JSON.parse(schemaData.data as string));
+        } catch (e) {
+          LOGS.error(`JSON.parse error: ${e}`, { context: CatalogueService.name });
+        }
+      } else {
+        set(vars, `${variableCategory.code}.${code}`, value);
+      }
     }
 
     return vars;

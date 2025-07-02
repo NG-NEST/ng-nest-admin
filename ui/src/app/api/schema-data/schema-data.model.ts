@@ -6,4 +6,5 @@ export class SchemaData extends BaseAudit {
   data!: string;
   schemaId!: string;
   schema!: Schema;
+  formId?: string;
 }

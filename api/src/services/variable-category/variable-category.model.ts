@@ -15,6 +15,10 @@ export class VariableCategory extends BaseAudit {
   @Field({ description: VariableCategoryDescription.Code })
   code: string;
 
+  @Field({ description: VariableCategoryDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
   @Field({ description: VariableCategoryDescription.Description, nullable: true })
   @IsOptional()
   description?: string;

@@ -21,6 +21,10 @@ export class VariableCategoryUpdateInput {
   @IsOptional()
   code?: string;
 
+  @Field({ description: VariableCategoryDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: number;
+
   @Field({ description: VariableCategoryDescription.Description, nullable: true })
   @IsOptional()
   description?: string;

@@ -27,6 +27,7 @@ export class SchemaDataService {
               id
               data
               schemaId
+              formId
             }
           }
         `
@@ -51,6 +52,7 @@ export class SchemaDataService {
                 id
                 data
                 schemaId
+                formId
                 createdAt
                 updatedAt
               }
@@ -78,16 +80,12 @@ export class SchemaDataService {
       .pipe(map((x) => cloneDeep(x.data?.schemaDataSelect!)));
   }
 
-  create(input: SchemaDataCreateInput): Observable<string> {
-    return this.http
-      .post('/api/schema-data', input)
-      .pipe(map(() => SchemaDataMessage.CreatedSuccess));
+  create(input: SchemaDataCreateInput): Observable<SchemaData> {
+    return this.http.post<SchemaData>('/api/schema-data', input);
   }
 
-  update(input: SchemaDataUpdateInput): Observable<string> {
-    return this.http
-      .patch(`/api/schema-data`, input)
-      .pipe(map(() => SchemaDataMessage.UpdatedSuccess));
+  update(input: SchemaDataUpdateInput): Observable<SchemaData> {
+    return this.http.patch<SchemaData>(`/api/schema-data`, input);
   }
 
   delete(id: string): Observable<string> {

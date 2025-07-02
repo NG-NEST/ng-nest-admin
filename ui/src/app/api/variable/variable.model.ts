@@ -6,6 +6,7 @@ export class Variable extends BaseModel {
   code!: string;
   type?: string;
   value?: string;
+  sort?: number;
   description?: string;
   resource!: VariableResource;
   resourceId!: string;

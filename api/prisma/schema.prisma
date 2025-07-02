@@ -165,6 +165,7 @@ model SchemaData {
   id        String   @id @default(uuid())
   schemaId  String
   data      Json
+  formId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   schema    Schema   @relation(fields: [schemaId], references: [id])
@@ -235,6 +236,7 @@ model VariableCategory {
   name        String
   code        String
   description String?
+  sort        Int?       @default(0)
   variable    Variable[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -252,6 +254,7 @@ model Variable {
   value              Json?
   description        String?
   resourceId         String
+  sort               Int?     @default(0)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 

@@ -12,7 +12,11 @@ export class VariableCategoryOrderInput extends BaseOrder {
 
   @Field(() => SortOrder, { description: VariableCategoryDescription.Code, nullable: true })
   @IsOptional()
-  Code?: SortOrder;
+  code?: SortOrder;
+
+  @Field(() => SortOrder, { description: VariableCategoryDescription.Sort, nullable: true })
+  @IsOptional()
+  sort?: SortOrder;
 
   @Field(() => SortOrder, { description: ResourceDescription.Id, nullable: true })
   @IsOptional()

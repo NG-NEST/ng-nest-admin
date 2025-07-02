@@ -10,6 +10,7 @@ export enum SchemaDataDescription {
   SchemaData = 'SchemaData',
 
   Id = 'SchemaDataId',
+  formId = '业务表单',
   data = '数据'
 }
 

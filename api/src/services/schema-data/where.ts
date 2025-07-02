@@ -23,6 +23,10 @@ export class SchemaDataWhere {
   @Field(() => SchemaWhereInput, { description: SchemaDescription.Schema, nullable: true })
   @IsOptional()
   schema?: SchemaWhereInput;
+
+  @Field(() => BASE_STRING_FILTER, { description: SchemaDataDescription.FormId, nullable: true })
+  @IsOptional()
+  formId?: StringFilter;
 }
 
 @InputType()

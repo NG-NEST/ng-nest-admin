@@ -50,6 +50,7 @@ export class VariableCategoryComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       code: [null, [Validators.required]],
+      sort: [0],
       description: [null],
       resourceId: [this.resourceId(), [Validators.required]]
     });

@@ -17,6 +17,7 @@ import {
   CatalogueMessage,
   CatalogueService,
   ResourceService,
+  SchemaData,
   VariableService
 } from '@ui/api';
 import { XButtonComponent } from '@ng-nest/ui/button';
@@ -31,7 +32,9 @@ import {
   tap,
   mergeMap,
   debounceTime,
-  Observable
+  Observable,
+  map,
+  concatMap
 } from 'rxjs';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
@@ -193,38 +196,68 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
 
         break;
       case 'preview':
-        this.variable
-          .variableSelect({ where: { resourceId: { equals: this.form.value.category! } } })
-          .subscribe((x) => {
-            const jsonshemaVariables = filter(
-              x,
-              (item) => item.type === 'json-schema' && item.value
-            );
-            if (jsonshemaVariables.length > 0) {
-              this.dialog.create(VariableGuideComponent, {
-                width: '100%',
-                height: '100%',
-                data: { title: '预览指引', variables: x }
-              });
-            } else {
-              this.dialog.create(PreviewComponent, {
-                width: '100%',
-                height: '100%',
-                data: { id: data!.id }
-              });
-            }
-          });
-        PreviewComponent;
-        // this.dialog.create(PreviewComponent, {
-        //   width: '100%',
-        //   height: '100%',
-        //   data: { id: data!.id }
-        // });
+        this.getVariables()
+          .pipe(
+            concatMap(({ hasJsonshemaVariables, variables }) => {
+              if (hasJsonshemaVariables) {
+                this.dialog.create(VariableGuideComponent, {
+                  width: '100%',
+                  height: '100%',
+                  data: {
+                    title: '预览指引',
+                    variables: variables,
+                    saveSuccess: (schemaDatas: SchemaData[]) => {
+                      this.dialog.create(PreviewComponent, {
+                        width: '100%',
+                        height: '100%',
+                        data: { id: data!.id, schemaDataIds: schemaDatas.map((x) => x.id) }
+                      });
+                    }
+                  }
+                });
+              } else {
+                this.dialog.create(PreviewComponent, {
+                  width: '100%',
+                  height: '100%',
+                  data: { id: data!.id }
+                });
+              }
+              return of(true);
+            })
+          )
+          .subscribe();
         break;
       case 'download':
-        this.catalogue.download(data!.id).subscribe((x) => {
-          AppDownloadArrayBuffer(x, this.document);
-        });
+        this.getVariables()
+          .pipe(
+            concatMap(({ hasJsonshemaVariables, variables }) => {
+              if (hasJsonshemaVariables) {
+                this.dialog.create(VariableGuideComponent, {
+                  width: '100%',
+                  height: '100%',
+                  data: {
+                    title: '下载指引',
+                    variables: variables,
+                    saveSuccess: (schemaDatas: SchemaData[]) => {
+                      this.catalogue
+                        .download(data!.id, { schemaDataIds: schemaDatas.map((x) => x.id) })
+                        .subscribe((x) => {
+                          AppDownloadArrayBuffer(x, this.document);
+                        });
+                    }
+                  }
+                });
+              } else {
+                this.catalogue.download(data!.id).subscribe((x) => {
+                  AppDownloadArrayBuffer(x, this.document);
+                });
+              }
+
+              return of(true);
+            })
+          )
+          .subscribe();
+
         break;
       case 'folder-upload':
         this.folderInput().nativeElement.click();
@@ -233,17 +266,74 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         !this.treeCom().nodeOpen() && this.treeCom().onToggle(event, data as XTreeNode);
         break;
       case 'category-preview':
-        this.dialog.create(CategoryPreviewComponent, {
-          width: '70rem',
-          data: {
-            resourceId: this.form.value.category
-          }
-        });
+        this.getVariables()
+          .pipe(
+            concatMap(({ hasJsonshemaVariables, variables }) => {
+              if (hasJsonshemaVariables) {
+                this.dialog.create(VariableGuideComponent, {
+                  width: '100%',
+                  height: '100%',
+                  data: {
+                    title: '预览指引',
+                    variables: variables,
+                    saveSuccess: (schemaDatas: SchemaData[]) => {
+                      this.dialog.create(CategoryPreviewComponent, {
+                        width: '70rem',
+                        data: {
+                          resourceId: this.form.value.category,
+                          schemaDataIds: schemaDatas.map((x) => x.id)
+                        }
+                      });
+                    }
+                  }
+                });
+              } else {
+                this.dialog.create(CategoryPreviewComponent, {
+                  width: '70rem',
+                  data: {
+                    resourceId: this.form.value.category
+                  }
+                });
+              }
+              return of(true);
+            })
+          )
+          .subscribe();
+
         break;
       case 'category-download':
-        this.catalogue.categoryDownload(this.form.value.category!).subscribe((x) => {
-          AppDownloadArrayBuffer(x, this.document, false);
-        });
+        this.getVariables()
+          .pipe(
+            concatMap(({ hasJsonshemaVariables, variables }) => {
+              if (hasJsonshemaVariables) {
+                this.dialog.create(VariableGuideComponent, {
+                  width: '100%',
+                  height: '100%',
+                  data: {
+                    title: '下载指引',
+                    variables: variables,
+                    saveSuccess: (schemaDatas: SchemaData[]) => {
+                      this.catalogue
+                        .categoryDownload(this.form.value.category!, {
+                          schemaDataIds: schemaDatas.map((x) => x.id)
+                        })
+                        .subscribe((x) => {
+                          AppDownloadArrayBuffer(x, this.document, false);
+                        });
+                    }
+                  }
+                });
+              } else {
+                this.catalogue.categoryDownload(this.form.value.category!).subscribe((x) => {
+                  AppDownloadArrayBuffer(x, this.document, false);
+                });
+              }
+
+              return of(true);
+            })
+          )
+          .subscribe();
+
         break;
       case 'variable-setting':
         this.dialog.create(VariableSettingComponent, {
@@ -395,6 +485,19 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           if (this.categories().length > 0) {
             this.form.patchValue({ category: this.categories()[0].id });
           }
+        })
+      );
+  }
+
+  getVariables() {
+    return this.variable
+      .variableSelect({
+        where: { resourceId: { equals: this.form.value.category! } }
+      })
+      .pipe(
+        map((x) => {
+          const jsonshemaVariables = filter(x, (item) => item.type === 'json-schema' && item.value);
+          return { hasJsonshemaVariables: jsonshemaVariables.length > 0, variables: x };
         })
       );
   }
