@@ -157,23 +157,29 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   getVariables(resourceId: string) {
-    return this.variable.variableSelect({ where: { resourceId: { equals: resourceId! } } }).pipe(
-      tap((x) => {
-        const group = groupBy(x, (y) => {
-          y.variableCategoryId;
-        });
-        const variables: XCascadeNode[] = [];
-        for (let key in group) {
-          const one = first(group[key])!;
-          variables.push({ id: one.variableCategoryId, label: one.variableCategory.name });
-          for (let item of group[key]) {
-            variables.push({ pid: one.variableCategoryId, id: item.id, label: item.code });
-          }
-        }
-
-        this.variableList.set(variables);
+    return this.variable
+      .typeVariables({
+        resourceId: resourceId,
+        type: 'json-schema',
+        schemaType: 'array'
       })
-    );
+      .pipe(
+        tap((x) => {
+          const group = groupBy(x, (y) => {
+            y.variableCategoryId;
+          });
+          const variables: XCascadeNode[] = [];
+          for (let key in group) {
+            const one = first(group[key])!;
+            variables.push({ id: one.variableCategoryId, label: one.variableCategory.name });
+            for (let item of group[key]) {
+              variables.push({ pid: one.variableCategoryId, id: item.id, label: item.code });
+            }
+          }
+
+          this.variableList.set(variables);
+        })
+      );
   }
 
   save() {

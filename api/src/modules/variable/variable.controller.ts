@@ -7,8 +7,9 @@ import {
   VariableUpdateInput,
   VariableCacheClear,
   VariableSaveManyInput,
+  VariableTypeInput,
 } from '@api/services';
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('variable')
 export class VariableController {
@@ -40,5 +41,10 @@ export class VariableController {
   @CacheClear(...VariableCacheClear)
   async delete(@Param('id') id: string) {
     return await this.variableService.delete(id);
+  }
+
+  @Get('type')
+  async typeVariables(@Param() params: VariableTypeInput) {
+    return await this.variableService.typeVariables(params);
   }
 }

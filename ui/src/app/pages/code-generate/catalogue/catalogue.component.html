@@ -48,7 +48,7 @@
         ：
         <ng-template #contentManyTpl>
           <p>默认只生成一次</p>
-          <p>生成多次，需要指定数组变量</p>
+          <p>生成多次，需要指定数据定义类型的变量，并且数据定义的类型为数组</p>
         </ng-template>
       </label>
       <x-radio
@@ -67,7 +67,7 @@
     </div>
     @if (form.value.many) {
       <div class="item required">
-        <label>数组变量：</label>
+        <label>数据定义变量：</label>
         <x-cascade
           [data]="variableList()"
           nodeTrigger="hover"

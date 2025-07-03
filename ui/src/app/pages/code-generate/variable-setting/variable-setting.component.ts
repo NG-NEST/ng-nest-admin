@@ -6,9 +6,9 @@ import {
   XEmptyComponent,
   XIconComponent,
   XLinkComponent,
-  XListModule,
   XMessageBoxAction,
   XMessageBoxService,
+  XRadioModule,
   XSelectComponent,
   XSelectNode,
   XTooltipDirective
@@ -31,6 +31,7 @@ import { Subject, concatMap, finalize, takeUntil, tap } from 'rxjs';
 import { VariableCategoryComponent } from '../variable-category/variable-category.component';
 import { first, groupBy } from 'lodash-es';
 import { AppSortVersions } from '@ui/core';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-variable-setting',
@@ -46,7 +47,8 @@ import { AppSortVersions } from '@ui/core';
     XCascadeComponent,
     XIconComponent,
     XDialogModule,
-    XListModule
+    XRadioModule,
+    DragDropModule
   ],
   templateUrl: './variable-setting.component.html',
   styleUrls: ['./variable-setting.component.scss']
@@ -68,6 +70,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   formLoading = signal(false);
   saveLoading = signal(false);
   tableLoading = signal(false);
+  variableCategoryDragging = signal(false);
 
   form!: FormGroup;
 
@@ -160,6 +163,18 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
         });
         break;
     }
+  }
+
+  variableCategoryDropCdk(event: CdkDragDrop<VariableCategory[]>) {
+    this.variableCategorys.update((x) => {
+      moveItemInArray(x, event.previousIndex, event.currentIndex);
+      return [...x];
+    });
+  }
+
+  variableDropCdk(event: CdkDragDrop<Variable[]>) {
+    moveItemInArray(this.many.controls, event.previousIndex, event.currentIndex);
+    this.many.markAsDirty();
   }
 
   getVariableCategory() {

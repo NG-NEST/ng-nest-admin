@@ -7,6 +7,7 @@ import { VariableCreateInput } from './create.input';
 import { VariableSelectInput } from './select.input';
 import { VariablePaginationOutput } from './variable.output';
 import { VariableSaveManyInput } from './save-many.input';
+import { VariableTypeInput } from './variable-type.input';
 
 @Injectable()
 export class VariableService {
@@ -86,5 +87,46 @@ export class VariableService {
 
   async delete(id: string) {
     return await this.prisma.variable.delete({ where: { id } });
+  }
+
+  async typeVariables(input: VariableTypeInput) {
+    const { type, resourceId, schemaType } = input;
+    const variables = await this.prisma.variable.findMany({
+      where: {
+        type,
+        resourceId,
+      },
+      orderBy: [{ variableCategory: { sort: 'asc' } }, { sort: 'asc' }],
+      select: {
+        id: true,
+        code: true,
+        type: true,
+        value: true,
+        sort: true,
+        description: true,
+        resourceId: true,
+        variableCategoryId: true,
+        variableCategory: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
+    });
+    if (!schemaType || type !== 'json-schema') return variables;
+    const schemaIds = variables.map((x) => x.value) as string[];
+    const typeSchemas = await this.prisma.schema.findMany({
+      where: {
+        id: { in: schemaIds },
+        json: {
+          path: ['type'],
+          equals: schemaType,
+        },
+      },
+      select: { id: true },
+    });
+    const typeSchemaIds = typeSchemas.map((x) => x.id);
+    return variables.filter((x) => typeSchemaIds.includes(x.value as string));
   }
 }

@@ -99,16 +99,36 @@ export class CatalogueService {
   async preview(id: string, schemaDataIds?: string[]) {
     const catalogue = (await this.prisma.catalogue.findUnique({
       where: { id },
-      select: { content: true, name: true, resourceId: true },
+      select: {
+        content: true,
+        name: true,
+        resourceId: true,
+        many: true,
+        variableId: true,
+        variable: {
+          select: {
+            value: true,
+          },
+        },
+      },
     })) as Catalogue;
     if (!catalogue) {
       return null;
     }
-    if (catalogue.content === null) {
-      throw new BadRequestException({ message: CatalogueException.ContentIsNull });
+
+    const { content, many, variableId } = catalogue;
+    if (content === null) {
+      return catalogue;
     }
 
-    const vars = await this.getResourceVars(catalogue.resourceId, schemaDataIds);
+    const schemaDatas = await this.getSchemaDatas(schemaDataIds);
+
+    if (many && variableId) {
+      const manySchemaData = schemaDatas.find((x) => x.formId === variableId);
+      console.log(manySchemaData);
+    }
+
+    const vars = await this.getResourceVars(catalogue.resourceId, schemaDatas);
 
     catalogue.content = this.templateService.generate(catalogue.content, vars);
     catalogue.name = this.templateService.generate(catalogue.name, vars);
@@ -116,11 +136,25 @@ export class CatalogueService {
     return catalogue;
   }
 
+  async getSchemaDatas(schemaDataIds: string[]) {
+    let schemaDatas: { data: JsonValue; schemaId: string; formId: string }[] = [];
+    if (schemaDataIds && schemaDataIds.length > 0) {
+      schemaDatas = await this.prisma.schemaData.findMany({
+        where: {
+          id: {
+            in: schemaDataIds,
+          },
+        },
+      });
+    }
+    return schemaDatas;
+  }
+
   async categoryPreview(resourceId: string, schemaDataIds?: string[]): Promise<Catalogue[]> {
     const catalogues = await this.prisma.catalogue.findMany({
       where: { resourceId },
     });
-    const vars = await this.getResourceVars(resourceId, schemaDataIds);
+    const vars = await this.getResourceVars(resourceId, await this.getSchemaDatas(schemaDataIds));
     for (let catalogue of catalogues) {
       const { content, type, name } = catalogue;
       if (type === 'File') {
@@ -139,12 +173,10 @@ export class CatalogueService {
 
     const catalogues = await this.categoryPreview(resourceId, schemaDataIds);
 
-    // 创建临时目录
     const tempPath = join(process.cwd(), 'temp');
     await promises.mkdir(tempPath, { recursive: true });
     const tempDir = await mkdtemp(join(tempPath, 'catalogue-'));
 
-    // 生成临时压缩文件路径
     const zipFilePath = `${tempDir}.zip`;
     const output = createWriteStream(zipFilePath);
     const archive = archiver('zip', {
@@ -152,15 +184,12 @@ export class CatalogueService {
     });
 
     try {
-      // 构建树状结构并写入文件
       const rootNodes = this.buildCatalogueTree(catalogues);
       await this.writeCatalogueToDisk(rootNodes, tempDir);
 
-      // 压缩目录到临时文件
       archive.pipe(output);
       archive.directory(tempDir, false);
 
-      // 合并压缩完成和文件写入完成的监听
       await new Promise((resolve, reject) => {
         let archiveFinished = false;
         let outputClosed = false;
@@ -191,11 +220,9 @@ export class CatalogueService {
           reject(err);
         });
 
-        // 确保开始压缩
         archive.finalize();
       });
 
-      // 检查压缩文件大小
       const { size } = await promises.stat(zipFilePath);
       if (size === 0) {
         throw new Error('Generated zip file is empty');
@@ -212,7 +239,6 @@ export class CatalogueService {
       reply.send(stream);
     } catch (error) {
       console.error('Error during processing:', error);
-      // 清理临时目录
       try {
         await rm(tempDir, { recursive: true, force: true });
       } catch (rmErr) {
@@ -220,8 +246,6 @@ export class CatalogueService {
       }
       throw new Error('Failed to process and zip catalogues.');
     } finally {
-      // 清理临时目录
-
       await rm(tempDir, { recursive: true, force: true });
       await rm(zipFilePath, { recursive: true, force: true });
     }
@@ -357,7 +381,7 @@ export class CatalogueService {
 
   private async getResourceVars(
     resourceId: string,
-    schemaDataIds?: string[],
+    schemaDatas?: { data: JsonValue; schemaId: string; formId: string }[],
   ): Promise<{ [code: string]: any }> {
     const variables = await this.prisma.variable.findMany({
       where: { resourceId: { equals: resourceId } },
@@ -369,13 +393,6 @@ export class CatalogueService {
         variableCategory: { select: { code: true } },
       },
     });
-    let schemaDatas: { data: JsonValue; schemaId: string; formId: string }[] = [];
-    if (schemaDataIds && schemaDataIds.length > 0) {
-      schemaDatas = await this.prisma.schemaData.findMany({
-        where: { id: { in: schemaDataIds } },
-        select: { data: true, schemaId: true, formId: true },
-      });
-    }
 
     const vars: { [code: string]: any } = {};
     for (let variable of variables) {

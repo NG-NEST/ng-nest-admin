@@ -182,7 +182,6 @@ export class SchemaDataComponent {
       delete dt.updatedAt;
       Object.assign(x, dt);
 
-      console.log(x);
       return x;
     });
 

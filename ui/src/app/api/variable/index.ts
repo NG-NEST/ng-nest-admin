@@ -9,3 +9,4 @@ export * from './variable.enum';
 export * from './variable.model';
 export * from './variable.output';
 export * from './variable.service';
+export * from './variable-type.input';

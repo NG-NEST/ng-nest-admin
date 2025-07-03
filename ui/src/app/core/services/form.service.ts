@@ -8,22 +8,26 @@ export class AppFormService {
 
   addControlByJsonSchema(form: FormGroup, schema: XJsonSchema) {
     if (!schema) return;
-    const { required } = schema;
+    const { required, type, items } = schema;
     const properties = schema.properties || {};
-    for (let key in properties) {
-      const propertySchema = properties[key];
-      const validators = [];
-      if (required?.includes(key)) {
-        validators.push(Validators.required);
-      }
-      if (propertySchema.type === 'object' && propertySchema.properties) {
-        const subform = this.formBuilder.group({});
-        this.addControlByJsonSchema(subform, propertySchema as XJsonSchema);
-        form.addControl(key, subform);
-      } else if (propertySchema.type === 'array' && propertySchema.items) {
-        form.addControl(key, this.formBuilder.array([], validators));
-      } else {
-        form.addControl(key, this.formBuilder.control(null, validators));
+    if (type === 'array' && items) {
+      form.addControl('[items]', this.formBuilder.array([]));
+    } else {
+      for (let key in properties) {
+        const propertySchema = properties[key];
+        const validators = [];
+        if (required?.includes(key)) {
+          validators.push(Validators.required);
+        }
+        if (propertySchema.type === 'object' && propertySchema.properties) {
+          const subform = this.formBuilder.group({});
+          this.addControlByJsonSchema(subform, propertySchema as XJsonSchema);
+          form.addControl(key, subform);
+        } else if (propertySchema.type === 'array' && propertySchema.items) {
+          form.addControl(key, this.formBuilder.array([], validators));
+        } else {
+          form.addControl(key, this.formBuilder.control(null, validators));
+        }
       }
     }
   }

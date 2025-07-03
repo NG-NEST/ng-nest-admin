@@ -154,6 +154,23 @@ input {
   }
 }
 
+@mixin table-item-td {
+  border-top: $x-border-base;
+
+  &:not(:first-child) {
+    border-left: $x-border-base;
+  }
+
+  x-input,
+  x-select {
+    width: 100%;
+  }
+
+  &.index {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
 .app-dialog-form {
   position: relative;
 
@@ -259,21 +276,18 @@ input {
         }
 
         tbody {
+          &.app-drag-table {
+            &.cdk-drop-list-dragging {
+              .app-drag-table-item.cdk-drag-placeholder {
+                opacity: 0.5;
+              }
+              .app-drag-table-item:not(.cdk-drag-placeholder) {
+                transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+              }
+            }
+          }
           tr td {
-            border-top: $x-border-base;
-
-            &:not(:first-child) {
-              border-left: $x-border-base;
-            }
-
-            x-input,
-            x-select {
-              width: 100%;
-            }
-
-            &.index {
-              padding: 0.5rem 0.75rem;
-            }
+            @include table-item-td();
           }
         }
       }
@@ -293,6 +307,25 @@ input {
   .tooltip {
     font-size: 1rem;
     padding: 0.5rem;
+  }
+}
+
+.app-drag-table-item {
+  td {
+    @include table-item-td();
+  }
+  &.cdk-drag-preview {
+    opacity: 0.6;
+  }
+  &.cdk-drag-animating {
+    transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.app-drag-handle {
+  cursor: move;
+  .x-button {
+    cursor: move;
   }
 }
 

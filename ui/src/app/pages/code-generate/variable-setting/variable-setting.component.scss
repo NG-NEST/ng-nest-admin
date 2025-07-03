@@ -1,3 +1,44 @@
+@mixin item {
+  margin-top: 0.325rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 1.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: var(--x-background-a100);
+  border: var(--x-border-width) var(--x-border-style) transparent;
+  .text {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .operations {
+    display: none;
+    align-items: center;
+  }
+  &:hover {
+    background-color: var(--x-background-a200);
+    .text x-button {
+      display: block;
+    }
+    .operations {
+      display: flex;
+    }
+  }
+  &.selected {
+    background-color: var(--x-primary-900);
+    color: var(--x-primary);
+    border-color: var(--x-primary-800);
+  }
+
+  x-link {
+    font-size: 1.125rem;
+    padding: 0.25rem;
+  }
+}
+
 :host {
   .content {
     display: flex;
@@ -16,46 +57,28 @@
     .left {
       width: 16rem;
       overflow-y: auto;
-      padding: 1.25rem;
+      padding: 1rem;
       border-right: var(--x-border-width) var(--x-border-style) var(--x-border);
-      .title {
+      .actions {
         display: flex;
         align-items: center;
-        justify-content: space-between;
       }
-      .list {
-        x-button {
-          width: 100%;
+      .add {
+        width: 100%;
+      }
+      .app-drag-list {
+        &.cdk-drop-list-dragging {
+          .app-drag-item.cdk-drag-placeholder {
+            border-color: var(--x-primary);
+            border-style: dashed;
+            opacity: 0.5;
+          }
+          .app-drag-item:not(.cdk-drag-placeholder) {
+            transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+          }
         }
-        .item {
-          margin-top: 0.325rem;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          line-height: 1.5rem;
-          padding: 0.25rem 0 0.25rem 1rem;
-          cursor: pointer;
-          transition: all 0.3s;
-          background-color: var(--x-background-a100);
-          .operations {
-            display: none;
-            align-items: center;
-          }
-          &:hover {
-            background-color: var(--x-background-a200);
-            .operations {
-              display: flex;
-            }
-          }
-          &.selected {
-            background-color: var(--x-primary-900);
-            color: var(--x-primary);
-          }
-
-          x-link {
-            font-size: 1.125rem;
-            padding: 0.25rem;
-          }
+        .app-drag-item {
+          @include item();
         }
       }
     }
@@ -84,5 +107,16 @@
 .variable-setting {
   ::ng-deep .x-dialog-portal {
     padding: 0;
+  }
+}
+
+.app-drag-item {
+  &.cdk-drag-preview {
+    @include item();
+    border-color: var(--x-primary);
+    opacity: 0.6;
+  }
+  &.cdk-drag-animating {
+    transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
   }
 }

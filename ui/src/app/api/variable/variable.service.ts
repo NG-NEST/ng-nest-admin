@@ -12,6 +12,7 @@ import { VariableSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { VariableSelectInput } from './select.input';
 import { VariableSaveManyInput } from './save-many.input';
+import { VariableTypeInput } from './variable-type.input';
 
 @Injectable({ providedIn: 'root' })
 export class VariableService {
@@ -118,5 +119,9 @@ export class VariableService {
     return this.http
       .post(`/api/variable/many`, input)
       .pipe(map(() => VariableMessage.UpdatedSuccess));
+  }
+
+  typeVariables(params: VariableTypeInput): Observable<Variable[]> {
+    return this.http.get<Variable[]>(`/api/variable/type`, { params: { ...params } });
   }
 }

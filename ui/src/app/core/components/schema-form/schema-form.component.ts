@@ -34,4 +34,9 @@ export class AppSchemaFormComponent {
       return title.children ?? [];
     }
   });
+
+  ngOnInit() {
+    console.log(this.formGroup());
+    console.log(XJsonSchemaToTreeData(this.data()));
+  }
 }

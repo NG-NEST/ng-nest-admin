@@ -19,6 +19,8 @@ export enum VariableDescription {
   ResourceId = 'ResourceId',
   VariableCategoryId = 'VariableCategoryId',
 
+  SchemaType = 'SchemaType',
+
   Many = 'Many',
 }
 

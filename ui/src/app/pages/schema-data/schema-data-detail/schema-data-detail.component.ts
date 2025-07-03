@@ -69,6 +69,7 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
     return this.schema.schema(this.schemaId()!).pipe(
       map((x) => {
         this.schemaJson.set(JSON.parse(x.json));
+        console.log(this.schemaJson());
       })
     );
   }

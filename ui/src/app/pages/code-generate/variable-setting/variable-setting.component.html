@@ -15,19 +15,48 @@
       </div>
     } @else {
       <div class="left">
-        <div class="list">
-          <x-button icon="fto-plus" flat plain (click)="createCategory()"> 新增分类 </x-button>
+        <div class="actions">
+          <x-button class="add" icon="fto-plus" flat plain (click)="createCategory()">
+            新增分类
+          </x-button>
+          <x-icon
+            class="app-help-icon"
+            x-tooltip
+            [content]="categoryHelp"
+            [panelClass]="'app-help-content'"
+            type="fto-help-circle"
+          ></x-icon>
+
+          <ng-template #categoryHelp>
+            <div [style.width.rem]="20">
+              <p>
+                下面的分类列表可拖动排序，顺序会影响预览或者下载引导页面表单的顺序（先按分类排序，再按分类下的变量排序）。
+              </p>
+            </div>
+          </ng-template>
+        </div>
+        <div
+          class="app-drag-list"
+          cdkDropList
+          [cdkDropListData]="variableCategorys()"
+          (cdkDropListDropped)="variableCategoryDropCdk($event)"
+        >
           @for (item of variableCategorys(); track item.id) {
             <div
-              class="item"
+              class="app-drag-item"
+              cdkDrag
               [class.selected]="form.getRawValue().variableCategoryId === item.id"
+              (dragstart)="variableCategoryDragging.set(true)"
+              (dragend)="variableCategoryDragging.set(false)"
               (click)="form.patchValue({ variableCategoryId: item.id })"
             >
-              <span>
-                {{ item.name }} <br />
-                {{ item.code }}
-              </span>
-              <span class="operations">
+              <div class="text">
+                <span>
+                  {{ item.name }} <br />
+                  {{ item.code }}
+                </span>
+              </div>
+              <span class="operations" [hidden]="variableCategoryDragging()">
                 <x-link
                   x-tooltip
                   [content]="'修改'"
@@ -55,6 +84,7 @@
           <table>
             <thead>
               <tr>
+                <th width="40"></th>
                 <th width="200" class="required">变量名</th>
                 <th width="160">数据类型</th>
                 <th width="200">
@@ -68,35 +98,61 @@
                   ></x-icon>
 
                   <ng-template #contentValueTpl>
-                    <p>如果数据类型是数据定义，生成代码时需要指定一个对应定义的具体数据</p>
+                    <div [style.width.rem]="14">
+                      <p>如果数据类型是数据定义，生成代码时需要指定一个对应定义的具体数据。</p>
+                    </div>
                   </ng-template>
                 </th>
                 <th>说明</th>
                 <th width="80">操作</th>
               </tr>
             </thead>
-            <tbody [x-loading]="tableLoading()" formArrayName="many">
+            <tbody
+              [x-loading]="tableLoading()"
+              formArrayName="many"
+              class="app-drag-table"
+              cdkDropList
+              (cdkDropListDropped)="variableDropCdk($event)"
+            >
               @for (item of many.controls; track item) {
-                <tr [formGroupName]="$index">
-                  <td>
+                <tr cdkDrag [formGroupName]="$index" class="app-drag-table-item">
+                  <td [style.width.px]="40">
+                    <x-button class="app-drag-handle" icon="fto-list" text cdkDragHandle></x-button>
+                  </td>
+                  <td [style.width.px]="200">
                     <x-input formControlName="code"></x-input>
                   </td>
-                  <td>
+                  <td [style.width.px]="160">
                     <x-select
                       [data]="typeList()"
                       formControlName="type"
                       [clearable]="false"
                     ></x-select>
                   </td>
-                  <td>
-                    @if (item.getRawValue().type === 'json-schema') {
-                      <x-cascade
-                        [data]="schemaList()"
-                        nodeTrigger="hover"
-                        formControlName="value"
-                      ></x-cascade>
-                    } @else {
-                      <x-input formControlName="value"></x-input>
+                  <td [style.width.px]="200">
+                    @switch (item.getRawValue().type) {
+                      @case ('json-schema') {
+                        <x-cascade
+                          [data]="schemaList()"
+                          nodeTrigger="hover"
+                          formControlName="value"
+                        ></x-cascade>
+                      }
+                      @case ('string') {
+                        <x-input formControlName="value"></x-input>
+                      }
+                      @case ('number') {
+                        <x-input-number formControlName="value"></x-input-number>
+                      }
+                      @case ('boolean') {
+                        <x-radio
+                          [data]="[
+                            { id: true, label: 'true' },
+                            { id: false, label: 'false' }
+                          ]"
+                          formControlName="value"
+                        ></x-radio>
+                      }
                     }
                   </td>
                   <td>

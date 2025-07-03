@@ -134,6 +134,7 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
  * @returns 返回一个XTreeData数组，表示转换后的树形数据结构
  */
 export function XJsonSchemaToTreeData(schema: XJsonSchema): XTreeData[] {
+  console.log(convertJsonSchemaToTree(schema));
   return [convertJsonSchemaToTree(schema)];
 }
 

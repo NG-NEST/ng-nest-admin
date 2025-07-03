@@ -10,3 +10,4 @@ export * from './save-many.input';
 export * from './select.input';
 export * from './select.output';
 export * from './variable.service';
+export * from './variable-type.input';
