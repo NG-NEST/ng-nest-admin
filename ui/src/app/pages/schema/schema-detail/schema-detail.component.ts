@@ -8,6 +8,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { SchemaService } from '@ui/api';
 import { AppJsonSchemaComponent, XJsonSchema } from '@ui/core';
+import { isEqual } from 'lodash-es';
 import { Observable, Subject, concatMap, finalize, tap } from 'rxjs';
 
 @Component({
@@ -68,7 +69,7 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
         .pipe(
           tap((x) => {
             this.form.patchValue(x);
-            this.jsonSchema = JSON.parse(x.json);
+            this.jsonSchema = x.json as XJsonSchema;
           }),
           finalize(() => this.formLoading.set(false))
         )
@@ -88,8 +89,7 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
       rq = this.jsonSchemaCom()
         .getJsonSchema()
         .pipe(
-          concatMap((value) => {
-            const json = JSON.stringify(value);
+          concatMap((json) => {
             return this.schema.create({ ...this.form.value, json });
           })
         );
@@ -97,9 +97,8 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
       rq = this.jsonSchemaCom()
         .getJsonSchema()
         .pipe(
-          concatMap((value) => {
-            const json = JSON.stringify(value);
-            if (json !== this.form.value.json) {
+          concatMap((json) => {
+            if (!isEqual(json, this.form.value.json)) {
               return this.schema.create({ ...this.form.value, json });
             } else {
               return this.schema.update({

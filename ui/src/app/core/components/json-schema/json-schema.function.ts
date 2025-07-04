@@ -102,7 +102,9 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
       Object.assign(ngNest, { orders });
     }
   } else if (type === 'array') {
-    const childItem = (children || []).find((child) => child.name === '[items]' || !child.name);
+    const childItem = (children || []).find((child) => {
+      return child.isArray || !child.name;
+    });
 
     if (childItem) {
       schema.items = convertNodeToSchema(childItem);
@@ -134,7 +136,6 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
  * @returns 返回一个XTreeData数组，表示转换后的树形数据结构
  */
 export function XJsonSchemaToTreeData(schema: XJsonSchema): XTreeData[] {
-  console.log(convertJsonSchemaToTree(schema));
   return [convertJsonSchemaToTree(schema)];
 }
 
@@ -200,7 +201,7 @@ function convertJsonSchemaToTree(
     if (!itemSchema) {
       itemSchema = { type: 'string' };
     }
-    const child = convertJsonSchemaToTree(itemSchema, '[items]');
+    const child = convertJsonSchemaToTree(itemSchema, name);
     child.isArray = true;
     node.children = [child];
   }
@@ -230,17 +231,42 @@ function cleanObject<T extends object>(obj: T): T {
   }, {} as T);
 }
 
-export function XJsonSchemaToTableColumns(schema: XJsonSchema) {
+export function XJsonSchemaToTableColumns(schema: XJsonSchema, key = '$root') {
   const columns: XTableColumn[] = [];
   if (!schema) return columns;
-  const { properties } = schema;
-  if (!properties) return columns;
-  Object.entries(properties).forEach(([key, value]) => {
-    columns.push({
-      id: key,
-      label: value.title,
-      width: 160
+  // 处理 schema 类型为 array 的情况
+  const { type, items, properties, title } = schema;
+  if (type === 'array' && items) {
+    const itemSchema = items;
+    if (itemSchema.type === 'object' && itemSchema.properties) {
+      columns.push({
+        id: key,
+        label: title,
+        width: 160,
+        schemaType: type
+      });
+    }
+  } else if (properties) {
+    // 原有的处理普通 object schema 的逻辑
+    Object.entries(properties).forEach(([key, value]) => {
+      if (value.type === 'array' && value.items) {
+        // 递归处理数组元素
+        const itemColumns = XJsonSchemaToTableColumns(value.items, key);
+        // itemColumns.forEach((column) => {
+        //   column.id = `${key}.${column.id}`;
+        //   column.label = `${key} > ${column.label}`;
+        //   columns.push(column);
+        // });
+        console.log(itemColumns);
+      } else {
+        columns.push({
+          id: key,
+          label: value.title || key,
+          width: 160,
+          schemaType: value.type
+        });
+      }
     });
-  });
+  }
   return columns;
 }

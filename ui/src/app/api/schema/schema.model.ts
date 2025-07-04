@@ -1,4 +1,4 @@
-import { BaseAudit } from '@ui/core';
+import { BaseAudit, JsonValue } from '@ui/core';
 
 export class Schema extends BaseAudit {
   id!: string;
@@ -6,5 +6,5 @@ export class Schema extends BaseAudit {
   code!: string;
   description?: string;
   version?: string;
-  json!: string;
+  json!: JsonValue;
 }

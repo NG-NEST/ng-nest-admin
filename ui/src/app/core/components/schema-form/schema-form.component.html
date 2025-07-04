@@ -1,14 +1,93 @@
 <form [formGroup]="formGroup()" class="app-dialog-form">
   <div class="content">
     @for (node of formTree(); track node.id!) {
-      <div class="item" [class.required]="node.required!">
-        <label>{{ node.title }}：</label>
-        <x-input
-          [formControlName]="node.name!"
-          placeholder=""
-          [required]="node.required!"
-        ></x-input>
-      </div>
+      <ng-container
+        [ngTemplateOutlet]="nodeTpl"
+        [ngTemplateOutletContext]="{ node, form: formGroup() }"
+      ></ng-container>
     }
   </div>
 </form>
+
+<ng-template #nodeTpl let-node="node" let-form="form">
+  <div [formGroup]="form" class="schema-form">
+    @switch (node.type) {
+      @case ('object') {
+        <div class="array" [formArrayName]="node.name">
+          <div class="array-tools">
+            <span>{{ node.title }}</span>
+            <x-buttons class="array-tools-buttons" boxShadow="false">
+              @if (form.get(node.name).controls.length > 0) {
+                <x-button
+                  type="danger"
+                  plain
+                  flat
+                  text
+                  icon="fto-trash-2"
+                  (click)="removeAll(form.get(node.name))"
+                  size="small"
+                >
+                </x-button>
+              }
+              <x-button
+                type="primary"
+                (click)="add(form.get(node.name), node.children)"
+                plain
+                flat
+                text
+                icon="fto-plus-square"
+                size="small"
+              >
+              </x-button>
+            </x-buttons>
+          </div>
+          <div class="array-form-list">
+            @for (control of form.get(node.name).controls; track control; let i = $index) {
+              <div class="array-form" [formGroupName]="i">
+                @for (subNode of node.children; track subNode.id; let j = $index) {
+                  <ng-container
+                    [ngTemplateOutlet]="nodeTpl"
+                    [ngTemplateOutletContext]="{
+                      node: subNode,
+                      form: form.get(node.name).controls[i]
+                    }"
+                  ></ng-container>
+                }
+                <span class="array-index">{{ i + 1 }}</span>
+                <x-button
+                  class="array-delete"
+                  type="danger"
+                  plain
+                  flat
+                  text
+                  icon="fto-trash-2"
+                  (click)="removeAt(form.get(node.name), i)"
+                  size="small"
+                >
+                </x-button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      @case ('array') {
+        @for (subNode of node.children; track subNode.id) {
+          <ng-container
+            [ngTemplateOutlet]="nodeTpl"
+            [ngTemplateOutletContext]="{ node: subNode, form }"
+          ></ng-container>
+        }
+      }
+      @default {
+        <div class="item" [class.required]="node.required!">
+          <label>{{ node.title }}：</label>
+          <x-input
+            [formControlName]="node.name!"
+            placeholder=""
+            [required]="node.required!"
+          ></x-input>
+        </div>
+      }
+    }
+  </div>
+</ng-template>

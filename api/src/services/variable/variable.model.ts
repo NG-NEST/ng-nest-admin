@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit } from '@api/core';
-import { IsJSON, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { VariableDescription } from './variable.enum';
 import { ResourceDescription } from '../resource';
 import { VariableCategoryDescription } from '../variable-category';
@@ -25,7 +25,6 @@ export class Variable extends BaseAudit {
 
   @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
-  @IsJSON()
   value?: JsonValue;
 
   @Field({ description: VariableDescription.Description, nullable: true })

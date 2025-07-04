@@ -9,7 +9,7 @@ import {
   VariableSaveManyInput,
   VariableTypeInput,
 } from '@api/services';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 @Controller('variable')
 export class VariableController {
@@ -44,7 +44,7 @@ export class VariableController {
   }
 
   @Get('type')
-  async typeVariables(@Param() params: VariableTypeInput) {
+  async typeVariables(@Query() params: VariableTypeInput) {
     return await this.variableService.typeVariables(params);
   }
 }

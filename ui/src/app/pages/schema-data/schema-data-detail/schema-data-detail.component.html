@@ -3,7 +3,7 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
 
   <div x-dialog-content class="content full">
-    <app-schema-form [data]="schemaJson()!" [form]="form"></app-schema-form>
+    <app-schema-form #schemaFormCom [data]="schemaJson()!" [form]="form"></app-schema-form>
   </div>
   <div x-dialog-actions align="center" class="actions">
     <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>

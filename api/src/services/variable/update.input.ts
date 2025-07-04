@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, I18N } from '@api/core';
 import { VariableDescription, VARIABLE_I18N } from './variable.enum';
 import { GraphQLJSON } from 'graphql-scalars';
@@ -26,7 +26,6 @@ export class VariableUpdateInput {
 
   @Field(() => GraphQLJSON, { description: VariableDescription.Value, nullable: true })
   @IsOptional()
-  @IsJSON()
   value?: JsonValue;
 
   @Field({ description: VariableDescription.Description, nullable: true })

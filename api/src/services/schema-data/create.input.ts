@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { IsNotExist, ValidatorDescription, I18N } from '@api/core';
 import { SchemaDataDescription, SCHEMA_DATA_I18N } from './schema-data.enum';
 import { SchemaDescription } from '../schema';
@@ -14,7 +14,6 @@ export class SchemaDataCreateInput {
       `${SCHEMA_DATA_I18N}.${SchemaDataDescription.Data}${ValidatorDescription.IsNotEmpty}`,
     ),
   })
-  @IsJSON()
   data: JsonValue;
 
   @Field({ description: SchemaDescription.Id })

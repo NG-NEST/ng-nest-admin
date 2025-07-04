@@ -14,7 +14,9 @@
       </div>
       <div class="buttons">
         <div>
-          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()">刷新</x-button>
+          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()"
+            >刷新</x-button
+          >
         </div>
         <x-button
           [app-auth]="'schema-data-create'"
@@ -44,6 +46,7 @@
       [scroll]="{ x: 1300, y: 400 }"
       [virtualScroll]="true"
       [bodyColumnTpl]="{ operate: operateTpl }"
+      [bodyTdTpl]="bodyTdTpl"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
     ></x-table>
@@ -56,6 +59,21 @@
           删除
         </x-link>
       </div>
+    </ng-template>
+
+    <ng-template #bodyTdTpl let-column="$column" let-row="$row" let-index="$index">
+      @switch (column.schemaType) {
+        @case ('array') {
+          <div class="keys">
+            <x-button size="small" text type="primary" [title]="row[column.id] | json">
+              {{ row[column.id].length }}条
+            </x-button>
+          </div>
+        }
+        @default {
+          {{ row[column.id] }}
+        }
+      }
     </ng-template>
   </div>
 </div>

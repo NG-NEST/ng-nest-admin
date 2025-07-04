@@ -11,7 +11,26 @@ import { AppJsonSchemaComponent, AppSchemaFormComponent, XJsonSchema } from '@ui
   imports: [AppJsonSchemaComponent, AppSchemaFormComponent]
 })
 export class JsonComponent {
-  jsonSchema: XJsonSchema = {
+  dialog = inject(XDialogService);
+  formBuilder = inject(FormBuilder);
+
+  form1 = this.formBuilder.group({});
+  jsonSchema1: XJsonSchema = {
+    type: 'array',
+    title: '用户角色集合',
+    items: {
+      type: 'object',
+      title: '用户角色',
+      properties: {
+        id: { type: 'string', title: '编码' },
+        name: { type: 'string', title: '角色名称' }
+      },
+      required: ['id']
+    }
+  };
+
+  form2 = this.formBuilder.group({});
+  jsonSchema2: XJsonSchema = {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: '用户信息',
     type: 'object',
@@ -26,78 +45,35 @@ export class JsonComponent {
         description: '用户的登录名或昵称',
         type: 'string'
       },
-      email: {
-        title: '电子邮件',
-        description: '用户的电子邮箱地址',
-        type: 'string',
-        format: 'email'
-      },
-      phoneNumber: {
-        title: '电话号码',
-        description: '用户的联系电话号码',
-        type: 'string'
-      },
-      fullName: {
-        title: '全名',
-        description: '用户的完整姓名',
-        type: 'string'
-      },
-      gender: {
-        title: '性别',
-        description: '用户的性别',
-        type: 'string',
-        enum: ['男', '女', '其他']
-      },
-      dateOfBirth: {
-        title: '出生日期',
-        description: '用户的出生年月日',
-        type: 'string',
-        format: 'date'
-      },
-      address: {
-        title: '地址',
-        description: '用户的居住地址',
-        type: 'string'
-      },
-      city: {
-        title: '城市',
-        description: '用户所在城市',
-        type: 'string'
-      },
-      province: {
-        title: '省份',
-        description: '用户所在省份',
-        type: 'string'
-      },
-      country: {
-        title: '国家',
-        description: '用户所在国家',
-        type: 'string'
-      },
-      postalCode: {
-        title: '邮政编码',
-        description: '用户的邮政编码',
-        type: 'string'
-      },
-      createdAt: {
-        title: '创建时间',
-        description: '用户账户创建时间',
-        type: 'string',
-        format: 'date-time'
-      },
-      updatedAt: {
-        title: '更新时间',
-        description: '用户信息最后更新时间',
-        type: 'string',
-        format: 'date-time'
+      roles: {
+        type: 'array',
+        title: '用户角色集合',
+        items: {
+          type: 'object',
+          title: '用户角色',
+          properties: {
+            id: { type: 'string', title: '编码' },
+            name: { type: 'string', title: '角色名称' },
+            users: {
+              type: 'array',
+              title: '角色用户集合',
+              items: {
+                type: 'object',
+                title: '角色用户',
+                properties: {
+                  id: { type: 'string', title: '编码' },
+                  name: { type: 'string', title: '用户名称' }
+                },
+                required: ['id']
+              }
+            }
+          },
+          required: ['id']
+        }
       }
     },
     required: ['userId', 'userName', 'email']
   };
-  dialog = inject(XDialogService);
-
-  formBuilder = inject(FormBuilder);
-  form = this.formBuilder.group({});
 
   ngAfterViewInit() {
     // this.dialog.create(SchemaDetailComponent, {

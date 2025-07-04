@@ -1,0 +1,67 @@
+:host {
+  .schema-form {
+    .array {
+      border: var(--x-border-width) var(--x-border-style) var(--x-border);
+      border-radius: var(--x-border-radius);
+      &-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.25rem 1rem;
+        min-height: 2.625rem;
+        border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+        &-buttons {
+          display: none;
+        }
+        &:hover {
+          .array-tools-buttons {
+            display: initial;
+          }
+        }
+      }
+      &-delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: none;
+      }
+      &-form-list {
+        padding: 1rem;
+      }
+      &-form {
+        position: relative;
+        padding: 4rem 4rem 2rem 2rem;
+        border: var(--x-border-width) var(--x-border-style) var(--x-border);
+        border-radius: var(--x-border-radius);
+        &:not(:first-child) {
+          margin-top: 1rem;
+        }
+        .schema-form {
+          &:not(:first-child) {
+            margin-top: 2rem;
+          }
+        }
+        &:hover {
+          .array-delete {
+            display: initial;
+          }
+        }
+      }
+      &-index {
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        background-color: var(--x-background-a200);
+        border-top-left-radius: var(--x-border-radius);
+        border-bottom-right-radius: var(--x-border-radius);
+        color: var(--x-text-800);
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+}

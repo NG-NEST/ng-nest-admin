@@ -73,18 +73,17 @@
       </div>
     </div>
     <div class="right">
-      @if (!node().isArray) {
-        <input
-          formControlName="title"
-          placeholder="中文名"
-          class="input"
-          appAdjustWidth
-          [minWidth]="50"
-          [maxWidth]="140"
-          [defaultValue]="node().title!"
-          [title]="node().title"
-        />
-      }
+      <input
+        formControlName="title"
+        placeholder="中文名"
+        class="input"
+        appAdjustWidth
+        [minWidth]="50"
+        [maxWidth]="140"
+        [defaultValue]="node().title!"
+        [title]="node().title"
+      />
+
       <a
         x-popover
         [content]="descriptionTpl"

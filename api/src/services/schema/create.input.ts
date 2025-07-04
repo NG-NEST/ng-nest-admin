@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsJSON, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, I18N } from '@api/core';
 import { SchemaDescription, SCHEMA_I18N } from './schema.enum';
 import { GraphQLJSON } from 'graphql-scalars';
@@ -31,6 +31,5 @@ export class SchemaCreateInput {
   @IsNotEmpty({
     message: I18N(`${SCHEMA_I18N}.${SchemaDescription.Json}${ValidatorDescription.IsNotEmpty}`),
   })
-  @IsJSON()
   json: JsonValue;
 }

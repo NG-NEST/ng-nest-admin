@@ -1,9 +1,9 @@
-import { BaseAudit } from '@ui/core';
+import { BaseAudit, JsonValue } from '@ui/core';
 import { Schema } from '../schema/schema.model';
 
 export class SchemaData extends BaseAudit {
   id!: string;
-  data!: string;
+  data!: JsonValue;
   schemaId!: string;
   schema!: Schema;
   formId?: string;

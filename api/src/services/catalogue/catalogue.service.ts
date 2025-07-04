@@ -398,13 +398,9 @@ export class CatalogueService {
     for (let variable of variables) {
       const { id, code, value, type, variableCategory } = variable;
       if (type === 'json-schema' && value) {
-        try {
-          const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
-          if (!schemaData) continue;
-          set(vars, `${variableCategory.code}.${code}`, JSON.parse(schemaData.data as string));
-        } catch (e) {
-          LOGS.error(`JSON.parse error: ${e}`, { context: CatalogueService.name });
-        }
+        const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
+        if (!schemaData) continue;
+        set(vars, `${variableCategory.code}.${code}`, schemaData.data);
       } else {
         set(vars, `${variableCategory.code}.${code}`, value);
       }

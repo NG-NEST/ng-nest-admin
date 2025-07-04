@@ -65,7 +65,7 @@ export class VariableGuideComponent {
     const formList: (Schema & { variableId: string; jsonSchema: XJsonSchema })[] = [];
     for (let schema of schemaList) {
       try {
-        formList.push({ ...schema, jsonSchema: JSON.parse(schema.json) as XJsonSchema });
+        formList.push({ ...schema, jsonSchema: schema.json as XJsonSchema });
       } catch (error) {
         console.error(error);
       }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
@@ -28,6 +28,8 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
 
   dialogRef = inject(XDialogRef<SchemaDataDetailComponent>);
   formBuild = inject(FormBuilder);
+
+  schemaFormCom = viewChild.required<AppSchemaFormComponent>('schemaFormCom');
 
   id = signal<string | null>(null);
   schemaId = signal<string | null>(null);
@@ -68,8 +70,7 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
   getSchema() {
     return this.schema.schema(this.schemaId()!).pipe(
       map((x) => {
-        this.schemaJson.set(JSON.parse(x.json));
-        console.log(this.schemaJson());
+        this.schemaJson.set(x.json as XJsonSchema);
       })
     );
   }
@@ -77,15 +78,14 @@ export class SchemaDataDetailComponent implements OnInit, OnDestroy {
   getSchemaData() {
     return this.schemaData.schemaData(this.id()!).pipe(
       tap((x) => {
-        const { data } = x;
-        this.form.patchValue(JSON.parse(data as string));
+        this.schemaFormCom().patchValue(x.data as object);
       })
     );
   }
 
   save() {
     let rq!: Observable<SchemaData>;
-    const data = JSON.stringify(this.form.getRawValue());
+    const data = this.form.getRawValue();
     const val = {
       schemaId: this.schemaId()!,
       data

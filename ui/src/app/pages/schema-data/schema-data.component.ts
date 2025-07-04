@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject, signal, viewChild, computed } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
 import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
@@ -40,6 +40,7 @@ import { first, groupBy } from 'lodash-es';
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
+    JsonPipe,
     AppAuthDirective
   ],
   templateUrl: './schema-data.component.html',
@@ -140,8 +141,7 @@ export class SchemaDataComponent {
     if (!id) return of(null);
     return this.schemaService.schema(id).pipe(
       tap((x) => {
-        const { json } = x;
-        this.schemaJson.set(JSON.parse(json));
+        this.schemaJson.set(x.json as XJsonSchema);
       })
     );
   }
@@ -175,7 +175,7 @@ export class SchemaDataComponent {
   resultConvert(body: BasePagination<SchemaData>) {
     const { data, count } = body;
     const list = data.map((x) => {
-      const dt = JSON.parse(x.data);
+      const dt = x.data as any;
       x.createdAt = this.datePipe.transform(dt.createdAt ?? x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
       x.updatedAt = this.datePipe.transform(dt.updatedAt ?? x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
       delete dt.createdAt;
