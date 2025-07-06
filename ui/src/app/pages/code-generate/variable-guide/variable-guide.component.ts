@@ -33,6 +33,7 @@ export class VariableGuideComponent {
   data = inject<{
     variables: Variable[];
     title: string;
+    many: boolean;
     saveSuccess: (schemaDatas: SchemaData[]) => void;
   }>(X_DIALOG_DATA);
   formBuilder = inject(FormBuilder);
@@ -45,6 +46,8 @@ export class VariableGuideComponent {
 
   variables = signal<Variable[]>([]);
   title = signal<string>('');
+  many = signal<boolean>(true);
+
   schemaVariables = computed(() => {
     return this.variables().filter((item) => item.type === 'json-schema' && item.value);
   });
@@ -90,18 +93,25 @@ export class VariableGuideComponent {
   });
 
   constructor() {
-    const { variables, title } = this.data;
+    const { variables, title, many } = this.data;
     this.variables.set(variables);
     this.title.set(title);
+    this.many.set(many);
   }
 
   ngOnInit(): void {
     forkJoin(this.schemaVariables().map((x) => this.schema.schema(x.value!))).subscribe((x) => {
       this.schemaList.update(() => {
-        const schemaListWithVariableId = x.map((item, index) => ({
+        let schemaListWithVariableId = x.map((item, index) => ({
           ...item,
           variableId: this.schemaVariables()[index].id
         }));
+        if (!this.many()) {
+          schemaListWithVariableId = schemaListWithVariableId.filter((x) => {
+            const { type } = x.json as XJsonSchema;
+            return type !== 'array';
+          });
+        }
         return schemaListWithVariableId;
       });
     });
@@ -127,7 +137,7 @@ export class VariableGuideComponent {
         this.schemaData.create({
           schemaId: x.id,
           formId: x.variableId,
-          data: JSON.stringify(val[x.variableId])
+          data: val[x.variableId]
         })
       )
     )

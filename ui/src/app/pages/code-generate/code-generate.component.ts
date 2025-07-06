@@ -206,6 +206,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
                   data: {
                     title: '预览指引',
                     variables: variables,
+                    many: data?.many,
                     saveSuccess: (schemaDatas: SchemaData[]) => {
                       this.dialog.create(PreviewComponent, {
                         width: '100%',
@@ -238,11 +239,12 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
                   data: {
                     title: '下载指引',
                     variables: variables,
+                    many: data?.many,
                     saveSuccess: (schemaDatas: SchemaData[]) => {
                       this.catalogue
                         .download(data!.id, { schemaDataIds: schemaDatas.map((x) => x.id) })
                         .subscribe((x) => {
-                          AppDownloadArrayBuffer(x, this.document);
+                          AppDownloadArrayBuffer(x, this.document, !data?.many);
                         });
                     }
                   }
@@ -276,9 +278,11 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
                   data: {
                     title: '预览指引',
                     variables: variables,
+                    many: true,
                     saveSuccess: (schemaDatas: SchemaData[]) => {
                       this.dialog.create(CategoryPreviewComponent, {
-                        width: '70rem',
+                        width: '100%',
+                        height: '100%',
                         data: {
                           resourceId: this.form.value.category,
                           schemaDataIds: schemaDatas.map((x) => x.id)
@@ -289,7 +293,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
                 });
               } else {
                 this.dialog.create(CategoryPreviewComponent, {
-                  width: '70rem',
+                  width: '100%',
+                  height: '100%',
                   data: {
                     resourceId: this.form.value.category
                   }
@@ -312,6 +317,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
                   data: {
                     title: '下载指引',
                     variables: variables,
+                    many: true,
                     saveSuccess: (schemaDatas: SchemaData[]) => {
                       this.catalogue
                         .categoryDownload(this.form.value.category!, {

@@ -105,6 +105,7 @@ export class CatalogueService {
               pid
               id
               name
+              many
               url
               type
               sort

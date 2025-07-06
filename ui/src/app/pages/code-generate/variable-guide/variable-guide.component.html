@@ -9,7 +9,14 @@
     (click)="dialogRef!.close()"
   ></x-button>
   <div x-dialog-content class="content full">
-    <x-steps [data]="steps()" [activatedIndex]="stepIndex()"> </x-steps>
+    @if (steps().length === 1) {
+      <div class="form-title">
+        <h4>{{ steps()[0].label }}</h4>
+        <span>{{ steps()[0].description }}</span>
+      </div>
+    } @else {
+      <x-steps [data]="steps()" [activatedIndex]="stepIndex()"> </x-steps>
+    }
     <x-tabs [activatedIndex]="stepIndex()" sliderHidden>
       @for (item of formList(); track item.variableId) {
         <x-tab>

@@ -35,6 +35,7 @@ export class CategoryPreviewComponent {
   form!: FormGroup;
 
   formLoading = signal(false);
+  downloading = signal(false);
 
   constructor() {
     const { resourceId, schemaDataIds } = this.data;
@@ -72,5 +73,16 @@ export class CategoryPreviewComponent {
 
     this.form.patchValue({ content: node.content });
     this.filename.set(node.name);
+  }
+
+  download() {
+    this.downloading.set(true);
+    // this.catalogue
+    //   .categoryDownload(this.form.value.category!, {
+    //     schemaDataIds: schemaDatas.map((x) => x.id)
+    //   })
+    //   .subscribe((x) => {
+    //     AppDownloadArrayBuffer(x, this.document, false);
+    //   });
   }
 }

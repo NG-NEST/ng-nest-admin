@@ -10,7 +10,7 @@ import {
 import { MultipartFile } from '@fastify/multipart';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
-import { isString } from 'lodash-es';
+import { isArray, isString } from 'lodash-es';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -60,10 +60,14 @@ export class CatalogueController {
       id,
       isString(schemaDataIds) ? [schemaDataIds] : schemaDataIds,
     );
-    const { name, content } = catalogue;
-    reply.header('Content-Disposition', `attachment; filename=${encodeURIComponent(name)}`);
-    reply.header('Content-Type', 'application/octet-stream');
-    reply.send(content);
+    if (isArray(catalogue)) {
+      await this.catalogueService.downloadZip(catalogue, reply, `${new Date().getTime()}`);
+    } else {
+      const { name, content } = catalogue;
+      reply.header('Content-Disposition', `attachment; filename=${encodeURIComponent(name)}`);
+      reply.header('Content-Type', 'application/octet-stream');
+      reply.send(content);
+    }
   }
 
   @Get('category-preview/:resourceId')

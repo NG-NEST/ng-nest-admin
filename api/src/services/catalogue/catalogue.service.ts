@@ -13,7 +13,7 @@ import { File as UploadFile } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
 import { TemplateService } from '@api/core';
-import { set } from 'lodash-es';
+import { cloneDeep, get, set } from 'lodash-es';
 import * as archiver from 'archiver';
 import { FastifyReply } from 'fastify';
 import { createWriteStream, mkdtemp, promises, readFile, rm } from 'fs-extra';
@@ -97,9 +97,11 @@ export class CatalogueService {
   }
 
   async preview(id: string, schemaDataIds?: string[]) {
-    const catalogue = (await this.prisma.catalogue.findUnique({
+    const catalogue = await this.prisma.catalogue.findUnique({
       where: { id },
       select: {
+        id: true,
+        type: true,
         content: true,
         name: true,
         resourceId: true,
@@ -107,11 +109,17 @@ export class CatalogueService {
         variableId: true,
         variable: {
           select: {
+            code: true,
             value: true,
+            variableCategory: {
+              select: {
+                code: true,
+              },
+            },
           },
         },
       },
-    })) as Catalogue;
+    });
     if (!catalogue) {
       return null;
     }
@@ -122,18 +130,38 @@ export class CatalogueService {
     }
 
     const schemaDatas = await this.getSchemaDatas(schemaDataIds);
+    const vars = await this.getResourceVars(catalogue.resourceId, schemaDatas);
 
     if (many && variableId) {
       const manySchemaData = schemaDatas.find((x) => x.formId === variableId);
-      console.log(manySchemaData);
+      if (manySchemaData) {
+        const data = (get(manySchemaData, 'data.$root') as Array<any>) ?? [];
+        const properties = get(manySchemaData, 'schema.json.items.properties') ?? {};
+        const catalogues: any[] = [];
+        for (let item of data) {
+          const deep = cloneDeep(catalogue);
+          for (let key in properties) {
+            set(
+              vars,
+              `${deep.variable.variableCategory.code}.${deep.variable.code}.$item.${key}`,
+              item[key],
+            );
+          }
+          deep.id = v4();
+          deep.content = this.templateService.generate(catalogue.content, vars);
+          deep.name = this.templateService.generate(catalogue.name, vars);
+
+          catalogues.push(deep);
+        }
+        return catalogues;
+      } else {
+        return catalogue;
+      }
+    } else {
+      catalogue.content = this.templateService.generate(catalogue.content, vars);
+      catalogue.name = this.templateService.generate(catalogue.name, vars);
+      return catalogue;
     }
-
-    const vars = await this.getResourceVars(catalogue.resourceId, schemaDatas);
-
-    catalogue.content = this.templateService.generate(catalogue.content, vars);
-    catalogue.name = this.templateService.generate(catalogue.name, vars);
-
-    return catalogue;
   }
 
   async getSchemaDatas(schemaDataIds: string[]) {
@@ -145,34 +173,121 @@ export class CatalogueService {
             in: schemaDataIds,
           },
         },
+        select: {
+          id: true,
+          data: true,
+          schemaId: true,
+          formId: true,
+          schema: {
+            select: {
+              json: true,
+            },
+          },
+        },
       });
     }
     return schemaDatas;
   }
 
-  async categoryPreview(resourceId: string, schemaDataIds?: string[]): Promise<Catalogue[]> {
+  async categoryPreview(resourceId: string, schemaDataIds?: string[]) {
     const catalogues = await this.prisma.catalogue.findMany({
       where: { resourceId },
+      select: {
+        id: true,
+        pid: true,
+        type: true,
+        content: true,
+        name: true,
+        resourceId: true,
+        many: true,
+        sort: true,
+        resource: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        variableId: true,
+        variable: {
+          select: {
+            code: true,
+            value: true,
+            variableCategory: {
+              select: {
+                code: true,
+              },
+            },
+          },
+        },
+      },
     });
-    const vars = await this.getResourceVars(resourceId, await this.getSchemaDatas(schemaDataIds));
+    const schemaDatas = await this.getSchemaDatas(schemaDataIds);
+    const vars = await this.getResourceVars(resourceId, schemaDatas);
+    const manyList: (Catalogue & any)[] = [];
+    const deleteIds: string[] = [];
+
     for (let catalogue of catalogues) {
-      const { content, type, name } = catalogue;
-      if (type === 'File') {
-        catalogue.content = this.templateService.generate(content, vars);
-        catalogue.name = this.templateService.generate(name, vars);
-      } else if (type === 'Folder') {
-        catalogue.name = this.templateService.generate(name, vars);
+      const { many, variableId } = catalogue;
+      if (many && variableId) {
+        const manySchemaData = schemaDatas.find((x) => x.formId === variableId);
+        if (manySchemaData) {
+          const data = (get(manySchemaData, 'data.$root') as Array<any>) ?? [];
+          const properties = get(manySchemaData, 'schema.json.items.properties') ?? {};
+          for (let item of data) {
+            const deep = cloneDeep(catalogue);
+            for (let key in properties) {
+              set(
+                vars,
+                `${deep.variable.variableCategory.code}.${deep.variable.code}.$item.${key}`,
+                item[key],
+              );
+            }
+            deep.id = v4();
+            deep.content = this.templateService.generate(catalogue.content, vars);
+            deep.name = this.templateService.generate(catalogue.name, vars);
+
+            manyList.push(deep);
+          }
+          deleteIds.push(catalogue.id);
+        }
+      } else {
+        catalogue.content = this.templateService.generate(catalogue.content, vars);
+        catalogue.name = this.templateService.generate(catalogue.name, vars);
       }
     }
+    const finallyList = catalogues.filter((x) => !deleteIds.includes(x.id));
 
-    return catalogues as Catalogue[];
+    return [...finallyList, ...manyList];
   }
 
   async categoryDownload(resourceId: string, reply: FastifyReply, schemaDataIds?: string[]) {
     const resource = await this.prisma.resource.findUnique({ where: { id: resourceId } });
-
     const catalogues = await this.categoryPreview(resourceId, schemaDataIds);
+    await this.downloadZip(catalogues as any[], reply, resource.name);
+  }
 
+  buildCatalogueTree(catalogues: Catalogue[]): Catalogue[] {
+    const map = new Map<string, Catalogue & { children?: Catalogue[] }>();
+
+    catalogues.forEach((node) => {
+      map.set(node.id, { ...node, children: [] });
+    });
+
+    const roots: Catalogue[] = [];
+
+    catalogues.forEach((node) => {
+      const current = map.get(node.id)!;
+      if (node.pid && map.has(node.pid)) {
+        map.get(node.pid)?.children?.push(current);
+      } else {
+        roots.push(current);
+      }
+    });
+
+    return roots;
+  }
+
+  async downloadZip(catalogues: Catalogue[], reply: FastifyReply, filename: string) {
     const tempPath = join(process.cwd(), 'temp');
     await promises.mkdir(tempPath, { recursive: true });
     const tempDir = await mkdtemp(join(tempPath, 'catalogue-'));
@@ -201,22 +316,24 @@ export class CatalogueService {
         };
 
         archive.on('finish', () => {
-          console.log('archive finished');
+          LOGS.info('Archive finished', { context: CatalogueService.name });
           archiveFinished = true;
           checkCompletion();
         });
         archive.on('error', (err) => {
-          console.error('Archiver error:', err);
+          LOGS.error(`Archiver error: ${JSON.stringify(err)}`, { context: CatalogueService.name });
           reject(err);
         });
 
         output.on('close', () => {
-          console.log('zip file completed');
+          LOGS.info('Zip file completed', { context: CatalogueService.name });
           outputClosed = true;
           checkCompletion();
         });
         output.on('error', (err) => {
-          console.error('Write stream error:', err);
+          LOGS.error(`Write stream error: ${JSON.stringify(err)}`, {
+            context: CatalogueService.name,
+          });
           reject(err);
         });
 
@@ -232,44 +349,27 @@ export class CatalogueService {
       reply.header('Content-Type', 'application/zip');
       reply.header(
         `Content-Disposition`,
-        `attachment; filename=${encodeURIComponent(resource.name)}.zip`,
+        `attachment; filename=${encodeURIComponent(filename)}.zip`,
       );
       reply.header('Content-Length', size);
 
       reply.send(stream);
     } catch (error) {
-      console.error('Error during processing:', error);
+      LOGS.error(`Error during processing: ${JSON.stringify(error)}`, {
+        context: CatalogueService.name,
+      });
       try {
         await rm(tempDir, { recursive: true, force: true });
       } catch (rmErr) {
-        console.error('Error removing temp directory:', rmErr);
+        LOGS.error(`Error removing temp directory: ${JSON.stringify(rmErr)}`, {
+          context: CatalogueService.name,
+        });
       }
       throw new Error('Failed to process and zip catalogues.');
     } finally {
       await rm(tempDir, { recursive: true, force: true });
       await rm(zipFilePath, { recursive: true, force: true });
     }
-  }
-
-  buildCatalogueTree(catalogues: Catalogue[]): Catalogue[] {
-    const map = new Map<string, Catalogue & { children?: Catalogue[] }>();
-
-    catalogues.forEach((node) => {
-      map.set(node.id, { ...node, children: [] });
-    });
-
-    const roots: Catalogue[] = [];
-
-    catalogues.forEach((node) => {
-      const current = map.get(node.id)!;
-      if (node.pid && map.has(node.pid)) {
-        map.get(node.pid)?.children?.push(current);
-      } else {
-        roots.push(current);
-      }
-    });
-
-    return roots;
   }
 
   async writeCatalogueToDisk(nodes: (Catalogue & { children?: any })[], basePath: string) {
@@ -392,6 +492,7 @@ export class CatalogueService {
         type: true,
         variableCategory: { select: { code: true } },
       },
+      orderBy: [{ variableCategory: { sort: 'asc' } }, { sort: 'asc' }],
     });
 
     const vars: { [code: string]: any } = {};

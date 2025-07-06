@@ -3,9 +3,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 4rem;
+
+    .form-title {
+      margin-top: 2rem;
+      min-width: 20rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
 
     x-steps {
-      margin-top: 2rem;
+      margin-top: 4rem;
+      min-width: 20rem;
     }
 
     ::ng-deep {
@@ -15,7 +26,7 @@
     }
 
     .form {
-      min-width: 40rem;
+      min-width: 50rem;
       border: var(--x-border-width) var(--x-border-style) var(--x-border);
       border-radius: var(--x-border-radius);
     }

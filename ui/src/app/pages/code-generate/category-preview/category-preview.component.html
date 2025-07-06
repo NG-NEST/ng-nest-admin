@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="app-dialog-form">
+<form [formGroup]="form" class="app-dialog-form" (ngSubmit)="download()">
   <h4 x-dialog-title class="title">下载预览</h4>
   <x-button
     class="close"
@@ -39,5 +39,11 @@
     <div class="right">
       <app-editor formControlName="content" [filename]="filename()"></app-editor>
     </div>
+  </div>
+  <div x-dialog-actions align="center" class="actions">
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button flat icon="fto-save" type="primary" attrType="submit" [loading]="downloading()">
+      下载
+    </x-button>
   </div>
 </form>
