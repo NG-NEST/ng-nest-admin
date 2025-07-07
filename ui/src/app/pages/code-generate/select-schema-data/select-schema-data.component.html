@@ -1,0 +1,72 @@
+<div class="app-dialog-form">
+  <h4 x-dialog-title class="title">{{ title() }}</h4>
+  <x-button
+    class="close"
+    icon="fto-x"
+    size="large"
+    flat
+    text
+    (click)="dialogRef!.close()"
+  ></x-button>
+  <div x-dialog-content class="content full">
+    <div class="app-table" [x-loading]="tableLoading()">
+      <x-table
+        ngSkipHydration
+        #tableCom
+        [data]="data()"
+        [columns]="columns()"
+        [(index)]="index"
+        [(size)]="size"
+        [(total)]="total"
+        [showSize]="true"
+        [showEmpty]="!tableLoading()"
+        [rowHeight]="0"
+        [sizeData]="[10, 20, 50, 100]"
+        [showJump]="true"
+        [scroll]="{ x: 1300, y: 400 }"
+        [virtualScroll]="true"
+        [bodyTdTpl]="bodyTdTpl"
+        (indexChange)="indexChange()"
+        (sizeChange)="sizeChange()"
+      ></x-table>
+
+      <ng-template #bodyTdTpl let-column="$column" let-row="$row" let-index="$index">
+        @switch (column.schemaType) {
+          @case ('array') {
+            <div class="keys">
+              <x-button
+                size="small"
+                text
+                type="primary"
+                x-tooltip
+                [content]="row[column.id] | json"
+              >
+                {{ row[column.id]?.length }}条
+              </x-button>
+            </div>
+          }
+          @default {
+            @if (column.id === '$radio') {
+              <x-radio [data]="[{ id: row.id, label: '' }]" [(ngModel)]="selectId"></x-radio>
+            } @else {
+              {{ row[column.id] }}
+            }
+          }
+        }
+      </ng-template>
+    </div>
+  </div>
+  <div x-dialog-actions align="center" class="actions">
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button
+      flat
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [disabled]="selectDisabled()"
+      (click)="selectSave()"
+    >
+      确认
+    </x-button>
+  </div>
+</div>

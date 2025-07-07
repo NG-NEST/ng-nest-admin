@@ -26,9 +26,17 @@
     }
 
     .form {
+      padding-top: 2rem;
       min-width: 50rem;
       border: var(--x-border-width) var(--x-border-style) var(--x-border);
       border-radius: var(--x-border-radius);
+      position: relative;
+
+      .select-data {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
     }
   }
 }

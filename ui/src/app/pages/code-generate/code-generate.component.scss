@@ -1,7 +1,6 @@
 :host {
   .app-inner {
-    display: grid;
-    grid-template-columns: 28rem 1fr;
+    display: flex;
   }
   .app-left,
   .app-right {
@@ -12,6 +11,8 @@
   }
   .app-left {
     height: calc(100vh - 4.25rem);
+    width: 34rem;
+    overflow: auto;
     .form {
       width: 100%;
       .item {
@@ -32,6 +33,7 @@
     }
   }
   .app-right {
+    flex: 1;
     padding: 0;
     height: calc(100vh - 7.5rem);
   }
@@ -52,6 +54,19 @@
       x-icon {
         margin-right: 0.25rem;
       }
+    }
+    .many {
+      background-color: rgba(0, 0, 0, 0.08);
+      border-radius: var(--x-border-radius);
+      color: var(--x-text-500);
+      padding: 0.125rem 0.25rem;
+      margin-left: 0.75rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--x-font-size-mini);
     }
     .actions {
       display: none;

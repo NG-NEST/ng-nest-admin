@@ -21,7 +21,10 @@
       @for (item of formList(); track item.variableId) {
         <x-tab>
           <div class="form">
-            <app-schema-form
+            <x-button class="select-data" type="primary" text (click)="onSelectData(item)">
+              选择数据
+            </x-button>
+            <app-schema-form #schemaForm
               [data]="item.jsonSchema"
               [form]="getForm(item.variableId)"
             ></app-schema-form>

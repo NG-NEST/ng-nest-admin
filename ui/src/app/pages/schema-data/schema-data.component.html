@@ -65,7 +65,7 @@
       @switch (column.schemaType) {
         @case ('array') {
           <div class="keys">
-            <x-button size="small" text type="primary" [title]="row[column.id] | json">
+            <x-button size="small" text type="primary" x-tooltip [content]="row[column.id] | json">
               {{ row[column.id]?.length }}条
             </x-button>
           </div>

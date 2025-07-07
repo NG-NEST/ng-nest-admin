@@ -42,6 +42,14 @@
               <x-icon [type]="node.label | appFileIcon"></x-icon>
             }
             <span>{{ node.label }}</span>
+            @if (node.many) {
+              <span
+                class="many"
+                x-tooltip
+                content="根据指定的数据定义变量生成多次，文件名中最好使用对应的变量名"
+                >多</span
+              >
+            }
           </div>
           <div class="actions">
             @if (node.type === 'Folder') {

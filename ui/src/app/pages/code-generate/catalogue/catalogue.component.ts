@@ -91,11 +91,29 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       type: ['Folder', [Validators.required]],
       pid: [{ disabled: true, value: this.pid() }],
       name: ['', [Validators.required]],
-      many: [false, [Validators.required]],
+      many: [false],
       variableId: [null],
       resourceId: [this.resourceId(), [Validators.required]],
       sort: [0, [Validators.required]],
       description: ['']
+    });
+
+    this.form.controls['type'].valueChanges.pipe(takeUntil(this.$destroy)).subscribe((x) => {
+      const many = this.form.controls['many'];
+      many.clearValidators();
+      if (x === 'File') {
+        many.addValidators(Validators.required);
+      }
+      many.updateValueAndValidity();
+    });
+
+    this.form.controls['many'].valueChanges.pipe(takeUntil(this.$destroy)).subscribe((x) => {
+      const variableId = this.form.controls['variableId'];
+      variableId.clearValidators();
+      if (x === true) {
+        variableId.addValidators(Validators.required);
+      }
+      variableId.updateValueAndValidity();
     });
   }
 

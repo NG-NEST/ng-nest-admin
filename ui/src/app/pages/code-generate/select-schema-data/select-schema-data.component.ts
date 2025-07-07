@@ -1,17 +1,10 @@
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject, signal, viewChild, computed } from '@angular/core';
 import { XIsEmpty } from '@ng-nest/ui/core';
-import { XTableColumn, XTableComponent } from '@ng-nest/ui/table';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { XTableColumn, XTableComponent, XTableModule } from '@ng-nest/ui/table';
+import { SchemaData, SchemaDataService, SchemaDataWhereInput, SchemaService } from '@ui/api';
 import {
-  Schema,
-  SchemaData,
-  SchemaDataService,
-  SchemaDataWhereInput,
-  SchemaService
-} from '@ui/api';
-import {
-  AppAuthDirective,
-  AppSortVersions,
   BaseDescription,
   BaseOrder,
   BasePagination,
@@ -20,35 +13,40 @@ import {
 } from '@ui/core';
 import { concatMap, delay, finalize, of, Subject, takeUntil, tap } from 'rxjs';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { XDialogService } from '@ng-nest/ui/dialog';
-import { SchemaDataDetailComponent } from './schema-data-detail/schema-data-detail.component';
-import { XMessageBoxAction, XMessageBoxService } from '@ng-nest/ui/message-box';
+import { X_DIALOG_DATA, XDialogModule, XDialogRef, XDialogService } from '@ng-nest/ui/dialog';
+import { XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
-import { XButtonComponent } from '@ng-nest/ui/button';
-import { XLoadingComponent } from '@ng-nest/ui/loading';
-import { XLinkComponent } from '@ng-nest/ui/link';
-import { XCascadeComponent, XCascadeNode } from '@ng-nest/ui/cascade';
-import { first, groupBy } from 'lodash-es';
-import { XTooltipDirective } from '@ng-nest/ui/tooltip';
+import { XButtonComponent, XLoadingComponent, XRadioComponent, XTooltipModule } from '@ng-nest/ui';
 
 @Component({
-  selector: 'app-schema-data',
+  selector: 'app-select-schema-data',
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    XCascadeComponent,
+    XTableModule,
     XButtonComponent,
     XLoadingComponent,
-    XTableComponent,
-    XLinkComponent,
-    XTooltipDirective,
-    JsonPipe,
-    AppAuthDirective
+    XTooltipModule,
+    XRadioComponent,
+    XDialogModule,
+    JsonPipe
   ],
-  templateUrl: './schema-data.component.html',
+  templateUrl: './select-schema-data.component.html',
   providers: [DatePipe]
 })
-export class SchemaDataComponent {
+export class SelectSchemaDataComponent {
+  dialogRef = inject(XDialogRef<SelectSchemaDataComponent>);
+  inputData = inject<{
+    schemaId: string;
+    title: string;
+    saveSuccess: (data: { [key: string]: any }) => void;
+  }>(X_DIALOG_DATA);
+  title = signal<string | null>(null);
+  schemaId = signal<string | null>(null);
+  selectId = signal<string | null>(null);
+  selectChange = toObservable(this.selectId);
+  selectData = signal<{ [key: string]: any } | null>(null);
+
   datePipe = inject(DatePipe);
   schemaDataService = inject(SchemaDataService);
   schemaService = inject(SchemaService);
@@ -58,10 +56,14 @@ export class SchemaDataComponent {
   dialog = inject(XDialogService);
 
   searchForm = this.fb.group({
-    schemaId: [null]
+    schemaId: ['']
   });
 
   schemaJson = signal<XJsonSchema | null>(null);
+
+  selectDisabled = computed(() => {
+    return !this.selectData();
+  });
 
   columns = computed<XTableColumn[]>(() => {
     let columns: XTableColumn[] = [];
@@ -83,9 +85,9 @@ export class SchemaDataComponent {
       }
     }
     columns = [
-      { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-      ...cols,
-      { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+      { id: '$radio', width: 70, left: 0 },
+      { id: 'index', type: 'index', left: 70, label: BaseDescription.Index, width: 70 },
+      ...cols
     ];
     return columns;
   });
@@ -97,26 +99,34 @@ export class SchemaDataComponent {
   resetLoading = signal(false);
   searchLoading = signal(false);
   data = signal<SchemaData[]>([]);
-  schemaList = signal<XCascadeNode[]>([]);
 
   tableCom = viewChild.required<XTableComponent>('tableCom');
   $destroy = new Subject<void>();
 
-  ngOnInit() {
-    this.searchForm.controls.schemaId.valueChanges
-      .pipe(
-        concatMap((x) => this.getSchema(x!)),
-        concatMap(() => {
-          this.index.set(1);
-          this.tableLoading.set(true);
-          return this.getTableData().pipe(finalize(() => this.tableLoading.set(false)));
-        }),
+  constructor() {
+    const { schemaId, title } = this.inputData;
+    this.schemaId.set(schemaId);
+    this.title.set(title);
+  }
 
-        takeUntil(this.$destroy)
+  ngOnInit() {
+    this.searchForm.patchValue({ schemaId: this.schemaId() });
+    this.tableLoading.set(true);
+    this.getSchema(this.schemaId()!)
+      .pipe(
+        concatMap(() => this.getTableData()),
+        finalize(() => this.tableLoading.set(false))
       )
       .subscribe();
 
-    this.getSchemaList().subscribe();
+    this.selectChange.pipe(takeUntil(this.$destroy)).subscribe((x) => {
+      if (x) {
+        const dt = this.data().find((y) => y.id === x);
+        if (dt) {
+          this.selectData.set(dt.data as object);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -140,7 +150,6 @@ export class SchemaDataComponent {
   }
 
   getSchema(id: string) {
-    if (!id) return of(null);
     return this.schemaService.schema(id).pipe(
       tap((x) => {
         this.schemaJson.set(x.json as XJsonSchema);
@@ -191,35 +200,7 @@ export class SchemaDataComponent {
     this.data.set(list);
   }
 
-  getSchemaList() {
-    return this.schemaService.schemaSelect({}).pipe(
-      tap((x) => {
-        const res = x.map((y: any) => {
-          y.label = y.name;
-          return y;
-        });
-        const group = groupBy(res, (y) => y.code);
-        const list: XCascadeNode[] = [];
-        let select: XCascadeNode | null = null;
-        for (let key in group) {
-          const one = first(group[key]) as Schema;
-          list.push({ id: one.code, label: one.name });
-          const sortList = AppSortVersions(group[key], 'desc');
-          for (let item of sortList) {
-            list.push({ id: item.id, label: item.version, pid: one.code });
-          }
-          if (select === null && sortList.length > 0) {
-            select = sortList[0];
-
-            this.searchForm.patchValue({ schemaId: select!.id });
-          }
-        }
-        this.schemaList.set(list);
-      })
-    );
-  }
-
-  action(type: string, schemaData?: SchemaData) {
+  action(type: string, _schemaData?: SchemaData) {
     switch (type) {
       case 'search':
         this.searchLoading.set(true);
@@ -237,56 +218,11 @@ export class SchemaDataComponent {
           .pipe(finalize(() => (this.tableLoading.set(false), this.resetLoading.set(false))))
           .subscribe();
         break;
-      case 'add':
-        this.dialog.create(SchemaDataDetailComponent, {
-          width: '100%',
-          height: '100%',
-          data: {
-            schemaId: this.searchForm.controls.schemaId.value,
-            saveSuccess: () => {
-              this.index.set(1);
-              this.tableLoading.set(true);
-              this.getTableData()
-                .pipe(finalize(() => this.tableLoading.set(false)))
-                .subscribe();
-            }
-          }
-        });
-        break;
-      case 'edit':
-        this.dialog.create(SchemaDataDetailComponent, {
-          width: '100%',
-          height: '100%',
-          data: {
-            id: schemaData?.id,
-            schemaId: this.searchForm.controls.schemaId.value,
-            saveSuccess: () => {
-              this.tableLoading.set(true);
-              this.getTableData()
-                .pipe(finalize(() => this.tableLoading.set(false)))
-                .subscribe();
-            }
-          }
-        });
-        break;
-      case 'delete':
-        if (!schemaData) return;
-        this.messageBox.confirm({
-          title: '删除数据',
-          content: `确认删除此数据吗？ `,
-          type: 'warning',
-          callback: (data: XMessageBoxAction) => {
-            if (data !== 'confirm') return;
-            this.schemaDataService.delete(schemaData.id).subscribe((x) => {
-              this.message.success(x);
-              if (this.data().length === 1 && this.index() > 1) {
-                this.index.update((x) => --x);
-              }
-              this.getTableData();
-            });
-          }
-        });
-        break;
     }
+  }
+
+  selectSave() {
+    this.dialogRef.close();
+    this.inputData.saveSuccess(this.selectData()!);
   }
 }
