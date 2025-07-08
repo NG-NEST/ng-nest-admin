@@ -26,7 +26,10 @@ export class AppFormService {
         } else if (propertySchema.type === 'array' && propertySchema.items) {
           form.addControl(key, this.formBuilder.array([], validators));
         } else {
-          form.addControl(key, this.formBuilder.control(null, validators));
+          form.addControl(
+            key,
+            this.formBuilder.control(propertySchema.default ?? null, validators)
+          );
         }
       }
     }
@@ -38,7 +41,7 @@ export class AppFormService {
       for (let node of nodes) {
         const { name, required, type } = node;
         const validators = [];
-        const val = item[name!];
+        const val = item[name!] ?? node.default;
         if (required) validators.push(Validators.required);
         if (type === 'array') {
           keys[name!] = this.formBuilder.array([]);

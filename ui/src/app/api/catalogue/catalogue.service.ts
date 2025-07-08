@@ -130,8 +130,8 @@ export class CatalogueService {
       .pipe(map(() => CatalogueMessage.DeletedSuccess));
   }
 
-  preview(id: string, params?: { schemaDataIds?: string[] }): Observable<Catalogue> {
-    return this.http.get<Catalogue>(`/api/catalogue/preview/${id}`, { params });
+  preview(id: string, params?: { schemaDataIds?: string[] }): Observable<Catalogue | Catalogue[]> {
+    return this.http.get<Catalogue | Catalogue[]>(`/api/catalogue/preview/${id}`, { params });
   }
 
   download(

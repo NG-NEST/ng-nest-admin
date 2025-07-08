@@ -67,22 +67,11 @@ export class CategoryPreviewComponent {
 
   onNodeClick(node: XTreeNode | Catalogue) {
     if (node.type !== 'File') {
-      this.form.patchValue({ id: null, content: '' });
+      this.form.patchValue({ content: '' });
       return;
     }
 
     this.form.patchValue({ content: node.content });
     this.filename.set(node.name);
-  }
-
-  download() {
-    this.downloading.set(true);
-    // this.catalogue
-    //   .categoryDownload(this.form.value.category!, {
-    //     schemaDataIds: schemaDatas.map((x) => x.id)
-    //   })
-    //   .subscribe((x) => {
-    //     AppDownloadArrayBuffer(x, this.document, false);
-    //   });
   }
 }

@@ -1,10 +1,13 @@
 import { Component, computed, inject, input, model } from '@angular/core';
-import { XJsonSchema, XJsonSchemaToTreeData, XTreeData } from '../json-schema';
+import { XJsonSchema, XJsonSchemaEnum, XJsonSchemaToTreeData, XTreeData } from '../json-schema';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { AppFormService } from '@ui/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
+import { XSwitchComponent } from '@ng-nest/ui/switch';
+import { XIconComponent } from '@ng-nest/ui/icon';
+import { XInputNumberComponent, XSelectComponent, XTooltipDirective } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-schema-form',
@@ -13,6 +16,11 @@ import { XButtonComponent, XButtonsComponent } from '@ng-nest/ui/button';
     XInputComponent,
     XButtonComponent,
     XButtonsComponent,
+    XSwitchComponent,
+    XIconComponent,
+    XTooltipDirective,
+    XInputNumberComponent,
+    XSelectComponent,
     NgTemplateOutlet
   ],
   templateUrl: './schema-form.component.html',
@@ -62,5 +70,13 @@ export class AppSchemaFormComponent {
 
   patchValue(data: { [key: string]: any }) {
     this.formService.formPatchValue(this.form(), data, this.formTree());
+  }
+
+  selectData(enums: XJsonSchemaEnum[]) {
+    if (!enums) return [];
+    return enums.map((value, description) => ({
+      id: value,
+      label: description
+    }));
   }
 }

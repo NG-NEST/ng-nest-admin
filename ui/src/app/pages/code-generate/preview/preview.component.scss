@@ -1,0 +1,52 @@
+:host {
+  .content {
+    display: flex;
+    gap: 0;
+  }
+  .left,
+  .right {
+    padding: 1rem;
+  }
+  .left {
+    width: 28rem;
+    height: calc(100vh - 7rem);
+    overflow-y: auto;
+    border-right: var(--x-border-width) var(--x-border-style) var(--x-border);
+  }
+  .right {
+    flex: 1;
+    padding: 0;
+    height: calc(100vh - 7rem);
+  }
+  .tree-node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    x-icon {
+      font-size: 1.25rem;
+    }
+
+    .label {
+      display: flex;
+      align-items: center;
+      x-icon {
+        margin-right: 0.25rem;
+      }
+    }
+    .actions {
+      display: none;
+      align-items: center;
+      font-size: 1.25rem;
+      x-link {
+        padding: 0.25rem;
+      }
+    }
+    &:hover {
+      .actions {
+        display: flex;
+      }
+    }
+  }
+}

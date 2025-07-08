@@ -16,16 +16,18 @@
     } @else {
       <div class="left">
         <div class="actions">
-          <x-button class="add" icon="fto-plus" flat plain (click)="createCategory()">
-            新增分类
-          </x-button>
-          <x-icon
-            class="app-help-icon"
+          <x-button
+            class="add"
             x-tooltip
             [content]="categoryHelp"
             [panelClass]="'app-help-content'"
-            type="fto-help-circle"
-          ></x-icon>
+            icon="fto-plus"
+            flat
+            plain
+            (click)="createCategory()"
+          >
+            新增分类
+          </x-button>
 
           <ng-template #categoryHelp>
             <div [style.width.rem]="20">

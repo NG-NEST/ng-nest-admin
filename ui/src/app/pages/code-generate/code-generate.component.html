@@ -8,6 +8,7 @@
           [data]="categories()"
           [expandedLevel]="3"
           showPath
+          [portalMaxHeight]="'20rem'"
         ></x-tree-select>
         <x-dropdown [data]="dropdownMenu()" (nodeClick)="onDropdownClick($event)">
           <x-button icon="fto-more-horizontal" type="primary" flat></x-button>
@@ -17,7 +18,7 @@
       </div>
     </form>
     <div class="catalogue" [x-loading]="treeLoading()">
-      @if (!treeLoading() && treeData().length === 0) {
+      @if (!treeLoading() && treeCom.treeData().length === 0) {
         <x-empty></x-empty>
       }
       <x-tree

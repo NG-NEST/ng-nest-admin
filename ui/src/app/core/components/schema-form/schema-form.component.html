@@ -78,16 +78,67 @@
           ></ng-container>
         }
       }
-      @default {
+      @case ('boolean') {
         <div class="item" [class.required]="node.required!">
-          <label>{{ node.title }}：</label>
-          <x-input
-            [formControlName]="node.name!"
-            placeholder=""
-            [required]="node.required!"
-          ></x-input>
+          <ng-container *ngTemplateOutlet="labelTpl; context: { node }"></ng-container>
+          <x-switch [formControlName]="node.name!" [required]="node.required"></x-switch>
+        </div>
+      }
+      @case ('number') {
+        <div class="item" [class.required]="node.required!">
+          <ng-container *ngTemplateOutlet="labelTpl; context: { node }"></ng-container>
+          @if (node.isEnum) {
+            <x-select [data]="selectData(node.enums)"></x-select>
+          } @else {
+            <x-input-number
+              [formControlName]="node.name!"
+              [required]="node.required!"
+            ></x-input-number>
+          }
+        </div>
+      }
+      @case ('integer') {
+        <div class="item" [class.required]="node.required!">
+          <ng-container *ngTemplateOutlet="labelTpl; context: { node }"></ng-container>
+          @if (node.isEnum) {
+            <x-select [data]="selectData(node.enums)"></x-select>
+          } @else {
+            <x-input-number
+              [formControlName]="node.name!"
+              [required]="node.required!"
+            ></x-input-number>
+          }
+        </div>
+      }
+      @case ('string') {
+        <div class="item" [class.required]="node.required!">
+          <ng-container *ngTemplateOutlet="labelTpl; context: { node }"></ng-container>
+          @if (node.isEnum) {
+            <x-select [data]="selectData(node.enums)"></x-select>
+          } @else {
+            <x-input [formControlName]="node.name!" [required]="node.required!"></x-input>
+          }
         </div>
       }
     }
   </div>
+</ng-template>
+
+<ng-template #labelTpl let-node="node">
+  <label>
+    {{ node.title }}
+    @if (node.description) {
+      <x-icon
+        class="app-help-icon"
+        x-tooltip
+        [content]="descriptionTpl"
+        [panelClass]="'app-help-content'"
+        type="fto-help-circle"
+      ></x-icon>
+    }
+    ：
+    <ng-template #descriptionTpl>
+      <p>{{ node.description }}</p>
+    </ng-template>
+  </label>
 </ng-template>

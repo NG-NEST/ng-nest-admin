@@ -58,13 +58,19 @@
   <div class="group one">
     <div class="item">
       <label>默认值</label>
-      <x-input formControlName="default" placeholder="默认值"></x-input>
+      <x-input-number formControlName="default" placeholder="默认值"></x-input-number>
     </div>
   </div>
   <div class="group one">
     <div class="item">
       <label>示例值</label>
-      <x-select formControlName="examples" placeholder="示例值"></x-select>
+      <x-select
+        formControlName="examples"
+        placeholder="示例值"
+        search
+        allowInput
+        multiple
+      ></x-select>
     </div>
   </div>
   <div class="group">
