@@ -343,7 +343,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'variable-setting':
         this.dialog.create(VariableSettingComponent, {
-          width: '70rem',
+          width: '100%',
+          height: '100%',
           data: {
             resourceId: this.form.value.category
           }

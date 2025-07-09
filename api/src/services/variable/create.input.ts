@@ -23,6 +23,10 @@ export class VariableCreateInput {
   @IsOptional()
   value?: JsonValue;
 
+  @Field(() => String, { description: VariableDescription.Source, nullable: true })
+  @IsOptional()
+  source?: string;
+
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()
   description?: string;

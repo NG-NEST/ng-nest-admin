@@ -19,6 +19,10 @@ export class VariableSelectOutput extends BaseAudit {
   @IsOptional()
   type?: string;
 
+  @Field({ description: VariableDescription.Source, nullable: true })
+  @IsOptional()
+  source?: string;
+
   @Field({ description: VariableDescription.Sort, nullable: true })
   @IsOptional()
   sort?: number;

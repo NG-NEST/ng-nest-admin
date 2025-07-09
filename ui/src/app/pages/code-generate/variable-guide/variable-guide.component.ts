@@ -112,21 +112,23 @@ export class VariableGuideComponent {
   }
 
   ngOnInit(): void {
-    forkJoin(this.schemaVariables().map((x) => this.schema.schema(x.value!))).subscribe((x) => {
-      this.schemaList.update(() => {
-        let schemaListWithVariableId = x.map((item, index) => ({
-          ...item,
-          variableId: this.schemaVariables()[index].id
-        }));
-        if (!this.many()) {
-          schemaListWithVariableId = schemaListWithVariableId.filter((x) => {
-            const { type } = x.json as XJsonSchema;
-            return type !== 'array';
-          });
-        }
-        return schemaListWithVariableId;
-      });
-    });
+    forkJoin(this.schemaVariables().map((x) => this.schema.schema(x.value! as string))).subscribe(
+      (x) => {
+        this.schemaList.update(() => {
+          let schemaListWithVariableId = x.map((item, index) => ({
+            ...item,
+            variableId: this.schemaVariables()[index].id
+          }));
+          if (!this.many()) {
+            schemaListWithVariableId = schemaListWithVariableId.filter((x) => {
+              const { type } = x.json as XJsonSchema;
+              return type !== 'array';
+            });
+          }
+          return schemaListWithVariableId;
+        });
+      }
+    );
   }
 
   getForm(id: string) {

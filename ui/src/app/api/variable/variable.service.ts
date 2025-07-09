@@ -30,6 +30,7 @@ export class VariableService {
               code
               type
               value
+              source
               sort
               description
               resourceId
@@ -58,6 +59,7 @@ export class VariableService {
                 code
                 type
                 value
+                source
                 sort
                 description
                 id
@@ -88,6 +90,7 @@ export class VariableService {
               code
               type
               value
+              source
               sort
               description
               resourceId

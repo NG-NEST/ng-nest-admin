@@ -5,6 +5,7 @@ export enum VariableDescription {
   Code = '变量标识',
   Type = '变量类型',
   Value = '变量值',
+  Source = '变量值来源',
   Sort = '排序',
   Description = '变量描述'
 }

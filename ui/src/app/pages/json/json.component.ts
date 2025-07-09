@@ -54,19 +54,6 @@ export class JsonComponent {
           properties: {
             id: { type: 'string', title: '编码' },
             name: { type: 'string', title: '角色名称' },
-            users: {
-              type: 'array',
-              title: '角色用户集合',
-              items: {
-                type: 'object',
-                title: '角色用户',
-                properties: {
-                  id: { type: 'string', title: '编码' },
-                  name: { type: 'string', title: '用户名称' }
-                },
-                required: ['id']
-              }
-            }
           },
           required: ['id']
         }

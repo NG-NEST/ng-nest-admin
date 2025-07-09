@@ -20,6 +20,10 @@ export class VariableUpdateInput {
   @IsOptional()
   type?: string;
 
+  @Field(() => String, { description: VariableDescription.Source, nullable: true })
+  @IsOptional()
+  source?: string;
+
   @Field({ description: VariableDescription.Sort, nullable: true })
   @IsOptional()
   sort?: number;

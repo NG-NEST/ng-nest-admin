@@ -1,7 +1,7 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
   <h4 x-dialog-title class="title">变量设置</h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
-  <div x-dialog-content class="content attrs">
+  <div x-dialog-content class="content full attrs">
     @if (variableCategoryIsEmpty) {
       <div class="empty">
         <x-empty [content]="contentTemp">
@@ -89,7 +89,7 @@
                 <th width="40"></th>
                 <th width="200" class="required">变量名</th>
                 <th width="160">数据类型</th>
-                <th width="200">
+                <th width="355">
                   值&nbsp;
                   <x-icon
                     class="app-help-icon"
@@ -100,8 +100,12 @@
                   ></x-icon>
 
                   <ng-template #contentValueTpl>
-                    <div [style.width.rem]="14">
-                      <p>如果数据类型是数据定义，生成代码时需要指定一个对应定义的具体数据。</p>
+                    <div [style.width.rem]="18">
+                      <p>如果数据类型是数据定义，分以下2种情况：</p>
+                      <p>1、默认直接使用数据定义的数据作为变量值;</p>
+                      <p>
+                        2、使用数据定义产生的数据集数据作为变量值，在预览或下载时会弹出对应的引导页面来设置值；
+                      </p>
                     </div>
                   </ng-template>
                 </th>
@@ -131,18 +135,26 @@
                       [clearable]="false"
                     ></x-select>
                   </td>
-                  <td [style.width.px]="200">
+                  <td [style.width.px]="355">
                     @switch (item.getRawValue().type) {
                       @case ('json-schema') {
                         <x-cascade
+                          [style.width.rem]="15"
                           [data]="schemaList()"
                           nodeTrigger="hover"
                           formControlName="value"
                         ></x-cascade>
+                        <x-select
+                          [style.width.rem]="7"
+                          [data]="[
+                            { id: 'schema', label: '数据定义' },
+                            { id: 'schema-data', label: '数据集' }
+                          ]"
+                          formControlName="source"
+                          [clearable]="false"
+                        ></x-select>
                       }
-                      @case ('string') {
-                        <x-input formControlName="value"></x-input>
-                      }
+
                       @case ('number') {
                         <x-input-number formControlName="value"></x-input-number>
                       }
@@ -153,7 +165,11 @@
                             { id: false, label: 'false' }
                           ]"
                           formControlName="value"
+                          button
                         ></x-radio>
+                      }
+                      @default {
+                        <x-input formControlName="value"></x-input>
                       }
                     }
                   </td>

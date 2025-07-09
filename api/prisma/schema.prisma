@@ -252,6 +252,7 @@ model Variable {
   code               String
   type               String?
   value              Json?
+  source             String?
   description        String?
   resourceId         String
   sort               Int?     @default(0)

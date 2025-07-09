@@ -6,6 +6,7 @@ export class VariableWhereInput extends BaseWhereInput<VariableWhereInput> {
   code?: string | StringFilter;
   type?: string | StringFilter;
   value?: JsonFilter;
+  source?: string | StringFilter;
   sort?: number | NumberFilter;
   description?: string | StringFilter;
   resourceId?: string | StringFilter;

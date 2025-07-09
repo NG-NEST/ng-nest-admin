@@ -10,6 +10,7 @@ export const IconConfig: { [key: string]: string } = {
   java: '/assets/file-icons/java.svg',
   png: '/assets/file-icons/png.svg',
   jpg: '/assets/file-icons/jpg.svg',
+  'json-data': '/assets/file-icons/json-data.svg',
   json: '/assets/file-icons/json.svg',
   md: '/assets/file-icons/md.svg',
   svg: '/assets/file-icons/svg.svg',

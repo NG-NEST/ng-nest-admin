@@ -1997,6 +1997,9 @@ type Variable {
   """Sort"""
   sort: Float
 
+  """Source"""
+  source: String
+
   """Type"""
   type: String
 
@@ -2158,6 +2161,9 @@ input VariableOrderInput {
   """Sort"""
   sort: SortOrder
 
+  """Source"""
+  source: SortOrder
+
   """Type"""
   type: SortOrder
 
@@ -2201,6 +2207,9 @@ type VariableSelectOutput {
   """Sort"""
   sort: Float
 
+  """Source"""
+  source: String
+
   """Type"""
   type: String
 
@@ -2233,11 +2242,14 @@ input VariableWhere {
   """Sort"""
   sort: NumberFilter
 
+  """Source"""
+  source: StringFilter
+
   """Type"""
   type: StringFilter
 
   """Value"""
-  value: StringFilter
+  value: JsonFilter
 
   """VariableCategory"""
   variableCategory: VariableCategoryWhereInput
@@ -2271,11 +2283,14 @@ input VariableWhereInput {
   """Sort"""
   sort: NumberFilter
 
+  """Source"""
+  source: StringFilter
+
   """Type"""
   type: StringFilter
 
   """Value"""
-  value: StringFilter
+  value: JsonFilter
 
   """VariableCategory"""
   variableCategory: VariableCategoryWhereInput

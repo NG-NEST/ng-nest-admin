@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import {
   XCascadeComponent,
   XCascadeNode,
+  XCheckboxModule,
   XEmptyComponent,
   XIconComponent,
   XLinkComponent,
@@ -48,6 +49,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
     XIconComponent,
     XDialogModule,
     XRadioModule,
+    XCheckboxModule,
     DragDropModule
   ],
   templateUrl: './variable-setting.component.html',
@@ -295,6 +297,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
       code: [variable?.code ?? '', [Validators.required]],
       type: [variable?.type ?? ''],
       value: [variable?.value ?? ''],
+      source: [variable?.source ?? 'schema'],
       sort: [variable?.sort ?? 0],
       description: [variable?.description ?? ''],
       resourceId: [variable?.resourceId ?? this.resourceId()],

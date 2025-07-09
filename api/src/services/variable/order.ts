@@ -15,6 +15,10 @@ export class VariableOrderInput extends BaseOrder {
   @IsOptional()
   type?: SortOrder;
 
+  @Field(() => SortOrder, { description: VariableDescription.Source, nullable: true })
+  @IsOptional()
+  source?: SortOrder;
+
   @Field(() => SortOrder, { description: VariableDescription.Sort, nullable: true })
   @IsOptional()
   sort?: SortOrder;

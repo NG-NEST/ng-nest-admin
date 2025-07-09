@@ -27,6 +27,10 @@ export class Variable extends BaseAudit {
   @IsOptional()
   value?: JsonValue;
 
+  @Field({ description: VariableDescription.Source, nullable: true })
+  @IsOptional()
+  source?: string;
+
   @Field({ description: VariableDescription.Description, nullable: true })
   @IsOptional()
   description?: string;
