@@ -1,0 +1,29 @@
+:host {
+  .function {
+    border: var(--x-border-width) var(--x-border-style) var(--x-border);
+    border-radius: var(--x-border-radius);
+    padding: 1rem;
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
+    h4 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin: 1rem 0;
+    }
+  }
+  pre {
+    margin: 0;
+    code {
+      font-family: 'Consolas', Courier, monospace;
+      color: var(--x-danger);
+    }
+  }
+  .examples {
+    padding: 1rem;
+    border-radius: var(--x-border-radius);
+    background-color: var(--x-background-a200);
+  }
+}

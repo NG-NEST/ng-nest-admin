@@ -106,6 +106,7 @@
     color="rgba(170,170,170,1)"
   >
     <app-editor formControlName="content" [filename]="filename()"></app-editor>
+
     <div class="bottom-buttons">
       <x-button
         flat
@@ -116,6 +117,7 @@
         [disabled]="!form.valid"
         >保存</x-button
       >
+      <x-link type="primary" (click)="openTemplateDoc()">模板语法说明</x-link>
     </div>
   </form>
 </div>

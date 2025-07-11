@@ -1,18 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { XDrawerService } from '@ng-nest/ui';
+import { XButtonComponent } from '@ng-nest/ui/button';
 // import { SchemaDetailComponent } from '../schema/schema-detail/schema-detail.component';
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { AppJsonSchemaComponent, AppSchemaFormComponent, XJsonSchema } from '@ui/core';
+import { SyntaxInfoComponent } from '../code-generate/syntax-info/syntax-info.component';
 
 @Component({
   selector: 'app-json',
   templateUrl: './json.component.html',
   styleUrls: ['./json.component.scss'],
-  imports: [AppJsonSchemaComponent, AppSchemaFormComponent]
+  imports: [AppJsonSchemaComponent, AppSchemaFormComponent, XButtonComponent]
 })
 export class JsonComponent {
   dialog = inject(XDialogService);
   formBuilder = inject(FormBuilder);
+  drawerService = inject(XDrawerService);
 
   form1 = this.formBuilder.group({});
   jsonSchema1: XJsonSchema = {
@@ -53,7 +57,7 @@ export class JsonComponent {
           title: '用户角色',
           properties: {
             id: { type: 'string', title: '编码' },
-            name: { type: 'string', title: '角色名称' },
+            name: { type: 'string', title: '角色名称' }
           },
           required: ['id']
         }
@@ -69,5 +73,13 @@ export class JsonComponent {
     //     saveSuccess: () => {}
     //   }
     // });
+  }
+
+  convert() {
+    this.drawerService.create(SyntaxInfoComponent, {
+      className: 'app-drawer',
+      size: '50%',
+      data: {}
+    });
   }
 }

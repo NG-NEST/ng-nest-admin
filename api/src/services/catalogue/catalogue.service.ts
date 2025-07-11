@@ -18,7 +18,7 @@ import * as archiver from 'archiver';
 import { FastifyReply } from 'fastify';
 import { createWriteStream, mkdtemp, promises, readFile, rm } from 'fs-extra';
 import { join } from 'node:path';
-import { JsonValue } from '@prisma/client/runtime/library';
+import { SchemaData } from '../schema-data';
 
 @Injectable()
 export class CatalogueService {
@@ -136,7 +136,7 @@ export class CatalogueService {
       const manySchemaData = schemaDatas.find((x) => x.formId === variableId);
       if (manySchemaData) {
         const data = (get(manySchemaData, 'data.$root') as Array<any>) ?? [];
-        const properties = get(manySchemaData, 'schema.json.items.properties') ?? {};
+        const properties = (get(manySchemaData, 'schema.json.items.properties') ?? {}) as object;
         const catalogues: any[] = [];
         for (let item of data) {
           const deep = cloneDeep(catalogue);
@@ -165,7 +165,7 @@ export class CatalogueService {
   }
 
   async getSchemaDatas(schemaDataIds: string[]) {
-    let schemaDatas: { data: JsonValue; schemaId: string; formId: string }[] = [];
+    let schemaDatas: SchemaData[] = [];
     if (schemaDataIds && schemaDataIds.length > 0) {
       schemaDatas = await this.prisma.schemaData.findMany({
         where: {
@@ -180,6 +180,9 @@ export class CatalogueService {
           formId: true,
           schema: {
             select: {
+              id: true,
+              name: true,
+              code: true,
               json: true,
             },
           },
@@ -232,7 +235,7 @@ export class CatalogueService {
         const manySchemaData = schemaDatas.find((x) => x.formId === variableId);
         if (manySchemaData) {
           const data = (get(manySchemaData, 'data.$root') as Array<any>) ?? [];
-          const properties = get(manySchemaData, 'schema.json.items.properties') ?? {};
+          const properties = (get(manySchemaData, 'schema.json.items.properties') ?? {}) as object;
           for (let item of data) {
             const deep = cloneDeep(catalogue);
             for (let key in properties) {
@@ -382,7 +385,21 @@ export class CatalogueService {
           await this.writeCatalogueToDisk(node.children, path);
         }
       } else if (node.type === CatalogueType.File) {
-        await promises.writeFile(path, node.content ?? '', 'utf8');
+        if (node.url) {
+          const sourcePath = join(process.cwd(), node.url);
+          try {
+            await promises.copyFile(sourcePath, path);
+          } catch (error) {
+            LOGS.error(
+              `Failed to copy file from ${sourcePath} to ${path}: ${JSON.stringify(error)}`,
+              {
+                context: CatalogueService.name,
+              },
+            );
+          }
+        } else {
+          await promises.writeFile(path, node.content ?? '', 'utf8');
+        }
       }
     }
   }
@@ -469,6 +486,7 @@ export class CatalogueService {
         content: file.content,
         type: CatalogueType.File,
         sort: sortCounter++,
+        many: false,
         url: file.url,
         resourceId,
         pid: parentId,
@@ -481,7 +499,7 @@ export class CatalogueService {
 
   private async getResourceVars(
     resourceId: string,
-    schemaDatas?: { data: JsonValue; schemaId: string; formId: string }[],
+    schemaDatas?: SchemaData[],
   ): Promise<{ [code: string]: any }> {
     const variables = await this.prisma.variable.findMany({
       where: { resourceId: { equals: resourceId } },
@@ -489,6 +507,7 @@ export class CatalogueService {
         id: true,
         code: true,
         value: true,
+        source: true,
         type: true,
         variableCategory: { select: { code: true } },
       },
@@ -497,11 +516,20 @@ export class CatalogueService {
 
     const vars: { [code: string]: any } = {};
     for (let variable of variables) {
-      const { id, code, value, type, variableCategory } = variable;
+      const { id, code, value, type, source, variableCategory } = variable;
       if (type === 'json-schema' && value) {
-        const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
-        if (!schemaData) continue;
-        set(vars, `${variableCategory.code}.${code}`, schemaData.data);
+        if (source === 'schema') {
+          const schema = await this.prisma.schema.findUnique({
+            where: { id: value as string },
+            select: { json: true },
+          });
+          if (!schema) continue;
+          set(vars, `${variableCategory.code}.${code}`, schema.json);
+        } else if (source === 'schema-json') {
+          const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
+          if (!schemaData) continue;
+          set(vars, `${variableCategory.code}.${code}`, schemaData.data);
+        }
       } else {
         set(vars, `${variableCategory.code}.${code}`, value);
       }

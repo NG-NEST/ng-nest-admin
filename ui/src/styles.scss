@@ -310,6 +310,49 @@ input {
   }
 }
 
+.app-drawer {
+  x-drawer-portal {
+    padding: 0;
+    overflow: hidden;
+  }
+  .x-drawer-portal-content {
+    margin: 0;
+    padding: 1rem;
+  }
+  position: relative;
+
+  .title {
+    font-weight: 600;
+    color: var(--x-text-300);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3rem;
+    line-height: 3rem;
+    display: block;
+    align-items: center;
+    padding: 0 1rem;
+    margin: 0;
+    border-bottom: $x-border-base;
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .x-button {
+      height: 3rem;
+      line-height: 3rem;
+    }
+  }
+
+  .content {
+    height: calc(100vh - 3rem);
+    overflow: auto;
+  }
+}
+
 .app-drag-table-item {
   td {
     @include table-item-td();
@@ -337,6 +380,192 @@ input {
   .x-tooltip-portal > .x-tooltip-portal-inner {
     min-width: 10rem;
     max-width: 40rem;
+  }
+}
+
+.app-markdown {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #2c3e50;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1.3rem;
+  }
+  h5 {
+    font-size: 1.1rem;
+  }
+  h6 {
+    font-size: 1rem;
+    color: var(--light-text);
+  }
+
+  p {
+    margin: 1.2rem 0;
+    font-size: 1.05rem;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    position: relative;
+  }
+
+  a:hover {
+    color: #e74c3c;
+    text-decoration: underline;
+  }
+
+  ul,
+  ol {
+    margin: 1.2rem 0;
+    padding-left: 1.8rem;
+  }
+
+  li {
+    margin: 0.6rem 0;
+  }
+
+  ul li::marker {
+    color: var(--secondary-color);
+  }
+
+  ol {
+    counter-reset: item;
+  }
+
+  ol li {
+    counter-increment: item;
+  }
+
+  ol li::marker {
+    content: counter(item) '. ';
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+
+  code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    background-color: var(--code-bg);
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.95rem;
+    color: #d63384;
+  }
+
+  pre {
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    overflow: auto;
+    box-shadow: var(--shadow);
+  }
+
+  pre code {
+    background: transparent;
+    color: #f8f8f2;
+    padding: 0;
+    font-size: 0.95rem;
+  }
+
+  blockquote {
+    background-color: var(--blockquote-bg);
+    border-left: 4px solid var(--primary-color);
+    margin: 1.5rem 0;
+    padding: 1.2rem 1.5rem;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+  }
+
+  blockquote p {
+    margin: 0;
+    color: #555;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th,
+  td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    background-color: var(--table-header-bg);
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.2rem 0;
+    display: block;
+    box-shadow: var(--shadow);
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary-color), rgba(0, 0, 0, 0));
+    margin: 2rem 0;
+  }
+
+  strong {
+    color: #e74c3c;
+    font-weight: 700;
+  }
+
+  em {
+    color: #9b59b6;
+    font-style: italic;
+  }
+
+  kbd {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+    font-family: monospace;
+    box-shadow: 0 2px 0 #ddd;
   }
 }
 

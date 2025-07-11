@@ -1,0 +1,18 @@
+<div class="app-drawer">
+  <h4 x-drawer-title class="title">模板说明</h4>
+  <x-button x-drawer-close class="close" icon="fto-x" size="large" flat text></x-button>
+  <div x-drawer-content class="content">
+    <h3>内置函数</h3>
+    @for (item of functions(); track item.name) {
+      <div class="function">
+        <h4>{{ item.name }}</h4>
+        <p>{{ item.description }}</p>
+        <div class="examples">
+          @for (example of item.examples; track example) {
+            <pre><code>{{ example }}</code></pre>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

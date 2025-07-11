@@ -24,7 +24,6 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import {
   Subject,
-  delay,
   finalize,
   fromEvent,
   of,
@@ -39,6 +38,7 @@ import {
 import { XDialogService } from '@ng-nest/ui/dialog';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import {
+  XDrawerService,
   XDropdownComponent,
   XDropdownNode,
   XEmptyComponent,
@@ -57,6 +57,7 @@ import { DatePipe } from '@angular/common';
 import { PreviewComponent } from './preview/preview.component';
 import { filter } from 'lodash-es';
 import { VariableGuideComponent } from './variable-guide/variable-guide.component';
+import { SyntaxInfoComponent } from './syntax-info/syntax-info.component';
 
 @Component({
   selector: 'app-code-generate',
@@ -88,6 +89,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   messageBox = inject(XMessageBoxService);
   message = inject(XMessageService);
   dialog = inject(XDialogService);
+  drawerService = inject(XDrawerService);
   datePipe = inject(DatePipe);
   document = inject(DOCUMENT);
 
@@ -446,10 +448,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
     this.saveContentLoading.set(true);
     this.catalogue
       .update({ id: value.id!, content: value.content! })
-      .pipe(
-        delay(2000),
-        finalize(() => this.saveContentLoading.set(false))
-      )
+      .pipe(finalize(() => this.saveContentLoading.set(false)))
       .subscribe(() => {
         this.message.success(CatalogueMessage.UpdatedSuccess);
       });
@@ -507,5 +506,13 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
           return { hasJsonshemaVariables: jsonshemaVariables.length > 0, variables: x };
         })
       );
+  }
+
+  openTemplateDoc() {
+    this.drawerService.create(SyntaxInfoComponent, {
+      className: 'app-drawer',
+      size: '50%',
+      data: {}
+    });
   }
 }
