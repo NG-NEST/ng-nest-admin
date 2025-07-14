@@ -45,6 +45,7 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
     isNumber,
     isObject,
     isArray,
+    isJsonSchema,
     items,
     name,
     required,
@@ -100,6 +101,10 @@ function convertNodeToSchema(node: XTreeData): XJsonSchema {
       if (!schema['x-ng-nest']) schema['x-ng-nest'] = {};
       const ngNest = schema['x-ng-nest'];
       Object.assign(ngNest, { orders });
+    }
+    if (isJsonSchema) {
+      if (!schema['x-ng-nest']) schema['x-ng-nest'] = {};
+      schema['x-ng-nest'].isJsonSchema = true;
     }
   } else if (type === 'array') {
     const childItem = (children || []).find((child) => {
@@ -193,6 +198,7 @@ function convertJsonSchemaToTree(
     );
     const orderMap = new Map(node.orders.map((name, index) => [name, index]));
     node.children = sortBy(children, (child) => orderMap.get(child.name!) ?? Infinity);
+    node.isJsonSchema = ngNest?.isJsonSchema ?? false;
   }
 
   // 处理数组元素

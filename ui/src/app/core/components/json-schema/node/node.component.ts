@@ -269,6 +269,14 @@ export class AppNodeComponent implements OnInit, OnDestroy {
     this.form().patchValue({ required: this.node().required });
   }
 
+  onJsonSchema(value: boolean) {
+    this.node.update((x) => {
+      x.isJsonSchema = !value;
+      return x;
+    });
+    this.form().patchValue({ isJsonSchema: this.node().isJsonSchema });
+  }
+
   addSubNode(node: XTreeData, type: XJsonSchemaType = 'string') {
     const addNode: XTreeData = {
       id: v4(),

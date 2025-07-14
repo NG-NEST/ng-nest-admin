@@ -7,8 +7,15 @@ import {
   constantize,
   dasherize,
   decamelize,
+  jsonSchemaToFields,
+  jsonSchemaToPrismaSchema,
   underscore,
+  XJsonSchema,
 } from '../functions';
+
+/**
+ * Register default supported functions
+ */
 
 Handlebars.registerHelper('$decamelize', (str: string) => {
   return decamelize(str);
@@ -36,6 +43,17 @@ Handlebars.registerHelper('$constantize', (str: string) => {
 
 Handlebars.registerHelper('$capitalize', (str: string) => {
   return capitalize(str);
+});
+
+Handlebars.registerHelper(
+  '$jsonSchemaToPrismaSchema',
+  (jsonSchema: XJsonSchema, modelName: string) => {
+    return jsonSchemaToPrismaSchema(jsonSchema, modelName);
+  },
+);
+
+Handlebars.registerHelper('$jsonSchemaToFields', (jsonSchema: XJsonSchema) => {
+  return jsonSchemaToFields(jsonSchema);
 });
 
 @Injectable()

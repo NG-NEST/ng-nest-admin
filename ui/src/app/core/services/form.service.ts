@@ -20,9 +20,25 @@ export class AppFormService {
           validators.push(Validators.required);
         }
         if (propertySchema.type === 'object' && propertySchema.properties) {
-          const subform = this.formBuilder.group({});
-          this.addControlByJsonSchema(subform, propertySchema as XJsonSchema, key);
-          form.addControl(key, subform);
+          const ngNest = propertySchema['x-ng-nest'];
+          if (ngNest && ngNest.isJsonSchema) {
+            form.addControl(
+              key,
+              this.formBuilder.control(
+                propertySchema.default ?? {
+                  title: '',
+                  description: '',
+                  type: 'object',
+                  properties: {}
+                },
+                validators
+              )
+            );
+          } else {
+            const subform = this.formBuilder.group({});
+            this.addControlByJsonSchema(subform, propertySchema as XJsonSchema, key);
+            form.addControl(key, subform);
+          }
         } else if (propertySchema.type === 'array' && propertySchema.items) {
           form.addControl(key, this.formBuilder.array([], validators));
         } else {

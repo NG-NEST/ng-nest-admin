@@ -517,7 +517,7 @@ export class CatalogueService {
     const vars: { [code: string]: any } = {};
     for (let variable of variables) {
       const { id, code, value, type, source, variableCategory } = variable;
-      if (type === 'json-schema' && value) {
+      if (type === 'schema' && value) {
         if (source === 'schema') {
           const schema = await this.prisma.schema.findUnique({
             where: { id: value as string },
@@ -525,7 +525,7 @@ export class CatalogueService {
           });
           if (!schema) continue;
           set(vars, `${variableCategory.code}.${code}`, schema.json);
-        } else if (source === 'schema-json') {
+        } else if (source === 'schema-data') {
           const schemaData = schemaDatas.find((x) => x.schemaId === value && x.formId === id);
           if (!schemaData) continue;
           set(vars, `${variableCategory.code}.${code}`, schemaData.data);

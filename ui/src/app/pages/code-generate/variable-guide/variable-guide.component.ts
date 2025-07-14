@@ -61,7 +61,7 @@ export class VariableGuideComponent {
   schemaForms = viewChildren(AppSchemaFormComponent);
 
   schemaVariables = computed(() => {
-    return this.variables().filter((item) => item.type === 'json-schema' && item.value);
+    return this.variables().filter((item) => item.type === 'schema' && item.value);
   });
 
   form = computed(() => {
@@ -188,7 +188,7 @@ export class VariableGuideComponent {
 
     // for (let variable of this.variables()) {
     //   const { code, value, type, variableCategory } = variable;
-    //   if (type === 'json-schema' && value) {
+    //   if (type === 'schema' && value) {
     //     set(vars, `${variableCategory.code}.${code}`, val[value]);
     //   } else {
     //     set(vars, `${variableCategory.code}.${code}`, value);

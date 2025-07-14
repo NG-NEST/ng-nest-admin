@@ -115,7 +115,7 @@ export class VariableService {
       },
     });
 
-    if (!schemaType || type !== 'json-schema') return variables;
+    if (!schemaType || type !== 'schema') return variables;
     const schemaIds = variables.map((x) => x.value) as string[];
     const typeSchemas = await this.prisma.schema.findMany({
       where: {

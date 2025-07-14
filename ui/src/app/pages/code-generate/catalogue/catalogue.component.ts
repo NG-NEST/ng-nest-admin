@@ -178,7 +178,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     return this.variable
       .typeVariables({
         resourceId: resourceId,
-        type: 'json-schema',
+        type: 'schema',
         schemaType: 'array'
       })
       .pipe(

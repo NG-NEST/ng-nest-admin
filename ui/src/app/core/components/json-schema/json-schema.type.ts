@@ -395,6 +395,7 @@ export interface XTreeData {
   isEnum?: boolean;
   isNumber?: boolean;
   isNullable?: boolean;
+  isJsonSchema?: boolean;
 
   enums?: XJsonSchemaEnum[];
   orders?: string[];
@@ -409,6 +410,7 @@ export interface XJsonSchemaNgNest {
   'x-ng-nest'?: {
     enums?: XJsonSchemaEnum[];
     orders?: string[];
+    isJsonSchema?: boolean;
   };
 }
 

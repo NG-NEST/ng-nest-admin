@@ -63,5 +63,32 @@
         top: 0;
       }
     }
+    .object {
+      &-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.25rem 1rem;
+        min-height: 2.625rem;
+        border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+      }
+      &-form-list {
+        position: relative;
+        padding: 2rem 0 0 0;
+        &:not(:first-child) {
+          margin-top: 1rem;
+        }
+        .schema-form {
+          &:not(:first-child) {
+            margin-top: 2rem;
+          }
+        }
+        &:hover {
+          .array-delete {
+            display: initial;
+          }
+        }
+      }
+    }
   }
 }

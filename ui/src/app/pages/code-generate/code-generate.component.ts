@@ -502,7 +502,10 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
       })
       .pipe(
         map((x) => {
-          const jsonshemaVariables = filter(x, (item) => item.type === 'json-schema' && item.value);
+          const jsonshemaVariables = filter(
+            x,
+            (item) => item.type === 'schema' && item.source === 'schema-data' && item.value
+          );
           return { hasJsonshemaVariables: jsonshemaVariables.length > 0, variables: x };
         })
       );

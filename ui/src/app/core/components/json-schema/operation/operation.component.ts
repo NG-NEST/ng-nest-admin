@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, TemplateRef, viewChild } from '@angular/core';
+import { Component, inject, input, OnDestroy, TemplateRef, viewChild } from '@angular/core';
 import { Subject, finalize, takeUntil } from 'rxjs';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { AppEditorComponent, AppJsonSchemaComponent } from '../..';
@@ -13,6 +13,7 @@ import { XTreeDataToJsonSchemaWorker } from '../worker/worker';
   styleUrls: ['./operation.component.scss']
 })
 export class AppOperationComponent implements OnDestroy {
+  title = input<string>('');
   loadingGet = false;
   loadingSet = false;
   jsonContent: any = {};

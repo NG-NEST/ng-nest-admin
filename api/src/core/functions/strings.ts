@@ -27,6 +27,7 @@ const STRING_UNDERSCORE_REGEXP_2 = /-|\s+/g;
  * @returns {string} The decamelized string.
  */
 export function decamelize(str: string): string {
+  if (!str) return '';
   return str.replace(STRING_DECAMELIZE_REGEXP, '$1_$2').toLowerCase();
 }
 
@@ -45,6 +46,7 @@ export function decamelize(str: string): string {
  * @returns {string} The dasherized string.
  */
 export function dasherize(str: string): string {
+  if (!str) return '';
   return decamelize(str).replace(STRING_DASHERIZE_REGEXP, '-');
 }
 
@@ -64,6 +66,7 @@ export function dasherize(str: string): string {
  * @returns {string} The camelized string.
  */
 export function camelize(str: string): string {
+  if (!str) return '';
   return str
     .replace(STRING_CAMELIZE_REGEXP, (_match: string, _separator: string, chr: string) => {
       return chr ? chr.toUpperCase() : '';
@@ -87,6 +90,7 @@ export function camelize(str: string): string {
  * @returns {string} The classified string.
  */
 export function classify(str: string): string {
+  if (!str) return '';
   return str
     .split('.')
     .map((part) => capitalize(camelize(part)))
@@ -109,6 +113,7 @@ export function classify(str: string): string {
  * @returns {string} The underscored string.
  */
 export function underscore(str: string): string {
+  if (!str) return '';
   return str
     .replace(STRING_UNDERSCORE_REGEXP_1, '$1_$2')
     .replace(STRING_UNDERSCORE_REGEXP_2, '_')
@@ -129,6 +134,7 @@ export function underscore(str: string): string {
  * @returns {string} The constantized string.
  */
 export function constantize(str: string): string {
+  if (!str) return '';
   return underscore(str).toUpperCase();
 }
 
@@ -147,6 +153,7 @@ export function constantize(str: string): string {
  * @returns {string} The capitalized string.
  */
 export function capitalize(str: string): string {
+  if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 

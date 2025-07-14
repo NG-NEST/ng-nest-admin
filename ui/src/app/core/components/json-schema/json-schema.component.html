@@ -1,5 +1,5 @@
 <x-loading [x-loading]="loading()">
-  <app-operation class="operation"></app-operation>
+  <app-operation class="operation" [title]="title()"></app-operation>
   <form [formGroup]="form" class="json-schema">
     <div formArrayName="tree">
       <app-tree #tree [data]="treeData()" [nodeTpl]="nodeTpl"></app-tree>

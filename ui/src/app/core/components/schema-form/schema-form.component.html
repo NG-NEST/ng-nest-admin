@@ -13,62 +13,88 @@
   <div [formGroup]="form" class="schema-form">
     @switch (node.type) {
       @case ('object') {
-        <div class="array" [formArrayName]="node.name">
-          <div class="array-tools">
-            <span>{{ node.title }}</span>
-            <x-buttons class="array-tools-buttons" boxShadow="false">
-              @if (form.get(node.name).controls.length > 0) {
+        @if (node.isArray) {
+          <div class="array" [formArrayName]="node.name">
+            <div class="array-tools">
+              <span>{{ node.title }}</span>
+              <x-buttons class="array-tools-buttons" boxShadow="false">
+                @if (form.get(node.name).controls.length > 0) {
+                  <x-button
+                    type="danger"
+                    plain
+                    flat
+                    text
+                    icon="fto-trash-2"
+                    (click)="removeAll(form.get(node.name))"
+                    size="small"
+                  >
+                  </x-button>
+                }
                 <x-button
-                  type="danger"
+                  type="primary"
+                  (click)="add(form.get(node.name), node.children)"
                   plain
                   flat
                   text
-                  icon="fto-trash-2"
-                  (click)="removeAll(form.get(node.name))"
+                  icon="fto-plus-square"
                   size="small"
                 >
                 </x-button>
+              </x-buttons>
+            </div>
+            <div class="array-form-list">
+              @for (control of form.get(node.name).controls; track control; let i = $index) {
+                <div class="array-form" [formGroupName]="i">
+                  @for (subNode of node.children; track subNode.id; let j = $index) {
+                    <ng-container
+                      [ngTemplateOutlet]="nodeTpl"
+                      [ngTemplateOutletContext]="{
+                        node: subNode,
+                        form: form.get(node.name).controls[i]
+                      }"
+                    ></ng-container>
+                  }
+                  <span class="array-index">{{ i + 1 }}</span>
+                  <x-button
+                    class="array-delete"
+                    type="danger"
+                    plain
+                    flat
+                    text
+                    icon="fto-trash-2"
+                    (click)="removeAt(form.get(node.name), i)"
+                    size="small"
+                  >
+                  </x-button>
+                </div>
               }
-              <x-button
-                type="primary"
-                (click)="add(form.get(node.name), node.children)"
-                plain
-                flat
-                text
-                icon="fto-plus-square"
-                size="small"
-              >
-              </x-button>
-            </x-buttons>
+            </div>
           </div>
-          <div class="array-form-list">
-            @for (control of form.get(node.name).controls; track control; let i = $index) {
-              <div class="array-form" [formGroupName]="i">
+        } @else if (node.isObject) {
+          @if (node.isJsonSchema) {
+            <app-json-schema
+              [data]="form.get(node.name).getRawValue()"
+              [title]="node.title"
+            ></app-json-schema>
+          } @else {
+            <div class="object" [formGroupName]="node.name">
+              <div class="object-tools">
+                <span>{{ node.title }}</span>
+              </div>
+              <div class="object-form-list">
                 @for (subNode of node.children; track subNode.id; let j = $index) {
                   <ng-container
                     [ngTemplateOutlet]="nodeTpl"
                     [ngTemplateOutletContext]="{
                       node: subNode,
-                      form: form.get(node.name).controls[i]
+                      form: form.get(node.name)
                     }"
                   ></ng-container>
                 }
-                <span class="array-index">{{ i + 1 }}</span>
-                <x-button
-                  class="array-delete"
-                  type="danger"
-                  plain
-                  flat
-                  text
-                  icon="fto-trash-2"
-                  (click)="removeAt(form.get(node.name), i)"
-                  size="small"
-                >
-                </x-button>
               </div>
-            }
-          </div>
-        </div>
+            </div>
+          }
+        }
       }
       @case ('array') {
         @for (subNode of node.children; track subNode.id) {

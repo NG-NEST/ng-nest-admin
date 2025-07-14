@@ -45,6 +45,18 @@
         >
           <x-icon type="fto-settings"></x-icon>
         </a>
+        @if (!isRoot && node().type === 'object') {
+          <a
+            class="icon json-schema"
+            [class.selected]="node().isJsonSchema"
+            [style.order]="node().isJsonSchema ? 1 : 2"
+            (click)="onJsonSchema(node().isJsonSchema!)"
+            x-tooltip
+            content="Json Schema 类型"
+          >
+            <span>&#123;&#125;</span>
+          </a>
+        }
         @if (!isRoot && !node().isArray) {
           <a
             class="icon required"
@@ -114,7 +126,7 @@
           <x-icon type="fto-plus"></x-icon>
         </a>
       }
-      @if (!isRoot && node().type === 'object' && !node().isArray) {
+      @if (!isRoot && node().type === 'object' && !node().isJsonSchema && !node().isArray) {
         <x-dropdown
           class="dropdown"
           [data]="[
@@ -128,7 +140,11 @@
           </a>
         </x-dropdown>
       }
-      @if (!isRoot && node().type !== 'object' && !node().isArray) {
+      @if (
+        !isRoot &&
+        (node().type !== 'object' || (node().type === 'object' && node().isJsonSchema)) &&
+        !node().isArray
+      ) {
         <a x-tooltip content="添加相邻节点" class="icon add" (click)="addAdjoinNode(node())">
           <x-icon type="fto-plus"></x-icon>
         </a>
@@ -151,7 +167,7 @@
     </div>
   </div>
 
-  @if (isObjectNull) {
+  @if (isObjectNull && !node().isJsonSchema) {
     <div class="row no-object">
       <span>没有字段</span>
       <a (click)="addSubNode(node())">添加</a>

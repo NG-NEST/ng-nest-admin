@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  input,
   model,
   OnDestroy,
   OnInit,
@@ -42,6 +43,7 @@ export class AppJsonSchemaComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   jss = inject(AppJsonSchemaService);
   data = model<XJsonSchema>({});
+  title = input<string>('');
 
   treeCom = viewChild.required<XTreeComponent>('treeCom');
 

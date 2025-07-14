@@ -14,6 +14,7 @@ export class AppJsonSchemaService {
       type,
       name,
       required,
+      isJsonSchema,
       nullable,
       description,
       children,
@@ -34,6 +35,7 @@ export class AppJsonSchemaService {
       name,
       type,
       required,
+      isJsonSchema,
       nullable,
       description,
       ...other
