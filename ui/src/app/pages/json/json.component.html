@@ -1,4 +1,4 @@
-<x-button (click)="convert()">convert</x-button>
+<!-- <x-button (click)="convert()">convert</x-button> -->
 <br />
 <br />
 <br />
@@ -12,11 +12,11 @@
 <br />
 <br />
 <br />
-<app-json-schema [data]="jsonSchema1"></app-json-schema>
+<app-json-schema [title]="'xxxx'" [ngModel]="jsonSchema1"></app-json-schema>
 <app-schema-form [data]="jsonSchema1" [form]="form1"></app-schema-form>
 
-<app-json-schema [data]="jsonSchema2"></app-json-schema>
-<app-schema-form [data]="jsonSchema2" [form]="form2"></app-schema-form>
+<!-- <app-json-schema [ngModel]="jsonSchema2"></app-json-schema>
+<app-schema-form [data]="jsonSchema2" [form]="form2"></app-schema-form> -->
 <br />
 <br />
 <br />

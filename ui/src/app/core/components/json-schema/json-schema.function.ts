@@ -245,11 +245,14 @@ export function XJsonSchemaToTableColumns(schema: XJsonSchema, key = '$root') {
   if (type === 'array' && items) {
     const itemSchema = items;
     if (itemSchema.type === 'object' && itemSchema.properties) {
+      const ngnest = itemSchema['x-ng-nest'];
+      let isJsonSchema = !!(ngnest && ngnest.isJsonSchema);
       columns.push({
         id: key,
         label: title,
         width: 160,
-        schemaType: type
+        schemaType: type,
+        isJsonSchema
       });
     }
   } else if (properties) {
@@ -257,13 +260,17 @@ export function XJsonSchemaToTableColumns(schema: XJsonSchema, key = '$root') {
     Object.entries(properties).forEach(([key, value]) => {
       if (value.type === 'array' && value.items) {
         // 递归处理数组元素
-        const itemColumns = XJsonSchemaToTableColumns(value.items, key);
-        // itemColumns.forEach((column) => {
-        //   column.id = `${key}.${column.id}`;
-        //   column.label = `${key} > ${column.label}`;
-        //   columns.push(column);
-        // });
-        console.log(itemColumns);
+        XJsonSchemaToTableColumns(value.items, key);
+      } else if (value.type === 'object') {
+        const ngnest = value['x-ng-nest'];
+        let isJsonSchema = !!(ngnest && ngnest.isJsonSchema);
+        columns.push({
+          id: key,
+          label: value.title || key,
+          width: 160,
+          schemaType: value.type,
+          isJsonSchema
+        });
       } else {
         columns.push({
           id: key,

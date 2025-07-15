@@ -73,7 +73,8 @@
         } @else if (node.isObject) {
           @if (node.isJsonSchema) {
             <app-json-schema
-              [data]="form.get(node.name).getRawValue()"
+              #jsonSchema
+              [formControlName]="node.name"
               [title]="node.title"
             ></app-json-schema>
           } @else {

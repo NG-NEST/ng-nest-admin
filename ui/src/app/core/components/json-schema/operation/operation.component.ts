@@ -1,36 +1,31 @@
-import { Component, inject, input, OnDestroy, TemplateRef, viewChild } from '@angular/core';
+import { Component, inject, input, OnDestroy, TemplateRef } from '@angular/core';
 import { Subject, finalize, takeUntil } from 'rxjs';
-import { XButtonComponent } from '@ng-nest/ui/button';
-import { AppEditorComponent, AppJsonSchemaComponent } from '../..';
+import { AppJsonSchemaComponent, XJsonSchema } from '../..';
 import { XDialogModule, XDialogRef, XDialogService } from '@ng-nest/ui/dialog';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XTreeDataToJsonSchemaWorker } from '../worker/worker';
+import { XLinkComponent } from '@ng-nest/ui';
+import { AppJsonSchemaDialogComponent } from '../json-schema-dialog/json-schema-dialog.component';
 
 @Component({
   selector: 'app-operation',
-  imports: [ReactiveFormsModule, XButtonComponent, XDialogModule, AppEditorComponent],
+  imports: [ReactiveFormsModule, XLinkComponent, XDialogModule],
   templateUrl: './operation.component.html',
   styleUrls: ['./operation.component.scss']
 })
 export class AppOperationComponent implements OnDestroy {
   title = input<string>('');
+  disabled = input<boolean>(false);
   loadingGet = false;
   loadingSet = false;
   jsonContent: any = {};
   jsonSchemaString: string = '';
 
   $destroy = new Subject<void>();
-  jsonSchemaTpl = viewChild.required<TemplateRef<void>>('jsonSchemaTpl');
 
   schema = inject(AppJsonSchemaComponent, { optional: true, host: true });
   dialog = inject(XDialogService);
   formBuild = inject(FormBuilder);
-
-  form = this.formBuild.group({
-    jsonContent: ['', [Validators.required]]
-  });
-
-  saveLoading = false;
 
   dialogRef: XDialogRef<TemplateRef<any>> | null = null;
 
@@ -47,21 +42,18 @@ export class AppOperationComponent implements OnDestroy {
         takeUntil(this.$destroy)
       )
       .subscribe((x) => {
-        this.form.patchValue({ jsonContent: JSON.stringify(x, null, 2) });
-        this.dialogRef = this.dialog.create(this.jsonSchemaTpl(), {
+        this.dialog.create(AppJsonSchemaDialogComponent, {
           width: '100%',
-          height: '100%'
+          height: '100%',
+          data: {
+            disabled: this.disabled(),
+            jsonSchema: x,
+            saveSuccess: (jsonSchema: XJsonSchema) => {
+              this.schema?.writeValue(jsonSchema);
+              this.schema?.setTreeData();
+            }
+          }
         });
       });
-  }
-
-  save() {
-    this.loadingSet = true;
-    const { jsonContent } = this.form.getRawValue();
-    try {
-      this.schema?.data.set(JSON.parse(jsonContent!));
-      this.schema?.setTreeData();
-      this.dialogRef?.close();
-    } catch (e) {}
   }
 }

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { XDrawerService } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 // import { SchemaDetailComponent } from '../schema/schema-detail/schema-detail.component';
@@ -11,7 +11,7 @@ import { SyntaxInfoComponent } from '../code-generate/syntax-info/syntax-info.co
   selector: 'app-json',
   templateUrl: './json.component.html',
   styleUrls: ['./json.component.scss'],
-  imports: [AppJsonSchemaComponent, AppSchemaFormComponent, XButtonComponent]
+  imports: [AppJsonSchemaComponent, AppSchemaFormComponent, FormsModule, XButtonComponent]
 })
 export class JsonComponent {
   dialog = inject(XDialogService);
@@ -20,16 +20,29 @@ export class JsonComponent {
 
   form1 = this.formBuilder.group({});
   jsonSchema1: XJsonSchema = {
-    type: 'array',
+    type: 'object',
     title: '用户角色集合',
-    items: {
-      type: 'object',
-      title: '用户角色',
-      properties: {
-        id: { type: 'string', title: '编码' },
-        name: { type: 'string', title: '角色名称' }
+    properties: {
+      asdasd: {
+        type: 'string',
+        title: 'xxx'
       },
-      required: ['id']
+      tryrty: {
+        type: 'string',
+        title: 'yyy'
+      },
+      axxx: {
+        type: 'object',
+        title: 'zzz',
+        properties: {},
+        'x-ng-nest': {
+          isJsonSchema: true
+        }
+      }
+    },
+    required: ['asdasd', 'tryrty', 'axxx'],
+    'x-ng-nest': {
+      orders: ['asdasd', 'tryrty', 'axxx']
     }
   };
 

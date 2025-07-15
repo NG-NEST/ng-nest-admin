@@ -29,7 +29,7 @@
       <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
     </div>
     <div class="item" [style.gridColumn]="'1 / -1'">
-      <app-json-schema #jsonSchemaCom [data]="jsonSchema"></app-json-schema>
+      <app-json-schema [title]="'数据定义'" formControlName="json"></app-json-schema>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">

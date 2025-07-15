@@ -479,7 +479,50 @@ export function jsonSchemaToPrismaSchema(jsonSchema: XJsonSchema, modelName: str
     processNestedModels(jsonSchema.properties, modelName);
   }
 
-  return prismaSchema;
+  return formatPrismaModel(prismaSchema);
+}
+
+function formatPrismaModel(input: string): string {
+  // 1. 分割行并过滤空行
+  const lines = input
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  // 2. 提取模型名称和字段
+  const modelHeader = lines[0];
+  const fieldLines = lines.slice(1, -1);
+  const modelFooter = lines[lines.length - 1];
+
+  // 3. 解析字段并计算最大宽度
+  const fieldData = fieldLines.map((line) => {
+    const [fieldPart, ...attributes] = line.split(/(?=\@)/); // 智能分割属性和字段
+    const [name, type] = fieldPart.trim().split(/\s+/);
+
+    return {
+      name,
+      type,
+      attributes: attributes.join(' ').trim(),
+      raw: line,
+    };
+  });
+
+  // 4. 计算各列最大宽度
+  const maxNameLen = Math.max(...fieldData.map((f) => f.name.length), 4);
+  const maxTypeLen = Math.max(...fieldData.map((f) => f.type.length), 4);
+  const maxAttrLen = Math.max(...fieldData.map((f) => f.attributes.length), 9);
+
+  // 5. 构建格式化后的模型
+  const formattedFields = fieldData.map((field) => {
+    const namePad = field.name.padEnd(maxNameLen);
+    const typePad = field.type.padEnd(maxTypeLen);
+    const attrPad = field.attributes.padEnd(maxAttrLen);
+
+    return `  ${namePad} ${typePad} ${attrPad}`.trimEnd();
+  });
+
+  // 6. 组合最终结果
+  return [modelHeader, ...formattedFields, modelFooter].join('\n');
 }
 
 /**

@@ -5,6 +5,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { XTableColumn, XTableComponent, XTableModule } from '@ng-nest/ui/table';
 import { SchemaData, SchemaDataService, SchemaDataWhereInput, SchemaService } from '@ui/api';
 import {
+  AppJsonSchemaDialogComponent,
   BaseDescription,
   BaseOrder,
   BasePagination,
@@ -16,7 +17,13 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { X_DIALOG_DATA, XDialogModule, XDialogRef, XDialogService } from '@ng-nest/ui/dialog';
 import { XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
-import { XButtonComponent, XLoadingComponent, XRadioComponent, XTooltipModule } from '@ng-nest/ui';
+import {
+  XButtonComponent,
+  XLinkComponent,
+  XLoadingComponent,
+  XRadioComponent,
+  XTooltipModule
+} from '@ng-nest/ui';
 
 @Component({
   selector: 'app-select-schema-data',
@@ -29,6 +36,7 @@ import { XButtonComponent, XLoadingComponent, XRadioComponent, XTooltipModule } 
     XTooltipModule,
     XRadioComponent,
     XDialogModule,
+    XLinkComponent,
     JsonPipe
   ],
   templateUrl: './select-schema-data.component.html',
@@ -200,7 +208,7 @@ export class SelectSchemaDataComponent {
     this.data.set(list);
   }
 
-  action(type: string, _schemaData?: SchemaData) {
+  action(type: string, schemaData?: SchemaData | XJsonSchema) {
     switch (type) {
       case 'search':
         this.searchLoading.set(true);
@@ -217,6 +225,16 @@ export class SelectSchemaDataComponent {
         this.getTableData()
           .pipe(finalize(() => (this.tableLoading.set(false), this.resetLoading.set(false))))
           .subscribe();
+        break;
+      case 'view-json-schema':
+        this.dialog.create(AppJsonSchemaDialogComponent, {
+          width: '100%',
+          height: '100%',
+          data: {
+            disabled: true,
+            jsonSchema: schemaData as XJsonSchema
+          }
+        });
         break;
     }
   }

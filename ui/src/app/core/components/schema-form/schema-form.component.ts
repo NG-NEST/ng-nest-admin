@@ -1,5 +1,11 @@
-import { Component, computed, inject, input, model } from '@angular/core';
-import { AppJsonSchemaComponent, XJsonSchema, XJsonSchemaEnum, XJsonSchemaToTreeData, XTreeData } from '../json-schema';
+import { Component, computed, inject, input, model, viewChildren } from '@angular/core';
+import {
+  AppJsonSchemaComponent,
+  XJsonSchema,
+  XJsonSchemaEnum,
+  XJsonSchemaToTreeData,
+  XTreeData
+} from '../json-schema';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { AppFormService } from '@ui/core';
@@ -52,9 +58,11 @@ export class AppSchemaFormComponent {
     }
   });
 
+  jsonSchemas = viewChildren<AppJsonSchemaComponent>('jsonSchema');
+
   ngOnInit() {
-    console.log(this.formGroup());
-    console.log(this.tree());
+    // console.log(this.formGroup());
+    // console.log(this.tree());
   }
 
   add(formArray: FormArray, nodes: XTreeData[]) {

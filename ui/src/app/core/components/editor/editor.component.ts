@@ -29,6 +29,7 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
   filename = input<string>('.plaintext');
   theme = input<string>('vs');
   options = input<monaco.editor.IStandaloneEditorConstructionOptions>({});
+  disabled = input<boolean>(false);
 
   elementRef = inject(ElementRef);
 
@@ -105,6 +106,7 @@ export class AppEditorComponent implements ControlValueAccessor, AfterViewInit, 
   private initializeEditor(): void {
     this.editor = monaco.editor.create(this.elementRef.nativeElement, {
       value: this.value,
+      readOnly: this.disabled(),
       language: this.language(),
       theme: this.theme(),
       automaticLayout: true,

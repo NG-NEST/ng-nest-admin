@@ -7,9 +7,8 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { SchemaService } from '@ui/api';
-import { AppJsonSchemaComponent, XJsonSchema } from '@ui/core';
-import { isEqual } from 'lodash-es';
-import { Observable, Subject, concatMap, finalize, tap } from 'rxjs';
+import { AppJsonSchemaComponent } from '@ui/core';
+import { Observable, Subject, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-schema-detail',
@@ -38,13 +37,6 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
 
   id = signal('');
 
-  jsonSchema: XJsonSchema = {
-    title: '',
-    description: '',
-    type: 'object',
-    properties: {}
-  };
-
   formLoading = signal(false);
   saveLoading = signal(false);
 
@@ -58,7 +50,14 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
       code: [null, [Validators.required]],
       version: [{ disabled: true, value: null }, []],
       description: [null],
-      json: [null]
+      json: [
+        {
+          title: '',
+          description: '',
+          type: 'object',
+          properties: {}
+        }
+      ]
     });
     const { id } = this.data;
     this.id.set(id);
@@ -69,7 +68,6 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
         .pipe(
           tap((x) => {
             this.form.patchValue(x);
-            this.jsonSchema = x.json as XJsonSchema;
           }),
           finalize(() => this.formLoading.set(false))
         )
@@ -86,29 +84,16 @@ export class SchemaDetailComponent implements OnInit, OnDestroy {
     let rq!: Observable<string>;
 
     if (!this.id()) {
-      rq = this.jsonSchemaCom()
-        .getJsonSchema()
-        .pipe(
-          concatMap((json) => {
-            return this.schema.create({ ...this.form.value, json });
-          })
-        );
+      rq = this.schema.create({ ...this.form.value });
     } else {
-      rq = this.jsonSchemaCom()
-        .getJsonSchema()
-        .pipe(
-          concatMap((json) => {
-            if (!isEqual(json, this.form.value.json)) {
-              return this.schema.create({ ...this.form.value, json });
-            } else {
-              return this.schema.update({
-                id: this.id(),
-                ...this.form.value,
-                json
-              });
-            }
-          })
-        );
+      if (this.form.controls['json'].dirty) {
+        rq = this.schema.create({ ...this.form.value });
+      } else {
+        rq = this.schema.update({
+          id: this.id(),
+          ...this.form.value
+        });
+      }
     }
     this.saveLoading.set(true);
     rq.pipe(

@@ -11,6 +11,7 @@ import {
 } from '@ui/api';
 import {
   AppAuthDirective,
+  AppJsonSchemaDialogComponent,
   AppSortVersions,
   BaseDescription,
   BaseOrder,
@@ -66,6 +67,7 @@ export class SchemaDataComponent {
   columns = computed<XTableColumn[]>(() => {
     let columns: XTableColumn[] = [];
     const schemaJson = this.schemaJson();
+    console.log(schemaJson);
     if (!schemaJson) return columns;
     const cols = XJsonSchemaToTableColumns(schemaJson);
     if (cols) {
@@ -219,7 +221,7 @@ export class SchemaDataComponent {
     );
   }
 
-  action(type: string, schemaData?: SchemaData) {
+  action(type: string, schemaData?: SchemaData | XJsonSchema) {
     switch (type) {
       case 'search':
         this.searchLoading.set(true);
@@ -254,6 +256,7 @@ export class SchemaDataComponent {
         });
         break;
       case 'edit':
+        schemaData = schemaData as SchemaData;
         this.dialog.create(SchemaDataDetailComponent, {
           width: '100%',
           height: '100%',
@@ -277,6 +280,7 @@ export class SchemaDataComponent {
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
+            schemaData = schemaData as SchemaData;
             this.schemaDataService.delete(schemaData.id).subscribe((x) => {
               this.message.success(x);
               if (this.data().length === 1 && this.index() > 1) {
@@ -284,6 +288,16 @@ export class SchemaDataComponent {
               }
               this.getTableData();
             });
+          }
+        });
+        break;
+      case 'view-json-schema':
+        this.dialog.create(AppJsonSchemaDialogComponent, {
+          width: '100%',
+          height: '100%',
+          data: {
+            disabled: true,
+            jsonSchema: schemaData as XJsonSchema
           }
         });
         break;
