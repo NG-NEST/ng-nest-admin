@@ -11,7 +11,7 @@ import {
 } from '@ui/api';
 import {
   AppAuthDirective,
-  AppJsonSchemaDialogComponent,
+  AppJsonDialogComponent,
   AppSortVersions,
   BaseDescription,
   BaseOrder,
@@ -292,12 +292,24 @@ export class SchemaDataComponent {
         });
         break;
       case 'view-json-schema':
-        this.dialog.create(AppJsonSchemaDialogComponent, {
+        this.dialog.create(AppJsonDialogComponent, {
           width: '100%',
           height: '100%',
           data: {
+            title: 'JsonSchema 数据',
             disabled: true,
-            jsonSchema: schemaData as XJsonSchema
+            content: schemaData as XJsonSchema
+          }
+        });
+        break;
+      case 'view-json':
+        this.dialog.create(AppJsonDialogComponent, {
+          width: '100%',
+          height: '100%',
+          data: {
+            title: 'Json 数据',
+            disabled: true,
+            content: schemaData
           }
         });
         break;

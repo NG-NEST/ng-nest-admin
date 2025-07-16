@@ -1,5 +1,5 @@
 <form [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">JsonSchema 数据</h4>
+  <h4 x-dialog-title class="title">{{ title() }}</h4>
   <x-button
     class="close"
     icon="fto-x"
@@ -11,8 +11,8 @@
   <div x-dialog-content class="content full">
     <div class="item">
       <app-editor
-        formControlName="jsonContent"
-        [filename]="'jsonschema.json'"
+        formControlName="json"
+        [filename]="'json.json'"
         [disabled]="disabled()"
       ></app-editor>
     </div>

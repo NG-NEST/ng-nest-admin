@@ -1,3 +1,6 @@
+/**
+ * Json Schema type
+ */
 export type XJsonSchemaType =
   | 'null'
   | 'boolean'
@@ -7,6 +10,9 @@ export type XJsonSchemaType =
   | 'string'
   | 'integer';
 
+/**
+ * Json Schema type list
+ */
 export const XJsonSchemaTypes: XJsonSchemaType[] = [
   'object',
   'string',
@@ -17,6 +23,9 @@ export const XJsonSchemaTypes: XJsonSchemaType[] = [
   'null',
 ];
 
+/**
+ * Json Schema string format list
+ */
 export const XJsonSchemaStringFormats: string[] = [
   'date-time',
   'date',
@@ -42,6 +51,10 @@ export const XJsonSchemaStringFormats: string[] = [
   'password',
   'char',
 ];
+
+/**
+ * Json Schema integer format list
+ */
 export const XJsonSchemaIntegerFormats: string[] = [
   'int32',
   'int64',
@@ -59,21 +72,37 @@ export const XJsonSchemaIntegerFormats: string[] = [
   'bignum',
   'fixnum',
 ];
+
+/**
+ * Json Schema number format list
+ */
 export const XJsonSchemaNumberFormats: string[] = ['float', 'double', 'float32', 'float64'];
 
+/**
+ * Json Schema behavior list
+ */
 export const XJsonSchemaBehaviors: { label: string; id: number }[] = [
   { label: 'Read/Write', id: 0 },
   { label: 'Read Only', id: 1 },
   { label: 'Write Only', id: 2 },
 ];
 
+/**
+ * Json Schema primitive type
+ */
 export type XJsonSchemaPrimitive = string | number | boolean | null;
 
+/**
+ * Json Schema value type
+ */
 export type XJsonSchemaValue =
   | XJsonSchemaPrimitive
   | XJsonSchemaValue[]
   | { [key: string]: XJsonSchemaValue };
 
+/**
+ * Json Schema interface
+ */
 export interface XJsonSchema extends XJsonSchemaNgNest {
   /**
    * 当前 schema 的唯一标识 URI，可供 `$ref` 使用
@@ -357,6 +386,9 @@ export interface XJsonSchema extends XJsonSchemaNgNest {
   definitions?: Record<string, XJsonSchema>;
 }
 
+/**
+ * Json Schema x-ng-nest type
+ */
 export interface XJsonSchemaNgNest {
   'x-ng-nest'?: {
     enums?: XJsonSchemaEnum[];
@@ -364,23 +396,65 @@ export interface XJsonSchemaNgNest {
   };
 }
 
+/**
+ * Json Schema enum type
+ */
 export interface XJsonSchemaEnum {
   value?: string | number | null;
   description?: string | null;
 }
 
+/**
+ * Field type
+ */
 export interface XField {
+  /**
+   * 字段名称
+   */
   name?: string;
+  /**
+   * 字段标题
+   */
   title?: string;
+  /**
+   * 字段描述
+   */
   description?: string;
+  /**
+   * 字段类型
+   */
   type?: string;
+  /**
+   * 字段是否必填
+   */
   required?: boolean;
+  /**
+   * 字段是否数组
+   */
   isArray?: boolean;
+  /**
+   * 字段是否对象
+   */
   isObject?: boolean;
+  /**
+   * 字段格式
+   */
   format?: string;
+  /**
+   * 字段枚举
+   */
   enum?: string[];
+  /**
+   * 字段 GraphQL 类型
+   */
   graphqlType?: string;
+  /**
+   * 字段 TypeScript 类型
+   */
   tsType?: string;
+  /**
+   * 字段 TypeScript 可空类型, '' 或者 '?'
+   */
   tsNullable?: string;
 }
 
@@ -482,6 +556,12 @@ export function jsonSchemaToPrismaSchema(jsonSchema: XJsonSchema, modelName: str
   return formatPrismaModel(prismaSchema);
 }
 
+/**
+ * Format Prisma schema
+ *
+ * @param input Prisma schema string
+ * @returns Formatted Prisma schema string
+ */
 function formatPrismaModel(input: string): string {
   // 1. 分割行并过滤空行
   const lines = input

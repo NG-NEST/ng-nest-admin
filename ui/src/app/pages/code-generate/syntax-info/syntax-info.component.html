@@ -9,16 +9,103 @@
     </p>
     <p></p>
     <h3>内置函数</h3>
-    @for (item of functions(); track item.name) {
-      <div class="function">
-        <h4>{{ item.name }}</h4>
-        <p>{{ item.description }}</p>
-        <div class="examples">
-          @for (example of item.examples; track example) {
-            <pre><code>{{ example }}</code></pre>
-          }
-        </div>
-      </div>
-    }
+    <x-tabs>
+      <x-tab label="字符串">
+        <ng-container *ngTemplateOutlet="kindTpl; context: { datas: strings() }"></ng-container>
+      </x-tab>
+      <x-tab label="json schema">
+        <ng-container *ngTemplateOutlet="kindTpl; context: { datas: jsonSchema() }"></ng-container>
+      </x-tab>
+    </x-tabs>
   </div>
 </div>
+
+<ng-template #kindTpl let-datas="datas">
+  @for (item of datas; track item.name) {
+    @switch (item.kind) {
+      @case ('function') {
+        <div class="function">
+          <h4>
+            {{ item.name }} <span class="tip">{{ item.kind }}</span>
+          </h4>
+          <p>{{ item.description }}</p>
+          @if (item.params && item.params.length > 0) {
+            <div class="params">
+              <div>params:</div>
+              <div class="list">
+                @for (param of item.params; track param.name) {
+                  <div class="param">
+                    <span class="name">{{ param.name }}</span>
+                    <span class="type">{{ param.type }}</span>
+                    <span class="description">{{ param.description }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          @if (item.returns) {
+            <div class="returns">
+              <div>return:</div>
+              <div class="return">
+                <span class="type">{{ item.returns.type }}</span>
+                <span class="description">{{ item.returns.description }}</span>
+              </div>
+            </div>
+          }
+          @if (item.examples && item.examples.length > 0) {
+            <div class="examples">
+              @for (example of item.examples; track example) {
+                <pre><code>{{ example }}</code></pre>
+              }
+            </div>
+          }
+        </div>
+      }
+      @case ('type') {
+        <div class="type">
+          <h4>
+            {{ item.name }} <span class="tip">{{ item.kind }}</span>
+          </h4>
+          <p>{{ item.description }}</p>
+          <div class="type-def">
+            <pre><code>{{ item.typeDef }}</code></pre>
+          </div>
+        </div>
+      }
+      @case ('enum') {
+        <div class="enum">
+          <h4>
+            {{ item.name }} <span class="tip">{{ item.kind }}</span>
+          </h4>
+          <p>{{ item.description }}</p>
+          <div class="members">
+            @for (member of item.members; track member.name) {
+              @if (['number', 'boolean'].includes(member.valueType)) {
+                {{ member.name }} = {{ member.value }}{{ $last ? '' : ',' }}<br />
+              } @else {
+                {{ member.name }} = '{{ member.value }}'{{ $last ? '' : ',' }}<br />
+              }
+            }
+          </div>
+        </div>
+      }
+      @case ('interface') {
+        <div class="interface">
+          <h4>
+            {{ item.name }} <span class="tip">{{ item.kind }}</span>
+          </h4>
+          <p>{{ item.description }}</p>
+          <div class="properties">
+            @for (property of item.properties; track property.name) {
+              <div class="property">
+                <span class="name">{{ property.name }}</span>
+                <span class="type">{{ property.type }}</span>
+                <span class="description">{{ property.description }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  }
+</ng-template>

@@ -5,7 +5,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { XTableColumn, XTableComponent, XTableModule } from '@ng-nest/ui/table';
 import { SchemaData, SchemaDataService, SchemaDataWhereInput, SchemaService } from '@ui/api';
 import {
-  AppJsonSchemaDialogComponent,
+  AppJsonDialogComponent,
   BaseDescription,
   BaseOrder,
   BasePagination,
@@ -227,12 +227,24 @@ export class SelectSchemaDataComponent {
           .subscribe();
         break;
       case 'view-json-schema':
-        this.dialog.create(AppJsonSchemaDialogComponent, {
+        this.dialog.create(AppJsonDialogComponent, {
           width: '100%',
           height: '100%',
           data: {
+            title: 'JsonSchema 数据',
             disabled: true,
-            jsonSchema: schemaData as XJsonSchema
+            content: schemaData as XJsonSchema
+          }
+        });
+        break;
+      case 'view-json':
+        this.dialog.create(AppJsonDialogComponent, {
+          width: '100%',
+          height: '100%',
+          data: {
+            title: 'Json 数据',
+            disabled: true,
+            content: schemaData as XJsonSchema
           }
         });
         break;

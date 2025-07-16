@@ -72,11 +72,7 @@
           </div>
         } @else if (node.isObject) {
           @if (node.isJsonSchema) {
-            <app-json-schema
-              #jsonSchema
-              [formControlName]="node.name"
-              [title]="node.title"
-            ></app-json-schema>
+            <app-json-schema [formControlName]="node.name" [title]="node.title"></app-json-schema>
           } @else {
             <div class="object" [formGroupName]="node.name">
               <div class="object-tools">

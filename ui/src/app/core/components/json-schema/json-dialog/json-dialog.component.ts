@@ -1,39 +1,42 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { X_DIALOG_DATA, XButtonComponent, XDialogModule, XDialogRef } from '@ng-nest/ui';
-import { AppEditorComponent, XJsonSchema } from '@ui/core';
+import { AppEditorComponent } from '@ui/core';
 
 @Component({
-  selector: 'app-json-schema-dialog',
+  selector: 'app-json-dialog',
   imports: [ReactiveFormsModule, XButtonComponent, XDialogModule, AppEditorComponent],
-  templateUrl: './json-schema-dialog.component.html',
-  styleUrls: ['./json-schema-dialog.component.scss']
+  templateUrl: './json-dialog.component.html',
+  styleUrls: ['./json-dialog.component.scss']
 })
-export class AppJsonSchemaDialogComponent {
+export class AppJsonDialogComponent {
   dialogRef = inject(XDialogRef);
   formBuild = inject(FormBuilder);
 
   data = inject<{
+    title: string;
     disabled: boolean;
-    jsonSchema: XJsonSchema;
-    saveSuccess: (jsonSchema: XJsonSchema) => void;
+    content: { [key: string]: any };
+    saveSuccess: (content: { [key: string]: any }) => void;
   }>(X_DIALOG_DATA);
 
+  title = signal('');
   disabled = signal(false);
   saveLoading = signal(false);
 
   form = this.formBuild.group({
-    jsonContent: ['', [Validators.required]]
+    json: ['', [Validators.required]]
   });
 
   constructor() {
+    this.title.set(this.data.title);
     this.disabled.set(this.data.disabled);
-    this.form.patchValue({ jsonContent: JSON.stringify(this.data.jsonSchema, null, 2) });
+    this.form.patchValue({ json: JSON.stringify(this.data.content, null, 2) });
   }
 
   save() {
-    const { jsonContent } = this.form.getRawValue();
-    this.data.saveSuccess(JSON.parse(jsonContent!) as XJsonSchema);
+    const { json } = this.form.getRawValue();
+    this.data.saveSuccess(JSON.parse(json!) as { [key: string]: any });
     this.dialogRef.close();
   }
 }

@@ -1,13 +1,15 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { XTabsModule } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDrawerModule, XDrawerRef } from '@ng-nest/ui/drawer';
 import { AppParseJsDoc, FunctionDoc } from '@ui/core';
 
 @Component({
   selector: 'app-syntax-info',
-  imports: [XButtonComponent, XDrawerModule],
+  imports: [NgTemplateOutlet, XButtonComponent, XDrawerModule, XTabsModule],
   templateUrl: 'syntax-info.component.html',
   styleUrl: 'syntax-info.component.scss'
 })
@@ -17,16 +19,22 @@ export class SyntaxInfoComponent {
   domSanitizer = inject(DomSanitizer);
   markdownContent: string = '';
   htmlContent: SafeHtml | null = null;
-  functions = signal<FunctionDoc[]>([]);
+  strings = signal<FunctionDoc[]>([]);
+  jsonSchema = signal<FunctionDoc[]>([]);
 
   ngOnInit() {
-    this.httpClient.get('/assets/mark/strings.ts', { responseType: 'text' }).subscribe((x) => {
-      this.generateMarkdown(x);
-    });
-  }
+    this.httpClient.get('/assets/mark/strings.d.ts', { responseType: 'text' }).subscribe((x) => {
+      this.strings.set(AppParseJsDoc(x));
 
-  generateMarkdown(stringsContent: string) {
-    this.functions.set(AppParseJsDoc(stringsContent));
+      console.log(this.strings());
+    });
+    this.httpClient
+      .get('/assets/mark/json-schema.d.ts', { responseType: 'text' })
+      .subscribe((x) => {
+        this.jsonSchema.set(AppParseJsDoc(x));
+
+        console.log(this.jsonSchema());
+      });
   }
 
   close() {

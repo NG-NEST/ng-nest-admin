@@ -1,135 +1,237 @@
-interface JsDocParam {
+export interface JsDocParam {
   name: string;
   type: string;
   description: string;
 }
 
-interface JsDocReturn {
+export interface JsDocReturn {
   type: string;
   description: string;
+}
+
+export interface JsDocProperty {
+  name: string;
+  type?: string;
+  description: string;
+}
+
+export interface JsDocEnumMember {
+  name: string;
+  value?: string;
+  description: string;
+  valueType?: 'string' | 'number' | 'boolean' | 'null' | 'unknown';
 }
 
 export interface FunctionDoc {
   name: string;
+  kind: 'function' | 'interface' | 'type' | 'enum' | 'class';
   description: string;
-  params: JsDocParam[];
-  returns: JsDocReturn;
-  examples: string[];
+  params?: JsDocParam[];
+  returns?: JsDocReturn;
+  examples?: string[];
+  properties?: JsDocProperty[];
+  typeDef?: string;
+  members?: JsDocEnumMember[];
 }
 
 export function AppParseJsDoc(code: string): FunctionDoc[] {
   const lines = code.split('\n');
-  const functions: FunctionDoc[] = [];
-  let currentDocBlock: string[] = [];
-  let functionName = '';
-  let description = '';
-  let params: JsDocParam[] = [];
-  let returns: JsDocReturn = { type: '', description: '' };
-  let examples: string[] = [];
-  let isInFunction = false;
+  const docs: FunctionDoc[] = [];
 
-  // 逐行解析代码
+  let inDoc = false;
+  let docLines: string[] = [];
+  let nextLine = '';
+  let currentIndex = 0;
+
+  const cleanDocLine = (line: string) => line.replace(/^\s*\*\s?/, '').trim();
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    // 忽略空行
-    if (line === '') continue;
-
-    // 如果是 JSDoc 注释的开始
-    if (line.startsWith('/**') && !isInFunction) {
-      currentDocBlock = [line]; // 开始收集 JSDoc 注释
-      isInFunction = true;
+    if (line.startsWith('/**')) {
+      inDoc = true;
+      docLines = [];
       continue;
     }
 
-    // 如果是 JSDoc 注释块的中间行
-    if (isInFunction && line.startsWith('* ')) {
-      currentDocBlock.push(line);
-      continue;
-    }
+    if (inDoc) {
+      if (line.startsWith('*/')) {
+        inDoc = false;
 
-    // 如果是 JSDoc 注释的结束
-    if (isInFunction && line.startsWith('export function')) {
-      currentDocBlock.push(line);
-      isInFunction = false;
-
-      // 解析当前收集到的 JSDoc 注释块
-      const docBlockContent = currentDocBlock.join('\n');
-
-      // 解析函数名称
-      const functionMatch = /export function (\w+)/.exec(docBlockContent);
-      if (functionMatch) {
-        functionName = functionMatch[1];
-      }
-
-      // 解析函数描述
-      const descriptionMatch = /(?:\s*\*\s)([^\n@]+)/.exec(docBlockContent);
-      description = descriptionMatch ? descriptionMatch[1].trim() : '';
-      if (description.startsWith('*')) {
-        description = description.slice(1);
-      }
-      description = description.trim();
-
-      // 解析参数 (@param)
-      params = [];
-      const paramMatch = /@param\s+\{([^}]+)\}\s+([^\n]+)/g;
-      let param;
-      while ((param = paramMatch.exec(docBlockContent)) !== null) {
-        params.push({
-          name: param[2].trim(),
-          type: param[1].trim(),
-          description: param[3]?.trim() || ''
-        });
-      }
-
-      // 解析返回值 (@returns)
-      const returnMatch = /@returns\s+\{([^}]+)\}\s+([^\n]+)/.exec(docBlockContent);
-      if (returnMatch) {
-        returns = {
-          type: returnMatch[1].trim(),
-          description: returnMatch[2].trim()
-        };
-      }
-
-      // 解析示例 (@example)
-      examples = [];
-      // 匹配 @example 标签开始，以 ```typescript 开始，以 ``` 结束的代码块
-      // 正则表达式提取示例
-      const regex = /```typescript([\s\S]*?)```/;
-      const exampleBlockMatch = regex.exec(docBlockContent);
-
-      if (exampleBlockMatch) {
-        const exampleBlock = exampleBlockMatch[1].trim();
-        const functionCallRegex = exampleBlock.split('\n');
-        for (let example of functionCallRegex) {
-          if (example.startsWith('*')) {
-            example = example.slice(1);
-          }
-          example = example.trim();
-          if (example) {
-            examples.push(example);
+        while (++i < lines.length) {
+          const l = lines[i].trim();
+          if (l && !l.startsWith('*')) {
+            nextLine = l;
+            currentIndex = i;
+            break;
           }
         }
+
+        const kindMatch = /(export\s+)?(function|interface|type|enum|class)\s+(\w+)/.exec(nextLine);
+        if (!kindMatch) continue;
+
+        const kind = kindMatch[2] as FunctionDoc['kind'];
+        const name = kindMatch[3];
+
+        const descriptionLines: string[] = [];
+        const params: JsDocParam[] = [];
+        const examples: string[] = [];
+        let returns: JsDocReturn = { type: '', description: '' };
+        let collectingExample = false;
+        let exampleLines: string[] = [];
+
+        for (const rawLine of docLines) {
+          const content = cleanDocLine(rawLine);
+
+          if (content.startsWith('@param')) {
+            const paramMatch = /@param\s+\{(.+?)\}\s+(\w+)(?:\s+-\s+)?(.*)?/.exec(content);
+            if (paramMatch) {
+              params.push({
+                type: paramMatch[1],
+                name: paramMatch[2],
+                description: paramMatch[3] ?? ''
+              });
+            }
+          } else if (content.startsWith('@returns') || content.startsWith('@return')) {
+            const returnMatch = /@returns?\s+\{(.+?)\}\s+(.*)/.exec(content);
+            if (returnMatch) {
+              returns = {
+                type: returnMatch[1],
+                description: returnMatch[2]
+              };
+            }
+          } else if (content.startsWith('@example')) {
+            collectingExample = true;
+            exampleLines = [];
+          } else if (collectingExample) {
+            if (content.startsWith('@')) {
+              collectingExample = false;
+              examples.push(exampleLines.join('\n'));
+            } else {
+              exampleLines.push(content);
+            }
+          } else if (!content.startsWith('@')) {
+            descriptionLines.push(content);
+          }
+        }
+
+        if (exampleLines.length > 0) {
+          examples.push(exampleLines.join('\n'));
+        }
+
+        const doc: FunctionDoc = {
+          name,
+          kind,
+          description: descriptionLines.join(' ').trim()
+        };
+
+        if (kind === 'function') {
+          doc.params = params;
+          doc.returns = returns;
+          doc.examples = examples;
+        }
+
+        if (kind === 'type') {
+          let typeLines: string[] = [];
+          for (let j = currentIndex; j < lines.length; j++) {
+            const l = lines[j].trim();
+            typeLines.push(l);
+            if (l.endsWith(';')) break;
+          }
+          doc.typeDef = typeLines
+            .join('\n')
+            .replace(/^.*=\s*/, '')
+            .replace(/;$/, '')
+            .split('\n')
+            .map((line) => line.trim().replace(/^\|\s*/, ''))
+            .filter(Boolean)
+            .join(' | ')
+            .trim();
+        }
+
+        if (kind === 'enum') {
+          const members: JsDocEnumMember[] = [];
+          let j = currentIndex + 1;
+          while (j < lines.length) {
+            const l = lines[j].trim();
+            if (l.startsWith('/**')) {
+              const tempDoc: string[] = [];
+              while (++j < lines.length && !lines[j].includes('*/')) {
+                tempDoc.push(lines[j]);
+              }
+              const nextEnumLine = lines[j + 1]?.trim();
+              const memberMatch = /(\w+)\s*=?\s*['"]?([^'",]*)?['"]?,?/.exec(nextEnumLine ?? '');
+              if (memberMatch) {
+                const value = memberMatch[2];
+                members.push({
+                  name: memberMatch[1],
+                  value,
+                  description: tempDoc.map(cleanDocLine).join(' ').trim(),
+                  valueType: inferEnumValueType(value)
+                });
+              }
+            } else if (/^\w+\s*=/.test(l)) {
+              const memberMatch = /(\w+)\s*=\s*['"]?([^'",]*)?['"]?,?/.exec(l);
+              if (memberMatch) {
+                members.push({
+                  name: memberMatch[1],
+                  value: memberMatch[2],
+                  description: '',
+                  valueType: inferEnumValueType(memberMatch[2])
+                });
+              }
+            } else if (l.startsWith('}')) break;
+            j++;
+          }
+          doc.members = members;
+        }
+
+        if (kind === 'interface') {
+          const props: JsDocProperty[] = [];
+          let j = currentIndex + 1;
+          while (j < lines.length) {
+            const l = lines[j].trim();
+
+            if (l.startsWith('/**')) {
+              const tempDoc: string[] = [];
+              while (++j < lines.length && !lines[j].includes('*/')) {
+                tempDoc.push(lines[j]);
+              }
+
+              const nextLine = lines[j + 1]?.trim();
+              const match = /['"]?([\w\-]+)['"]?\??:?\s*([^;{]*)/.exec(nextLine ?? '');
+              if (match) {
+                props.push({
+                  name: match[1],
+                  type: match[2],
+                  description: tempDoc.map(cleanDocLine).join(' ')
+                });
+              }
+            }
+
+            if (l.startsWith('}')) break;
+            j++;
+          }
+          doc.properties = props;
+        }
+
+        docs.push(doc);
+      } else {
+        docLines.push(line);
       }
-
-      // 将提取的信息保存到 functions 数组
-      functions.push({
-        name: functionName,
-        description: description,
-        params: params,
-        returns: returns,
-        examples: examples
-      });
-
-      // 重置状态准备处理下一个函数
-      currentDocBlock = [];
-      functionName = '';
-      description = '';
-      params = [];
-      returns = { type: '', description: '' };
-      examples = [];
     }
   }
 
-  return functions;
+  return docs;
+}
+
+function inferEnumValueType(
+  value: string | undefined
+): 'string' | 'number' | 'boolean' | 'null' | 'unknown' {
+  if (value === undefined) return 'unknown';
+  if (value === 'null') return 'null';
+  if (value === 'true' || value === 'false') return 'boolean';
+  if (!isNaN(Number(value))) return 'number';
+  if (/^['"].*['"]$/.test(value)) return 'string';
+  return 'string'; // 默认值通常是字符串（未加引号时）
 }

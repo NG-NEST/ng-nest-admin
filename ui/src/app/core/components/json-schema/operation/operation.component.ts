@@ -5,7 +5,7 @@ import { XDialogModule, XDialogRef, XDialogService } from '@ng-nest/ui/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XTreeDataToJsonSchemaWorker } from '../worker/worker';
 import { XLinkComponent } from '@ng-nest/ui';
-import { AppJsonSchemaDialogComponent } from '../json-schema-dialog/json-schema-dialog.component';
+import { AppJsonDialogComponent } from '../json-dialog/json-dialog.component';
 
 @Component({
   selector: 'app-operation',
@@ -42,14 +42,15 @@ export class AppOperationComponent implements OnDestroy {
         takeUntil(this.$destroy)
       )
       .subscribe((x) => {
-        this.dialog.create(AppJsonSchemaDialogComponent, {
+        this.dialog.create(AppJsonDialogComponent, {
           width: '100%',
           height: '100%',
           data: {
+            title: 'JsonSchema 数据',
             disabled: this.disabled(),
-            jsonSchema: x,
-            saveSuccess: (jsonSchema: XJsonSchema) => {
-              this.schema?.writeValue(jsonSchema);
+            content: x,
+            saveSuccess: (content: XJsonSchema) => {
+              this.schema?.writeValue(content);
               this.schema?.setTreeData();
             }
           }

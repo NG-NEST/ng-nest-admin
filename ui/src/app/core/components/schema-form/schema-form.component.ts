@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, viewChildren } from '@angular/core';
+import { Component, computed, inject, input, model } from '@angular/core';
 import {
   AppJsonSchemaComponent,
   XJsonSchema,
@@ -57,8 +57,6 @@ export class AppSchemaFormComponent {
       return root.children ?? [];
     }
   });
-
-  jsonSchemas = viewChildren<AppJsonSchemaComponent>('jsonSchema');
 
   ngOnInit() {
     // console.log(this.formGroup());

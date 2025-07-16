@@ -1,14 +1,17 @@
 :host {
-  .function {
+  .function,
+  .type,
+  .enum,
+  .interface {
     border: var(--x-border-width) var(--x-border-style) var(--x-border);
     border-radius: var(--x-border-radius);
     padding: 1rem;
-    &:not(:first-child) {
-      margin-top: 2rem;
-    }
+    margin-top: 1rem;
+
     h4 {
       margin-top: 0;
       margin-bottom: 1rem;
+      font-size: 1rem;
     }
     p {
       margin: 1rem 0;
@@ -21,9 +24,110 @@
       color: var(--x-danger);
     }
   }
-  .examples {
+  .members {
+    font-family: 'Consolas', Courier, monospace;
+    color: var(--x-danger);
     padding: 1rem;
     border-radius: var(--x-border-radius);
     background-color: var(--x-background-a200);
+  }
+  .tip {
+    margin-left: 1rem;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--x-border-radius);
+    background-color: var(--x-primary-800);
+    font-weight: 400;
+  }
+  .type-def {
+    padding: 1rem;
+    border-radius: var(--x-border-radius);
+    background-color: var(--x-background-a200);
+  }
+  .params {
+    .param {
+      display: flex;
+      align-items: center;
+      &:not(:first-child) {
+        margin-top: 0.25rem;
+      }
+      > span {
+        padding: 0.125rem 0.5rem;
+        background-color: var(--x-background-a200);
+        border-radius: var(--x-border-radius);
+        border: var(--x-border-width) var(--x-border-style) var(--x-border);
+        &:not(:first-child) {
+          margin-left: 0.25rem;
+        }
+        &.name {
+          font-weight: 600;
+        }
+        &.type {
+          margin-top: 0;
+          margin-left: 0.25rem;
+        }
+      }
+    }
+  }
+  .returns {
+    margin-top: 0.875rem;
+    .return {
+      display: flex;
+      align-items: center;
+      > span {
+        padding: 0.125rem 0.5rem;
+        background-color: var(--x-background-a200);
+        border-radius: var(--x-border-radius);
+        border: var(--x-border-width) var(--x-border-style) var(--x-border);
+        &:not(:first-child) {
+          margin-left: 0.25rem;
+        }
+        &.name {
+          font-weight: 600;
+        }
+        &.type {
+          margin-top: 0;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  .properties {
+    margin-top: 0.875rem;
+    border-left: var(--x-border-width) var(--x-border-style) var(--x-border);
+    border-top: var(--x-border-width) var(--x-border-style) var(--x-border);
+    .property {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      > span {
+        padding: 0.25rem 0.5rem;
+        background-color: var(--x-background-a100);
+        border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+        border-right: var(--x-border-width) var(--x-border-style) var(--x-border);
+        border-radius: 0;
+        &.name {
+          font-weight: 600;
+        }
+        &.type {
+          margin-top: 0;
+          margin-left: 0;
+          border-top: 0;
+          border-left: 0;
+          border-bottom: var(--x-border-width) var(--x-border-style) var(--x-border);
+          border-right: var(--x-border-width) var(--x-border-style) var(--x-border);
+          border-radius: 0;
+        }
+      }
+    }
+  }
+  .examples {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--x-border-radius);
+    background-color: var(--x-background-a200);
+  }
+
+  ::ng-deep .x-tabs-block.x-tabs-top > .x-tabs-contents {
+    background: initial;
   }
 }

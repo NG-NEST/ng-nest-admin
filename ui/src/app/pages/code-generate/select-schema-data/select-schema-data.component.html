@@ -34,11 +34,21 @@
         @switch (column.schemaType) {
           @case ('object') {
             @if (column.isJsonSchema) {
-              <x-link type="primary" (click)="action('view-json-schema', row[column.id])">
-                查看JsonSchema
+              <x-link
+                type="primary"
+                [title]="row[column.id] | json"
+                (click)="action('view-json-schema', row[column.id])"
+              >
+                查看 JsonSchema
               </x-link>
             } @else {
-              <x-button size="small" text type="primary">查看Json</x-button>
+              <x-link
+                type="primary"
+                [title]="row[column.id] | json"
+                (click)="action('view-json', row[column.id])"
+              >
+                查看 Json
+              </x-link>
             }
           }
           @case ('array') {
