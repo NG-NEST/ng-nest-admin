@@ -28,7 +28,10 @@ export interface FunctionDoc {
   description: string;
   params?: JsDocParam[];
   returns?: JsDocReturn;
-  examples?: string[];
+  examples?: {
+    language?: string;
+    code: string;
+  }[];
   properties?: JsDocProperty[];
   typeDef?: string;
   members?: JsDocEnumMember[];
@@ -75,12 +78,15 @@ export function AppParseJsDoc(code: string): FunctionDoc[] {
 
         const descriptionLines: string[] = [];
         const params: JsDocParam[] = [];
-        const examples: string[] = [];
+        const examples: { language?: string; code: string }[] = [];
         let returns: JsDocReturn = { type: '', description: '' };
+
         let collectingExample = false;
         let exampleLines: string[] = [];
+        let currentLang: string | undefined = undefined;
 
-        for (const rawLine of docLines) {
+        for (let idx = 0; idx < docLines.length; idx++) {
+          const rawLine = docLines[idx];
           const content = cleanDocLine(rawLine);
 
           if (content.startsWith('@param')) {
@@ -101,14 +107,28 @@ export function AppParseJsDoc(code: string): FunctionDoc[] {
               };
             }
           } else if (content.startsWith('@example')) {
-            collectingExample = true;
+            collectingExample = false;
             exampleLines = [];
+            currentLang = undefined;
+
+            const next = docLines[idx + 1]?.trim() ?? '';
+            const langMatch = next.match(/^\*\s*```(\w+)?/);
+            if (langMatch) {
+              collectingExample = true;
+              currentLang = langMatch[1];
+              idx++; // skip ```lang
+            }
           } else if (collectingExample) {
-            if (content.startsWith('@')) {
+            if (/^\s*\*\s*```/.test(rawLine)) {
               collectingExample = false;
-              examples.push(exampleLines.join('\n'));
+              examples.push({
+                language: currentLang,
+                code: exampleLines.join('\n').replace(/\\@/g, '@').trim()
+              });
+              exampleLines = [];
+              currentLang = undefined;
             } else {
-              exampleLines.push(content);
+              exampleLines.push(rawLine.replace(/^\s*\*\s?/, ''));
             }
           } else if (!content.startsWith('@')) {
             descriptionLines.push(content);
@@ -116,7 +136,10 @@ export function AppParseJsDoc(code: string): FunctionDoc[] {
         }
 
         if (exampleLines.length > 0) {
-          examples.push(exampleLines.join('\n'));
+          examples.push({
+            language: currentLang,
+            code: exampleLines.join('\n').replace(/\\@/g, '@').trim()
+          });
         }
 
         const doc: FunctionDoc = {
@@ -191,7 +214,6 @@ export function AppParseJsDoc(code: string): FunctionDoc[] {
           let j = currentIndex + 1;
           while (j < lines.length) {
             const l = lines[j].trim();
-
             if (l.startsWith('/**')) {
               const tempDoc: string[] = [];
               while (++j < lines.length && !lines[j].includes('*/')) {
@@ -233,5 +255,5 @@ function inferEnumValueType(
   if (value === 'true' || value === 'false') return 'boolean';
   if (!isNaN(Number(value))) return 'number';
   if (/^['"].*['"]$/.test(value)) return 'string';
-  return 'string'; // 默认值通常是字符串（未加引号时）
+  return 'string';
 }

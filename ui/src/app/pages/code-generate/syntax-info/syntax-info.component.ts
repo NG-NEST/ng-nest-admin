@@ -6,10 +6,11 @@ import { XTabsModule } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDrawerModule, XDrawerRef } from '@ng-nest/ui/drawer';
 import { AppParseJsDoc, FunctionDoc } from '@ui/core';
+import { XHighlightComponent } from "@ng-nest/ui/highlight";
 
 @Component({
   selector: 'app-syntax-info',
-  imports: [NgTemplateOutlet, XButtonComponent, XDrawerModule, XTabsModule],
+  imports: [NgTemplateOutlet, XButtonComponent, XDrawerModule, XTabsModule, XHighlightComponent],
   templateUrl: 'syntax-info.component.html',
   styleUrl: 'syntax-info.component.scss'
 })

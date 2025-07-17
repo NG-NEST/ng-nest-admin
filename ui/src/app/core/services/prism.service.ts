@@ -1,16 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { XIsArray, XIsString } from '@ng-nest/ui/core';
-import Prism from 'prismjs';
 import { of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AppPrismService {
   platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
+  prism = this.isBrowser ? (window as any)['Prism'] : null;
 
   init() {
-    if (!this.isBrowser || !Prism) return of(true);
+    if (!this.prism) return of(true);
     const checkString = (str: string) => {
       const regex = /^(['"`])(.*?)\1$/;
       return regex.test(str);
@@ -33,7 +33,7 @@ export class AppPrismService {
       }
       return result;
     };
-    Prism.hooks.add('after-tokenize', (env: any) => {
+    this.prism.hooks.add('after-tokenize', (env: any) => {
       let { tokens, language } = env;
       if (language === 'typescript') {
         env.tokens = checkTokens(tokens, (token: any) => {
@@ -43,7 +43,7 @@ export class AppPrismService {
             if (checkString(tstring)) {
               name = 'string';
             }
-            return new Prism.Token(name, token);
+            return new this.prism.Token(name, token);
           } else {
             return token;
           }
@@ -54,10 +54,10 @@ export class AppPrismService {
             const start = token.slice(0, 1);
             const end = token.slice(token.length - 1);
             const newstr = token.slice(1, token.length - 1);
-            return new Prism.Token('attr-name', [
-              new Prism.Token('attr-equals', start),
-              new Prism.Token('attr-name', newstr),
-              new Prism.Token('attr-equals', end)
+            return new this.prism.Token('attr-name', [
+              new this.prism.Token('attr-equals', start),
+              new this.prism.Token('attr-name', newstr),
+              new this.prism.Token('attr-equals', end)
             ]);
           } else {
             return token;

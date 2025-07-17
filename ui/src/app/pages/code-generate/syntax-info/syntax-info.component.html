@@ -55,7 +55,7 @@
           @if (item.examples && item.examples.length > 0) {
             <div class="examples">
               @for (example of item.examples; track example) {
-                <pre><code>{{ example }}</code></pre>
+                <x-highlight [type]="example.language" [data]="example.code" showCopy></x-highlight>
               }
             </div>
           }

@@ -7,6 +7,7 @@ import {
   constantize,
   dasherize,
   decamelize,
+  filter,
   jsonSchemaToFields,
   jsonSchemaToPrismaSchema,
   underscore,
@@ -54,6 +55,10 @@ Handlebars.registerHelper(
 
 Handlebars.registerHelper('$jsonSchemaToFields', (jsonSchema: XJsonSchema) => {
   return jsonSchemaToFields(jsonSchema);
+});
+
+Handlebars.registerHelper('$filter', (array: any[], options: string) => {
+  return filter(array, options);
 });
 
 @Injectable()

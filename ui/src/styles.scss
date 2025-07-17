@@ -383,192 +383,6 @@ input {
   }
 }
 
-.app-markdown {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin-top: 1.5em;
-    margin-bottom: 0.75em;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #2c3e50;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border-color);
-  }
-
-  h2 {
-    font-size: 1.8rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.4rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-  }
-  h4 {
-    font-size: 1.3rem;
-  }
-  h5 {
-    font-size: 1.1rem;
-  }
-  h6 {
-    font-size: 1rem;
-    color: var(--light-text);
-  }
-
-  p {
-    margin: 1.2rem 0;
-    font-size: 1.05rem;
-  }
-
-  a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    position: relative;
-  }
-
-  a:hover {
-    color: #e74c3c;
-    text-decoration: underline;
-  }
-
-  ul,
-  ol {
-    margin: 1.2rem 0;
-    padding-left: 1.8rem;
-  }
-
-  li {
-    margin: 0.6rem 0;
-  }
-
-  ul li::marker {
-    color: var(--secondary-color);
-  }
-
-  ol {
-    counter-reset: item;
-  }
-
-  ol li {
-    counter-increment: item;
-  }
-
-  ol li::marker {
-    content: counter(item) '. ';
-    color: var(--primary-color);
-    font-weight: bold;
-  }
-
-  code {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    background-color: var(--code-bg);
-    border-radius: 4px;
-    padding: 0.2rem 0.4rem;
-    font-size: 0.95rem;
-    color: #d63384;
-  }
-
-  pre {
-    background-color: #2d2d2d;
-    border-radius: 8px;
-    padding: 1.2rem;
-    margin: 1.5rem 0;
-    overflow: auto;
-    box-shadow: var(--shadow);
-  }
-
-  pre code {
-    background: transparent;
-    color: #f8f8f2;
-    padding: 0;
-    font-size: 0.95rem;
-  }
-
-  blockquote {
-    background-color: var(--blockquote-bg);
-    border-left: 4px solid var(--primary-color);
-    margin: 1.5rem 0;
-    padding: 1.2rem 1.5rem;
-    border-radius: 0 8px 8px 0;
-    font-style: italic;
-  }
-
-  blockquote p {
-    margin: 0;
-    color: #555;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    box-shadow: var(--shadow);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  th,
-  td {
-    padding: 0.8rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  th {
-    background-color: var(--table-header-bg);
-    font-weight: 600;
-  }
-
-  tr:hover {
-    background-color: rgba(52, 152, 219, 0.05);
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 1.2rem 0;
-    display: block;
-    box-shadow: var(--shadow);
-  }
-
-  hr {
-    border: 0;
-    height: 1px;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary-color), rgba(0, 0, 0, 0));
-    margin: 2rem 0;
-  }
-
-  strong {
-    color: #e74c3c;
-    font-weight: 700;
-  }
-
-  em {
-    color: #9b59b6;
-    font-style: italic;
-  }
-
-  kbd {
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 0.2rem 0.4rem;
-    font-family: monospace;
-    box-shadow: 0 2px 0 #ddd;
-  }
-}
-
 x-empty,
 .x-empty {
   height: 100%;
@@ -578,17 +392,8 @@ x-empty,
   justify-content: center;
 }
 
-[class^='language-'] {
-  background-color: #e9e9e9;
-  padding: 0.5rem;
-  border-radius: 0.75rem;
-  display: inherit;
-}
-
 .language-typescript,
 .language-ts,
-.language-js,
-.language-javascript,
 .language-json {
   .token.decorator,
   .token.keyword,
@@ -598,14 +403,12 @@ x-empty,
 
   .token.class-name,
   .token.property,
-  .token.boolean,
-  .token.regex-source {
+  .token.boolean {
     color: #f637e3;
   }
 
   .token.string,
-  .token.number,
-  .token.regex-delimiter {
+  .token.number {
     color: #fa2c05;
   }
 
@@ -619,20 +422,16 @@ x-empty,
   .token.punctuation {
     color: #0546ff;
   }
-
   .token.attr-name {
     color: #f637e3;
   }
-
   .token.attr-value,
   .token.attr-value .token.punctuation {
     color: #fa2c05;
-
     &.attr-equals {
       color: #0546ff;
     }
   }
-
   .token.attr-name {
     .attr-equals {
       color: #0546ff;
@@ -640,24 +439,121 @@ x-empty,
   }
 }
 
-.language-scss,
-.language-less,
-.language-css {
+.language-scss {
   .token.selector,
   .token.function,
   .token.keyword {
     color: #0546ff;
   }
-
   .token.property {
     color: #f637e3;
   }
-
   .token.string {
     color: #fa2c05;
   }
-
   .token.punctuation {
     color: #474747;
+  }
+}
+
+.app-markdown {
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 2.25rem 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin: 2rem 0 1rem;
+    clear: both;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 1.5rem 0 1rem;
+    clear: both;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 1.125rem 0 $x-font-size;
+    clear: both;
+  }
+
+  h5 {
+    font-size: $x-font-size;
+    font-weight: 500;
+    margin: 1rem 0 0.625rem;
+    clear: both;
+  }
+
+  > p {
+    font-weight: 400;
+    margin: $x-font-size 0 0;
+  }
+
+  > ul {
+    margin: $x-font-size 0;
+    > li {
+      list-style-type: circle;
+      margin: 0.125rem 0.125rem 0.125rem 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  blockquote {
+    margin: 0;
+    position: relative;
+    padding: 0.5rem 0.5rem 0.5rem $x-font-size;
+    > p {
+      margin: 0;
+    }
+  }
+
+  > blockquote {
+    margin-top: $x-font-size;
+    background-color: $x-background-a100;
+    border-radius: $x-border-radius;
+    border: $x-border-base;
+    color: $x-text-400;
+  }
+
+  li > code,
+  p > code {
+    position: relative;
+    padding: 0 0.5rem;
+    color: $x-danger;
+    background: $x-danger-900;
+    border-radius: $x-border-small-radius;
+    display: inline-block;
+  }
+
+  > table {
+    width: 100%;
+    background: $x-background;
+    border-collapse: collapse;
+    border-bottom: $x-border-base;
+    tr > th,
+    tr > td {
+      border-bottom: $x-border-base;
+      text-align: left;
+      padding: 0.5rem 0;
+    }
+    tr {
+      th {
+        white-space: nowrap;
+        color: $x-text;
+      }
+    }
   }
 }
