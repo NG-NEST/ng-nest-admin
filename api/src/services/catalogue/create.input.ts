@@ -5,7 +5,6 @@ import { CatalogueDescription, CATALOGUE_I18N, CatalogueFileType } from './catal
 import { CatalogueType } from '@prisma/client';
 import { ResourceDescription } from '../resource';
 import { VariableDescription } from '../variable';
-
 @InputType()
 export class CatalogueCreateInput {
   @Field({ description: CatalogueDescription.Name })

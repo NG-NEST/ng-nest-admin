@@ -393,6 +393,7 @@ export interface XJsonSchemaNgNest {
   'x-ng-nest'?: {
     enums?: XJsonSchemaEnum[];
     orders?: string[];
+    isJsonSchema?: boolean;
   };
 }
 
@@ -449,6 +450,10 @@ export interface XField {
    */
   graphqlType?: string;
   /**
+   * 字段 GraphQL 过滤类型
+   */
+  graphqlFilterType?: string;
+  /**
    * 字段 TypeScript 类型
    */
   tsType?: string;
@@ -456,10 +461,51 @@ export interface XField {
    * 字段 TypeScript 可空类型, '' 或者 '?'
    */
   tsNullable?: string;
+  /**
+   * 字段 TypeScript 过滤类型
+   */
+  tsFilterType?: string;
 }
 
 /**
  * Convert JSON schema to Prisma schema
+ *
+ * @example
+ * ```typescript
+ * const jsonSchema = {
+ *   "type": "object",
+ *   "title": "提示词",
+ *   "properties": {
+ *     "name": {
+ *       "type": "string",
+ *       "title": "名称"
+ *     },
+ *     "description": {
+ *       "type": "string",
+ *       "title": "描述"
+ *     },
+ *     "system": {
+ *       "type": "string",
+ *       "title": "系统提示词"
+ *     },
+ *     "user": {
+ *       "type": "string",
+ *       "title": "用户提示词"
+ *     }
+ *   },
+ *   "required": ["name", "user"]
+ * };
+ * const prismaSchema = jsonSchemaToPrismaSchema(jsonSchema, 'Prompt');
+ *
+ * // prisma schema
+ * model Prompt {
+ *   id          String  @id  @default(uuid())
+ *   name        String
+ *   user        String
+ *   system      String?
+ *   description String?
+ * }
+ * ```
  *
  * @param {XJsonSchema} jsonSchema - The JSON schema.
  * @param {string} modelName - The model name.
@@ -557,61 +603,192 @@ export function jsonSchemaToPrismaSchema(jsonSchema: XJsonSchema, modelName: str
 }
 
 /**
- * Format Prisma schema
+ * Format Prisma schema with multiple models
  *
  * @param input Prisma schema string
  * @returns Formatted Prisma schema string
  */
 function formatPrismaModel(input: string): string {
-  // 1. 分割行并过滤空行
-  const lines = input
+  // 1. Split into individual models
+  const models: string[] = [];
+  let currentModel: string[] = [];
+  let braceLevel = 0;
+  let inModel = false;
+
+  for (const line of input.split('\n')) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('model ') && braceLevel === 0) {
+      if (currentModel.length > 0) {
+        models.push(currentModel.join('\n'));
+      }
+      currentModel = [trimmed];
+      inModel = true;
+      braceLevel = 0;
+    } else if (inModel) {
+      currentModel.push(trimmed);
+
+      // Track brace level for model boundaries
+      braceLevel += (trimmed.match(/{/g) || []).length;
+      braceLevel -= (trimmed.match(/}/g) || []).length;
+
+      if (braceLevel <= 0 && trimmed.includes('}')) {
+        inModel = false;
+        braceLevel = 0;
+      }
+    }
+  }
+
+  if (currentModel.length > 0) {
+    models.push(currentModel.join('\n'));
+  }
+
+  // 2. Format each model individually
+  return models.map(formatSingleModel).join('\n\n');
+}
+
+/**
+ * Format a single Prisma model
+ *
+ * @param modelStr Single model string
+ * @returns Formatted model string
+ */
+function formatSingleModel(modelStr: string): string {
+  const lines = modelStr
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 
-  // 2. 提取模型名称和字段
-  const modelHeader = lines[0];
+  if (lines.length < 2) return modelStr;
+
+  const header = lines[0];
+  const footer = lines[lines.length - 1];
   const fieldLines = lines.slice(1, -1);
-  const modelFooter = lines[lines.length - 1];
 
-  // 3. 解析字段并计算最大宽度
+  // Parse fields and calculate max lengths
   const fieldData = fieldLines.map((line) => {
-    const [fieldPart, ...attributes] = line.split(/(?=\@)/); // 智能分割属性和字段
-    const [name, type] = fieldPart.trim().split(/\s+/);
+    // Handle attributes with nested parentheses
+    let attributes = '';
+    let fieldPart = line;
 
-    return {
-      name,
-      type,
-      attributes: attributes.join(' ').trim(),
-      raw: line,
-    };
+    // Find the first attribute
+    const attrIndex = line.indexOf('@');
+    if (attrIndex !== -1) {
+      fieldPart = line.substring(0, attrIndex).trim();
+      attributes = line.substring(attrIndex);
+    }
+
+    // Split field name and type
+    const [name, ...typeParts] = fieldPart.split(/\s+/);
+    const type = typeParts.join(' ');
+
+    return { name, type, attributes };
   });
 
-  // 4. 计算各列最大宽度
+  // Calculate max column widths
   const maxNameLen = Math.max(...fieldData.map((f) => f.name.length), 4);
   const maxTypeLen = Math.max(...fieldData.map((f) => f.type.length), 4);
-  const maxAttrLen = Math.max(...fieldData.map((f) => f.attributes.length), 9);
 
-  // 5. 构建格式化后的模型
+  // Format fields with consistent padding
   const formattedFields = fieldData.map((field) => {
     const namePad = field.name.padEnd(maxNameLen);
     const typePad = field.type.padEnd(maxTypeLen);
-    const attrPad = field.attributes.padEnd(maxAttrLen);
 
-    return `  ${namePad} ${typePad} ${attrPad}`.trimEnd();
+    let fieldLine = `  ${namePad} ${typePad}`;
+    if (field.attributes) {
+      fieldLine += ` ${field.attributes}`;
+    }
+
+    return fieldLine;
   });
 
-  // 6. 组合最终结果
-  return [modelHeader, ...formattedFields, modelFooter].join('\n');
+  return [header, ...formattedFields, footer].join('\n');
 }
 
 /**
  * Convert JSON schema to fields
  *
+ * @example
+ * ```typescript
+ * const jsonSchema: XJsonSchema = {
+ *   type: 'object',
+ *   properties: {
+ *     name: {
+ *       type: 'string',
+ *       title: '姓名',
+ *       description: '用户的姓名',
+ *       required: true
+ *     },
+ *     age: {
+ *       type: 'integer',
+ *       title: '年龄',
+ *       description: '用户的年龄',
+ *       minimum: 0
+ *     },
+ *     email: {
+ *       type: 'string',
+ *       format: 'email',
+ *       title: '邮箱',
+ *       description: '用户的邮箱地址'
+ *     }
+ *   },
+ *   required: ['name']
+ * };
+ *
+ * const fields = jsonSchemaToFields(jsonSchema);
+ *
+ * console.log(fields);
+ * // [
+ * //   {
+ * //     name: 'name',
+ * //     title: '姓名',
+ * //     description: '用户的姓名',
+ * //     type: 'String',
+ * //     required: true,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: null,
+ * //     enum: null,
+ * //     graphqlType: 'String',
+ * //     tsType: 'string',
+ * //     tsNullable: ''
+ * //   },
+ * //   {
+ * //     name: 'age',
+ * //     title: '年龄',
+ * //     description: '用户的年龄',
+ * //     type: 'Int',
+ * //     required: false,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: null,
+ * //     enum: null,
+ * //     graphqlType: 'Int',
+ * //     tsType: 'number',
+ * //     tsNullable: '?'
+ * //   },
+ * //   {
+ * //     name: 'email',
+ * //     title: '邮箱',
+ * //     description: '用户的邮箱地址',
+ * //     type: 'String',
+ * //     required: false,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: 'email',
+ * //     enum: null,
+ * //     graphqlType: 'String',
+ * //     tsType: 'string',
+ * //     tsNullable: '?'
+ * //   }
+ * // ]
+ * ```
+ *
  * @param {XJsonSchema} jsonSchema - The JSON schema.
  * @returns {XField[]} The fields.
  */
 export function jsonSchemaToFields(jsonSchema: XJsonSchema): XField[] {
+  if (!jsonSchema) return [];
   // 类型映射表
   const typeMap = new Map<XJsonSchemaType, string>([
     ['array', 'Json[]'],
@@ -640,24 +817,44 @@ export function jsonSchemaToFields(jsonSchema: XJsonSchema): XField[] {
 
     let isArray = false;
     let isObject = false;
+    let isJsonSchema = false;
     let graphqlType = type;
+    let graphqlFilterType = 'BASE_STRING_FILTER';
     let tsType = 'string';
     let tsNullable = requiredFields.has(name) ? '' : '?';
+    let tsFilterType = 'StringFilter';
 
     // Handle special types
     if (schema.format === 'date-time') {
       type = 'DateTime';
       graphqlType = 'Date';
+      graphqlFilterType = 'BASE_DATETIME_FILTER';
       tsType = 'Date';
+      tsFilterType = 'DateTimeFilter';
     } else if (schema.type === 'integer') {
       tsType = 'number';
+      graphqlFilterType = 'BASE_NUMBER_FILTER';
+      tsFilterType = 'NumberFilter';
     } else if (schema.type === 'number') {
       tsType = 'number';
+      graphqlFilterType = 'BASE_NUMBER_FILTER';
+      tsFilterType = 'NumberFilter';
     } else if (schema.type === 'boolean') {
       tsType = 'boolean';
+      graphqlFilterType = 'BASE_BOOLEAN_FILTER';
+      tsFilterType = 'BooleanFilter';
     } else if (schema.type === 'object') {
       tsType = 'object';
       isObject = true;
+    }
+
+    if (isObject) {
+      const ngnest = schema['x-ng-nest'];
+      isJsonSchema = !!(ngnest && ngnest.isJsonSchema);
+      if (isJsonSchema) {
+        graphqlFilterType = 'BASE_JSON_FILTER';
+        tsFilterType = 'JsonFilter';
+      }
     }
 
     // Handle arrays
@@ -669,7 +866,7 @@ export function jsonSchemaToFields(jsonSchema: XJsonSchema): XField[] {
         graphqlType = '[Date]';
         tsType = 'Date[]';
       } else if (schema.items.type === 'object') {
-        graphqlType = '[GraphQLJSONObject]';
+        graphqlType = '[GraphQLJSON]';
         tsType = 'any[]';
       } else {
         graphqlType = `[${graphqlType}]`;
@@ -692,11 +889,14 @@ export function jsonSchemaToFields(jsonSchema: XJsonSchema): XField[] {
       required: requiredFields.has(name),
       isArray,
       isObject,
+      isJsonSchema,
       format,
       enum: enumValues,
       graphqlType,
+      graphqlFilterType,
       tsType,
       tsNullable,
+      tsFilterType,
       nullable: !requiredFields.has(name),
     };
   });

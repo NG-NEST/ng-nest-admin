@@ -16,5 +16,6 @@ export const IconConfig: { [key: string]: string } = {
   svg: '/assets/file-icons/svg.svg',
   scss: '/assets/file-icons/scss.svg',
   less: '/assets/file-icons/less.svg',
-  ts: '/assets/file-icons/ts.svg'
+  ts: '/assets/file-icons/ts.svg',
+  prisma: '/assets/file-icons/prisma.svg'
 };

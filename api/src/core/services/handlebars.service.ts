@@ -7,9 +7,11 @@ import {
   constantize,
   dasherize,
   decamelize,
+  equals,
   filter,
   jsonSchemaToFields,
   jsonSchemaToPrismaSchema,
+  pluralize,
   underscore,
   XJsonSchema,
 } from '../functions';
@@ -46,6 +48,10 @@ Handlebars.registerHelper('$capitalize', (str: string) => {
   return capitalize(str);
 });
 
+Handlebars.registerHelper('$pluralize', (str: string) => {
+  return pluralize(str);
+});
+
 Handlebars.registerHelper(
   '$jsonSchemaToPrismaSchema',
   (jsonSchema: XJsonSchema, modelName: string) => {
@@ -61,8 +67,12 @@ Handlebars.registerHelper('$filter', (array: any[], options: string) => {
   return filter(array, options);
 });
 
+Handlebars.registerHelper('$equals', (str1: string, str2: string) => {
+  return equals(str1, str2);
+});
+
 @Injectable()
-export class TemplateService {
+export class HandlebarsService {
   generate(content: string, vars: { [key: string]: any }) {
     if (!content) return '';
     const template = Handlebars.compile(content);

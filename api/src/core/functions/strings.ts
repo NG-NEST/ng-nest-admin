@@ -203,3 +203,133 @@ export function levenshtein(a: string, b: string): number {
 
   return matrix[b.length][a.length];
 }
+
+/**
+ *
+ *  * @example
+ * ```typescript
+ * pluralize('child');      // 'children' (irregular plural)
+ * pluralize('box');        // 'boxes' (ends with x)
+ * pluralize('city');       // 'cities' (ends with consonant + y)
+ * pluralize('knife');      // 'knives' (ends with fe)
+ * pluralize('potato');     // 'potatoes' (special o ending)
+ * pluralize('criterion');  // 'criteria' (Greek origin)
+ * pluralize('cat');        // 'cats' (default rule)
+ * ```
+ *
+ * @param word
+ * @returns
+ */
+export function pluralize(word: string): string {
+  const irregularPlurals: { [key: string]: string } = {
+    child: 'children',
+    person: 'people',
+    man: 'men',
+    woman: 'women',
+    tooth: 'teeth',
+    foot: 'feet',
+    mouse: 'mice',
+    goose: 'geese',
+    ox: 'oxen',
+    die: 'dice',
+    louse: 'lice',
+    cactus: 'cacti',
+    fungus: 'fungi',
+    nucleus: 'nuclei',
+    syllabus: 'syllabi',
+    focus: 'foci',
+    radius: 'radii',
+    analysis: 'analyses',
+    basis: 'bases',
+    crisis: 'crises',
+    thesis: 'theses',
+    phenomenon: 'phenomena',
+    criterion: 'criteria',
+    datum: 'data',
+    medium: 'media',
+    bacterium: 'bacteria',
+  };
+
+  const oEsEndings = [
+    'potato',
+    'tomato',
+    'hero',
+    'echo',
+    'veto',
+    'embargo',
+    'torpedo',
+    'domino',
+    'mosquito',
+    'volcano',
+    'tornado',
+    'buffalo',
+    'mango',
+  ];
+
+  const fExceptions = [
+    'roof',
+    'belief',
+    'chef',
+    'chief',
+    'proof',
+    'reef',
+    'giraffe',
+    'cafe',
+    'safe',
+    'cliff',
+    'dwarf',
+    'handkerchief',
+    'turf',
+  ];
+
+  const words = word.split(/(?=[A-Z])|[-_\s]/);
+  const lastWord = words[words.length - 1].toLowerCase();
+
+  if (words.length > 1) {
+    const prefix = word.slice(0, word.length - lastWord.length);
+    return prefix + pluralize(lastWord);
+  }
+
+  if (!word) return '';
+
+  if (irregularPlurals[word]) {
+    return irregularPlurals[word];
+  }
+
+  if (/(s|x|z|ch|sh)$/i.test(word)) {
+    return word + 'es';
+  }
+
+  if (/[^aeiou]y$/i.test(word)) {
+    return word.slice(0, -1) + 'ies';
+  }
+
+  if (word.endsWith('f') && !fExceptions.includes(word)) {
+    return word.slice(0, -1) + 'ves';
+  }
+  if (word.endsWith('fe') && !fExceptions.includes(word)) {
+    return word.slice(0, -2) + 'ves';
+  }
+
+  if (word.endsWith('o') && oEsEndings.includes(word)) {
+    return word + 'es';
+  }
+
+  if (word.endsWith('us')) {
+    return word.slice(0, -2) + 'i';
+  }
+
+  if (word.endsWith('is')) {
+    return word.slice(0, -2) + 'es';
+  }
+
+  if (word.endsWith('on')) {
+    return word.slice(0, -2) + 'a';
+  }
+
+  return word + 's';
+}
+
+export function equals(str1: string, str2: string) {
+  return str1 === str2;
+}

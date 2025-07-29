@@ -1,6 +1,43 @@
 /**
  * Convert JSON schema to Prisma schema
  *
+ * @example
+ * ```typescript
+ * const jsonSchema = {
+ *   "type": "object",
+ *   "title": "提示词",
+ *   "properties": {
+ *     "name": {
+ *       "type": "string",
+ *       "title": "名称"
+ *     },
+ *     "description": {
+ *       "type": "string",
+ *       "title": "描述"
+ *     },
+ *     "system": {
+ *       "type": "string",
+ *       "title": "系统提示词"
+ *     },
+ *     "user": {
+ *       "type": "string",
+ *       "title": "用户提示词"
+ *     }
+ *   },
+ *   "required": ["name", "user"]
+ * };
+ * const prismaSchema = jsonSchemaToPrismaSchema(jsonSchema, 'Prompt');
+ *
+ * // prisma schema
+ * model Prompt {
+ *   id          String  @id  @default(uuid())
+ *   name        String
+ *   user        String
+ *   system      String?
+ *   description String?
+ * }
+ * ```
+ *
  * @param {XJsonSchema} jsonSchema - The JSON schema.
  * @param {string} modelName - The model name.
  * @returns {string} The prisma schema string.
@@ -9,6 +46,82 @@ export function jsonSchemaToPrismaSchema(jsonSchema: XJsonSchema, modelName: str
 
 /**
  * Convert JSON schema to fields
+ *
+ * @example
+ * ```typescript
+ * const jsonSchema: XJsonSchema = {
+ *   type: 'object',
+ *   properties: {
+ *     name: {
+ *       type: 'string',
+ *       title: '姓名',
+ *       description: '用户的姓名',
+ *       required: true
+ *     },
+ *     age: {
+ *       type: 'integer',
+ *       title: '年龄',
+ *       description: '用户的年龄',
+ *       minimum: 0
+ *     },
+ *     email: {
+ *       type: 'string',
+ *       format: 'email',
+ *       title: '邮箱',
+ *       description: '用户的邮箱地址'
+ *     }
+ *   },
+ *   required: ['name']
+ * };
+ *
+ * const fields = jsonSchemaToFields(jsonSchema);
+ *
+ * console.log(fields);
+ * // [
+ * //   {
+ * //     name: 'name',
+ * //     title: '姓名',
+ * //     description: '用户的姓名',
+ * //     type: 'String',
+ * //     required: true,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: null,
+ * //     enum: null,
+ * //     graphqlType: 'String',
+ * //     tsType: 'string',
+ * //     tsNullable: ''
+ * //   },
+ * //   {
+ * //     name: 'age',
+ * //     title: '年龄',
+ * //     description: '用户的年龄',
+ * //     type: 'Int',
+ * //     required: false,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: null,
+ * //     enum: null,
+ * //     graphqlType: 'Int',
+ * //     tsType: 'number',
+ * //     tsNullable: '?'
+ * //   },
+ * //   {
+ * //     name: 'email',
+ * //     title: '邮箱',
+ * //     description: '用户的邮箱地址',
+ * //     type: 'String',
+ * //     required: false,
+ * //     isArray: false,
+ * //     isObject: false,
+ * //     format: 'email',
+ * //     enum: null,
+ * //     graphqlType: 'String',
+ * //     tsType: 'string',
+ * //     tsNullable: '?'
+ * //   }
+ * // ]
+ * ```
  *
  * @param {XJsonSchema} jsonSchema - The JSON schema.
  * @returns {XField[]} The fields.

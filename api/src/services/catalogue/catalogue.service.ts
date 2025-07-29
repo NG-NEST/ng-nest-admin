@@ -1,4 +1,4 @@
-import { BaseSelect, LOGS, PrismaService } from '@api/core';
+import { BaseSelect, LOGS, PrismaService, HandlebarsService } from '@api/core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CataloguePaginationInput } from './pagination.input';
 import { Catalogue } from './catalogue.model';
@@ -6,13 +6,11 @@ import { CatalogueUpdateInput } from './update.input';
 import { CatalogueCreateInput } from './create.input';
 import { CatalogueSelectInput } from './select.input';
 import { CataloguePaginationOutput } from './catalogue.output';
-
 import { CatalogueException, CatalogueFileType, CatalogueType } from './catalogue.enum';
 import { UploadService } from '../upload';
 import { File as UploadFile } from '../file';
 import { MultipartFile } from '@fastify/multipart';
 import { v4 } from 'uuid';
-import { TemplateService } from '@api/core';
 import { cloneDeep, get, set } from 'lodash-es';
 import * as archiver from 'archiver';
 import { FastifyReply } from 'fastify';
@@ -25,7 +23,7 @@ export class CatalogueService {
   constructor(
     private prisma: PrismaService,
     private uploadService: UploadService,
-    private templateService: TemplateService,
+    private templateService: HandlebarsService,
   ) {}
 
   RESOURCE_FILE_TYPE = 'file-type';

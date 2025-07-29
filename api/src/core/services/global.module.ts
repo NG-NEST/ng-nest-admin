@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 import { RedisService } from './redis.service';
 import { CosService } from './cos.service';
 import { I18nService } from './i18n.service';
-import { TemplateService } from './template.service';
+import { HandlebarsService } from './handlebars.service';
 
 const services = [
   PrismaService,
@@ -13,7 +13,7 @@ const services = [
   EncryptService,
   I18nService,
   CosService,
-  TemplateService,
+  HandlebarsService,
 ];
 
 @Global()
