@@ -42,7 +42,7 @@
             } @else if (node.type === 'File') {
               <x-icon [type]="node.label | appFileIcon"></x-icon>
             }
-            <span>{{ node.label }}</span>
+            <span class="node-label" [attr.title]="node.label">{{ node.label }}</span>
             @if (node.many) {
               <span
                 class="many"

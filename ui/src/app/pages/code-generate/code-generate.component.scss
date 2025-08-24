@@ -42,17 +42,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    flex: 1;
 
     x-icon {
       font-size: 1.25rem;
     }
 
     .label {
-      display: flex;
-      align-items: center;
+      flex: 1;
+      min-width: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
       x-icon {
         margin-right: 0.25rem;
+        vertical-align: -0.25em;
+      }
+      .node-label {
+        word-break: break-all;
       }
     }
     .many {
@@ -78,7 +86,7 @@
     }
     &:hover {
       .actions {
-        display: flex;
+        display: inline-flex;
       }
     }
   }
