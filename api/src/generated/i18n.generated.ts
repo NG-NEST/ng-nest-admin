@@ -155,6 +155,18 @@ export type I18nTranslations = {
         "VariableCategoryIdIsNotEmpty": string;
         "VariableCategoryIdIsNotExist": string;
     };
+    "prompt": {
+        "PromptIdIsNotEmpty": string;
+        "NameIsNotEmpty": string;
+        "UserIsNotEmpty": string;
+        "ModelIdIsNotEmpty": string;
+    };
+    "model": {
+        "ModelIdIsNotEmpty": string;
+        "ModelIdIsNotExist": string;
+        "NameIsNotEmpty": string;
+        "TypeIsNotEmpty": string;
+    };
 };
 /* prettier-ignore */
 export type I18nPath = Path<I18nTranslations>;

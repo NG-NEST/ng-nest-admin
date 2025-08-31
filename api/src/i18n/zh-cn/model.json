@@ -1,0 +1,6 @@
+{
+  "ModelIdIsNotEmpty": "模型编码 不能为空",
+  "ModelIdIsNotExist": "模型编码 不存在",
+  "NameIsNotEmpty": "模型名称 不能为空",
+  "TypeIsNotEmpty": "类型 不能为空"
+}

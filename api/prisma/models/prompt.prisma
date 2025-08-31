@@ -1,0 +1,18 @@
+model Prompt {
+  id          String  @id @default(uuid())
+  name        String
+  user        String
+  system      String?
+  modelId     String
+  userVars    Json?
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  model Model @relation(fields: [modelId], references: [id])
+
+  @@map("sys-prompt")
+}
+
+

@@ -265,31 +265,3 @@ model Variable {
 
   @@map("sys-variable")
 }
-
-model Model {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  type        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Prompt      Prompt[]
-
-  @@map("sys-model")
-}
-
-model Prompt {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  system      String?
-  user        String
-  userVars    Json?
-  modelId     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  model Model @relation(fields: [modelId], references: [id])
-
-  @@map("sys-prompt")
-}

@@ -16,3 +16,5 @@ export * from './catalogue';
 export * from './file';
 export * from './variable';
 export * from './variable-category';
+export * from './prompt';
+export * from './model';

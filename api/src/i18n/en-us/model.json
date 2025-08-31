@@ -1,0 +1,6 @@
+{
+  "ModelIdIsNotEmpty": "id should not be empty",
+  "ModelIdIsNotExist": "id should not exist",
+  "NameIsNotEmpty": "name should not be empty",
+  "TypeIsNotEmpty": "type should not be empty"
+}

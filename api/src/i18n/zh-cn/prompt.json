@@ -1,0 +1,6 @@
+{
+  "PromptIdIsNotEmpty": "提示词编码不能为空",
+  "NameIsNotEmpty": "名称 不能为空",
+  "UserIsNotEmpty": "用户 不能为空",
+  "ModelIdIsNotEmpty": "使用模型Id 不能为空"
+}

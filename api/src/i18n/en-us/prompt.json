@@ -1,0 +1,6 @@
+{
+  "PromptIdIsNotEmpty": "id should not be empty",
+  "NameIsNotEmpty": "name should not be empty",
+  "UserIsNotEmpty": "user should not be empty",
+  "ModelIdIsNotEmpty": "modelId should not be empty"
+}

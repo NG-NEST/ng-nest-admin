@@ -45,7 +45,7 @@ export class SchemaComponent {
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: SchemaDescription.Name },
+    { id: 'name', label: SchemaDescription.Name, width: 200, left: 70 },
     { id: 'code', label: SchemaDescription.Code },
     { id: 'version', label: SchemaDescription.Version, width: 100 },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },

@@ -1,0 +1,11 @@
+model Model {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  type        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  prompts     Prompt[]
+
+  @@map("sys-model")
+}

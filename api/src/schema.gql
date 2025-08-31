@@ -617,6 +617,96 @@ type LogsOutput {
   warn: [LogsFile!]
 }
 
+type Model {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """Name"""
+  name: String!
+
+  """Type"""
+  type: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input ModelOrderInput {
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Description"""
+  description: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """Type"""
+  type: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+}
+
+type ModelPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Model!]!
+}
+
+type ModelSelectOutput {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """Name"""
+  name: String!
+
+  """Type"""
+  type: String!
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+}
+
+input ModelWhere {
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Type"""
+  type: StringFilter
+}
+
+input ModelWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [ModelWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [ModelWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [ModelWhere!]
+
+  """Description"""
+  description: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """Type"""
+  type: StringFilter
+}
+
 input NumberFilter {
   """Equals the given value"""
   equals: Float
@@ -774,6 +864,138 @@ input PermissionsInclude {
   where: PermissionWhereInput
 }
 
+type Prompt {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """ModelId"""
+  modelId: String!
+
+  """Name"""
+  name: String!
+
+  """System"""
+  system: String
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
+  """User"""
+  user: String!
+
+  """UserVars"""
+  userVars: JSON
+}
+
+input PromptOrderInput {
+  """CreatedAt"""
+  createdAt: SortOrder
+
+  """Description"""
+  description: SortOrder
+
+  """ModelId"""
+  modelId: SortOrder
+
+  """Name"""
+  name: SortOrder
+
+  """System"""
+  system: SortOrder
+
+  """UpdatedAt"""
+  updatedAt: SortOrder
+
+  """User"""
+  user: SortOrder
+}
+
+type PromptPaginationOutput {
+  """Total count"""
+  count: Int
+
+  """Data collection"""
+  data: [Prompt!]!
+}
+
+type PromptSelectOutput {
+  """CreatedAt"""
+  createdAt: DateTime
+
+  """Description"""
+  description: String
+
+  """ModelId"""
+  modelId: String!
+
+  """Name"""
+  name: String!
+
+  """System"""
+  system: String
+
+  """UpdatedAt"""
+  updatedAt: DateTime
+
+  """User"""
+  user: String!
+
+  """UserVars"""
+  userVars: JSON
+}
+
+input PromptWhere {
+  """Description"""
+  description: StringFilter
+
+  """ModelId"""
+  modelId: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """System"""
+  system: StringFilter
+
+  """User"""
+  user: StringFilter
+
+  """UserVars"""
+  userVars: StringFilter
+}
+
+input PromptWhereInput {
+  """Logical AND, returns true if all conditions are true"""
+  AND: [PromptWhere!]
+
+  """Logical NOT, returns false if all conditions are true"""
+  NOT: [PromptWhere!]
+
+  """Logical OR, returns true if one or more conditions are met"""
+  OR: [PromptWhere!]
+
+  """Description"""
+  description: StringFilter
+
+  """ModelId"""
+  modelId: StringFilter
+
+  """Name"""
+  name: StringFilter
+
+  """System"""
+  system: StringFilter
+
+  """User"""
+  user: StringFilter
+
+  """UserVars"""
+  userVars: StringFilter
+}
+
 type Query {
   """CacheGet"""
   cache(key: String!): Cache!
@@ -877,6 +1099,36 @@ type Query {
   """A list of log categories"""
   logs: LogsOutput!
 
+  """Model"""
+  model(
+    """ModelId"""
+    id: ID!
+  ): Model!
+
+  """ModelSelect. No Pagination"""
+  modelSelect(
+    """Sorting rule"""
+    orderBy: [ModelOrderInput!]
+
+    """Query condition"""
+    where: ModelWhereInput
+  ): [ModelSelectOutput!]!
+
+  """Models"""
+  models(
+    """Sorting rule"""
+    orderBy: [ModelOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: ModelWhereInput
+  ): ModelPaginationOutput!
+
   """Permission"""
   permission(
     """PermissionId"""
@@ -906,6 +1158,36 @@ type Query {
     """Query condition"""
     where: PermissionWhereInput
   ): PermissionPaginationOutput!
+
+  """Prompt"""
+  prompt(
+    """PromptId"""
+    id: ID!
+  ): Prompt!
+
+  """PromptSelect. No Pagination"""
+  promptSelect(
+    """Sorting rule"""
+    orderBy: [PromptOrderInput!]
+
+    """Query condition"""
+    where: PromptWhereInput
+  ): [PromptSelectOutput!]!
+
+  """Prompts"""
+  prompts(
+    """Sorting rule"""
+    orderBy: [PromptOrderInput!]
+
+    """Index starting position, default is 0"""
+    skip: Int = 0
+
+    """Number of data items to retrieve, default is 10"""
+    take: Int = 10
+
+    """Query condition"""
+    where: PromptWhereInput
+  ): PromptPaginationOutput!
 
   """Resource"""
   resource(
