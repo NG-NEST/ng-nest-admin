@@ -24,7 +24,7 @@
     "@angular/service-worker": "^20.0.0",
     "@angular/ssr": "^20.0.0",
     "@apollo/client": "^3.11.8",
-    "@ng-nest/ui": "^20.0.4",
+    "@ng-nest/ui": "^20.0.7",
     "apollo-angular": "^10.0.3",
     "documentation": "^14.0.3",
     "express": "^4.18.2",
