@@ -20,7 +20,7 @@ export class ModelService {
   model(id: string): Observable<Model> {
     return this.apollo
       .query<{ model: Model }>({
-        models: { id },
+        variables: { id },
         query: gql`
           query model($id: ID!) {
             model(id: $id) {
@@ -37,7 +37,7 @@ export class ModelService {
   models(input: ModelPaginationInput): Observable<BasePagination<Model>> {
     return this.apollo
       .query<{ models: BasePagination<Model> }>({
-        models: input,
+        variables: input,
         query: gql`
           query models(
             $skip: Int
@@ -62,7 +62,7 @@ export class ModelService {
   modelSelect(input: ModelSelectInput): Observable<ModelSelectOutput[]> {
     return this.apollo
       .query<{ modelSelect: ModelSelectOutput[] }>({
-        models: input,
+        variables: input,
         query: gql`
           query ModelSelect($where: ModelWhereInput, $orderBy: [ModelOrderInput!]) {
             modelSelect(where: $where, orderBy: $orderBy) {
@@ -76,12 +76,12 @@ export class ModelService {
       .pipe(map((x) => cloneDeep(x.data?.modelSelect!)));
   }
 
-  create(input: ModelCreateInput): Observable<Model> {
-    return this.http.post<Model>('/api/model', input);
+  create(input: ModelCreateInput): Observable<string> {
+    return this.http.post<Model>('/api/model', input).pipe(map(() => ModelMessage.CreatedSuccess));
   }
 
-  update(input: ModelUpdateInput): Observable<Model> {
-    return this.http.patch<Model>(`/api/model`, input);
+  update(input: ModelUpdateInput): Observable<string> {
+    return this.http.patch<Model>(`/api/model`, input).pipe(map(() => ModelMessage.UpdatedSuccess));
   }
 
   delete(id: string): Observable<string> {

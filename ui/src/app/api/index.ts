@@ -13,3 +13,4 @@ export * from './catalogue';
 export * from './variable';
 export * from './variable-category';
 export * from './schema-data';
+export * from './model';

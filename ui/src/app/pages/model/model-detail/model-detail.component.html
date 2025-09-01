@@ -1,0 +1,35 @@
+<form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
+  <h4 x-dialog-title class="title">{{ id() ? '修改' : '新增' }}角色</h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
+  <div x-dialog-content class="content">
+    <div class="item required">
+      <label>模型分类：</label>
+      <x-select
+        [data]="modelTypeList()"
+        formControlName="type"
+        placeholder="请选择模型分类"
+        required
+      ></x-select>
+    </div>
+    <div class="item required">
+      <label>模型名称：</label>
+      <x-input formControlName="name" placeholder="请输入角色名称" required></x-input>
+    </div>
+    <div class="item">
+      <label>模型描述：</label>
+      <x-input formControlName="description" placeholder="请输入角色描述"></x-input>
+    </div>
+  </div>
+  <div x-dialog-actions align="center" class="actions">
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button
+      flat
+      icon="fto-save"
+      type="primary"
+      attrType="submit"
+      [loading]="saveLoading()"
+      [disabled]="!form.valid"
+      >保存</x-button
+    >
+  </div>
+</form>

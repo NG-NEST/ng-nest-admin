@@ -3,16 +3,19 @@
   <x-icon [type]="'fto-chevron-right'"></x-icon>
 </ng-template>
 
-<x-dropdown
-  [data]="userMenu"
-  trigger="click"
-  portalMinWidth="8rem"
-  (nodeClick)="onUserMenuClick($event)"
->
-  <x-button type="text">
-    <div class="userinfo">
-      <x-avatar [label]="userFirstName()" size="mini"></x-avatar>
-      <span>{{ auth.userInfo()?.name }}</span>
-    </div>
-  </x-button>
-</x-dropdown>
+<div class="right">
+  <x-button (click)="onTheme()" [title]="'header.theme' | xI18n" icon="eao-color-palette" text></x-button>
+  <x-dropdown
+    [data]="userMenu"
+    trigger="click"
+    portalMinWidth="8rem"
+    (nodeClick)="onUserMenuClick($event)"
+  >
+    <x-button type="text">
+      <div class="userinfo">
+        <x-avatar [label]="userFirstName()" size="mini"></x-avatar>
+        <span>{{ auth.userInfo()?.name }}</span>
+      </div>
+    </x-button>
+  </x-dropdown>
+</div>

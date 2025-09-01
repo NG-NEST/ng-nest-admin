@@ -5,6 +5,9 @@ import { AppAuthService, AppConfigService } from '@ui/core';
 import { XDropdownComponent, XDropdownNode } from '@ng-nest/ui/dropdown';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XAvatarComponent } from '@ng-nest/ui/avatar';
+import { XDialogService } from '@ng-nest/ui/dialog';
+import { ThemeComponent } from '../theme/theme.component';
+import { XI18nPipe } from '@ng-nest/ui/i18n';
 
 @Component({
   selector: 'app-tabs',
@@ -13,7 +16,8 @@ import { XAvatarComponent } from '@ng-nest/ui/avatar';
     XIconComponent,
     XDropdownComponent,
     XButtonComponent,
-    XAvatarComponent
+    XAvatarComponent,
+    XI18nPipe
   ],
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
@@ -21,6 +25,7 @@ import { XAvatarComponent } from '@ng-nest/ui/avatar';
 export class TabsComponent {
   config = inject(AppConfigService);
   auth = inject(AppAuthService);
+  dialogService = inject(XDialogService);
   userFirstName = computed(() => {
     const user = this.auth.userInfo();
     if (user && user.name) {
@@ -39,5 +44,12 @@ export class TabsComponent {
     if (node.id === 'exit') {
       this.auth.logout().subscribe();
     }
+  }
+
+  onTheme() {
+    this.dialogService.create(ThemeComponent, {
+      className: 'app-theme',
+      width: '48rem'
+    });
   }
 }

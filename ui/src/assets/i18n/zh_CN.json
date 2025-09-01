@@ -8,5 +8,27 @@
     "please-input-password": "请输入密码",
     "please-input-code": "请输入验证码",
     "login": "登 录"
+  },
+  "header": {
+    "components": "组件",
+    "version": "版本",
+    "chinese": "ZH",
+    "english": "EN",
+    "dark": "暗黑风格",
+    "light": "明亮风格",
+    "search": "搜索组件",
+    "theme": "主题",
+    "primary": "主色",
+    "text": "文本",
+    "success": "成功",
+    "warning": "警告",
+    "danger": "危险",
+    "info": "信息",
+    "background": "背景",
+    "border": "边框",
+    "fontSize": "文字大小",
+    "borderWidth": "边框宽度",
+    "borderRadius": "边框圆角",
+    "borderSmallRadius": "边框圆角-小"
   }
 }

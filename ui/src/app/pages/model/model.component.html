@@ -1,0 +1,66 @@
+<div class="app-inner">
+  <div class="app-tools">
+    <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
+      <div class="list">
+        <div class="item">
+          <label>模型分类：</label>
+          <x-select
+            [data]="modelTypeList()"
+            formControlName="type"
+            placeholder="请选择模型分类"
+          ></x-select>
+        </div>
+
+        <div class="item">
+          <label>模型名称：</label>
+          <x-input formControlName="name" placeholder="请输入模型名称"></x-input>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>
+          <x-button icon="fto-search" attrType="submit" [loading]="searchLoading()">搜索</x-button>
+          <x-button
+            icon="fto-refresh-cw"
+            attrType="button"
+            (click)="action('reset')"
+            [loading]="resetLoading()"
+            >重置</x-button
+          >
+        </div>
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')"
+          >新增</x-button
+        >
+      </div>
+    </form>
+  </div>
+  <div class="app-table" [x-loading]="tableLoading()">
+    <x-table
+      ngSkipHydration
+      #tableCom
+      [data]="data()"
+      [columns]="columns()"
+      [(index)]="index"
+      [(size)]="size"
+      [(total)]="total"
+      [showSize]="true"
+      [showEmpty]="!tableLoading()"
+      [sizeData]="[10, 20, 50, 100]"
+      [showJump]="true"
+      [scroll]="{ x: 800, y: 400 }"
+      [virtualScroll]="true"
+      [bodyColumnTpl]="{ operate: operateTpl }"
+      (indexChange)="indexChange()"
+      (sizeChange)="sizeChange()"
+    ></x-table>
+    <ng-template #operateTpl let-column="$column" let-row="$row">
+      <div class="operate">
+        <x-link [app-auth]="'model-update'" type="primary" (click)="action('edit', row)"
+          >修改</x-link
+        >
+        <x-link [app-auth]="'model-delete'" type="danger" (click)="action('delete', row)"
+          >删除</x-link
+        >
+      </div>
+    </ng-template>
+  </div>
+</div>
