@@ -7,6 +7,7 @@
   top: 0;
   left: 0;
   z-index: 11;
+  border-right: $x-border-base;
   transition:
     width $x-animation-duration-slow,
     background-color $x-animation-duration-slow;
@@ -31,7 +32,7 @@
         height: 100%;
         content: '';
         display: block;
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: $x-background;
       }
     }
     &-logo {
@@ -67,19 +68,8 @@
       padding: 0 1rem;
       ::ng-deep .x-menu-nodes .x-menu-node {
         border-right: none;
-        color: $x-primary-900;
 
-        x-menu-node > a {
-          color: $x-primary-900;
-        }
-        &:hover {
-          background-color: rgba(50, 50, 50, 0.5);
-        }
         &.x-activated {
-          background-color: rgba(50, 50, 50, 0.9);
-          x-menu-node > a {
-            color: $x-primary;
-          }
           &::after {
             right: 0;
             border-right-width: 0.25rem;

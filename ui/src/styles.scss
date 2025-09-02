@@ -323,7 +323,7 @@ input {
 
   .title {
     font-weight: 600;
-    color: var(--x-text-300);
+    color: $x-text-300;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -556,4 +556,12 @@ x-empty,
       }
     }
   }
+}
+
+.x-dialog-portal {
+  background-color: $x-background !important;
+}
+
+.cdk-overlay-dark-backdrop {
+  filter: contrast(0.3);
 }

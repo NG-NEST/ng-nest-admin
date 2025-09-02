@@ -1,3 +1,5 @@
+@use '../../../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
+
 :host {
   display: flex;
   align-items: center;
@@ -122,15 +124,15 @@
     margin: 0 0.125rem;
     padding: 0.125rem 0.25rem;
     border-radius: 0.125rem;
-    color: rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.05);
+    color: $x-text-100;
+    background-color: $x-background-a100;
     position: relative;
     height: 1.875rem;
     width: 1.875rem;
     font-size: 1.125rem;
     &:hover {
-      color: rgba(0, 0, 0, 0.9);
-      background-color: rgba(0, 0, 0, 0.07);
+      color: $x-text;
+      background-color: $x-background-a200;
     }
 
     &.required {
@@ -152,13 +154,13 @@
     }
     &.selected {
       display: flex !important;
-      background-color: rgba(0, 0, 0, 0.08);
+      background-color: $x-background-a200;
       color: var(--x-danger);
     }
     &.selected-black {
       display: flex !important;
       color: var(--x-text);
-      background-color: rgba(0, 0, 0, 0.07);
+      background-color: $x-background-a100;
     }
     &.description {
       display: flex !important;
@@ -197,10 +199,10 @@
     height: 1.875rem;
     width: 1.875rem;
     font-size: 1.125rem;
-    color: rgba(0, 0, 0, 0.5);
+    color: $x-text-300;
     cursor: grab;
     &:hover {
-      color: rgba(0, 0, 0, 0.9);
+      color: $x-text-100;
     }
   }
   &:hover {

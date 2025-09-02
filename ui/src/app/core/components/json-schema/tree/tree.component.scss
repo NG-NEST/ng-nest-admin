@@ -22,14 +22,14 @@
     margin: 0.1875rem 1.875rem 0.1875rem 0.1875rem;
     padding: 0.125rem 0.25rem;
     border-radius: 0.125rem;
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--x-text-300);
     position: relative;
     height: 1.875rem;
     width: 1.875rem;
     font-size: 1.125rem;
     cursor: pointer;
     &:hover {
-      color: rgba(0, 0, 0, 0.9);
+      color: var(--x-text-100);
     }
     &.visibility {
       visibility: hidden;

@@ -15,7 +15,8 @@
     left $x-animation-duration-slow,
     width $x-animation-duration-slow;
   font-size: 0.875rem;
-  background-color: rgba(255, 255, 255);
+  background-color: $x-background;
+  border-bottom: $x-border-base;
   box-shadow: var(--x-box-shadow) var(--x-box-shadow-light-color);
 
   .right {

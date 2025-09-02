@@ -1,6 +1,8 @@
+@use '../../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
+
 :host {
   min-height: 100vh;
-  background-color: #f1f1f1;
+  background-color: $x-background-a100;
   width: 100%;
   padding-top: 2.25rem;
   padding-left: 15rem;
