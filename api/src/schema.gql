@@ -624,6 +624,9 @@ type Model {
   """Description"""
   description: String
 
+  """ModelId"""
+  id: ID!
+
   """Name"""
   name: String!
 
@@ -665,6 +668,9 @@ type ModelSelectOutput {
 
   """Description"""
   description: String
+
+  """ModelId"""
+  id: ID!
 
   """Name"""
   name: String!

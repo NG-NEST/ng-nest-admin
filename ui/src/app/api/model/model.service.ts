@@ -24,6 +24,7 @@ export class ModelService {
         query: gql`
           query model($id: ID!) {
             model(id: $id) {
+              id
               name
               type
               description
@@ -48,9 +49,12 @@ export class ModelService {
             models(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
+                id
                 name
                 type
                 description
+                createdAt
+                updatedAt
               }
             }
           }
@@ -66,6 +70,7 @@ export class ModelService {
         query: gql`
           query ModelSelect($where: ModelWhereInput, $orderBy: [ModelOrderInput!]) {
             modelSelect(where: $where, orderBy: $orderBy) {
+              id
               name
               type
               description

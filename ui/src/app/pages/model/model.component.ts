@@ -70,6 +70,7 @@ export class ModelComponent {
   tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
+    this.getModelTypeList().subscribe();
     this.getTableData();
   }
 
@@ -102,10 +103,14 @@ export class ModelComponent {
 
   getModelTypeList() {
     return this.resourceService
-      .resourceSelect({ where: { subjectId: { equals: 'model-type' } } })
+      .resourceSelect({
+        where: { subject: { code: { equals: 'model-type' } } },
+        orderBy: [{ sort: 'asc' }]
+      })
       .pipe(
         tap((x) => {
           this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
+          console.log(this.modelTypeList());
         })
       );
   }

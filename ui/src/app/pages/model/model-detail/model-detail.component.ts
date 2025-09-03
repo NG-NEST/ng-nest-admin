@@ -91,7 +91,10 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
 
   getModelTypeList() {
     return this.resourceService
-      .resourceSelect({ where: { subjectId: { equals: 'model-type' } } })
+      .resourceSelect({
+        where: { subject: { code: { equals: 'model-type' } } },
+        orderBy: [{ sort: 'asc' }]
+      })
       .pipe(
         tap((x) => {
           this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
