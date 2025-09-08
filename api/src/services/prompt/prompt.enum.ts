@@ -11,12 +11,13 @@ export enum PromptDescription {
   Prompt = 'Prompt',
 
   Id = 'PromptId',
-  Name = 'Name', 
-  User = 'User', 
-  System = 'System', 
-  ModelId = 'ModelId', 
-  UserVars = 'UserVars', 
-  Description = 'Description' 
+  Name = 'Name',
+  User = 'User',
+  System = 'System',
+  ModelId = 'ModelId',
+  ModelType = 'ModelType',
+  UserVars = 'UserVars',
+  Description = 'Description',
 }
 
 export enum PromptResolverName {

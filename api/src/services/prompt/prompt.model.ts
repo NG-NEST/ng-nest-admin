@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseAudit } from '@api/core';
 import { PromptDescription } from './prompt.enum';
 import { GraphQLJSON } from 'graphql-scalars';
@@ -7,6 +7,9 @@ import { JsonValue } from '@prisma/client/runtime/library';
 
 @ObjectType()
 export class Prompt extends BaseAudit {
+  @Field(() => ID, { description: PromptDescription.Id })
+  id: string;
+
   @Field(() => String, { description: PromptDescription.Name })
   name: string;
 
@@ -19,6 +22,9 @@ export class Prompt extends BaseAudit {
 
   @Field(() => String, { description: PromptDescription.ModelId })
   modelId: string;
+
+  @Field(() => String, { description: PromptDescription.ModelType })
+  modelType: string;
 
   @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
   @IsOptional()

@@ -1,12 +1,11 @@
-import { BaseAudit, BaseModel } from '@ui/core';
+import { BaseModel } from '@ui/core';
 
-export class Role extends BaseModel {
-  name: string;
-  user: string;
+export class Prompt extends BaseModel {
+  name!: string;
+  user!: string;
   system?: string;
-  modelId: string;
+  modelType!: string;
+  modelId!: string;
   userVars?: any[];
   description?: string;
 }
-
-

@@ -48,7 +48,7 @@
       [showJump]="true"
       [scroll]="{ x: 800, y: 400 }"
       [virtualScroll]="true"
-      [bodyColumnTpl]="{ operate: operateTpl }"
+      [bodyColumnTpl]="{ operate: operateTpl, type: modelTypeTpl }"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
     ></x-table>
@@ -61,6 +61,9 @@
           >删除</x-link
         >
       </div>
+    </ng-template>
+    <ng-template #modelTypeTpl let-column="$column" let-row="$row">
+      {{ this.modelTypeMap.get(row.type) }}
     </ng-template>
   </div>
 </div>

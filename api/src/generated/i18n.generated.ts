@@ -160,6 +160,7 @@ export type I18nTranslations = {
         "NameIsNotEmpty": string;
         "UserIsNotEmpty": string;
         "ModelIdIsNotEmpty": string;
+        "ModelTypeIsNotEmpty": string;
     };
     "model": {
         "ModelIdIsNotEmpty": string;

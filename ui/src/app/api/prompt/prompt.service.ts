@@ -20,13 +20,15 @@ export class PromptService {
   prompt(id: string): Observable<Prompt> {
     return this.apollo
       .query<{ prompt: Prompt }>({
-        prompts: { id },
+        variables: { id },
         query: gql`
           query prompt($id: ID!) {
             prompt(id: $id) {
+              id
               name
               user
               system
+              modelType
               modelId
               userVars
               description
@@ -40,7 +42,7 @@ export class PromptService {
   prompts(input: PromptPaginationInput): Observable<BasePagination<Prompt>> {
     return this.apollo
       .query<{ prompts: BasePagination<Prompt> }>({
-        prompts: input,
+        variables: input,
         query: gql`
           query prompts(
             $skip: Int
@@ -51,12 +53,13 @@ export class PromptService {
             prompts(skip: $skip, take: $take, where: $where, orderBy: $orderBy) {
               count
               data {
+                id
                 name
-                user
-                system
+                modelType
                 modelId
-                userVars
                 description
+                createdAt
+                updatedAt
               }
             }
           }
@@ -68,13 +71,15 @@ export class PromptService {
   promptSelect(input: PromptSelectInput): Observable<PromptSelectOutput[]> {
     return this.apollo
       .query<{ promptSelect: PromptSelectOutput[] }>({
-        prompts: input,
+        variables: input,
         query: gql`
           query PromptSelect($where: PromptWhereInput, $orderBy: [PromptOrderInput!]) {
             promptSelect(where: $where, orderBy: $orderBy) {
+              id
               name
               user
               system
+              modelType
               modelId
               userVars
               description
@@ -85,12 +90,16 @@ export class PromptService {
       .pipe(map((x) => cloneDeep(x.data?.promptSelect!)));
   }
 
-  create(input: PromptCreateInput): Observable<Prompt> {
-    return this.http.post<Prompt>('/api/prompt', input);
+  create(input: PromptCreateInput): Observable<string> {
+    return this.http
+      .post<Prompt>('/api/prompt', input)
+      .pipe(map(() => PromptMessage.CreatedSuccess));
   }
 
-  update(input: PromptUpdateInput): Observable<Prompt> {
-    return this.http.patch<Prompt>(`/api/prompt`, input);
+  update(input: PromptUpdateInput): Observable<string> {
+    return this.http
+      .patch<Prompt>(`/api/prompt`, input)
+      .pipe(map(() => PromptMessage.UpdatedSuccess));
   }
 
   delete(id: string): Observable<string> {

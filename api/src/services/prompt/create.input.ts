@@ -34,6 +34,14 @@ export class PromptCreateInput {
   })
   modelId: string;
 
+  @Field(() => String, { description: PromptDescription.ModelType })
+  @IsNotEmpty({
+    message: I18N(
+      `${PROMPT_I18N}.${PromptDescription.ModelType}${ValidatorDescription.IsNotEmpty}`,
+    ),
+  })
+  modelType: string;
+
   @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
   @IsOptional()
   userVars?: JsonValue;

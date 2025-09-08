@@ -3,6 +3,7 @@ model Prompt {
   name        String
   user        String
   system      String?
+  modelType   String
   modelId     String
   userVars    Json?
   description String?
@@ -14,5 +15,3 @@ model Prompt {
 
   @@map("sys-prompt")
 }
-
-

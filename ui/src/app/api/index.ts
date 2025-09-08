@@ -14,3 +14,4 @@ export * from './variable';
 export * from './variable-category';
 export * from './schema-data';
 export * from './model';
+export * from './prompt';

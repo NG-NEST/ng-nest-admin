@@ -108,5 +108,13 @@ export const AppRoutes: Routes = [
     },
     loadChildren: () => import('./pages/model/model-routing.module').then((x) => x.ModelRoutes),
     canActivate: [AppCanLoad]
+  },
+  {
+    path: 'prompt',
+    data: {
+      permission: 'prompt-view'
+    },
+    loadChildren: () => import('./pages/prompt/prompt-routing.module').then((x) => x.PromptRoutes),
+    canActivate: [AppCanLoad]
   }
 ];

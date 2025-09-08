@@ -29,6 +29,10 @@ export class PromptUpdateInput {
   @IsOptional()
   modelId?: string;
 
+  @Field(() => String, { description: PromptDescription.ModelType, nullable: true })
+  @IsOptional()
+  modelType?: string;
+
   @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
   @IsOptional()
   userVars?: JsonValue;

@@ -43,6 +43,7 @@ export class ModelComponent {
   messageBox = inject(XMessageBoxService);
 
   modelTypeList = signal<XSelectNode[]>([]);
+  modelTypeMap = new Map<string, string>();
 
   searchForm = this.fb.group({
     name: [null],
@@ -110,7 +111,9 @@ export class ModelComponent {
       .pipe(
         tap((x) => {
           this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
-          console.log(this.modelTypeList());
+          for (let { code, name } of x) {
+            this.modelTypeMap.set(code as string, name);
+          }
         })
       );
   }
@@ -118,8 +121,9 @@ export class ModelComponent {
   setParams(index: number, size: number) {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: ModelWhereInput = {};
-    const { name } = this.searchForm.value;
+    const { name, type } = this.searchForm.value;
     if (!XIsEmpty(name)) where.name = { contains: name! };
+    if (!XIsEmpty(type)) where.type = { contains: type! };
 
     return {
       skip: (index - 1) * size,
