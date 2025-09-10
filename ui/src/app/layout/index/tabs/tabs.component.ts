@@ -1,12 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { XIconComponent } from '@ng-nest/ui/icon';
 import { XCrumbComponent } from '@ng-nest/ui/crumb';
-import { AppAuthService, AppConfigService } from '@ui/core';
+import { AppAuthService, AppConfigService, ThemeComponent } from '@ui/core';
 import { XDropdownComponent, XDropdownNode } from '@ng-nest/ui/dropdown';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XAvatarComponent } from '@ng-nest/ui/avatar';
 import { XDialogService } from '@ng-nest/ui/dialog';
-import { ThemeComponent } from '../theme/theme.component';
 import { XI18nPipe } from '@ng-nest/ui/i18n';
 
 @Component({

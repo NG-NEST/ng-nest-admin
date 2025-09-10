@@ -7,6 +7,7 @@ import { map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AppLocaleService {
+  langKey = 'XLang';
   storage = inject(XStorageService);
   i18n = inject(XI18nService);
   platform = inject(Platform);
@@ -15,23 +16,23 @@ export class AppLocaleService {
   langs = signal(['zh_CN', 'en_US']);
   cacheLangs = signal<{ [lang: string]: XI18nProperty }>({});
   get lang(): XI18nLanguage {
-    let lg = this.storage.getLocal('Lang');
+    let lg = this.storage.getLocal(this.langKey);
     if (!lg) {
-      this.storage.setLocal('Lang', this.defaultLang());
+      this.storage.setLocal(this.langKey, this.defaultLang());
       return this.defaultLang()!;
     }
     return lg;
   }
 
   set lang(value: string) {
-    this.storage.setLocal('Lang', value);
+    this.storage.setLocal(this.langKey, value);
   }
 
   init() {
-    return this.setLocale(this.defaultLang());
+    return this.setLocale();
   }
 
-  private setLocale(lang?: XI18nLanguage) {
+  setLocale(lang?: XI18nLanguage) {
     if (!lang) lang = this.lang;
     if (this.cacheLangs()[lang]) {
       this.lang = lang as string;

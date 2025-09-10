@@ -1,6 +1,30 @@
 <div class="login">
   <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="list">
+      <div class="item top">
+        <x-switch
+          [ngModelOptions]="{ standalone: true }"
+          [checkedText]="moonTpl"
+          [unCheckedText]="sunTpl"
+          [(ngModel)]="theme.dark"
+          (ngModelChange)="darkChanged($event)"
+        ></x-switch>
+        <ng-template #moonTpl>
+          <x-icon type="fto-moon" class="app-theme-style-icon"></x-icon>
+        </ng-template>
+        <ng-template #sunTpl>
+          <x-icon type="fto-sun" class="app-theme-style-icon"></x-icon>
+        </ng-template>
+        <x-select
+          class="lang-select"
+          [(ngModel)]="lang"
+          (ngModelChange)="changeLang($event)"
+          [ngModelOptions]="{ standalone: true }"
+          [data]="langs"
+          [variant]="'borderless'"
+          clearable="false"
+        ></x-select>
+      </div>
       <div class="item">
         <div class="logo"></div>
       </div>

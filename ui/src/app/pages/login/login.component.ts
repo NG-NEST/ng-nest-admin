@@ -1,27 +1,58 @@
-import { Component, ElementRef, Renderer2, inject, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Renderer2,
+  inject,
+  signal,
+  viewChild
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { AuthService } from '@ui/api';
-import { AppAuthService } from '@ui/core';
+import { AppAuthService, AppLocaleService, AppThemeService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
+import { XSelectComponent } from '@ng-nest/ui/select';
+import { XSwitchComponent } from '@ng-nest/ui/switch';
+import { XIconComponent } from '@ng-nest/ui/icon';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, XInputComponent, XButtonComponent, XI18nPipe],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    XInputComponent,
+    XButtonComponent,
+    XI18nPipe,
+    XSelectComponent,
+    XSwitchComponent,
+    XIconComponent
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   auth = inject(AppAuthService);
   authService = inject(AuthService);
   message = inject(XMessageService);
   storage = inject(XStorageService);
+  locale = inject(AppLocaleService);
+  theme = inject(AppThemeService);
+  cdr = inject(ChangeDetectorRef);
   i18n = inject(XI18nService);
   fb = inject(FormBuilder);
   renderer = inject(Renderer2);
@@ -31,10 +62,16 @@ export class LoginComponent {
   loginLoading = signal(false);
   codekey = signal('');
   redirect = signal('');
+  lang = signal(this.locale.lang);
 
   svgEle = viewChild.required<ElementRef<HTMLDivElement>>('svgEle');
 
   form!: FormGroup;
+
+  langs = [
+    { label: '简体中文', id: 'zh_CN' },
+    { label: 'English', id: 'en_US' }
+  ];
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((x) => {
@@ -75,7 +112,6 @@ export class LoginComponent {
     this.authService
       .login(this.form.value, { codekey: this.codekey() })
       .pipe(
-        delay(1000),
         tap((x) => {
           const { accessToken, refreshToken } = x;
           this.auth.accessToken.set(accessToken);
@@ -93,5 +129,16 @@ export class LoginComponent {
           this.getCaptcha();
         }
       });
+  }
+
+  changeLang(lang: string) {
+    this.locale.lang = lang;
+    this.locale.setLocale(lang).subscribe(() => {
+      this.cdr.detectChanges();
+    });
+  }
+
+  darkChanged(dark: boolean) {
+    this.theme.setDark(dark);
   }
 }
