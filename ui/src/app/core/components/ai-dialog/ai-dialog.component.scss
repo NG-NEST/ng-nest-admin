@@ -1,0 +1,27 @@
+:host {
+  .title {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    span {
+      font-weight: 600;
+    }
+    x-select {
+      margin-left: 1rem;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: calc(100vh - 3rem) !important;
+    height: calc(100vh - 3rem) !important;
+    position: relative;
+  }
+
+  .footer {
+    width: 100%;
+    bottom: 2rem;
+    margin: 0 auto;
+  }
+}

@@ -12,5 +12,5 @@ export enum QwenRole {
 }
 
 export enum QwenModel {
-  Qwen18BChat = 'qwen-1.8b-chat',
+  Qwen18BChat = 'qwen3-235b-a22b-instruct-2507',
 }

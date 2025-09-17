@@ -1,13 +1,22 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  signal
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { XSelectModule, XSelectNode } from '@ng-nest/ui/select';
 import { XButtonComponent } from '@ng-nest/ui/button';
-import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
+import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { ModelService, PromptService, ResourceService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
+import { AppEditorComponent, AiDialogComponent } from '@ui/core';
 
 @Component({
   selector: 'app-prompt-detail',
@@ -17,9 +26,11 @@ import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
     XInputComponent,
     XButtonComponent,
     XDialogModule,
-    XSelectModule
+    XSelectModule,
+    AppEditorComponent
   ],
-  templateUrl: './prompt-detail.component.html'
+  templateUrl: './prompt-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PromptDetailComponent implements OnInit, OnDestroy {
   data = inject<{ id: string; saveSuccess: () => void }>(X_DIALOG_DATA);
@@ -28,6 +39,8 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   modelService = inject(ModelService);
   fb = inject(FormBuilder);
   message = inject(XMessageService);
+  cdr = inject(ChangeDetectorRef);
+  dialog = inject(XDialogService);
   dialogRef = inject(XDialogRef<PromptDetailComponent>);
   id = signal('');
 
@@ -40,11 +53,21 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
 
   $destroy = new Subject<void>();
 
+  get userVars() {
+    return this.form.controls['userVars'] as any;
+  }
+
+  get varsValid() {
+    const values = this.userVars.getRawValue();
+    return values.every((x: any) => !!x.value);
+  }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       system: [null],
       user: [null, [Validators.required]],
+      userVars: this.fb.array([]),
       modelType: [null, [Validators.required]],
       modelId: [null, [Validators.required]],
       description: [null]
@@ -56,7 +79,11 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
       this.getModelList(modelType).subscribe();
     });
 
-    const req: Observable<any>[] = [this.getPromptTypeList()];
+    this.form.get('user')!.valueChanges.subscribe((value: string) => {
+      this.userChange(value);
+    });
+
+    const req: Observable<any>[] = [this.getModelTypeList()];
 
     if (this.id()) {
       req.push(
@@ -98,7 +125,7 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  getPromptTypeList() {
+  getModelTypeList() {
     return this.resourceService
       .resourceSelect({
         where: { subject: { code: { equals: 'model-type' } } },
@@ -117,5 +144,60 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
         this.modelList.set(x.map(({ id, name }) => ({ id: id, label: name })));
       })
     );
+  }
+
+  userChange(value: string) {
+    const regex = /\{\{(.*?)\}\}/g;
+    let match;
+    const extractedVars: { label: string; value: string }[] = [];
+
+    while ((match = regex.exec(value)) !== null) {
+      const label = match[1].trim();
+
+      if (label) {
+        extractedVars.push({ label, value: '' });
+      }
+    }
+
+    const uniqueLabels = new Set(extractedVars.map((item) => item.label));
+    const uniqueVars = Array.from(uniqueLabels).map((label) => ({ label, value: '' }));
+
+    const userVarsValue = this.userVars.getRawValue();
+    const labels = userVarsValue.map((x: any) => x.label);
+    for (let label of labels) {
+      const item = uniqueVars.find((x) => x.label === label);
+      if (!item) this.userVars.removeAt(userVarsValue.findIndex((x: any) => x.label === label));
+    }
+    for (let { label, value } of uniqueVars) {
+      const item = userVarsValue.find((x: any) => x.label === label);
+      if (!item) {
+        this.userVars.push(
+          this.fb.group({
+            label: [{ disabled: true, value: label }],
+            value
+          })
+        );
+      }
+    }
+    this.cdr.detectChanges();
+  }
+
+  sendTest() {
+    let { system, user, modelType, modelId, userVars } = this.form.getRawValue();
+    for (let { label, value } of userVars) {
+      const reg = new RegExp(`\\{\\{\\s*${label}\\s*\\}\\}`, 'g');
+      user = user.replace(reg, value);
+    }
+    this.dialog.create(AiDialogComponent, {
+      width: '100%',
+      height: '100%',
+      data: {
+        title: '发送测试',
+        modelType,
+        modelId,
+        system,
+        user
+      }
+    });
   }
 }

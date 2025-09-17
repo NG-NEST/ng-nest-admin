@@ -60,6 +60,7 @@
     "lodash-es": "^4.17.21",
     "nest-winston": "^1.10.2",
     "nestjs-i18n": "^10.5.1",
+    "openai": "^5.20.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "prisma": "^6.9.0",

@@ -228,8 +228,14 @@ input {
       x-select,
       x-cascade,
       x-textarea,
-      x-tree-select {
+      x-tree-select,
+      app-editor {
         flex: 1;
+      }
+
+      app-editor {
+        border: $x-border-base;
+        border-radius: $x-border-radius;
       }
     }
   }

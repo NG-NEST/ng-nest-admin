@@ -11,6 +11,7 @@ import { RedisService } from '@api/core';
 
 @Injectable()
 export class QianFanService {
+  expires = 60 * 5; // seconds
   redisAuthKey = 'QianFan:Auth';
   constructor(
     private config: ConfigService,
@@ -126,7 +127,7 @@ export class QianFanService {
     );
     const data = await response.json();
     if (response.ok) {
-      await this.redis.set(this.redisAuthKey, JSON.stringify(data), 'EX', 60 * 60 * 24 * 30);
+      await this.redis.set(this.redisAuthKey, JSON.stringify(data), 'EX', this.expires);
       return data.access_token;
     } else {
       throw new BadRequestException(data);

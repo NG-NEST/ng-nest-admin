@@ -1,0 +1,28 @@
+<form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form">
+  <h4 x-dialog-title class="title">
+    <span>{{ title() }}</span>
+    <x-select
+      [data]="modelTypeList()"
+      formControlName="modelType"
+      placeholder="请选择模型分类"
+      required
+      clearable="false"
+    ></x-select>
+    <x-select
+      [data]="modelList()"
+      formControlName="modelId"
+      placeholder="请选择模型"
+      required
+      clearable="false"
+    ></x-select>
+  </h4>
+  <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
+  <div x-dialog-content class="content">
+    <x-bubbles>
+      <x-bubble></x-bubble>
+    </x-bubbles>
+    <div class="footer">
+      <x-sender formControlName="user" (submit)="send()"></x-sender>
+    </div>
+  </div>
+</form>

@@ -64,7 +64,7 @@ export class AigcComponent implements OnInit, OnDestroy {
     {
       name: '通义千问',
       type: 'qwen',
-      models: ['qwen-1.8b-chat']
+      models: ['qwen3-235b-a22b-instruct-2507']
     },
     {
       name: '文心一言',
