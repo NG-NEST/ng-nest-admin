@@ -3,17 +3,21 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label>模型分类：</label>
+      <label>平台：</label>
       <x-select
-        [data]="modelTypeList()"
-        formControlName="type"
-        placeholder="请选择模型分类"
+        [data]="platformList()"
+        formControlName="platform"
+        placeholder="请选择平台"
         required
       ></x-select>
     </div>
     <div class="item required">
       <label>模型名称：</label>
       <x-input formControlName="name" placeholder="请输入角色名称" required></x-input>
+    </div>
+    <div class="item required">
+      <label>模型代码：</label>
+      <x-input formControlName="code" placeholder="请输入模型代码" required></x-input>
     </div>
     <div class="item">
       <label>模型描述：</label>

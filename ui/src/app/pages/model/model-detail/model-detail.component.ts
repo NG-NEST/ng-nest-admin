@@ -34,14 +34,15 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
   saveLoading = signal(false);
 
   form!: FormGroup;
-  modelTypeList = signal<XSelectNode[]>([]);
+  platformList = signal<XSelectNode[]>([]);
 
   $destroy = new Subject<void>();
 
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
-      type: [null, [Validators.required]],
+      code: [null, [Validators.required]],
+      platform: [null, [Validators.required]],
       description: [null]
     });
     const { id } = this.data;
@@ -92,12 +93,12 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
   getModelTypeList() {
     return this.resourceService
       .resourceSelect({
-        where: { subject: { code: { equals: 'model-type' } } },
+        where: { subject: { code: { equals: 'model-platform' } } },
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
         tap((x) => {
-          this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
+          this.platformList.set(x.map(({ code, name }) => ({ id: code, label: name })));
         })
       );
   }

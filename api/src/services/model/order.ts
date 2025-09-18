@@ -5,17 +5,19 @@ import { ModelDescription } from './model.enum';
 
 @InputType()
 export class ModelOrderInput extends BaseOrder {
-    
   @Field(() => SortOrder, { description: ModelDescription.Name, nullable: true })
   @IsOptional()
   name?: SortOrder;
-  
-  @Field(() => SortOrder, { description: ModelDescription.Type, nullable: true })
+
+  @Field(() => SortOrder, { description: ModelDescription.Code, nullable: true })
   @IsOptional()
-  type?: SortOrder;
-  
+  code?: SortOrder;
+
+  @Field(() => SortOrder, { description: ModelDescription.Platform, nullable: true })
+  @IsOptional()
+  platform?: SortOrder;
+
   @Field(() => SortOrder, { description: ModelDescription.Description, nullable: true })
   @IsOptional()
   description?: SortOrder;
-  
 }

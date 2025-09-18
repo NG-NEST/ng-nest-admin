@@ -3,3 +3,4 @@ export * from './json-schema';
 export * from './schema-form/schema-form.component';
 export * from './theme/theme.component';
 export * from './ai-dialog/ai-dialog.component';
+export * from './ai-conversation/ai-conversation.component';

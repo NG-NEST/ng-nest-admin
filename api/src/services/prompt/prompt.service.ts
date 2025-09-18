@@ -36,8 +36,8 @@ export class PromptService {
   }
 
   async create(input: PromptCreateInput) {
-    const { modelId, ...other } = input;
-    const data = { ...other, model: { connect: { id: modelId } } };
+    const { code, ...other } = input;
+    const data = { ...other, model: { connect: { code: code } } };
     return await this.prisma.prompt.create({ data });
   }
 

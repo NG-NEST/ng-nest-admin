@@ -158,15 +158,17 @@ export type I18nTranslations = {
     "prompt": {
         "PromptIdIsNotEmpty": string;
         "NameIsNotEmpty": string;
-        "UserIsNotEmpty": string;
-        "ModelIdIsNotEmpty": string;
-        "ModelTypeIsNotEmpty": string;
+        "PromptIsNotEmpty": string;
+        "PlatformIsNotEmpty": string;
+        "CodeIsNotEmpty": string;
     };
     "model": {
         "ModelIdIsNotEmpty": string;
         "ModelIdIsNotExist": string;
         "NameIsNotEmpty": string;
-        "TypeIsNotEmpty": string;
+        "CodeIsNotEmpty": string;
+        "CodeIsNotExist": string;
+        "PlatformIsNotEmpty": string;
     };
 };
 /* prettier-ignore */

@@ -12,11 +12,10 @@ export enum PromptDescription {
 
   Id = 'PromptId',
   Name = 'Name',
-  User = 'User',
   System = 'System',
-  ModelId = 'ModelId',
-  ModelType = 'ModelType',
-  UserVars = 'UserVars',
+  Code = 'Code',
+  Platform = 'Platform',
+  PromptVars = 'PromptVars',
   Description = 'Description',
 }
 

@@ -1,5 +1,6 @@
 export class ModelUpdateInput {
   name?: string;
-  type?: string;
+  code?: string;
+  platform?: string;
   description?: string;
 }

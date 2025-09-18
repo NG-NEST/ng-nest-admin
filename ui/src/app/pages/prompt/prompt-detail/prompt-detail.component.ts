@@ -14,9 +14,9 @@ import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-ne
 import { XInputComponent } from '@ng-nest/ui/input';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
-import { ModelService, PromptService, ResourceService } from '@ui/api';
+import { ModelService, OpenAIInput, PromptService, ResourceService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
-import { AppEditorComponent, AiDialogComponent } from '@ui/core';
+import { AppEditorComponent, AiConversationComponent } from '@ui/core';
 
 @Component({
   selector: 'app-prompt-detail',
@@ -27,7 +27,8 @@ import { AppEditorComponent, AiDialogComponent } from '@ui/core';
     XButtonComponent,
     XDialogModule,
     XSelectModule,
-    AppEditorComponent
+    AppEditorComponent,
+    AiConversationComponent
   ],
   templateUrl: './prompt-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -48,17 +49,20 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   saveLoading = signal(false);
 
   form!: FormGroup;
-  modelTypeList = signal<XSelectNode[]>([]);
+  platformList = signal<XSelectNode[]>([]);
   modelList = signal<XSelectNode[]>([]);
+
+  showTestAI = signal(false);
+  aiInput = signal<OpenAIInput>({});
 
   $destroy = new Subject<void>();
 
-  get userVars() {
-    return this.form.controls['userVars'] as any;
+  get promptVars() {
+    return this.form.controls['promptVars'] as any;
   }
 
   get varsValid() {
-    const values = this.userVars.getRawValue();
+    const values = this.promptVars.getRawValue();
     return values.every((x: any) => !!x.value);
   }
 
@@ -66,24 +70,24 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       system: [null],
-      user: [null, [Validators.required]],
-      userVars: this.fb.array([]),
-      modelType: [null, [Validators.required]],
-      modelId: [null, [Validators.required]],
+      prompt: [null, [Validators.required]],
+      promptVars: this.fb.array([]),
+      platform: [null, [Validators.required]],
+      code: [null, [Validators.required]],
       description: [null]
     });
     const { id } = this.data;
     this.id.set(id);
 
-    this.form.get('modelType')!.valueChanges.subscribe((modelType) => {
-      this.getModelList(modelType).subscribe();
+    this.form.get('platform')!.valueChanges.subscribe((platform) => {
+      this.getModelList(platform).subscribe();
     });
 
-    this.form.get('user')!.valueChanges.subscribe((value: string) => {
-      this.userChange(value);
+    this.form.get('prompt')!.valueChanges.subscribe((value: string) => {
+      this.promptChange(value);
     });
 
-    const req: Observable<any>[] = [this.getModelTypeList()];
+    const req: Observable<any>[] = [this.getPlatformList()];
 
     if (this.id()) {
       req.push(
@@ -125,28 +129,28 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  getModelTypeList() {
+  getPlatformList() {
     return this.resourceService
       .resourceSelect({
-        where: { subject: { code: { equals: 'model-type' } } },
+        where: { subject: { code: { equals: 'model-platform' } } },
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
         tap((x) => {
-          this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
+          this.platformList.set(x.map(({ code, name }) => ({ id: code, label: name })));
         })
       );
   }
 
-  getModelList(type: string) {
-    return this.modelService.modelSelect({ where: { type: { equals: type } } }).pipe(
+  getModelList(platform: string) {
+    return this.modelService.modelSelect({ where: { platform: { equals: platform } } }).pipe(
       tap((x) => {
-        this.modelList.set(x.map(({ id, name }) => ({ id: id, label: name })));
+        this.modelList.set(x.map(({ code, name }) => ({ id: code, label: name })));
       })
     );
   }
 
-  userChange(value: string) {
+  promptChange(value: string) {
     const regex = /\{\{(.*?)\}\}/g;
     let match;
     const extractedVars: { label: string; value: string }[] = [];
@@ -162,16 +166,16 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
     const uniqueLabels = new Set(extractedVars.map((item) => item.label));
     const uniqueVars = Array.from(uniqueLabels).map((label) => ({ label, value: '' }));
 
-    const userVarsValue = this.userVars.getRawValue();
-    const labels = userVarsValue.map((x: any) => x.label);
+    const promptVarsValue = this.promptVars.getRawValue();
+    const labels = promptVarsValue.map((x: any) => x.label);
     for (let label of labels) {
       const item = uniqueVars.find((x) => x.label === label);
-      if (!item) this.userVars.removeAt(userVarsValue.findIndex((x: any) => x.label === label));
+      if (!item) this.promptVars.removeAt(promptVarsValue.findIndex((x: any) => x.label === label));
     }
     for (let { label, value } of uniqueVars) {
-      const item = userVarsValue.find((x: any) => x.label === label);
+      const item = promptVarsValue.find((x: any) => x.label === label);
       if (!item) {
-        this.userVars.push(
+        this.promptVars.push(
           this.fb.group({
             label: [{ disabled: true, value: label }],
             value
@@ -183,21 +187,17 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   sendTest() {
-    let { system, user, modelType, modelId, userVars } = this.form.getRawValue();
-    for (let { label, value } of userVars) {
+    let { system, prompt, platform, code, promptVars } = this.form.getRawValue();
+    for (let { label, value } of promptVars) {
       const reg = new RegExp(`\\{\\{\\s*${label}\\s*\\}\\}`, 'g');
-      user = user.replace(reg, value);
+      prompt = prompt.replace(reg, value);
     }
-    this.dialog.create(AiDialogComponent, {
-      width: '100%',
-      height: '100%',
-      data: {
-        title: '发送测试',
-        modelType,
-        modelId,
-        system,
-        user
-      }
+    this.aiInput.set({
+      platform: platform,
+      system,
+      prompt: prompt,
+      model: code
     });
+    this.showTestAI.set(true);
   }
 }

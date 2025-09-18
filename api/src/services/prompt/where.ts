@@ -9,25 +9,25 @@ export class PromptWhere {
   @IsOptional()
   name?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.User, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.Prompt, nullable: true })
   @IsOptional()
-  user?: StringFilter;
+  prompt?: StringFilter;
 
   @Field(() => BASE_STRING_FILTER, { description: PromptDescription.System, nullable: true })
   @IsOptional()
   system?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.ModelId, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.Code, nullable: true })
   @IsOptional()
-  modelId?: StringFilter;
+  code?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.ModelType, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.Platform, nullable: true })
   @IsOptional()
-  modelType?: StringFilter;
+  platform?: StringFilter;
 
-  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.UserVars, nullable: true })
+  @Field(() => BASE_STRING_FILTER, { description: PromptDescription.PromptVars, nullable: true })
   @IsOptional()
-  userVars?: StringFilter;
+  promptVars?: StringFilter;
 
   @Field(() => BASE_STRING_FILTER, { description: PromptDescription.Description, nullable: true })
   @IsOptional()

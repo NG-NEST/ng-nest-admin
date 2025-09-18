@@ -11,9 +11,10 @@ export enum ModelDescription {
   Model = 'Model',
 
   Id = 'ModelId',
-  Name = 'Name', 
-  Type = 'Type', 
-  Description = 'Description' 
+  Name = 'Name',
+  Code = 'Code',
+  Platform = 'Platform',
+  Description = 'Description',
 }
 
 export enum ModelResolverName {

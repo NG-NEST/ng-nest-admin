@@ -9,21 +9,21 @@ export class PromptOrderInput extends BaseOrder {
   @IsOptional()
   name?: SortOrder;
 
-  @Field(() => SortOrder, { description: PromptDescription.User, nullable: true })
+  @Field(() => SortOrder, { description: PromptDescription.Prompt, nullable: true })
   @IsOptional()
-  user?: SortOrder;
+  prompt?: SortOrder;
 
   @Field(() => SortOrder, { description: PromptDescription.System, nullable: true })
   @IsOptional()
   system?: SortOrder;
 
-  @Field(() => SortOrder, { description: PromptDescription.ModelId, nullable: true })
+  @Field(() => SortOrder, { description: PromptDescription.Code, nullable: true })
   @IsOptional()
-  modelId?: SortOrder;
+  code?: SortOrder;
 
-  @Field(() => SortOrder, { description: PromptDescription.ModelType, nullable: true })
+  @Field(() => SortOrder, { description: PromptDescription.Platform, nullable: true })
   @IsOptional()
-  modelType?: SortOrder;
+  platform?: SortOrder;
 
   @Field(() => SortOrder, { description: PromptDescription.Description, nullable: true })
   @IsOptional()

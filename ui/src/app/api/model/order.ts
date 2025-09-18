@@ -2,6 +2,7 @@ import { BaseOrder, SortOrder } from '@ui/core';
 
 export class ModelOrderInput extends BaseOrder {
   name?: SortOrder;
-  type?: SortOrder;
+  code?: SortOrder;
+  platform?: SortOrder;
   description?: SortOrder;
 }

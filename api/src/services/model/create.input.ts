@@ -1,3 +1,4 @@
+
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ValidatorDescription, I18N } from '@api/core';
@@ -11,11 +12,17 @@ export class ModelCreateInput {
   })
   name: string;
 
-  @Field(() => String, { description: ModelDescription.Type })
+  @Field(() => String, { description: ModelDescription.Code })
   @IsNotEmpty({
-    message: I18N(`${MODEL_I18N}.${ModelDescription.Type}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${MODEL_I18N}.${ModelDescription.Code}${ValidatorDescription.IsNotEmpty}`),
   })
-  type: string;
+  code: string;
+
+  @Field(() => String, { description: ModelDescription.Platform })
+  @IsNotEmpty({
+    message: I18N(`${MODEL_I18N}.${ModelDescription.Platform}${ValidatorDescription.IsNotEmpty}`),
+  })
+  platform: string;
 
   @Field(() => String, { description: ModelDescription.Description, nullable: true })
   @IsOptional()

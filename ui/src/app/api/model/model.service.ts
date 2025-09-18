@@ -26,7 +26,8 @@ export class ModelService {
             model(id: $id) {
               id
               name
-              type
+              code
+              platform
               description
             }
           }
@@ -51,7 +52,8 @@ export class ModelService {
               data {
                 id
                 name
-                type
+                code
+                platform
                 description
                 createdAt
                 updatedAt
@@ -72,7 +74,8 @@ export class ModelService {
             modelSelect(where: $where, orderBy: $orderBy) {
               id
               name
-              type
+              code
+              platform
               description
             }
           }

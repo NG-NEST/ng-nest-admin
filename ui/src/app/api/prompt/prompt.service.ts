@@ -26,11 +26,11 @@ export class PromptService {
             prompt(id: $id) {
               id
               name
-              user
+              prompt
               system
-              modelType
-              modelId
-              userVars
+              code
+              platform
+              promptVars
               description
             }
           }
@@ -55,8 +55,8 @@ export class PromptService {
               data {
                 id
                 name
-                modelType
-                modelId
+                code
+                platform
                 description
                 createdAt
                 updatedAt
@@ -77,11 +77,11 @@ export class PromptService {
             promptSelect(where: $where, orderBy: $orderBy) {
               id
               name
-              user
+              prompt
               system
-              modelType
-              modelId
-              userVars
+              code
+              platform
+              promptVars
               description
             }
           }

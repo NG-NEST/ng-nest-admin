@@ -2,10 +2,10 @@ import { BaseWhereInput, StringFilter } from '@ui/core';
 
 export class PromptWhereInput extends BaseWhereInput<PromptWhereInput> {
   name?: StringFilter;
-  user?: StringFilter;
+  prompt?: StringFilter;
   system?: StringFilter;
-  modelType?: StringFilter;
-  modelId?: StringFilter;
-  userVars?: StringFilter;
+  code?: StringFilter;
+  platform?: StringFilter;
+  promptVars?: StringFilter;
   description?: StringFilter;
 }

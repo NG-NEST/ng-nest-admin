@@ -2,7 +2,8 @@ export enum ModelDescription {
   Model = '',
 
   Name = '模型名称',
-  Type = '模型分类',
+  Code = '模型代码',
+  Platform = '平台',
   Description = '模型描述'
 }
 

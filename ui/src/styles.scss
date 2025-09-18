@@ -236,6 +236,9 @@ input {
       app-editor {
         border: $x-border-base;
         border-radius: $x-border-radius;
+        .editorPlaceholder {
+          color: $x-placeholder-color;
+        }
       }
     }
   }

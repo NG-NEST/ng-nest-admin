@@ -1,12 +1,11 @@
 export enum PromptDescription {
-  Prompt = '',
+  Prompt = '提示词',
 
   Name = '名称',
-  User = '用户',
   System = '系统',
-  ModelType = '模型分类',
-  ModelId = '使用模型',
-  UserVars = '用户变量',
+  Code = '模型',
+  Platform = '平台',
+  PromptVars = '提示词变量',
   Description = '描述'
 }
 

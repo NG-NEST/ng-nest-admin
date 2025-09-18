@@ -1,5 +1,6 @@
 export class ModelCreateInput {
   name!: string;
-  type!: string;
+  code!: string;
+  platform!: string;
   description?: string;
 }

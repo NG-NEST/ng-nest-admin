@@ -1,0 +1,29 @@
+<div class="conversation">
+  <div class="content">
+    <x-bubbles>
+      @for (item of list(); track item) {
+        @switch (item.role) {
+          @case ('user') {
+            <x-bubble
+              placement="end"
+              variant="filled"
+              [avatar]="{ icon: 'fto-user', backgroundColor: 'rgba(248, 113, 113, 0.5)' }"
+              [content]="item.content"
+            ></x-bubble>
+          }
+          @case ('assistant') {
+            <x-bubble
+              placement="start"
+              [avatar]="{ icon: 'fto-aperture', backgroundColor: 'rgba(59, 130, 246, 0.5)' }"
+              [typing]="$last"
+              [content]="item.content"
+            ></x-bubble>
+          }
+        }
+      }
+    </x-bubbles>
+  </div>
+  <div class="footer">
+    <x-sender></x-sender>
+  </div>
+</div>

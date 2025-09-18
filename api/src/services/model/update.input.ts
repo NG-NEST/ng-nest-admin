@@ -15,9 +15,13 @@ export class ModelUpdateInput {
   @IsOptional()
   name?: string;
 
-  @Field(() => String, { description: ModelDescription.Type, nullable: true })
+  @Field(() => String, { description: ModelDescription.Code, nullable: true })
   @IsOptional()
-  type?: string;
+  code?: string;
+
+  @Field(() => String, { description: ModelDescription.Platform, nullable: true })
+  @IsOptional()
+  platform?: string;
 
   @Field(() => String, { description: ModelDescription.Description, nullable: true })
   @IsOptional()

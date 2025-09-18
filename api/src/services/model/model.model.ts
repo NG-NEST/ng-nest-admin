@@ -11,8 +11,11 @@ export class Model extends BaseAudit {
   @Field(() => String, { description: ModelDescription.Name })
   name: string;
 
-  @Field(() => String, { description: ModelDescription.Type })
-  type: string;
+  @Field(() => String, { description: ModelDescription.Code })
+  code: string;
+
+  @Field(() => String, { description: ModelDescription.Platform })
+  platform: string;
 
   @Field(() => String, { description: ModelDescription.Description, nullable: true })
   @IsOptional()

@@ -7,18 +7,19 @@
           <x-input formControlName="name" placeholder="请输入提示词名称"></x-input>
         </div>
         <div class="item">
-          <label>模型分类：</label>
+          <label>平台：</label>
           <x-select
-            [data]="modelTypeList()"
-            formControlName="modelType"
-            placeholder="请选择模型分类"
+            [data]="platformList()"
+            formControlName="platform"
+            placeholder="请选择模型平台"
           ></x-select>
         </div>
         <div class="item">
           <label>模型名称：</label>
           <x-select
+            [style.width.rem]="20"
             [data]="modelList()"
-            formControlName="modelId"
+            formControlName="code"
             placeholder="请选择模型"
           ></x-select>
         </div>
@@ -55,7 +56,7 @@
       [showJump]="true"
       [scroll]="{ x: 800, y: 400 }"
       [virtualScroll]="true"
-      [bodyColumnTpl]="{ operate: operateTpl, modelType: modelTypeTpl, modelId: modelIdTpl }"
+      [bodyColumnTpl]="{ operate: operateTpl, platform: platformTpl, code: codeTpl }"
       (indexChange)="indexChange()"
       (sizeChange)="sizeChange()"
     ></x-table>
@@ -69,11 +70,11 @@
         >
       </div>
     </ng-template>
-    <ng-template #modelTypeTpl let-column="$column" let-row="$row">
-      {{ this.modelTypeMap.get(row.modelType) }}
+    <ng-template #platformTpl let-column="$column" let-row="$row">
+      <div>{{ this.platformMap.get(row.platform) }}</div>
     </ng-template>
-    <ng-template #modelIdTpl let-column="$column" let-row="$row">
-      {{ this.modelAllMap.get(row.modelId) }}
+    <ng-template #codeTpl let-column="$column" let-row="$row">
+      <div>{{ this.modelAllMap.get(row.code) }}</div>
     </ng-template>
   </div>
 </div>

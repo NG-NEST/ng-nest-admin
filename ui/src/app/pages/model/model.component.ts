@@ -42,18 +42,19 @@ export class ModelComponent {
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
 
-  modelTypeList = signal<XSelectNode[]>([]);
-  modelTypeMap = new Map<string, string>();
+  platformList = signal<XSelectNode[]>([]);
+  platformMap = new Map<string, string>();
 
   searchForm = this.fb.group({
     name: [null],
-    type: [null]
+    platform: [null]
   });
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
     { id: 'name', label: ModelDescription.Name },
-    { id: 'type', label: ModelDescription.Type },
+    { id: 'code', label: ModelDescription.Code },
+    { id: 'platform', label: ModelDescription.Platform, width: 140 },
     { id: 'description', label: ModelDescription.Description },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
@@ -105,14 +106,14 @@ export class ModelComponent {
   getModelTypeList() {
     return this.resourceService
       .resourceSelect({
-        where: { subject: { code: { equals: 'model-type' } } },
+        where: { subject: { code: { equals: 'model-platform' } } },
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
         tap((x) => {
-          this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
+          this.platformList.set(x.map(({ code, name }) => ({ id: code, label: name })));
           for (let { code, name } of x) {
-            this.modelTypeMap.set(code as string, name);
+            this.platformMap.set(code as string, name);
           }
         })
       );
@@ -121,9 +122,9 @@ export class ModelComponent {
   setParams(index: number, size: number) {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: ModelWhereInput = {};
-    const { name, type } = this.searchForm.value;
+    const { name, platform } = this.searchForm.value;
     if (!XIsEmpty(name)) where.name = { contains: name! };
-    if (!XIsEmpty(type)) where.type = { contains: type! };
+    if (!XIsEmpty(platform)) where.platform = { equals: platform! };
 
     return {
       skip: (index - 1) * size,

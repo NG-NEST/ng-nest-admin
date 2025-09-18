@@ -50,23 +50,23 @@ export class PromptComponent {
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
 
-  modelTypeList = signal<XSelectNode[]>([]);
+  platformList = signal<XSelectNode[]>([]);
   modelList = signal<XSelectNode[]>([]);
-  modelTypeMap = new Map<string, string>();
+  platformMap = new Map<string, string>();
   modelMap = new Map<string, string>();
   modelAllMap = new Map<string, string>();
 
   searchForm = this.fb.group({
     name: [null],
-    modelType: [null],
-    modelId: [null]
+    platform: [null],
+    code: [null]
   });
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+    { id: 'platform', label: PromptDescription.Platform },
+    { id: 'code', label: PromptDescription.Code },
     { id: 'name', label: PromptDescription.Name },
-    { id: 'modelType', label: PromptDescription.ModelType },
-    { id: 'modelId', label: PromptDescription.ModelId },
     { id: 'description', label: PromptDescription.Description },
     { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
     { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
@@ -84,12 +84,12 @@ export class PromptComponent {
   tableCom = viewChild.required<XTableComponent>('tableCom');
 
   ngOnInit() {
-    this.getModelTypeList().subscribe();
+    this.getplatformList().subscribe();
     this.getAllModelList().subscribe();
     this.getTableData();
 
-    this.searchForm.get('modelType')!.valueChanges.subscribe((modelType: any) => {
-      this.getModelList(modelType).subscribe();
+    this.searchForm.get('platform')!.valueChanges.subscribe((platform: any) => {
+      this.getModelList(platform).subscribe();
     });
   }
 
@@ -120,30 +120,30 @@ export class PromptComponent {
       .subscribe();
   }
 
-  getModelTypeList() {
+  getplatformList() {
     return this.resourceService
       .resourceSelect({
-        where: { subject: { code: { equals: 'model-type' } } },
+        where: { subject: { code: { equals: 'model-platform' } } },
         orderBy: [{ sort: 'asc' }]
       })
       .pipe(
         tap((x) => {
-          this.modelTypeList.set(x.map(({ code, name }) => ({ id: code, label: name })));
+          this.platformList.set(x.map(({ code, name }) => ({ id: code, label: name })));
           for (let { code, name } of x) {
-            this.modelTypeMap.set(code as string, name);
+            this.platformMap.set(code as string, name);
           }
         })
       );
   }
 
-  getModelList(type: string) {
-    if (!type) {
+  getModelList(platform: string) {
+    if (!platform) {
       this.modelList.set([]);
       return of([]);
     }
-    return this.modelService.modelSelect({ where: { type: { equals: type } } }).pipe(
+    return this.modelService.modelSelect({ where: { platform: { equals: platform } } }).pipe(
       tap((x) => {
-        this.modelList.set(x.map(({ id, name }) => ({ id: id, label: name })));
+        this.modelList.set(x.map(({ code, name }) => ({ id: code, label: name })));
       })
     );
   }
@@ -151,8 +151,8 @@ export class PromptComponent {
   getAllModelList() {
     return this.modelService.modelSelect({}).pipe(
       tap((x) => {
-        for (let { id, name } of x) {
-          this.modelAllMap.set(id, name);
+        for (let { code, name } of x) {
+          this.modelAllMap.set(code, name);
         }
       })
     );
@@ -161,10 +161,10 @@ export class PromptComponent {
   setParams(index: number, size: number) {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
     const where: PromptWhereInput = {};
-    const { name, modelType, modelId } = this.searchForm.value;
+    const { name, platform, code } = this.searchForm.value;
     if (!XIsEmpty(name)) where.name = { contains: name! };
-    if (!XIsEmpty(modelType)) where.modelType = { contains: modelType! };
-    if (!XIsEmpty(modelId)) where.modelId = { contains: modelId! };
+    if (!XIsEmpty(platform)) where.platform = { equals: platform! };
+    if (!XIsEmpty(code)) where.code = { equals: code! };
 
     return {
       skip: (index - 1) * size,

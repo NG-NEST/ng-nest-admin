@@ -6,17 +6,22 @@
       <label>名称：</label>
       <x-input formControlName="name" placeholder="请输入提示词名称" required></x-input>
     </div>
+    <div class="item">
+      <label>描述：</label>
+      <x-input formControlName="description" placeholder="请输入描述"></x-input>
+    </div>
     <div class="item required">
       <label>使用模型：</label>
       <x-select
-        [data]="modelTypeList()"
-        formControlName="modelType"
-        placeholder="请选择模型分类"
+        [style.flex]="0.6"
+        [data]="platformList()"
+        formControlName="platform"
+        placeholder="请选择平台"
         required
       ></x-select>
       <x-select
         [data]="modelList()"
-        formControlName="modelId"
+        formControlName="code"
         placeholder="请选择模型"
         required
       ></x-select>
@@ -40,7 +45,7 @@
       <label>用户提示词：</label>
       <app-editor
         class="editor"
-        formControlName="user"
+        formControlName="prompt"
         [filename]="'markdown.md'"
         [style.height.rem]="8"
         [style.flex]="1"
@@ -52,7 +57,7 @@
       ></app-editor>
     </div>
 
-    @if (userVars.controls.length > 0) {
+    @if (promptVars.controls.length > 0) {
       <div class="item attrs-table" formArrayName="userVars">
         <label>用户变量：</label>
         <table [style.flex]="1">
@@ -64,7 +69,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (control of userVars.controls; track control) {
+            @for (control of promptVars.controls; track control) {
               <tr [formGroupName]="$index">
                 <td class="index">{{ $index + 1 }}</td>
                 <td>
@@ -93,10 +98,12 @@
       </x-button>
     </div>
 
-    <div class="item">
-      <label>描述：</label>
-      <x-input formControlName="description" placeholder="请输入描述"></x-input>
-    </div>
+    @if (showTestAI()) {
+      <div class="item">
+        <label></label>
+        <ai-conversation></ai-conversation>
+      </div>
+    }
   </div>
   <div x-dialog-actions align="center" class="actions">
     <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>

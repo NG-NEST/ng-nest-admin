@@ -2,9 +2,9 @@ import { BaseOrder, SortOrder } from '@ui/core';
 
 export class PromptOrderInput extends BaseOrder {
   name?: SortOrder;
-  user?: SortOrder;
+  prompt?: SortOrder;
   system?: SortOrder;
-  modelType?: SortOrder;
-  modelId?: SortOrder;
+  code?: SortOrder;
+  platform?: SortOrder;
   description?: SortOrder;
 }

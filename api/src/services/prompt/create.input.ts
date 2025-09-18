@@ -14,37 +14,35 @@ export class PromptCreateInput {
   })
   name: string;
 
-  @Field(() => String, { description: PromptDescription.User })
+  @Field(() => String, { description: PromptDescription.Prompt })
   @IsNotEmpty({
-    message: I18N(`${PROMPT_I18N}.${PromptDescription.User}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${PROMPT_I18N}.${PromptDescription.Prompt}${ValidatorDescription.IsNotEmpty}`),
   })
-  user: string;
+  prompt: string;
 
   @Field(() => String, { description: PromptDescription.System, nullable: true })
   @IsOptional()
   system?: string;
 
-  @Field(() => String, { description: PromptDescription.ModelId })
+  @Field(() => String, { description: PromptDescription.Code })
   @IsNotEmpty({
-    message: I18N(`${PROMPT_I18N}.${PromptDescription.ModelId}${ValidatorDescription.IsNotEmpty}`),
+    message: I18N(`${PROMPT_I18N}.${PromptDescription.Code}${ValidatorDescription.IsNotEmpty}`),
   })
   @IsNotExist('model', {
-    message: I18N(`${MODEL_I18N}.${ModelDescription.Id}${ValidatorDescription.IsNotExist}`),
-    context: { relation: 'id' },
+    message: I18N(`${MODEL_I18N}.${ModelDescription.Code}${ValidatorDescription.IsNotExist}`),
+    context: { relation: 'code' },
   })
-  modelId: string;
+  code: string;
 
-  @Field(() => String, { description: PromptDescription.ModelType })
+  @Field(() => String, { description: PromptDescription.Platform })
   @IsNotEmpty({
-    message: I18N(
-      `${PROMPT_I18N}.${PromptDescription.ModelType}${ValidatorDescription.IsNotEmpty}`,
-    ),
+    message: I18N(`${PROMPT_I18N}.${PromptDescription.Platform}${ValidatorDescription.IsNotEmpty}`),
   })
-  modelType: string;
+  platform: string;
 
-  @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
+  @Field(() => GraphQLJSON, { description: PromptDescription.PromptVars, nullable: true })
   @IsOptional()
-  userVars?: JsonValue;
+  promptVars?: JsonValue;
 
   @Field(() => String, { description: PromptDescription.Description, nullable: true })
   @IsOptional()

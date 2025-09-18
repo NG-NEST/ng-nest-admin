@@ -618,6 +618,9 @@ type LogsOutput {
 }
 
 type Model {
+  """Code"""
+  code: String!
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -630,14 +633,17 @@ type Model {
   """Name"""
   name: String!
 
-  """Type"""
-  type: String!
+  """Platform"""
+  platform: String!
 
   """UpdatedAt"""
   updatedAt: DateTime
 }
 
 input ModelOrderInput {
+  """Code"""
+  code: SortOrder
+
   """CreatedAt"""
   createdAt: SortOrder
 
@@ -647,8 +653,8 @@ input ModelOrderInput {
   """Name"""
   name: SortOrder
 
-  """Type"""
-  type: SortOrder
+  """Platform"""
+  platform: SortOrder
 
   """UpdatedAt"""
   updatedAt: SortOrder
@@ -663,6 +669,9 @@ type ModelPaginationOutput {
 }
 
 type ModelSelectOutput {
+  """Code"""
+  code: String!
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -675,22 +684,25 @@ type ModelSelectOutput {
   """Name"""
   name: String!
 
-  """Type"""
-  type: String!
+  """Platform"""
+  platform: String!
 
   """UpdatedAt"""
   updatedAt: DateTime
 }
 
 input ModelWhere {
+  """Code"""
+  code: StringFilter
+
   """Description"""
   description: StringFilter
 
   """Name"""
   name: StringFilter
 
-  """Type"""
-  type: StringFilter
+  """Platform"""
+  platform: StringFilter
 }
 
 input ModelWhereInput {
@@ -703,14 +715,17 @@ input ModelWhereInput {
   """Logical OR, returns true if one or more conditions are met"""
   OR: [ModelWhere!]
 
+  """Code"""
+  code: StringFilter
+
   """Description"""
   description: StringFilter
 
   """Name"""
   name: StringFilter
 
-  """Type"""
-  type: StringFilter
+  """Platform"""
+  platform: StringFilter
 }
 
 input NumberFilter {
@@ -871,6 +886,9 @@ input PermissionsInclude {
 }
 
 type Prompt {
+  """Code"""
+  code: String!
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -880,52 +898,49 @@ type Prompt {
   """PromptId"""
   id: ID!
 
-  """ModelId"""
-  modelId: String!
-
-  """ModelType"""
-  modelType: String!
-
   """Name"""
   name: String!
+
+  """Platform"""
+  platform: String!
+
+  """Prompt"""
+  prompt: String!
+
+  """PromptVars"""
+  promptVars: JSON
 
   """System"""
   system: String
 
   """UpdatedAt"""
   updatedAt: DateTime
-
-  """User"""
-  user: String!
-
-  """UserVars"""
-  userVars: JSON
 }
 
 input PromptOrderInput {
+  """Code"""
+  code: SortOrder
+
   """CreatedAt"""
   createdAt: SortOrder
 
   """Description"""
   description: SortOrder
 
-  """ModelId"""
-  modelId: SortOrder
-
-  """ModelType"""
-  modelType: SortOrder
-
   """Name"""
   name: SortOrder
+
+  """Platform"""
+  platform: SortOrder
+
+  """Prompt"""
+  prompt: SortOrder
 
   """System"""
   system: SortOrder
 
   """UpdatedAt"""
   updatedAt: SortOrder
-
-  """User"""
-  user: SortOrder
 }
 
 type PromptPaginationOutput {
@@ -937,6 +952,9 @@ type PromptPaginationOutput {
 }
 
 type PromptSelectOutput {
+  """Code"""
+  code: String!
+
   """CreatedAt"""
   createdAt: DateTime
 
@@ -946,49 +964,46 @@ type PromptSelectOutput {
   """PromptId"""
   id: ID!
 
-  """ModelId"""
-  modelId: String!
-
-  """ModelType"""
-  modelType: String!
-
   """Name"""
   name: String!
+
+  """Platform"""
+  platform: String!
+
+  """Prompt"""
+  prompt: String!
+
+  """PromptVars"""
+  promptVars: JSON
 
   """System"""
   system: String
 
   """UpdatedAt"""
   updatedAt: DateTime
-
-  """User"""
-  user: String!
-
-  """UserVars"""
-  userVars: JSON
 }
 
 input PromptWhere {
+  """Code"""
+  code: StringFilter
+
   """Description"""
   description: StringFilter
-
-  """ModelId"""
-  modelId: StringFilter
-
-  """ModelType"""
-  modelType: StringFilter
 
   """Name"""
   name: StringFilter
 
+  """Platform"""
+  platform: StringFilter
+
+  """Prompt"""
+  prompt: StringFilter
+
+  """PromptVars"""
+  promptVars: StringFilter
+
   """System"""
   system: StringFilter
-
-  """User"""
-  user: StringFilter
-
-  """UserVars"""
-  userVars: StringFilter
 }
 
 input PromptWhereInput {
@@ -1001,26 +1016,26 @@ input PromptWhereInput {
   """Logical OR, returns true if one or more conditions are met"""
   OR: [PromptWhere!]
 
+  """Code"""
+  code: StringFilter
+
   """Description"""
   description: StringFilter
-
-  """ModelId"""
-  modelId: StringFilter
-
-  """ModelType"""
-  modelType: StringFilter
 
   """Name"""
   name: StringFilter
 
+  """Platform"""
+  platform: StringFilter
+
+  """Prompt"""
+  prompt: StringFilter
+
+  """PromptVars"""
+  promptVars: StringFilter
+
   """System"""
   system: StringFilter
-
-  """User"""
-  user: StringFilter
-
-  """UserVars"""
-  userVars: StringFilter
 }
 
 type Query {

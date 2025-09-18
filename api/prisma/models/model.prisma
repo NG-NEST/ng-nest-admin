@@ -1,8 +1,9 @@
 model Model {
   id          String   @id @default(uuid())
   name        String
+  code        String   @unique
   description String?
-  type        String
+  platform    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   prompts     Prompt[]

@@ -13,22 +13,22 @@ export class Prompt extends BaseAudit {
   @Field(() => String, { description: PromptDescription.Name })
   name: string;
 
-  @Field(() => String, { description: PromptDescription.User })
-  user: string;
+  @Field(() => String, { description: PromptDescription.Prompt })
+  prompt: string;
 
   @Field(() => String, { description: PromptDescription.System, nullable: true })
   @IsOptional()
   system?: string;
 
-  @Field(() => String, { description: PromptDescription.ModelId })
-  modelId: string;
+  @Field(() => String, { description: PromptDescription.Code })
+  code: string;
 
-  @Field(() => String, { description: PromptDescription.ModelType })
-  modelType: string;
+  @Field(() => String, { description: PromptDescription.Platform })
+  platform: string;
 
-  @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
+  @Field(() => GraphQLJSON, { description: PromptDescription.PromptVars, nullable: true })
   @IsOptional()
-  userVars?: JsonValue;
+  promptVars?: JsonValue;
 
   @Field(() => String, { description: PromptDescription.Description, nullable: true })
   @IsOptional()

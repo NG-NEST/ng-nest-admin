@@ -17,25 +17,25 @@ export class PromptUpdateInput {
   @IsOptional()
   name?: string;
 
-  @Field(() => String, { description: PromptDescription.User, nullable: true })
+  @Field(() => String, { description: PromptDescription.Prompt, nullable: true })
   @IsOptional()
-  user?: string;
+  prompt?: string;
 
   @Field(() => String, { description: PromptDescription.System, nullable: true })
   @IsOptional()
   system?: string;
 
-  @Field(() => String, { description: PromptDescription.ModelId, nullable: true })
+  @Field(() => String, { description: PromptDescription.Code, nullable: true })
   @IsOptional()
-  modelId?: string;
+  code?: string;
 
-  @Field(() => String, { description: PromptDescription.ModelType, nullable: true })
+  @Field(() => String, { description: PromptDescription.Platform, nullable: true })
   @IsOptional()
-  modelType?: string;
+  platform?: string;
 
-  @Field(() => GraphQLJSON, { description: PromptDescription.UserVars, nullable: true })
+  @Field(() => GraphQLJSON, { description: PromptDescription.PromptVars, nullable: true })
   @IsOptional()
-  userVars?: JsonValue;
+  promptVars?: JsonValue;
 
   @Field(() => String, { description: PromptDescription.Description, nullable: true })
   @IsOptional()

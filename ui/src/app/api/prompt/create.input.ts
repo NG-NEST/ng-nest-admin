@@ -1,9 +1,9 @@
 export class PromptCreateInput {
   name!: string;
-  user!: string;
+  prompt!: string;
   system?: string;
-  modelType!: string;
-  modelId!: string;
-  userVars?: any[];
+  code!: string;
+  platform!: string;
+  promptVars?: any[];
   description?: string;
 }
