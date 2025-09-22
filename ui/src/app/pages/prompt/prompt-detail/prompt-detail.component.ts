@@ -66,6 +66,10 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
     return values.every((x: any) => !!x.value);
   }
 
+  get promptValue() {
+    return this.form.get('prompt')?.value;
+  }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
@@ -151,6 +155,7 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   promptChange(value: string) {
+    console.log(value);
     const regex = /\{\{(.*?)\}\}/g;
     let match;
     const extractedVars: { label: string; value: string }[] = [];

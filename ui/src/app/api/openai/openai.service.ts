@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { EventSourceMessage, fetchEventSource } from '@microsoft/fetch-event-source';
+import { AppAuthService } from '@ui/core';
 
 export interface OpenAIInput {
   // 使用接口平台
@@ -39,6 +40,8 @@ export interface OpenAIOutput {
 export class OpenAIService {
   private readonly apiUrl = '/api/openai';
 
+  constructor(private authService: AppAuthService) {}
+
   /**
    * 发送 POST 请求并接收 SSE 流
    * @param data 请求体
@@ -50,11 +53,17 @@ export class OpenAIService {
     fetchEventSource(this.apiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.accessToken()}`
       },
       body: JSON.stringify(data),
-      onmessage: (data: any) => {
-        subject.next(data);
+      onmessage: (message: EventSourceMessage) => {
+        try {
+          const data = JSON.parse(message.data);
+          subject.next(data);
+        } catch (e) {
+          console.log(e);
+        }
       },
       onclose: () => {
         subject.complete();

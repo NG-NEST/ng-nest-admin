@@ -64,7 +64,7 @@ export class PromptComponent {
 
   columns = signal<XTableColumn[]>([
     { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'platform', label: PromptDescription.Platform },
+    { id: 'platform', label: PromptDescription.Platform, width: 180 },
     { id: 'code', label: PromptDescription.Code },
     { id: 'name', label: PromptDescription.Name },
     { id: 'description', label: PromptDescription.Description },

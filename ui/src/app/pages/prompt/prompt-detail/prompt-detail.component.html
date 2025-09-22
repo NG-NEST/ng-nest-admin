@@ -58,7 +58,7 @@
     </div>
 
     @if (promptVars.controls.length > 0) {
-      <div class="item attrs-table" formArrayName="userVars">
+      <div class="item attrs-table" formArrayName="promptVars">
         <label>用户变量：</label>
         <table [style.flex]="1">
           <thead>
@@ -87,23 +87,14 @@
 
     <div class="item">
       <label></label>
-      <x-button
-        icon="fto-chevron-right"
-        flat
-        plain
-        (click)="sendTest()"
-        [disabled]="!form.valid || !varsValid"
-      >
-        发送测试
-      </x-button>
+      <ai-conversation
+        [system]="form.get('system')?.value"
+        [prompt]="promptValue"
+        [platform]="form.get('platform')?.value"
+        [model]="form.get('code')?.value"
+        type="test"
+      ></ai-conversation>
     </div>
-
-    @if (showTestAI()) {
-      <div class="item">
-        <label></label>
-        <ai-conversation></ai-conversation>
-      </div>
-    }
   </div>
   <div x-dialog-actions align="center" class="actions">
     <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>

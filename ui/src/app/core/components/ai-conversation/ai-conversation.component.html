@@ -1,29 +1,85 @@
-<div class="conversation">
-  <div class="content">
-    <x-bubbles>
-      @for (item of list(); track item) {
-        @switch (item.role) {
-          @case ('user') {
-            <x-bubble
-              placement="end"
-              variant="filled"
-              [avatar]="{ icon: 'fto-user', backgroundColor: 'rgba(248, 113, 113, 0.5)' }"
-              [content]="item.content"
-            ></x-bubble>
-          }
-          @case ('assistant') {
-            <x-bubble
-              placement="start"
-              [avatar]="{ icon: 'fto-aperture', backgroundColor: 'rgba(59, 130, 246, 0.5)' }"
-              [typing]="$last"
-              [content]="item.content"
-            ></x-bubble>
+<div class="conversation" [class.test]="type() === 'test'" [class.multiple]="type() === 'multiple'">
+  @switch (type()) {
+    @case ('test') {
+      <x-button
+        icon="fto-chevron-right"
+        flat
+        plain
+        [loading]="testLoading() || testTyping()"
+        (click)="testOpenAI()"
+        [style.width.rem]="8"
+      >
+        发送测试
+      </x-button>
+      @if (testContent()) {
+        <x-bubble
+          [typing]="true"
+          [renderer]="render"
+          [loading]="testLoading()"
+          [content]="testContent()"
+        ></x-bubble>
+      }
+    }
+    @case ('signal') {}
+    @case ('multiple') {
+      <div class="left">
+        <x-scrollable>
+          <div class="new">
+            <x-button type="primary" text icon="fto-plus">开启新对话</x-button>
+          </div>
+          <div class="list">
+            <x-list [data]="list()"></x-list>
+          </div>
+        </x-scrollable>
+      </div>
+      <div class="right">
+        <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+        <ng-container *ngTemplateOutlet="footerTpl"></ng-container>
+      </div>
+    }
+  }
+</div>
+
+<ng-template #contentTpl>
+  <div #contentRef class="content">
+    <x-scrollable>
+      <x-bubbles>
+        @for (item of messages(); track item) {
+          @switch (item.role) {
+            @case ('user') {
+              <x-bubble
+                placement="end"
+                variant="filled"
+                [avatar]="{ icon: 'fto-user', backgroundColor: 'rgba(248, 113, 113, 0.5)' }"
+                [content]="item.content"
+                [renderer]="render"
+              ></x-bubble>
+            }
+            @case ('assistant') {
+              <x-bubble
+                placement="start"
+                [avatar]="{ icon: 'fto-aperture', backgroundColor: 'rgba(59, 130, 246, 0.5)' }"
+                [typing]="$last"
+                [speed]="10"
+                [loading]="item.content === ''"
+                [content]="item.content"
+                [renderer]="render"
+              ></x-bubble>
+            }
           }
         }
-      }
-    </x-bubbles>
+      </x-bubbles>
+    </x-scrollable>
   </div>
-  <div class="footer">
-    <x-sender></x-sender>
+</ng-template>
+
+<ng-template #footerTpl>
+  <div #footerRef class="footer">
+    <x-sender
+      [(ngModel)]="sendContent"
+      [loading]="sendLoading()"
+      (submit)="onSubmit()"
+      [maxRows]="10"
+    ></x-sender>
   </div>
-</div>
+</ng-template>

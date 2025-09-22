@@ -1,98 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
-import { XDrawerService } from '@ng-nest/ui';
-import { XButtonComponent } from '@ng-nest/ui/button';
-// import { SchemaDetailComponent } from '../schema/schema-detail/schema-detail.component';
-import { XDialogService } from '@ng-nest/ui/dialog';
-import { AppJsonSchemaComponent, AppSchemaFormComponent, XJsonSchema } from '@ui/core';
-import { SyntaxInfoComponent } from '../code-generate/syntax-info/syntax-info.component';
+import { Component, signal } from '@angular/core';
+import { AiConversationComponent } from '@ui/core';
 
 @Component({
   selector: 'app-json',
   templateUrl: './json.component.html',
   styleUrls: ['./json.component.scss'],
-  imports: [AppJsonSchemaComponent, AppSchemaFormComponent, FormsModule, XButtonComponent]
+  imports: [AiConversationComponent]
 })
 export class JsonComponent {
-  dialog = inject(XDialogService);
-  formBuilder = inject(FormBuilder);
-  drawerService = inject(XDrawerService);
-
-  form1 = this.formBuilder.group({});
-  jsonSchema1: XJsonSchema = {
-    type: 'object',
-    title: '用户角色集合',
-    properties: {
-      asdasd: {
-        type: 'string',
-        title: 'xxx'
-      },
-      tryrty: {
-        type: 'string',
-        title: 'yyy'
-      },
-      axxx: {
-        type: 'object',
-        title: 'zzz',
-        properties: {},
-        'x-ng-nest': {
-          isJsonSchema: true
-        }
-      }
-    },
-    required: ['asdasd', 'tryrty', 'axxx'],
-    'x-ng-nest': {
-      orders: ['asdasd', 'tryrty', 'axxx']
-    }
-  };
-
-  form2 = this.formBuilder.group({});
-  jsonSchema2: XJsonSchema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    title: '用户信息',
-    type: 'object',
-    properties: {
-      userId: {
-        title: '用户ID',
-        description: '用户的唯一标识符',
-        type: 'string'
-      },
-      userName: {
-        title: '用户名',
-        description: '用户的登录名或昵称',
-        type: 'string'
-      },
-      roles: {
-        type: 'array',
-        title: '用户角色集合',
-        items: {
-          type: 'object',
-          title: '用户角色',
-          properties: {
-            id: { type: 'string', title: '编码' },
-            name: { type: 'string', title: '角色名称' }
-          },
-          required: ['id']
-        }
-      }
-    },
-    required: ['userId', 'userName', 'email']
-  };
-
-  ngAfterViewInit() {
-    // this.dialog.create(SchemaDetailComponent, {
-    //   width: '50rem',
-    //   data: {
-    //     saveSuccess: () => {}
-    //   }
-    // });
-  }
-
-  convert() {
-    this.drawerService.create(SyntaxInfoComponent, {
-      className: 'app-drawer',
-      size: '50%',
-      data: {}
-    });
-  }
+  platform = signal('dashscope');
+  model = signal('qwen3-235b-a22b-instruct-2507');
+  system = signal(
+    '你是一个 AI 助手，请按照要求回答问题，使用markdown的格式逐条输出，带上 emoji 符号，控制在100字以内。'
+  );
+  prompt = signal('人工智能到底是什么？');
 }

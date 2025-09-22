@@ -1,28 +1,14 @@
-<x-button (click)="convert()">convert</x-button>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<app-json-schema [title]="'xxxx'" [ngModel]="jsonSchema1"></app-json-schema>
-<app-schema-form [data]="jsonSchema1" [form]="form1"></app-schema-form>
+<!-- <ai-conversation
+  type="test"
+  [platform]="platform()"
+  [model]="model()"
+  [prompt]="prompt()"
+  [system]="system()"
+></ai-conversation> -->
 
-<!-- <app-json-schema [ngModel]="jsonSchema2"></app-json-schema>
-<app-schema-form [data]="jsonSchema2" [form]="form2"></app-schema-form> -->
-<br />
-<br />
-<br />
-
-<!-- <iframe
-  src="https://traffic.icvcsp.com/?accessToken=55afb60e545ebd2a523428ee520c3443.1288654862045794305"
-  width="100%"
-  height="100%"
-></iframe> -->
+<ai-conversation
+  [style.height.vh]="100"
+  type="multiple"
+  [platform]="platform()"
+  [model]="model()"
+></ai-conversation>

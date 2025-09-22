@@ -12,7 +12,6 @@ import {
   CacheModule as LocalCacheModule,
   LogsModule,
   SchemaModule,
-  AigcModule,
   UploadModule,
   CatalogueModule,
   VariableModule,
@@ -20,6 +19,7 @@ import {
   SchemaDataModule,
   PromptModule,
   ModelModule,
+  OpenAIModule,
 } from '@api/modules';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GlobalModule, grapgQLConfig, I18N_CONFING } from '@api/core';
@@ -49,13 +49,13 @@ import { CacheModule } from '@nestjs/cache-manager';
     LogsModule,
     SchemaModule,
     SchemaDataModule,
-    AigcModule,
     UploadModule,
     CatalogueModule,
     VariableModule,
     VariableCategoryModule,
     PromptModule,
     ModelModule,
+    OpenAIModule,
   ],
 })
 export class AppModule {}
