@@ -1,0 +1,12 @@
+<div class="header">
+  <label [class.required]="required()" *xOutlet="label()">{{ label() }}</label>
+  <x-button
+    size="small"
+    [title]="fullscreen() ? '取消全屏' : '全屏'"
+    [icon]="fullscreen() ? 'fto-minimize-2' : 'fto-maximize-2'"
+    text
+    (click)="toggleFullscreen()"
+  >
+  </x-button>
+</div>
+<div #editorRef class="editor"></div>

@@ -25,7 +25,6 @@ export class DashscopeService {
   private async initializeOpenAI(): Promise<void> {
     try {
       const { token, isCache } = await this.getAccessToken();
-      console.log(token, isCache);
       if (isCache) return;
       this.openai = new OpenAI({
         apiKey: token,
@@ -108,9 +107,6 @@ export class DashscopeService {
           // 流式传输响应
           for await (const chunk of stream) {
             const choice = chunk.choices[0];
-            console.log(chunk);
-            console.log('-----------');
-            console.log(choice);
             observer.next({
               id: chunk.id,
               object: chunk.object,

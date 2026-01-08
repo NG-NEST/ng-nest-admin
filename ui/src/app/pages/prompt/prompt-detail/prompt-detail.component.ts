@@ -67,7 +67,12 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   get promptValue() {
-    return this.form.get('prompt')?.value;
+    let { prompt, promptVars } = this.form.getRawValue();
+    for (let { label, value } of promptVars) {
+      const reg = new RegExp(`\\{\\{\\s*${label}\\s*\\}\\}`, 'g');
+      prompt = prompt.replace(reg, value);
+    }
+    return prompt;
   }
 
   ngOnInit(): void {
@@ -155,7 +160,6 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   promptChange(value: string) {
-    console.log(value);
     const regex = /\{\{(.*?)\}\}/g;
     let match;
     const extractedVars: { label: string; value: string }[] = [];

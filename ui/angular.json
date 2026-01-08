@@ -28,8 +28,8 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "./node_modules/monaco-editor/esm/vs",
-                "output": "/assets/vs/"
+                "input": "node_modules/monaco-editor/min/vs",
+                "output": "assets/monaco"
               }
             ],
             "styles": ["node_modules/@ng-nest/ui/style/core/index.css", "src/styles.scss"],
@@ -43,9 +43,9 @@
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/prismjs/components/prism-json.min.js",
               "node_modules/prismjs/components/prism-bash.min.js",
-              "node_modules/prismjs/components/prism-json.min.js",
               "node_modules/prismjs/components/prism-markdown.min.js",
-              "node_modules/prismjs/components/prism-ignore.min.js"
+              "node_modules/prismjs/components/prism-ignore.min.js",
+              "node_modules/monaco-editor/min/vs/loader.js"
             ],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },

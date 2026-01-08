@@ -50,7 +50,10 @@ export class OpenAIService {
   postSse(data: OpenAIInput): Observable<OpenAIOutput> {
     const subject = new Subject<OpenAIOutput>();
 
+    const controller = new AbortController();
+
     fetchEventSource(this.apiUrl, {
+      signal: controller.signal,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,9 +70,27 @@ export class OpenAIService {
       },
       onclose: () => {
         subject.complete();
+        controller.abort();
       },
       onerror: (err: any) => {
+        debugger;
+        const status = err;
+        if (status && (status === 401 || status === 403 || status === 404)) {
+          subject.complete();
+          controller.abort();
+          return;
+        }
+
+        if (status && status >= 500) {
+          subject.complete();
+          controller.abort();
+          return;
+        }
+
         subject.error(err);
+        subject.complete();
+        controller.abort();
+        throw new Error('SSE failed permanently');
       }
     });
 

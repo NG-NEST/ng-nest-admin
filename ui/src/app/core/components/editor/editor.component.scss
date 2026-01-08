@@ -1,9 +1,49 @@
+@use '../../../../../node_modules/@ng-nest/ui/style/params/index.scss' as *;
+
 :host {
   display: block;
   width: 100%;
   height: 100%;
 
-  ::ng-deep .monaco-editor .margin {
-    background-color: var(--x-background-a100);
+  &.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1000;
+    transform: scale(1);
+  }
+
+  .header {
+    padding-left: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $x-background-a100;
+    border-bottom: $x-border-base;
+    height: 2rem;
+
+    > label.required {
+      display: inline-block;
+      margin-right: 0.25rem;
+      color: var(--x-danger);
+      line-height: 1;
+      font-size: var(--x-font-size-small);
+      content: '*';
+    }
+  }
+
+  .editor {
+    width: 100%;
+    height: calc(100% - 2rem - #{$x-border-width});
+  }
+
+  ::ng-deep {
+    .monaco-editor {
+      .margin {
+        background-color: $x-background-a100;
+      }
+    }
   }
 }
