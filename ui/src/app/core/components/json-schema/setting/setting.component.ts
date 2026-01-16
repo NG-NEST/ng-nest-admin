@@ -6,6 +6,7 @@ import {
   X_DIALOG_DATA,
   XButtonModule,
   XDialogModule,
+  XI18nPipe,
   XSelectComponent,
   XSwitchComponent
 } from '@ng-nest/ui';
@@ -24,6 +25,7 @@ import { StringComponent } from './string/string.component';
     XSwitchComponent,
     XDialogModule,
     XButtonModule,
+    XI18nPipe,
     ArrayComponent,
     BooleanComponent,
     IntegerComponent,

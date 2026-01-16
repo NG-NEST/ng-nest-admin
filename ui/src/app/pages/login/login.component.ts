@@ -69,8 +69,8 @@ export class LoginComponent {
   form!: FormGroup;
 
   langs = [
-    { label: '简体中文', id: 'zh_CN' },
-    { label: 'English', id: 'en_US' }
+    { label: 'zh_CN', id: 'zh_CN' },
+    { label: 'en_US', id: 'en_US' }
   ];
 
   ngOnInit() {
@@ -97,15 +97,15 @@ export class LoginComponent {
   submit() {
     const { account, password, code } = this.form.value;
     if (isEmpty(account)) {
-      this.message.warning(this.i18n.translate('login.please-input-account'));
+      this.message.warning(this.i18n.translate('$login.pleaseInputAccount'));
       return;
     }
     if (isEmpty(password)) {
-      this.message.warning(this.i18n.translate('login.please-input-password'));
+      this.message.warning(this.i18n.translate('$login.pleaseInputPassword'));
       return;
     }
     if (isEmpty(code)) {
-      this.message.warning(this.i18n.translate('login.please-input-code'));
+      this.message.warning(this.i18n.translate('$login.pleaseInputCode'));
       return;
     }
     this.loginLoading.set(true);

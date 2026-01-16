@@ -1,18 +1,18 @@
 <form [x-loading]="formLoading()" class="app-dialog-form">
-  <h4 x-dialog-title class="title">缓存信息</h4>
+  <h4 x-dialog-title class="title">{{ '$cache.info' | xI18n }}</h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content attrs">
     <div class="item">
-      <label>分类：</label>
+      <label>{{ '$cache.cate' | xI18n }}</label>
       <span>{{ typeMap.get(type()) ?? type() }} </span>
     </div>
     <div class="attrs-table app-table">
       <table>
         <thead>
           <tr>
-            <th>序号</th>
-            <th>查询条件</th>
-            <th width="160">操作</th>
+            <th>{{ '$base.index' }}</th>
+            <th>{{ '$cache.keys' }}</th>
+            <th width="160">{{ '$base.operate' }}</th>
           </tr>
         </thead>
         <tbody>
@@ -21,8 +21,12 @@
               <td class="index">{{ $index + 1 }}</td>
               <td>{{ item.json }}</td>
               <td class="operate">
-                <x-link type="primary" (click)="action('view', item.key)">查看数据</x-link>
-                <x-link type="danger" (click)="action('delete', item.key)"> 删除 </x-link>
+                <x-link type="primary" (click)="action('view', item.key)">{{
+                  '$cache.viewData' | xI18n
+                }}</x-link>
+                <x-link type="danger" (click)="action('delete', item.key)">
+                  {{ '$base.delete' | xI18n }}
+                </x-link>
               </td>
             </tr>
           }
@@ -31,6 +35,8 @@
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button size="large" icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button size="large" icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.close'
+    }}</x-button>
   </div>
 </form>

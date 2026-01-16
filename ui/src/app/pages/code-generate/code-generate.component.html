@@ -4,13 +4,38 @@
       <div class="item">
         <x-tree-select
           formControlName="category"
-          [placeholder]="'请选择一个代码分类'"
+          [placeholder]="'$codeGenerate.pleaseSelectCodeCate' | xI18n"
           [data]="categories()"
           [expandedLevel]="3"
           showPath
           [portalMaxHeight]="'20rem'"
         ></x-tree-select>
-        <x-dropdown [data]="dropdownMenu()" (nodeClick)="onDropdownClick($event)">
+        <x-dropdown
+          [data]="[
+            { id: 'add-root', label: ('$codeGenerate.addRootNode' | xI18n), icon: 'fto-plus' },
+            {
+              id: 'folder-upload',
+              label: ('$codeGenerate.folderUpload' | xI18n),
+              icon: 'fto-upload'
+            },
+            {
+              id: 'variable-setting',
+              label: ('$codeGenerate.variableSetting' | xI18n),
+              icon: 'fto-settings'
+            },
+            {
+              id: 'category-preview',
+              label: ('$codeGenerate.genPreview' | xI18n),
+              icon: 'fto-eye'
+            },
+            {
+              id: 'category-download',
+              label: ('$codeGenerate.downloadCode' | xI18n),
+              icon: 'fto-download'
+            }
+          ]"
+          (nodeClick)="onDropdownClick($event)"
+        >
           <x-button icon="fto-more-horizontal" type="primary" flat></x-button>
         </x-dropdown>
 
@@ -44,19 +69,16 @@
             }
             <span class="node-label" [attr.title]="node.label">{{ node.label }}</span>
             @if (node.many) {
-              <span
-                class="many"
-                x-tooltip
-                content="根据指定的数据定义变量生成多次，文件名中最好使用对应的变量名"
-                >多</span
-              >
+              <span class="many" x-tooltip [content]="'$codeGenerate.multipleContent' | xI18n">{{
+                '$codeGenerate.many' | xI18n
+              }}</span>
             }
           </div>
           <div class="actions">
             @if (node.type === 'Folder') {
               <x-link
                 x-tooltip
-                [content]="'添加子节点'"
+                [content]="'$codeGenerate.addSubNode' | xI18n"
                 type="primary"
                 icon="fto-plus-square"
                 (click)="action($event, 'add-child', node)"
@@ -65,14 +87,14 @@
             @if (node.type === 'File') {
               <x-link
                 x-tooltip
-                [content]="'预览生成代码'"
+                [content]="'$codeGenerate.previewGenCode' | xI18n"
                 type="primary"
                 icon="fto-hash"
                 (click)="action($event, 'preview', node)"
               ></x-link>
               <x-link
                 x-tooltip
-                [content]="'下载代码'"
+                [content]="'$codeGenerate.downloadCode' | xI18n"
                 type="primary"
                 icon="fto-download"
                 (click)="action($event, 'download', node)"
@@ -80,14 +102,14 @@
             }
             <x-link
               x-tooltip
-              [content]="'修改节点'"
+              [content]="'$codeGenerate.editNode' | xI18n"
               type="primary"
               icon="fto-edit"
               (click)="action($event, 'edit', node)"
             ></x-link>
             <x-link
               x-tooltip
-              [content]="'删除节点'"
+              [content]="'$codeGenerate.deleteNode' | xI18n"
               type="danger"
               icon="fto-minus-square"
               (click)="action($event, 'delete', node)"
@@ -115,9 +137,11 @@
         attrType="submit"
         [loading]="saveContentLoading()"
         [disabled]="!form.valid"
-        >保存</x-button
+        >{{ '$base.save' | xI18n }}</x-button
       >
-      <x-link type="primary" (click)="openTemplateDoc()">模板语法说明</x-link>
+      <x-link type="primary" (click)="openTemplateDoc()">{{
+        '$codeGenerate.templateGrammarInstruction' | xI18n
+      }}</x-link>
     </div>
   </form>
 </div>

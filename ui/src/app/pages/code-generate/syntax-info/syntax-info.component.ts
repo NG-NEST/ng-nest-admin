@@ -2,15 +2,22 @@ import { NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { XTabsModule } from '@ng-nest/ui';
+import { XI18nPipe, XTabsModule } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDrawerModule, XDrawerRef } from '@ng-nest/ui/drawer';
 import { AppParseJsDoc, FunctionDoc } from '@ui/core';
-import { XHighlightComponent } from "@ng-nest/ui/highlight";
+import { XHighlightComponent } from '@ng-nest/ui/highlight';
 
 @Component({
   selector: 'app-syntax-info',
-  imports: [NgTemplateOutlet, XButtonComponent, XDrawerModule, XTabsModule, XHighlightComponent],
+  imports: [
+    NgTemplateOutlet,
+    XButtonComponent,
+    XDrawerModule,
+    XTabsModule,
+    XI18nPipe,
+    XHighlightComponent
+  ],
   templateUrl: 'syntax-info.component.html',
   styleUrl: 'syntax-info.component.scss'
 })

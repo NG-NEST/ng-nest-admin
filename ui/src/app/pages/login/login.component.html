@@ -17,49 +17,52 @@
         </ng-template>
         <x-select
           class="lang-select"
+          [style.width]="'auto'"
           [(ngModel)]="lang"
           (ngModelChange)="changeLang($event)"
           [ngModelOptions]="{ standalone: true }"
           [data]="langs"
           [variant]="'borderless'"
+          [autoWidth]="true"
           clearable="false"
+          portalWidth="150"
         ></x-select>
       </div>
       <div class="item">
         <div class="logo"></div>
       </div>
       <div class="item">
-        <label>{{ 'login.account' | xI18n }}</label>
         <x-input
           size="large"
           formControlName="account"
-          [placeholder]="'login.please-input-account' | xI18n"
+          [label]="'$login.account' | xI18n"
+          floatLabel="on"
           required
         ></x-input>
       </div>
       <div class="item">
-        <label>{{ 'login.password' | xI18n }}</label>
         <x-input
           size="large"
           formControlName="password"
           type="password"
-          [placeholder]="'login.please-input-password' | xI18n"
+          [label]="'$login.password' | xI18n"
+          floatLabel="on"
           required
         ></x-input>
       </div>
       <div class="item" [style.height.px]="50">
-        <label>{{ 'login.code' | xI18n }}</label>
         <x-input
           size="large"
           formControlName="code"
-          [placeholder]="'login.please-input-code' | xI18n"
+          [label]="'$login.code' | xI18n"
+          floatLabel="on"
           required
         ></x-input>
         <div class="captcha" (click)="getCaptcha()" #svgEle></div>
       </div>
       <div class="item">
         <x-button attrType="submit" type="primary" size="large" [loading]="loginLoading()">{{
-          loginLoading() ? '' : ('login.login' | xI18n)
+          loginLoading() ? '' : ('$login.login' | xI18n)
         }}</x-button>
       </div>
     </div>

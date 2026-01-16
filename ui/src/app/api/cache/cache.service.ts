@@ -8,11 +8,13 @@ import { cloneDeep } from 'lodash-es';
 import { CacheMessage } from './cache.enum';
 import { CacheUpdateInput } from './update.input';
 import { CacheGroup } from './cache-group.model';
+import { XI18nService } from '@ng-nest/ui';
 
 @Injectable({ providedIn: 'root' })
 export class CacheService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   cacheKeys(input?: CacheKeysInput): Observable<CacheGroup[]> {
     return this.apollo
@@ -49,20 +51,26 @@ export class CacheService {
   }
 
   update(input: CacheUpdateInput): Observable<string> {
-    return this.http.patch(`/api/cache`, input).pipe(map(() => CacheMessage.UpdatedSuccess));
+    return this.http
+      .patch(`/api/cache`, input)
+      .pipe(map(() => this.i18n.L(`$cache.${CacheMessage.UpdatedSuccess}`)));
   }
 
   delete(key: string): Observable<string> {
     return this.http
       .delete(`/api/cache`, { body: { key } })
-      .pipe(map(() => CacheMessage.DeletedSuccess));
+      .pipe(map(() => this.i18n.L(`$cache.${CacheMessage.DeletedSuccess}`)));
   }
 
   deleteType(type: string): Observable<string> {
-    return this.http.delete(`/api/cache/type/${type}`).pipe(map(() => CacheMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/cache/type/${type}`)
+      .pipe(map(() => this.i18n.L(`$cache.${CacheMessage.DeletedSuccess}`)));
   }
 
   deleteAll(): Observable<string> {
-    return this.http.delete(`/api/cache/all`).pipe(map(() => CacheMessage.DeletedAllSuccess));
+    return this.http
+      .delete(`/api/cache/all`)
+      .pipe(map(() => this.i18n.L(`$cache.${CacheMessage.DeletedAllSuccess}`)));
   }
 }

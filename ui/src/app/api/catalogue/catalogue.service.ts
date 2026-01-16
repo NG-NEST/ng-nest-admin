@@ -11,11 +11,13 @@ import { CatalogueUpdateInput } from './update.input';
 import { CatalogueSelectOutput } from './select.output';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { CatalogueSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogueService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   catalogue(id: string): Observable<Catalogue> {
     return this.apollo
@@ -127,7 +129,7 @@ export class CatalogueService {
   delete(id: string): Observable<string> {
     return this.http
       .delete(`/api/catalogue/${id}`)
-      .pipe(map(() => CatalogueMessage.DeletedSuccess));
+      .pipe(map(() => this.i18n.translate(`$catalogue.${CatalogueMessage.DeletedSuccess}`)));
   }
 
   preview(id: string, params?: { schemaDataIds?: string[] }): Observable<Catalogue | Catalogue[]> {
@@ -148,7 +150,7 @@ export class CatalogueService {
   folderUpload(body: FormData): Observable<string> {
     return this.http
       .post(`/api/catalogue/folder-upload`, body, { responseType: 'arraybuffer' })
-      .pipe(map(() => CatalogueMessage.FolderUploadSuccess));
+      .pipe(map(() => this.i18n.translate(`$catalogue.${CatalogueMessage.FolderUploadSuccess}`)));
   }
 
   categoryPreview(

@@ -9,6 +9,7 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XTooltipDirective } from '@ng-nest/ui/tooltip';
 import { XIconComponent } from '@ng-nest/ui/icon';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-string',
@@ -19,7 +20,8 @@ import { XIconComponent } from '@ng-nest/ui/icon';
     XInputComponent,
     XInputNumberComponent,
     XTooltipDirective,
-    XIconComponent
+    XIconComponent,
+    XI18nPipe
   ],
   templateUrl: './string.component.html',
   styleUrls: ['./string.component.scss']

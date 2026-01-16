@@ -22,9 +22,10 @@
         <x-tab>
           <div class="form">
             <x-button class="select-data" type="primary" text (click)="onSelectData(item)">
-              选择数据
+              {{ '$codeGenerate.selectData' | xI18n }}
             </x-button>
-            <app-schema-form #schemaForm
+            <app-schema-form
+              #schemaForm
               [data]="item.jsonSchema"
               [form]="getForm(item.variableId)"
             ></app-schema-form>
@@ -34,14 +35,18 @@
     </x-tabs>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     @if (stepIndex() > 0) {
-      <x-button attrType="button" (click)="pre()" flat plain>上一步</x-button>
+      <x-button attrType="button" (click)="pre()" flat plain>{{
+        '$base.previous' | xI18n
+      }}</x-button>
     }
     @if (stepIndex() < formList().length - 1) {
-      <x-button attrType="button" (click)="next()" [disabled]="nextDisabled" flat plain
-        >下一步</x-button
-      >
+      <x-button attrType="button" (click)="next()" [disabled]="nextDisabled" flat plain>{{
+        '$base.next' | xI18n
+      }}</x-button>
     }
     @if (stepIndex() === formList().length - 1) {
       <x-button
@@ -51,7 +56,7 @@
         attrType="submit"
         [loading]="saveLoading()"
         [disabled]="!form().valid"
-        >提交</x-button
+        >{{ '$base.submit' | xI18n }}</x-button
       >
     }
   </div>

@@ -11,11 +11,13 @@ import { SchemaDataUpdateInput } from './update.input';
 import { SchemaDataSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { SchemaDataSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class SchemaDataService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   schemaData(id: string): Observable<SchemaData> {
     return this.apollo
@@ -91,6 +93,6 @@ export class SchemaDataService {
   delete(id: string): Observable<string> {
     return this.http
       .delete(`/api/schema-data/${id}`)
-      .pipe(map(() => SchemaDataMessage.DeletedSuccess));
+      .pipe(map(() => this.i18n.translate(`$schemaData.${SchemaDataMessage.DeletedSuccess}`)));
   }
 }

@@ -1,66 +1,68 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ title() }}资源</h4>
+  <h4 x-dialog-title class="title">{{ title() }}{{ '$subject.resource' | xI18n }}</h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label>资源分类：</label>
+      <label>{{ '$subject.resourceCategory' | xI18n }}</label>
       <x-select
         formControlName="subjectId"
         [data]="subjects()"
-        placeholder="请选择资源分类"
+        [placeholder]="'$subject.resourceCategoryPlaceholder' | xI18n"
       ></x-select>
     </div>
     <div class="item">
-      <label>父资源：</label>
+      <label>{{ '$subject.parentResource' | xI18n }}</label>
       <x-tree-select
         formControlName="pid"
         [data]="resources()"
-        placeholder="请选择父资源"
+        [placeholder]="'$subject.parentResourcePlaceholder' | xI18n"
       ></x-tree-select>
     </div>
     <div class="item required">
-      <label>资源类型：</label>
+      <label>{{ '$subject.resourceType' | xI18n }}</label>
       <x-radio button [data]="typeList()" formControlName="type"></x-radio>
     </div>
     <div class="item required">
-      <label>资源名称：</label>
-      <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
+      <label>{{ '$subject.resourceName' | xI18n }}</label>
+      <x-input formControlName="name" [placeholder]="'$subject.resourceNamePlaceholder' | xI18n"></x-input>
     </div>
     @switch (form.value.type) {
       @case ('number') {
         <div class="item required">
-          <label>资源标识：</label>
+          <label>{{ '$subject.resourceCode' | xI18n }}</label>
           <x-input-number formControlName="code"></x-input-number>
         </div>
       }
       @case ('boolean') {
         <div class="item required">
-          <label>资源标识：</label>
+          <label>{{ '$subject.resourceCode' | xI18n }}</label>
           <x-switch formControlName="code" checkedText="true" unCheckedText="false"></x-switch>
         </div>
       }
       @default {
         <div class="item required">
-          <label>资源标识：</label>
-          <x-input formControlName="code" placeholder="请输入字符串"></x-input>
+          <label>{{ '$subject.resourceCode' | xI18n }}</label>
+          <x-input formControlName="code" [placeholder]="'$subject.stringPlaceholder' | xI18n"></x-input>
         </div>
       }
     }
     <div class="item required">
-      <label>资源排序：</label>
+      <label>{{ '$subject.resourceSort' | xI18n }}</label>
       <x-input-number formControlName="sort"></x-input-number>
     </div>
     <div class="item">
-      <label>资源图标：</label>
-      <x-input formControlName="icon" placeholder="可选择一个资源图标"></x-input>
+      <label>{{ '$subject.resourceIcon' | xI18n }}</label>
+      <x-input formControlName="icon" [placeholder]="'$subject.resourceIconPlaceholder' | xI18n"></x-input>
     </div>
     <div class="item">
-      <label>资源描述：</label>
-      <x-textarea formControlName="description" placeholder="请输入资源描述"></x-textarea>
+      <label>{{ '$subject.resourceDescription' | xI18n }}</label>
+      <x-textarea formControlName="description" [placeholder]="'$subject.resourceDescriptionPlaceholder' | xI18n"></x-textarea>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -68,7 +70,7 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid"
-      >保存</x-button
+      >{{ '$base.save' | xI18n }}</x-button
     >
   </div>
 </form>

@@ -4,10 +4,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { XJsonSchemaBehaviors, XTreeData } from '../../json-schema.type';
 import { AppSettingComponent } from '../setting.component';
 import { XSelectComponent } from '@ng-nest/ui/select';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-boolean',
-  imports: [ReactiveFormsModule, XSelectComponent],
+  imports: [ReactiveFormsModule, XSelectComponent, XI18nPipe],
   templateUrl: './boolean.component.html',
   styleUrls: ['./boolean.component.scss']
 })

@@ -22,6 +22,7 @@ import {
 import { AppFormService, AppSchemaFormComponent, XJsonSchema, XTreeData } from '@ui/core';
 import { finalize, forkJoin } from 'rxjs';
 import { SelectSchemaDataComponent } from '../select-schema-data/select-schema-data.component';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-variable-guide',
@@ -31,6 +32,7 @@ import { SelectSchemaDataComponent } from '../select-schema-data/select-schema-d
     XDialogModule,
     XStepsComponent,
     XTabsModule,
+    XI18nPipe,
     AppSchemaFormComponent
   ],
   templateUrl: './variable-guide.component.html',
@@ -51,6 +53,7 @@ export class VariableGuideComponent {
   catalogue = inject(CatalogueService);
   dialog = inject(XDialogService);
   cdr = inject(ChangeDetectorRef);
+  i18n = inject(XI18nService);
 
   saveLoading = signal<boolean>(false);
 
@@ -148,7 +151,7 @@ export class VariableGuideComponent {
       width: '100%',
       height: '100%',
       data: {
-        title: '选择数据',
+        title: this.i18n.L('$codeGenerate.selectData'),
         schemaId: form.id,
         saveSuccess: (data: { [key: string]: any }) => {
           const { $root } = data;

@@ -4,13 +4,13 @@
   <div x-dialog-content class="content">
     @if (type() !== 'add-root') {
       <div class="item">
-        <label>父节点：</label>
+        <label>{{ '$codeGenerate.parentNode' | xI18n }}</label>
         <x-tree-select [data]="treeData()" showPath formControlName="pid"></x-tree-select>
       </div>
     }
     <div class="item">
       <label>
-        节点类型
+        {{ '$codeGenerate.nodeType' | xI18n }}
         <x-icon
           class="app-help-icon"
           x-tooltip
@@ -18,26 +18,25 @@
           [panelClass]="'app-help-content'"
           type="fto-help-circle"
         ></x-icon>
-        ：
         <ng-template #contentTypeTpl>
-          <p>文件夹类型可以添加子节点</p>
-          <p>根据文件后缀来指定文件类型</p>
+          <p>{{ '$codeGenerate.folderTypeCanAddChild' | xI18n }}</p>
+          <p>{{ '$codeGenerate.fileTypeBaseFileSuffix' | xI18n }}</p>
         </ng-template>
       </label>
       <x-radio
         [data]="[
-          { id: 'Folder', label: '文件夹' },
-          { id: 'File', label: '文件' }
+          { id: 'Folder', label: ('$codeGenerate.folder' | xI18n) },
+          { id: 'File', label: ('$codeGenerate.file' | xI18n) }
         ]"
         button
         formControlName="type"
       ></x-radio>
-      <x-input formControlName="name" [placeholder]="'请输入' + typeName"></x-input>
+      <x-input formControlName="name" [placeholder]="typeName"></x-input>
     </div>
     @if (form.value.type === 'File') {
       <div class="item required">
         <label>
-          生成多次
+          {{ '$codeGenerate.generateMultiple' | xI18n }}
           <x-icon
             class="app-help-icon"
             x-tooltip
@@ -45,24 +44,23 @@
             [panelClass]="'app-help-content'"
             type="fto-help-circle"
           ></x-icon>
-          ：
           <ng-template #contentManyTpl>
-            <p>默认只生成一次</p>
-            <p>多次生成需要指定一个数据定义变量</p>
-            <p>数据定义变量来源于该分类下的变量定义，并且数据定义的类型为数组</p>
+            <p>{{ '$codeGenerate.defaultGenerateOnce' | xI18n }}</p>
+            <p>{{ '$codeGenerate.multipleGenerateNeedDefineVariable' | xI18n }}</p>
+            <p>{{ '$codeGenerate.dataDefineVariableFromCategoryVariable' | xI18n }}</p>
           </ng-template>
         </label>
         <x-radio
           [data]="[
-            { id: true, label: '是' },
-            { id: false, label: '否' }
+            { id: true, label: ('$base.yes' | xI18n) },
+            { id: false, label: ('$base.no' | xI18n) }
           ]"
           button
           formControlName="many"
         ></x-radio>
         @if (form.value.many) {
           <x-cascade
-            placeholder="请选择数据定义变量"
+            [placeholder]="'$codeGenerate.pleaseSelectDataDefineVariable' | xI18n"
             [data]="variableList()"
             nodeTrigger="hover"
             formControlName="variableId"
@@ -71,17 +69,22 @@
       </div>
     }
     <div class="item required">
-      <label>排序：</label>
+      <label>{{ '$base.sort' | xI18n }}</label>
       <x-input-number formControlName="sort"></x-input-number>
     </div>
 
     <div class="item" [style.grid-column]="'1 / -1'">
-      <label>描述：</label>
-      <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
+      <label>{{ '$base.description' | xI18n }}</label>
+      <x-textarea
+        formControlName="description"
+        [placeholder]="'$base.pleaseInputDescription' | xI18n"
+      ></x-textarea>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -90,7 +93,7 @@
       [loading]="saveLoading()"
       [disabled]="!form.valid"
     >
-      保存
+      {{ '$base.save' | xI18n }}
     </x-button>
   </div>
 </form>

@@ -1,6 +1,6 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form">
   <h4 x-dialog-title class="title">
-    过期时间：{{ item()?.expiretime | date: 'yyyy-MM-dd HH:mm:ss' }}
+    {{ '$cache.expirationTime' | xI18n }} {{ item()?.expiretime | date: 'yyyy-MM-dd HH:mm:ss' }}
   </h4>
   <x-button
     class="close"
@@ -16,6 +16,8 @@
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain (click)="dialogRef.close()">关闭</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain (click)="dialogRef.close()">{{
+      '$base.close'
+    }}</x-button>
   </div>
 </form>

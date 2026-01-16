@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { XLoadingComponent } from '@ng-nest/ui';
+import { XI18nPipe, XLoadingComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { X_DIALOG_DATA, XDialogModule, XDialogRef } from '@ng-nest/ui/dialog';
 import { XIconComponent } from '@ng-nest/ui/icon';
@@ -19,6 +19,7 @@ import { finalize } from 'rxjs';
     XTreeComponent,
     XIconComponent,
     XLoadingComponent,
+    XI18nPipe,
     AppFileIconPipe
   ],
   templateUrl: './preview.component.html',

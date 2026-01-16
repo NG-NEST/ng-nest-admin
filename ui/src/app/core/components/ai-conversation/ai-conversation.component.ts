@@ -22,6 +22,7 @@ import { XResize, XResizeObserver } from '@ng-nest/ui/core';
 import { XScrollableComponent } from '@ng-nest/ui/scrollable';
 import { v4 } from 'uuid';
 import { XListComponent, XListNode } from '@ng-nest/ui/list';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'ai-conversation',
@@ -34,6 +35,7 @@ import { XListComponent, XListNode } from '@ng-nest/ui/list';
     XButtonComponent,
     XScrollableComponent,
     XListComponent,
+    XI18nPipe,
     NgTemplateOutlet
   ],
   templateUrl: './ai-conversation.component.html',
@@ -45,6 +47,7 @@ export class AiConversationComponent {
   openaiService = inject(OpenAIService);
   renderer = inject(Renderer2);
   cdr = inject(ChangeDetectorRef);
+  i18n = inject(XI18nService);
 
   contentRef = viewChild<ElementRef<HTMLDivElement>>('contentRef');
   footerRef = viewChild<ElementRef<HTMLDivElement>>('footerRef');
@@ -66,7 +69,7 @@ export class AiConversationComponent {
   loading = signal(false);
 
   sendLoading = signal(false);
-  sendContent = signal('请问你是什么大模型？');
+  sendContent = signal(this.i18n.translate('$ai.defaultPrompt'));
 
   testResult = signal<{ role: string; content: string }[]>([]);
   testContent = signal('');

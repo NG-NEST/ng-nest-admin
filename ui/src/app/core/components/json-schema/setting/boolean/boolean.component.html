@@ -2,11 +2,11 @@
   <form [formGroup]="form">
     <div class="group">
       <div class="item">
-        <label>默认值</label>
+        <label>{{ '$schema.default' | xI18n }}</label>
         <x-select formControlName="default" [data]="defaultValues"> </x-select>
       </div>
       <div class="item">
-        <label>行为</label>
+        <label>{{ '$schema.behavior' | xI18n }}</label>
         <x-select formControlName="behavior" [data]="behaviors"> </x-select>
       </div>
     </div>

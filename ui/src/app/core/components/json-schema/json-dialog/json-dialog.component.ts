@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { X_DIALOG_DATA, XButtonComponent, XDialogModule, XDialogRef } from '@ng-nest/ui';
+import { X_DIALOG_DATA, XButtonComponent, XDialogModule, XDialogRef, XI18nPipe } from '@ng-nest/ui';
 import { AppEditorComponent } from '@ui/core';
 
 @Component({
   selector: 'app-json-dialog',
-  imports: [ReactiveFormsModule, XButtonComponent, XDialogModule, AppEditorComponent],
+  imports: [ReactiveFormsModule, XButtonComponent, XI18nPipe, XDialogModule, AppEditorComponent],
   templateUrl: './json-dialog.component.html',
   styleUrls: ['./json-dialog.component.scss']
 })

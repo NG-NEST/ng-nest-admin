@@ -11,11 +11,13 @@ import { SubjectUpdateInput } from './update.input';
 import { SubjectSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { SubjectSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   subject(id: string): Observable<Subject> {
     return this.apollo
@@ -78,14 +80,20 @@ export class SubjectService {
   }
 
   create(input: SubjectCreateInput): Observable<string> {
-    return this.http.post('/api/subject', input).pipe(map(() => SubjectMessage.CreatedSuccess));
+    return this.http
+      .post('/api/subject', input)
+      .pipe(map(() => this.i18n.translate(`$subject.${SubjectMessage.CreatedSuccess}`)));
   }
 
   update(input: SubjectUpdateInput): Observable<string> {
-    return this.http.patch(`/api/subject`, input).pipe(map(() => SubjectMessage.UpdatedSuccess));
+    return this.http
+      .patch(`/api/subject`, input)
+      .pipe(map(() => this.i18n.translate(`$subject.${SubjectMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/subject/${id}`).pipe(map(() => SubjectMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/subject/${id}`)
+      .pipe(map(() => this.i18n.translate(`$subject.${SubjectMessage.DeletedSuccess}`)));
   }
 }

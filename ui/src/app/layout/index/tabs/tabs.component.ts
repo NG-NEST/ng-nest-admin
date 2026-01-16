@@ -6,7 +6,7 @@ import { XDropdownComponent, XDropdownNode } from '@ng-nest/ui/dropdown';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XAvatarComponent } from '@ng-nest/ui/avatar';
 import { XDialogService } from '@ng-nest/ui/dialog';
-import { XI18nPipe } from '@ng-nest/ui/i18n';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
 @Component({
   selector: 'app-tabs',
@@ -25,6 +25,7 @@ export class TabsComponent {
   config = inject(AppConfigService);
   auth = inject(AppAuthService);
   dialogService = inject(XDialogService);
+  i18n = inject(XI18nService);
   userFirstName = computed(() => {
     const user = this.auth.userInfo();
     if (user && user.name) {
@@ -32,12 +33,12 @@ export class TabsComponent {
     }
     return 'N';
   });
-  userMenu: XDropdownNode[] = [
+  userMenu = computed(() => [
     {
       id: 'exit',
-      label: '退出'
+      label: this.i18n.translate('$menu.exit')
     }
-  ];
+  ]);
 
   onUserMenuClick(node: XDropdownNode) {
     if (node.id === 'exit') {

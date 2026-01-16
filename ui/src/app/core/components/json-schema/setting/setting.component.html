@@ -1,5 +1,5 @@
 <form class="app-dialog-form" [formGroup]="form">
-  <h4 x-dialog-title class="title">高级设置</h4>
+  <h4 x-dialog-title class="title">{{ '$schema.advancedSetting' | xI18n }}</h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <x-select
@@ -13,16 +13,16 @@
     <div class="base">
       @if (node().name !== '$root' && !node().isArray) {
         <div class="item">
-          <label>必需</label>
+          <label>{{ '$schema.required' | xI18n }}</label>
           <x-switch formControlName="required"></x-switch>
         </div>
       }
       <div class="item">
-        <label>允许NULL</label>
+        <label>{{ '$schema.nullable' | xI18n }}</label>
         <x-switch formControlName="nullable"></x-switch>
       </div>
       <div class="item">
-        <label>废弃</label>
+        <label>{{ '$schema.deprecated' | xI18n }}</label>
         <x-switch formControlName="deprecated"></x-switch>
       </div>
     </div>

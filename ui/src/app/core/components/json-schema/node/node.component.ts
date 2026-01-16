@@ -26,6 +26,7 @@ import { XDialogService } from '@ng-nest/ui/dialog';
 import { AppSettingComponent } from '../setting/setting.component';
 import { XTooltipDirective } from '@ng-nest/ui/tooltip';
 import { AppJsonSchemaComponent } from '../json-schema.component';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-node',
@@ -37,6 +38,7 @@ import { AppJsonSchemaComponent } from '../json-schema.component';
     XTooltipDirective,
     XTextareaComponent,
     XDropdownComponent,
+    XI18nPipe,
     AdjustWidthDirective
   ],
   templateUrl: './node.component.html',

@@ -11,11 +11,13 @@ import { ModelUpdateInput } from './update.input';
 import { ModelSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { ModelSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   model(id: string): Observable<Model> {
     return this.apollo
@@ -85,14 +87,20 @@ export class ModelService {
   }
 
   create(input: ModelCreateInput): Observable<string> {
-    return this.http.post<Model>('/api/model', input).pipe(map(() => ModelMessage.CreatedSuccess));
+    return this.http
+      .post<Model>('/api/model', input)
+      .pipe(map(() => this.i18n.L(`$model.${ModelMessage.CreatedSuccess}`)));
   }
 
   update(input: ModelUpdateInput): Observable<string> {
-    return this.http.patch<Model>(`/api/model`, input).pipe(map(() => ModelMessage.UpdatedSuccess));
+    return this.http
+      .patch<Model>(`/api/model`, input)
+      .pipe(map(() => this.i18n.L(`$model.${ModelMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/model/${id}`).pipe(map(() => ModelMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/model/${id}`)
+      .pipe(map(() => this.i18n.L(`$model.${ModelMessage.DeletedSuccess}`)));
   }
 }

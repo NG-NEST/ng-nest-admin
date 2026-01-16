@@ -8,7 +8,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XMessageService } from '@ng-nest/ui/message';
 import { ModelService, ResourceService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
-import { XTextareaComponent } from '@ng-nest/ui';
+import { XI18nPipe, XTextareaComponent } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-model-detail',
@@ -19,7 +19,8 @@ import { XTextareaComponent } from '@ng-nest/ui';
     XButtonComponent,
     XDialogModule,
     XSelectModule,
-    XTextareaComponent
+    XTextareaComponent,
+    XI18nPipe
   ],
   templateUrl: './model-detail.component.html'
 })

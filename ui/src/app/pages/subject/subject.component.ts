@@ -26,6 +26,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { ResourceDetailComponent } from './resource-detail/resource-detail.component';
 import { PermissionListComponent } from './permission-list/permission-list.component';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-subject',
@@ -37,6 +38,7 @@ import { PermissionListComponent } from './permission-list/permission-list.compo
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './subject.component.html',
@@ -51,11 +53,14 @@ export class SubjectComponent {
   dialog = inject(XDialogService);
   fb = inject(FormBuilder);
   messageBox = inject(XMessageBoxService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     name: [null]
   });
-  columns = signal<XTableColumn[]>([{ id: 'name', label: SubjectDescription.Name }]);
+  columns = signal<XTableColumn[]>([
+    { id: 'name', label: this.i18n.L(`$subject.${SubjectDescription.Name}`) }
+  ]);
   total = signal(0);
   index = signal(1);
   size = signal(20);
@@ -73,14 +78,20 @@ export class SubjectComponent {
     code: [null]
   });
   resourceColumns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: ResourceDescription.Name },
-    { id: 'code', label: ResourceDescription.Code },
-    { id: 'type', label: ResourceDescription.Type },
-    { id: 'sort', label: ResourceDescription.Sort },
-    { id: 'parentName', label: ResourceDescription.Parent },
-    { id: 'subjectName', label: SubjectDescription.Name },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    {
+      id: 'index',
+      type: 'index',
+      left: 0,
+      label: this.i18n.L(`$base.${BaseDescription.Index}`),
+      width: 70
+    },
+    { id: 'name', label: this.i18n.L(`$resource.${ResourceDescription.Name}`) },
+    { id: 'code', label: this.i18n.L(`$resource.${ResourceDescription.Code}`) },
+    { id: 'type', label: this.i18n.L(`$resource.${ResourceDescription.Type}`) },
+    { id: 'sort', label: this.i18n.L(`$resource.${ResourceDescription.Sort}`) },
+    { id: 'parentName', label: this.i18n.L(`$resource.${ResourceDescription.Parent}`) },
+    { id: 'subjectName', label: this.i18n.L(`$subject.${SubjectDescription.Name}`) },
+    { id: 'operate', label: this.i18n.L(`$base.${BaseDescription.Operate}`), width: 160, right: 0 }
   ]);
   resourceTotal = signal(0);
   resourceIndex = signal(1);

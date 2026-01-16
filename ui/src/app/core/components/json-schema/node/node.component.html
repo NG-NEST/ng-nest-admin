@@ -19,7 +19,7 @@
           [minWidth]="200 - level() * 20"
           [maxWidth]="200 - level() * 20 - 10"
           [defaultValue]="node().name!"
-          placeholder="字段名"
+          [placeholder]="'$schema.field' | xI18n"
         />
       }
       @if (node().isArray) {
@@ -40,7 +40,7 @@
           [class.selected-black]="getIsSetting(node())"
           [style.order]="2"
           x-tooltip
-          content="高级设置"
+          [content]="'$schema.advancedSetting' | xI18n"
           (click)="onSetting()"
         >
           <x-icon type="fto-settings"></x-icon>
@@ -52,7 +52,7 @@
             [style.order]="node().isJsonSchema ? 1 : 2"
             (click)="onJsonSchema(node().isJsonSchema!)"
             x-tooltip
-            content="Json Schema 类型"
+            [content]="'$schema.jsonSchemaType' | xI18n"
           >
             <span>&#123;&#125;</span>
           </a>
@@ -65,7 +65,7 @@
             [style.order]="node().required ? 1 : 2"
             (click)="!node().isArray && onRequired(node().required!)"
             x-tooltip
-            content="是否必需"
+            [content]="'$schema.required' | xI18n"
           >
             <span>*</span>
           </a>
@@ -78,7 +78,7 @@
           [style.order]="node().nullable ? 1 : 2"
           (click)="node().type !== 'null' && onNullable(node().nullable!)"
           x-tooltip
-          content="允许NULL"
+          [content]="'$schema.nullable' | xI18n"
         >
           <span>N</span>
         </a>
@@ -87,7 +87,7 @@
     <div class="right">
       <input
         formControlName="title"
-        placeholder="中文名"
+        [placeholder]="'$schema.title' | xI18n"
         class="input"
         appAdjustWidth
         [minWidth]="50"
@@ -111,13 +111,13 @@
       <ng-template #descriptionTpl>
         <x-textarea
           #descriptionCtl
-          placeholder="说明"
+          [placeholder]="'$schema.description' | xI18n"
           [formControlName]="'description'"
           [height]="'4rem'"
         ></x-textarea>
       </ng-template>
       @if ((isRoot || node().isArray) && node().type === 'object') {
-        <a x-tooltip content="添加子节点" class="icon add" (click)="addSubNode(node())">
+        <a x-tooltip [content]="'$codeGenerate.addSubNode' | xI18n" class="icon add" (click)="addSubNode(node())">
           <x-icon type="fto-plus"></x-icon>
         </a>
       }
@@ -130,8 +130,8 @@
         <x-dropdown
           class="dropdown"
           [data]="[
-            { id: 1, label: '添加相邻节点' },
-            { id: 2, label: '添加子节点' }
+            { id: 1, label: ('$schema.addNeighborNode' | xI18n) },
+            { id: 2, label: ('$schema.addChild' | xI18n) }
           ]"
           (nodeClick)="dropdownClick($event, node())"
         >
@@ -145,7 +145,7 @@
         (node().type !== 'object' || (node().type === 'object' && node().isJsonSchema)) &&
         !node().isArray
       ) {
-        <a x-tooltip content="添加相邻节点" class="icon add" (click)="addAdjoinNode(node())">
+        <a x-tooltip [content]="'$schema.addNeighborNode' | xI18n" class="icon add" (click)="addAdjoinNode(node())">
           <x-icon type="fto-plus"></x-icon>
         </a>
       }
@@ -169,8 +169,8 @@
 
   @if (isObjectNull && !node().isJsonSchema) {
     <div class="row no-object">
-      <span>没有字段</span>
-      <a (click)="addSubNode(node())">添加</a>
+      <span>{{ '$schema.noField' | xI18n }}</span>
+      <a (click)="addSubNode(node())">{{ '$base.add' | xI18n }}</a>
     </div>
   }
 </form>

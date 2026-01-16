@@ -1,12 +1,16 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ id() ? '修改' : '新增' }}数据</h4>
+  <h4 x-dialog-title class="title">
+    {{ (id() ? '$base.edit' : '$base.add') | xI18n }} {{ '$schema.data' | xI18n }}
+  </h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
 
   <div x-dialog-content class="content full">
     <app-schema-form #schemaFormCom [data]="schemaJson()!" [form]="form"></app-schema-form>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -14,7 +18,7 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid"
-      >保存</x-button
+      >{{ '$base.save' | xI18n }}</x-button
     >
   </div>
 </form>

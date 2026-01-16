@@ -3,24 +3,26 @@
     <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
       <div class="list">
         <div class="item">
-          <label>角色名称：</label>
-          <x-input formControlName="name" placeholder="请输入角色名称"></x-input>
+          <label>{{ '$role.name' | xI18n }}</label>
+          <x-input formControlName="name"></x-input>
         </div>
       </div>
       <div class="buttons">
         <div>
-          <x-button icon="fto-search" attrType="submit" [loading]="searchLoading()">搜索</x-button>
+          <x-button icon="fto-search" attrType="submit" [loading]="searchLoading()">{{
+            '$base.search' | xI18n
+          }}</x-button>
           <x-button
             icon="fto-refresh-cw"
             attrType="button"
             (click)="action('reset')"
             [loading]="resetLoading()"
-            >重置</x-button
+            >{{ '$base.reset' | xI18n }}</x-button
           >
         </div>
-        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')"
-          >新增</x-button
-        >
+        <x-button type="primary" icon="fto-plus" attrType="button" (click)="action('add')">{{
+          '$base.add' | xI18n
+        }}</x-button>
       </div>
     </form>
   </div>
@@ -45,15 +47,15 @@
     ></x-table>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
-        <x-link [app-auth]="'role-permission-view'" type="primary" (click)="action('auth', row)"
-          >权限</x-link
-        >
-        <x-link [app-auth]="'role-update'" type="primary" (click)="action('edit', row)"
-          >修改</x-link
-        >
-        <x-link [app-auth]="'role-delete'" type="danger" (click)="action('delete', row)"
-          >删除</x-link
-        >
+        <x-link [app-auth]="'role-permission-view'" type="primary" (click)="action('auth', row)">{{
+          '$role.permission' | xI18n
+        }}</x-link>
+        <x-link [app-auth]="'role-update'" type="primary" (click)="action('edit', row)">{{
+          '$base.edit' | xI18n
+        }}</x-link>
+        <x-link [app-auth]="'role-delete'" type="danger" (click)="action('delete', row)">{{
+          '$base.delete' | xI18n
+        }}</x-link>
       </div>
     </ng-template>
   </div>

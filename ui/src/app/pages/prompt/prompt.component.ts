@@ -22,6 +22,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-prompt',
@@ -34,6 +35,7 @@ import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
     XTableComponent,
     XLinkComponent,
     XSelectComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './prompt.component.html',
@@ -44,6 +46,7 @@ export class PromptComponent {
   promptService = inject(PromptService);
   resourceService = inject(ResourceService);
   modelService = inject(ModelService);
+  i18n = inject(XI18nService);
 
   fb = inject(FormBuilder);
   dialog = inject(XDialogService);
@@ -63,14 +66,20 @@ export class PromptComponent {
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'platform', label: PromptDescription.Platform, width: 180 },
-    { id: 'code', label: PromptDescription.Code },
-    { id: 'name', label: PromptDescription.Name },
-    { id: 'description', label: PromptDescription.Description },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    {
+      id: 'index',
+      type: 'index',
+      left: 0,
+      label: this.i18n.L(`$base.${BaseDescription.Index}`),
+      width: 70
+    },
+    { id: 'platform', label: this.i18n.L(`$prompt.${PromptDescription.Platform}`), width: 180 },
+    { id: 'code', label: this.i18n.L(`$prompt.${PromptDescription.Code}`) },
+    { id: 'name', label: this.i18n.L(`$prompt.${PromptDescription.Name}`) },
+    { id: 'description', label: this.i18n.L(`$base.description`) },
+    { id: 'createdAt', label: this.i18n.L(`$base.createdAt`), width: 180 },
+    { id: 'updatedAt', label: this.i18n.L(`$base.updatedAt`), width: 180 },
+    { id: 'operate', label: this.i18n.L(`$base.operate`), width: 160, right: 0 }
   ]);
 
   total = signal(0);
@@ -223,8 +232,8 @@ export class PromptComponent {
       case 'delete':
         if (!prompt) return;
         this.messageBox.confirm({
-          title: '删除提示词',
-          content: `确认删除此提示词吗？ [${prompt.name}]`,
+          title: this.i18n.L(`$prompt.deletePrompt`),
+          content: `${this.i18n.L(`$prompt.sureToDeletePrompt`)} [${prompt.name}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

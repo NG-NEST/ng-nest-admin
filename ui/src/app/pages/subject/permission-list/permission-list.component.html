@@ -1,5 +1,5 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">许可配置-{{ title() }}</h4>
+  <h4 x-dialog-title class="title">{{ '$subject.permissionConfig' | xI18n }}-{{ title() }}</h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content attrs">
     <div class="tools">
@@ -10,19 +10,19 @@
         flat
         plain
         (click)="add()"
-        >增加</x-button
+        >{{ '$base.add' | xI18n }}</x-button
       >
     </div>
     <div class="attrs-table">
       <table>
         <thead>
           <tr>
-            <th>序号</th>
-            <th width="160">许可名称</th>
-            <th width="200">编码</th>
-            <th>排序</th>
-            <th>描述</th>
-            <th>操作</th>
+            <th>{{ '$base.index' | xI18n }}</th>
+            <th width="160">{{ '$subject.permissionName' | xI18n }}</th>
+            <th width="200">{{ '$base.code' | xI18n }}</th>
+            <th>{{ '$base.sort' | xI18n }}</th>
+            <th>{{ '$base.description' | xI18n }}</th>
+            <th>{{ '$base.operate' | xI18n }}</th>
           </tr>
         </thead>
         <tbody formArrayName="list">
@@ -46,7 +46,7 @@
                   [disabled]="!hasPermissionSaveMany()"
                   (click)="remove($index)"
                 >
-                  删除
+                  {{ '$base.delete' | xI18n }}
                 </x-button>
               </td>
             </tr>
@@ -61,7 +61,9 @@
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -69,7 +71,7 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid || !hasPermissionSaveMany()"
-      >保存</x-button
+      >{{ '$base.save' | xI18n }}</x-button
     >
   </div>
 </form>

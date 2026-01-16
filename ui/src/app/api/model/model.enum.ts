@@ -1,14 +1,14 @@
 export enum ModelDescription {
-  Model = '',
+  Model = 'model',
 
-  Name = '模型名称',
-  Code = '模型代码',
-  Platform = '平台',
-  Description = '模型描述'
+  Name = 'name',
+  Code = 'code',
+  Platform = 'platform',
+  Description = 'description'
 }
 
 export enum ModelMessage {
-  CreatedSuccess = '新增成功',
-  UpdatedSuccess = '更新成功',
-  DeletedSuccess = '删除成功'
+  CreatedSuccess = 'updatedSuccess',
+  UpdatedSuccess = 'deletedSuccess',
+  DeletedSuccess = 'deletedAllSuccess'
 }

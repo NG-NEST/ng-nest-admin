@@ -13,11 +13,13 @@ import { HttpClient } from '@angular/common/http';
 import { VariableSelectInput } from './select.input';
 import { VariableSaveManyInput } from './save-many.input';
 import { VariableTypeInput } from './variable-type.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class VariableService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   variable(id: string): Observable<Variable> {
     return this.apollo
@@ -106,22 +108,28 @@ export class VariableService {
       .pipe(map((x) => cloneDeep(x.data?.variableSelect!)));
   }
 
-  create(input: VariableCreateInput): Observable<Variable> {
-    return this.http.post<Variable>('/api/variable', input);
+  create(input: VariableCreateInput): Observable<string> {
+    return this.http
+      .post('/api/variable', input)
+      .pipe(map(() => this.i18n.translate(`$variable.${VariableMessage.CreatedSuccess}`)));
   }
 
-  update(input: VariableUpdateInput): Observable<Variable> {
-    return this.http.patch<Variable>(`/api/variable`, input);
+  update(input: VariableUpdateInput): Observable<string> {
+    return this.http
+      .patch(`/api/variable`, input)
+      .pipe(map(() => this.i18n.translate(`$variable.${VariableMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/variable/${id}`).pipe(map(() => VariableMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/variable/${id}`)
+      .pipe(map(() => this.i18n.translate(`$variable.${VariableMessage.DeletedSuccess}`)));
   }
 
   saveMany(input: VariableSaveManyInput): Observable<string> {
     return this.http
       .post(`/api/variable/many`, input)
-      .pipe(map(() => VariableMessage.UpdatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$variable.${VariableMessage.UpdatedSuccess}`)));
   }
 
   typeVariables(params: VariableTypeInput): Observable<Variable[]> {

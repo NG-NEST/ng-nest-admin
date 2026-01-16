@@ -12,11 +12,13 @@ import { HttpClient } from '@angular/common/http';
 import { ResetPasswordInput } from './reset-password.input';
 import { UserSelectInput } from './select.input';
 import { UserSelectOutput } from './select.output';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   user(id: string): Observable<User> {
     return this.apollo
@@ -88,20 +90,26 @@ export class UserService {
   }
 
   create(input: UserCreateInput): Observable<string> {
-    return this.http.post('/api/user', input).pipe(map(() => UserMessage.CreatedSuccess));
+    return this.http
+      .post('/api/user', input)
+      .pipe(map(() => this.i18n.translate(`$user.${UserMessage.CreatedSuccess}`)));
   }
 
   update(input: UserUpdateInput): Observable<string> {
-    return this.http.patch('/api/user', input).pipe(map(() => UserMessage.UpdatedSuccess));
+    return this.http
+      .patch('/api/user', input)
+      .pipe(map(() => this.i18n.translate(`$user.${UserMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/user/${id}`).pipe(map(() => UserMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/user/${id}`)
+      .pipe(map(() => this.i18n.translate(`$user.${UserMessage.DeletedSuccess}`)));
   }
 
   resetPassword(id: string, resetPassword: ResetPasswordInput): Observable<string> {
     return this.http
       .put(`/api/user/${id}/reset-password`, resetPassword)
-      .pipe(map(() => UserMessage.PasswordResetSuccess));
+      .pipe(map(() => this.i18n.translate(`$user.${UserMessage.PasswordResetSuccess}`)));
   }
 }

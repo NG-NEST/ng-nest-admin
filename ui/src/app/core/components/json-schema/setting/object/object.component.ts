@@ -6,10 +6,17 @@ import { AppSettingComponent } from '../setting.component';
 import { XSelectComponent } from '@ng-nest/ui/select';
 import { XSwitchComponent } from '@ng-nest/ui/switch';
 import { XInputNumberComponent } from '@ng-nest/ui/input-number';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-object',
-  imports: [ReactiveFormsModule, XSelectComponent, XSwitchComponent, XInputNumberComponent],
+  imports: [
+    ReactiveFormsModule,
+    XSelectComponent,
+    XI18nPipe,
+    XSwitchComponent,
+    XInputNumberComponent
+  ],
   templateUrl: './object.component.html',
   styleUrls: ['./object.component.scss']
 })

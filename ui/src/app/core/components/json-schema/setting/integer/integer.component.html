@@ -1,15 +1,15 @@
 <form [formGroup]="form">
   <div class="group enum-const">
     <div class="item">
-      <label>枚举</label>
+      <label>{{ '$schema.enum' | xI18n }}</label>
       <x-switch formControlName="isEnum" (ngModelChange)="onIsEnumChange($event)"></x-switch>
     </div>
     <div class="item">
-      <label>常量</label>
+      <label>{{ '$schema.const' | xI18n }}</label>
       <div class="const">
         <x-switch formControlName="isConst" (ngModelChange)="onIsConstChange($event)"></x-switch>
         @if (isConst) {
-          <x-input class="const-input" placeholder="常量值" formControlName="const"></x-input>
+          <x-input class="const-input" [placeholder]="'$schema.constPlaceholder' | xI18n" formControlName="const"></x-input>
         }
       </div>
     </div>
@@ -18,20 +18,20 @@
     <div class="group enums">
       <table formArrayName="enums" class="enum-table">
         <tr>
-          <td>枚举值</td>
-          <td>说明</td>
+          <td>{{ '$schema.enumValue' | xI18n }}</td>
+          <td>{{ '$schema.description' | xI18n }}</td>
           <td width="75"></td>
         </tr>
         @for (item of enumFormArray.controls; track item) {
           <tr [formGroupName]="$index">
             <td>
-              <x-input placeholder="枚举值" formControlName="value" [type]="'number'"></x-input>
+              <x-input [placeholder]="'$schema.enumValuePlaceholder' | xI18n" formControlName="value" [type]="'number'"></x-input>
             </td>
             <td>
-              <x-input placeholder="说明" formControlName="description"></x-input>
+              <x-input [placeholder]="'$base.pleaseInputDescription' | xI18n" formControlName="description"></x-input>
             </td>
             <td>
-              <a x-tooltip content="添加相邻值" class="add-enum" (click)="addEnumRow($index)">
+              <a x-tooltip [content]="'$schema.addNeighbor' | xI18n" class="add-enum" (click)="addEnumRow($index)">
                 <x-icon type="fto-plus-circle"></x-icon>
               </a>
               @if (enumFormArray.controls.length !== 1) {
@@ -47,26 +47,26 @@
   }
   <div class="group">
     <div class="item">
-      <label>format</label>
+      <label>{{ '$schema.format' | xI18n }}</label>
       <x-select formControlName="format" [data]="formats"> </x-select>
     </div>
     <div class="item">
-      <label>行为</label>
+      <label>{{ '$schema.behavior' | xI18n }}</label>
       <x-select formControlName="behavior" [data]="behaviors"> </x-select>
     </div>
   </div>
   <div class="group one">
     <div class="item">
-      <label>默认值</label>
-      <x-input-number formControlName="default" placeholder="默认值"></x-input-number>
+      <label>{{ '$schema.default' | xI18n }}</label>
+      <x-input-number formControlName="default" [placeholder]="'$schema.defaultPlaceholder' | xI18n"></x-input-number>
     </div>
   </div>
   <div class="group one">
     <div class="item">
-      <label>示例值</label>
+      <label>{{ '$schema.example' | xI18n }}</label>
       <x-select
         formControlName="examples"
-        placeholder="示例值"
+        [placeholder]="'$schema.examplePlaceholder' | xI18n"
         search
         allowInput
         multiple
@@ -75,29 +75,29 @@
   </div>
   <div class="group">
     <div class="item">
-      <label>最小值</label>
+      <label>{{ '$schema.minimum' | xI18n }}</label>
       <x-input-number [min]="0" placeholder=">=0" formControlName="minimum"></x-input-number>
       @if (minimum > -1) {
         <x-checkbox
           formControlName="exclusiveMinimum"
-          [data]="['不可等于最小值']"
+          [data]="['$schema.exclusiveMinimum' | xI18n]"
           single
         ></x-checkbox>
       }
     </div>
     <div class="item">
-      <label>最大值</label>
+      <label>{{ '$schema.maximum' | xI18n }}</label>
       <x-input-number [min]="0" placeholder=">=0" formControlName="maximum"></x-input-number>
       @if (maximum > -1) {
         <x-checkbox
           formControlName="exclusiveMaximum"
-          [data]="['不可等于最大值']"
+          [data]="['$schema.exclusiveMaximum' | xI18n]"
           single
         ></x-checkbox>
       }
     </div>
     <div class="item">
-      <label>倍数</label>
+      <label>{{ '$schema.multipleOf' | xI18n }}</label>
       <x-input-number [min]="0" placeholder=">=0" formControlName="multipleOf"></x-input-number>
     </div>
   </div>

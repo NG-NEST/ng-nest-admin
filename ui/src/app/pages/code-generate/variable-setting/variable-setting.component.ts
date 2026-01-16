@@ -5,6 +5,8 @@ import {
   XCascadeNode,
   XCheckboxModule,
   XEmptyComponent,
+  XI18nPipe,
+  XI18nService,
   XIconComponent,
   XLinkComponent,
   XMessageBoxAction,
@@ -50,6 +52,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
     XDialogModule,
     XRadioModule,
     XCheckboxModule,
+    XI18nPipe,
     DragDropModule
   ],
   templateUrl: './variable-setting.component.html',
@@ -67,6 +70,7 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
   schema = inject(SchemaService);
   messageBox = inject(XMessageBoxService);
   cdr = inject(ChangeDetectorRef);
+  i18n = inject(XI18nService);
 
   resourceId = signal('');
   formLoading = signal(false);
@@ -141,8 +145,8 @@ export class VariableSettingComponent implements OnInit, OnDestroy {
         break;
       case 'delete':
         this.messageBox.confirm({
-          title: '删除分类',
-          content: `确认删除此分类吗？ [${item.name}]`,
+          title: this.i18n.L('$codeGenerate.deleteCate'),
+          content: `${this.i18n.L('$codeGenerate.sureToDeleteCate')} [${item.name}]`,
           type: 'warning',
           callback: (msg: XMessageBoxAction) => {
             if (msg !== 'confirm') return;

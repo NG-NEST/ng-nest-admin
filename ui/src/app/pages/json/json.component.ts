@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { XI18nService } from '@ng-nest/ui';
 import { AiConversationComponent } from '@ui/core';
 
 @Component({
@@ -8,10 +9,9 @@ import { AiConversationComponent } from '@ui/core';
   imports: [AiConversationComponent]
 })
 export class JsonComponent {
+  i18n = inject(XI18nService);
   platform = signal('dashscope');
   model = signal('qwen3-235b-a22b-instruct-2507');
-  system = signal(
-    '你是一个 AI 助手，请按照要求回答问题，使用markdown的格式逐条输出，带上 emoji 符号，控制在100字以内。'
-  );
-  prompt = signal('人工智能到底是什么？');
+  system = signal(this.i18n.translate('$json.system'));
+  prompt = signal(this.i18n.translate('$json.prompt'));
 }

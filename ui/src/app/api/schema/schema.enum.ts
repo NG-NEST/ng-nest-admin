@@ -10,15 +10,15 @@ export enum SchemaDescription {
   Schema = 'Schema',
 
   Id = 'SchemaId',
-  Name = '名称',
-  Code = '编码',
-  Description = '描述',
-  Version = '版本',
-  Json = '模型数据'
+  Name = 'name',
+  Code = 'code',
+  Description = 'description',
+  Version = 'version',
+  Json = 'json'
 }
 
 export enum SchemaMessage {
-  CreatedSuccess = '新增数据模型成功',
-  UpdatedSuccess = '更新数据模型成功',
-  DeletedSuccess = '删除数据模型成功'
+  CreatedSuccess = 'createdSuccess',
+  UpdatedSuccess = 'updatedSuccess',
+  DeletedSuccess = 'deletedSuccess'
 }

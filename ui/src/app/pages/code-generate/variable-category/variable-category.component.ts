@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { XTextareaComponent } from '@ng-nest/ui';
+import { XI18nPipe, XTextareaComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -17,7 +17,8 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XInputComponent,
     XButtonComponent,
     XTextareaComponent,
-    XDialogModule
+    XDialogModule,
+    XI18nPipe
   ],
   templateUrl: './variable-category.component.html'
 })

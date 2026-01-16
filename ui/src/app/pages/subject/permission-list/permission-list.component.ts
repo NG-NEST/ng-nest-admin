@@ -12,6 +12,7 @@ import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XMessageService } from '@ng-nest/ui/message';
 import { XEmptyComponent } from '@ng-nest/ui/empty';
 import { AppAuthDirective, AppAuthService } from '@ui/core';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-permission-list',
@@ -23,6 +24,7 @@ import { AppAuthDirective, AppAuthService } from '@ui/core';
     XDialogModule,
     XInputNumberComponent,
     XEmptyComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './permission-list.component.html'

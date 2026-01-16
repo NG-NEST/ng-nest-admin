@@ -1,6 +1,6 @@
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { XLinkComponent } from '@ng-nest/ui';
+import { XI18nPipe, XI18nService, XLinkComponent } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, XDialogService, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
@@ -17,7 +17,8 @@ import { CacheDetailComponent } from '../cache-detail/cache-detail.component';
     XLoadingComponent,
     XButtonComponent,
     XLinkComponent,
-    XDialogModule
+    XDialogModule,
+    XI18nPipe
   ],
   templateUrl: './cache-group.component.html',
   styleUrl: './cache-group.component.scss',
@@ -32,6 +33,7 @@ export class CacheGroupComponent implements OnDestroy {
   data = inject<{ item: CacheGroup }>(X_DIALOG_DATA);
   resource = inject(ResourceService);
   base64ToString = inject(AppBase64ToStringPipe);
+  i18n = inject(XI18nService);
 
   type = signal<string>('');
   list = signal<{ key: string; json: any }[]>([]);
@@ -85,7 +87,7 @@ export class CacheGroupComponent implements OnDestroy {
       case 'delete':
         this.cache.delete(`${this.type()}:${key}`).subscribe(() => {
           this.list.update((x) => x.filter((y) => y.key !== key));
-          this.message.success(CacheMessage.DeletedSuccess);
+          this.message.success(this.i18n.L(`$cache.${CacheMessage.DeletedSuccess}`));
         });
         break;
     }

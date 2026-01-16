@@ -18,7 +18,9 @@
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain (click)="dialogRef.close()">取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain (click)="dialogRef.close()">{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     @if (!disabled()) {
       <x-button
         flat
@@ -27,7 +29,7 @@
         attrType="submit"
         [loading]="saveLoading()"
         [disabled]="!form.valid"
-        >保存</x-button
+        >{{ '$base.save' | xI18n }}</x-button
       >
     }
   </div>

@@ -15,6 +15,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-model',
@@ -27,6 +28,7 @@ import { XSelectComponent, XSelectNode } from '@ng-nest/ui/select';
     XTableComponent,
     XLinkComponent,
     XSelectComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './model.component.html',
@@ -36,6 +38,7 @@ export class ModelComponent {
   datePipe = inject(DatePipe);
   modelService = inject(ModelService);
   resourceService = inject(ResourceService);
+  i18n = inject(XI18nService);
 
   fb = inject(FormBuilder);
   dialog = inject(XDialogService);
@@ -51,14 +54,20 @@ export class ModelComponent {
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: ModelDescription.Name },
-    { id: 'code', label: ModelDescription.Code },
-    { id: 'platform', label: ModelDescription.Platform, width: 140 },
-    { id: 'description', label: ModelDescription.Description },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    {
+      id: 'index',
+      type: 'index',
+      left: 0,
+      label: this.i18n.L(`$base.${BaseDescription.Index}`),
+      width: 70
+    },
+    { id: 'name', label: this.i18n.L(`$model.${ModelDescription.Name}`) },
+    { id: 'code', label: this.i18n.L(`$model.${ModelDescription.Code}`) },
+    { id: 'platform', label: this.i18n.L(`$model.${ModelDescription.Platform}`), width: 140 },
+    { id: 'description', label: this.i18n.L(`$base.${ModelDescription.Description}`) },
+    { id: 'createdAt', label: this.i18n.L(`$base.${BaseDescription.CreatedAt}`), width: 180 },
+    { id: 'updatedAt', label: this.i18n.L(`$base.${BaseDescription.UpdatedAt}`), width: 180 },
+    { id: 'operate', label: this.i18n.L(`$base.${BaseDescription.Operate}`), width: 160, right: 0 }
   ]);
 
   total = signal(0);
@@ -183,8 +192,8 @@ export class ModelComponent {
       case 'delete':
         if (!model) return;
         this.messageBox.confirm({
-          title: '删除模型',
-          content: `确认删除此模型吗？ [${model.name}]`,
+          title: this.i18n.L('$model.deleteModel'),
+          content: `${this.i18n.L('$model.sureToDeleteModel')} [${model.name}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

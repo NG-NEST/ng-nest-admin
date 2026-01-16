@@ -1,39 +1,46 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ id() ? '修改' : '新增' }}数据模型</h4>
+  <h4 x-dialog-title class="title">
+    {{ id() ? ('$schema.edit' | xI18n) : ('$schema.add' | xI18n) }}
+  </h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label [style.width.rem]="5">名称：</label>
-      <x-input formControlName="name" placeholder="请输入名称" required></x-input>
+      <label [style.width.rem]="5">{{ '$schema.name' | xI18n }}</label>
+      <x-input formControlName="name" required></x-input>
     </div>
     <div class="item required">
-      <label [style.width.rem]="5">编码：</label>
-      <x-input formControlName="code" placeholder="请输入编码" required></x-input>
+      <label [style.width.rem]="5">{{ '$schema.code' | xI18n }}</label>
+      <x-input formControlName="code" required></x-input>
     </div>
     <div class="item">
       <label [style.width.rem]="5">
-        版本
+        {{ '$schema.version' | xI18n }}
         <x-icon
           class="app-help-icon"
           x-tooltip
-          [content]="'修改 JsonSchema 后会创建新的版本'"
+          [content]="'$schema.versionHelp' | xI18n"
           [panelClass]="'app-help-content'"
           type="fto-help-circle"
         ></x-icon>
         ：
       </label>
-      <x-input formControlName="version" placeholder="自动生成"></x-input>
+      <x-input formControlName="version" [placeholder]="'$schema.autoGenerate' | xI18n"></x-input>
     </div>
     <div class="item" [style.gridColumn]="'1 / -1'">
-      <label [style.width.rem]="5">描述：</label>
-      <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
+      <label [style.width.rem]="5">{{ '$base.description' | xI18n }}</label>
+      <x-textarea formControlName="description"></x-textarea>
     </div>
     <div class="item" [style.gridColumn]="'1 / -1'">
-      <app-json-schema [title]="'数据定义'" formControlName="json"></app-json-schema>
+      <app-json-schema
+        [title]="'$schema.dataDefine' | xI18n"
+        formControlName="json"
+      ></app-json-schema>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -41,7 +48,7 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid"
-      >保存</x-button
+      >{{ '$base.save' | xI18n }}</x-button
     >
   </div>
 </form>

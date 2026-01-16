@@ -7,21 +7,21 @@ export enum PermissionAuth {
 }
 
 export enum PermissionDescription {
-  Permission = 'Permission',
+  Permission = 'permission',
 
-  Id = 'PermissionId',
-  Name = 'Name',
-  Code = 'Code',
-  Sort = 'Sort',
-  Description = 'Description'
+  Id = 'id',
+  Name = 'name',
+  Code = 'code',
+  Sort = 'sort',
+  Description = 'description'
 }
 
 export enum PermissionIncludeDescription {
-  PermissionResource = 'PermissionResource'
+  PermissionResource = 'permissionResource'
 }
 
 export enum PermissionMessage {
-  CreatedSuccess = '新增许可成功',
-  UpdatedSuccess = '更新许可成功',
-  DeletedSuccess = '删除许可成功'
+  CreatedSuccess = 'createdSuccess',
+  UpdatedSuccess = 'updatedSuccess',
+  DeletedSuccess = 'deletedSuccess'
 }

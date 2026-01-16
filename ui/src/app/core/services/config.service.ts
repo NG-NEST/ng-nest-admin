@@ -3,20 +3,35 @@ import { NavigationEnd, Router } from '@angular/router';
 import { XCrumbNode } from '@ng-nest/ui/crumb';
 import { filter } from 'rxjs';
 import { AppMenus } from 'src/app/app-menus';
+import { XI18nService } from '@ng-nest/ui/i18n';
+import { cloneDeep } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
   private router = inject(Router);
-  readonly menus = signal(AppMenus);
+  private i18n = inject(XI18nService);
+  readonly menus = signal<any[]>([]);
   readonly crumbs: WritableSignal<XCrumbNode[]> = signal([]);
   readonly menuActivatedId = signal('');
 
   constructor() {
+    this.i18n.localeChange.subscribe(() => {
+      this.setMenus();
+    });
+    this.setMenus();
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         this.getCrumbs(event.url);
       });
+  }
+
+  setMenus() {
+    const menus = cloneDeep(AppMenus).map((x) => {
+      x.label = this.i18n.translate(x.label);
+      return x;
+    });
+    this.menus.set(menus);
   }
 
   getCrumbs(url: string) {

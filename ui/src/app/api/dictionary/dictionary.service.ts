@@ -11,11 +11,13 @@ import { DictionaryUpdateInput } from './update.input';
 import { DictionarySelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { DictionarySelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class DictionaryService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   dictionary(id: string): Observable<Dictionary> {
     return this.apollo
@@ -94,18 +96,18 @@ export class DictionaryService {
   create(input: DictionaryCreateInput): Observable<string> {
     return this.http
       .post('/api/dictionary', input)
-      .pipe(map(() => DictionaryMessage.CreatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$dictionary.${DictionaryMessage.CreatedSuccess}`)));
   }
 
   update(input: DictionaryUpdateInput): Observable<string> {
     return this.http
       .patch(`/api/dictionary`, input)
-      .pipe(map(() => DictionaryMessage.UpdatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$dictionary.${DictionaryMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
     return this.http
       .delete(`/api/dictionary/${id}`)
-      .pipe(map(() => DictionaryMessage.DeletedSuccess));
+      .pipe(map(() => this.i18n.translate(`$dictionary.${DictionaryMessage.DeletedSuccess}`)));
   }
 }

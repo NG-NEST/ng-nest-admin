@@ -11,11 +11,13 @@ import { VariableCategoryUpdateInput } from './update.input';
 import { VariableCategorySelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { VariableCategorySelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class VariableCategoryService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   variableCategory(id: string): Observable<VariableCategory> {
     return this.apollo
@@ -108,6 +110,10 @@ export class VariableCategoryService {
   delete(id: string): Observable<string> {
     return this.http
       .delete(`/api/variable-category/${id}`)
-      .pipe(map(() => VariableCategoryMessage.DeletedSuccess));
+      .pipe(
+        map(() =>
+          this.i18n.translate(`$variableCategory.${VariableCategoryMessage.DeletedSuccess}`)
+        )
+      );
   }
 }

@@ -13,11 +13,13 @@ import { HttpClient } from '@angular/common/http';
 import { RoleSelectInput } from './select.input';
 import { Permission } from '../permission';
 import { RolePermissionOutput } from './role-permissions.output';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   role(id: string): Observable<Role> {
     return this.apollo
@@ -93,20 +95,26 @@ export class RoleService {
   }
 
   create(input: RoleCreateInput): Observable<string> {
-    return this.http.post('/api/role', input).pipe(map(() => RoleMessage.CreatedSuccess));
+    return this.http
+      .post('/api/role', input)
+      .pipe(map(() => this.i18n.translate(`$role.${RoleMessage.CreatedSuccess}`)));
   }
 
   update(input: RoleUpdateInput): Observable<string> {
-    return this.http.patch(`/api/role`, input).pipe(map(() => RoleMessage.UpdatedSuccess));
+    return this.http
+      .patch(`/api/role`, input)
+      .pipe(map(() => this.i18n.translate(`$role.${RoleMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/role/${id}`).pipe(map(() => RoleMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/role/${id}`)
+      .pipe(map(() => this.i18n.translate(`$role.${RoleMessage.DeletedSuccess}`)));
   }
 
   updatePermissions(id: string, permissionIds: string[]) {
     return this.http
       .post(`/api/role/${id}/permissions`, permissionIds)
-      .pipe(map(() => RoleMessage.UpdatedPermissionsSuccess));
+      .pipe(map(() => this.i18n.translate(`$role.${RoleMessage.UpdatedPermissionsSuccess}`)));
   }
 }

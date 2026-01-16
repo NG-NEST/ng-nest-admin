@@ -1,17 +1,17 @@
 export enum VariableDescription {
-  Variable = '节点',
+  Variable = 'variable',
 
-  Id = '变量编码',
-  Code = '变量标识',
-  Type = '变量类型',
-  Value = '变量值',
-  Source = '变量值来源',
-  Sort = '排序',
-  Description = '变量描述'
+  Id = 'id',
+  Code = 'code',
+  Type = 'type',
+  Value = 'value',
+  Source = 'source',
+  Sort = 'sort',
+  Description = 'description'
 }
 
 export enum VariableMessage {
-  CreatedSuccess = '新增变量成功',
-  UpdatedSuccess = '更新变量成功',
-  DeletedSuccess = '删除变量成功'
+  CreatedSuccess = 'createdSuccess',
+  UpdatedSuccess = 'updatedSuccess',
+  DeletedSuccess = 'deletedSuccess'
 }

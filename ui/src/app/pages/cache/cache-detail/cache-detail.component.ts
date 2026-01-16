@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { XI18nPipe } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
@@ -16,6 +17,7 @@ import { Subject, finalize } from 'rxjs';
     XLoadingComponent,
     XButtonComponent,
     XDialogModule,
+    XI18nPipe,
     DatePipe,
     AppEditorComponent
   ],

@@ -39,7 +39,7 @@
                 [title]="row[column.id] | json"
                 (click)="action('view-json-schema', row[column.id])"
               >
-                查看 JsonSchema
+                {{ '$base.viewJsonSchema' | xI18n }}
               </x-link>
             } @else {
               <x-link
@@ -47,14 +47,14 @@
                 [title]="row[column.id] | json"
                 (click)="action('view-json', row[column.id])"
               >
-                查看 Json
+                {{ '$base.viewJson' | xI18n }}
               </x-link>
             }
           }
           @case ('array') {
             <div class="keys">
               <x-link type="primary" x-tooltip [content]="row[column.id] | json">
-                {{ row[column.id]?.length }}条
+                {{ row[column.id]?.length }} {{ '$base.items' | xI18n }}
               </x-link>
             </div>
           }
@@ -70,7 +70,9 @@
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -79,7 +81,7 @@
       [disabled]="selectDisabled()"
       (click)="selectSave()"
     >
-      确认
+      {{ '$base.sure' | xI18n }}
     </x-button>
   </div>
 </div>

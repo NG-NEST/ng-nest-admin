@@ -19,7 +19,7 @@ export enum DictionaryDescription {
 }
 
 export enum DictionaryMessage {
-  CreatedSuccess = '新增字典成功',
-  UpdatedSuccess = '更新字典成功',
-  DeletedSuccess = '删除字典成功'
+  CreatedSuccess = 'createdSuccess',
+  UpdatedSuccess = 'updatedSuccess',
+  DeletedSuccess = 'deletedSuccess'
 }

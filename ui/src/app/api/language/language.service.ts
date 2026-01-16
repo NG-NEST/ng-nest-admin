@@ -11,11 +11,13 @@ import { LanguageUpdateInput } from './update.input';
 import { LanguageSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { LanguageSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   language(id: string): Observable<Language> {
     return this.apollo
@@ -81,14 +83,20 @@ export class LanguageService {
   }
 
   create(input: LanguageCreateInput): Observable<string> {
-    return this.http.post('/api/language', input).pipe(map(() => LanguageMessage.CreatedSuccess));
+    return this.http
+      .post('/api/language', input)
+      .pipe(map(() => this.i18n.translate(`$language.${LanguageMessage.CreatedSuccess}`)));
   }
 
   update(input: LanguageUpdateInput): Observable<string> {
-    return this.http.patch(`/api/language`, input).pipe(map(() => LanguageMessage.UpdatedSuccess));
+    return this.http
+      .patch(`/api/language`, input)
+      .pipe(map(() => this.i18n.translate(`$language.${LanguageMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/language/${id}`).pipe(map(() => LanguageMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/language/${id}`)
+      .pipe(map(() => this.i18n.translate(`$language.${LanguageMessage.DeletedSuccess}`)));
   }
 }

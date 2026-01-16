@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { XIconComponent, XTreeComponent, XTreeNode } from '@ng-nest/ui';
+import { XI18nPipe, XIconComponent, XTreeComponent, XTreeNode } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { X_DIALOG_DATA, XDialogModule, XDialogRef } from '@ng-nest/ui/dialog';
 import { Catalogue, CatalogueService } from '@ui/api';
@@ -16,6 +16,7 @@ import { finalize } from 'rxjs';
     AppEditorComponent,
     XTreeComponent,
     XIconComponent,
+    XI18nPipe,
     AppFileIconPipe
   ],
   templateUrl: './category-preview.component.html',

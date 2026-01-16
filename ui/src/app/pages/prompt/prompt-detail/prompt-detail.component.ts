@@ -17,6 +17,7 @@ import { XMessageService } from '@ng-nest/ui/message';
 import { ModelService, OpenAIInput, PromptService, ResourceService } from '@ui/api';
 import { Observable, Subject, finalize, forkJoin, tap } from 'rxjs';
 import { AppEditorComponent, AiConversationComponent } from '@ui/core';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-prompt-detail',
@@ -27,6 +28,7 @@ import { AppEditorComponent, AiConversationComponent } from '@ui/core';
     XButtonComponent,
     XDialogModule,
     XSelectModule,
+    XI18nPipe,
     AppEditorComponent,
     AiConversationComponent
   ],
@@ -67,12 +69,7 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   get promptValue() {
-    let { prompt, promptVars } = this.form.getRawValue();
-    for (let { label, value } of promptVars) {
-      const reg = new RegExp(`\\{\\{\\s*${label}\\s*\\}\\}`, 'g');
-      prompt = prompt.replace(reg, value);
-    }
-    return prompt;
+    return this.form.get('prompt')?.value;
   }
 
   ngOnInit(): void {
@@ -160,6 +157,7 @@ export class PromptDetailComponent implements OnInit, OnDestroy {
   }
 
   promptChange(value: string) {
+    console.log(value);
     const regex = /\{\{(.*?)\}\}/g;
     let match;
     const extractedVars: { label: string; value: string }[] = [];

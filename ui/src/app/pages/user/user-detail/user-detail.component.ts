@@ -15,6 +15,7 @@ import { XMessageService } from '@ng-nest/ui/message';
 import { RoleService, UserService } from '@ui/api';
 import { Observable, Subject, finalize, tap } from 'rxjs';
 import { XData } from '@ng-nest/ui/core';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-user-detail',
@@ -24,7 +25,8 @@ import { XData } from '@ng-nest/ui/core';
     XInputComponent,
     XButtonComponent,
     XSelectComponent,
-    XDialogModule
+    XDialogModule,
+    XI18nPipe
   ],
   templateUrl: './user-detail.component.html'
 })

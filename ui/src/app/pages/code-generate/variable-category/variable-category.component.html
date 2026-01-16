@@ -1,22 +1,26 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ id() ? '修改' : '新增' }}变量分类</h4>
+  <h4 x-dialog-title class="title">
+    {{ id() ? ('$codeGenerate.editVarCate' | xI18n) : ('$codeGenerate.addVarCate' | xI18n) }}
+  </h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label>分类名称：</label>
-      <x-input formControlName="name" placeholder="请输入分类名称" required></x-input>
+      <label>{{ '$base.cateName' | xI18n }}</label>
+      <x-input formControlName="name" required></x-input>
     </div>
     <div class="item required">
-      <label>分类变量名：</label>
-      <x-input formControlName="code" placeholder="请输入分类变量名" required></x-input>
+      <label>{{ '$base.cateCode' | xI18n }}</label>
+      <x-input formControlName="code" required></x-input>
     </div>
     <div class="item">
-      <label>描述：</label>
-      <x-textarea formControlName="description" placeholder="请输入描述"></x-textarea>
+      <label>{{ '$base.description' | xI18n }}</label>
+      <x-textarea formControlName="description"></x-textarea>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       flat
       icon="fto-save"
@@ -25,7 +29,7 @@
       [loading]="saveLoading()"
       [disabled]="!form.valid"
     >
-      保存
+      {{ '$base.save' | xI18n }}
     </x-button>
   </div>
 </form>

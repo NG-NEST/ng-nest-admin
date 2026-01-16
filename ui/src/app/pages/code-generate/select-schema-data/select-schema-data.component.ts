@@ -19,6 +19,8 @@ import { XMessageBoxService } from '@ng-nest/ui/message-box';
 import { XMessageService } from '@ng-nest/ui/message';
 import {
   XButtonComponent,
+  XI18nPipe,
+  XI18nService,
   XLinkComponent,
   XLoadingComponent,
   XRadioComponent,
@@ -37,6 +39,7 @@ import {
     XRadioComponent,
     XDialogModule,
     XLinkComponent,
+    XI18nPipe,
     JsonPipe
   ],
   templateUrl: './select-schema-data.component.html',
@@ -62,6 +65,7 @@ export class SelectSchemaDataComponent {
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
   dialog = inject(XDialogService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     schemaId: ['']
@@ -84,17 +88,31 @@ export class SelectSchemaDataComponent {
       if (createdAt) {
         createdAt.width = 200;
       } else {
-        cols.push({ id: 'createdAt', label: BaseDescription.CreatedAt, width: 200 });
+        cols.push({
+          id: 'createdAt',
+          label: this.i18n.L(`$base.${BaseDescription.CreatedAt}`),
+          width: 200
+        });
       }
       if (updatedAt) {
         updatedAt.width = 200;
       } else {
-        cols.push({ id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 200 });
+        cols.push({
+          id: 'updatedAt',
+          label: this.i18n.L(`$base.${BaseDescription.UpdatedAt}`),
+          width: 200
+        });
       }
     }
     columns = [
       { id: '$radio', width: 70, left: 0 },
-      { id: 'index', type: 'index', left: 70, label: BaseDescription.Index, width: 70 },
+      {
+        id: 'index',
+        type: 'index',
+        left: 70,
+        label: this.i18n.L(`$base.${BaseDescription.Index}`),
+        width: 70
+      },
       ...cols
     ];
     return columns;
@@ -231,7 +249,7 @@ export class SelectSchemaDataComponent {
           width: '100%',
           height: '100%',
           data: {
-            title: 'JsonSchema 数据',
+            title: this.i18n.L('$codeGenerate.jsonSchemaData'),
             disabled: true,
             content: schemaData as XJsonSchema
           }
@@ -242,7 +260,7 @@ export class SelectSchemaDataComponent {
           width: '100%',
           height: '100%',
           data: {
-            title: 'Json 数据',
+            title: this.i18n.L('$codeGenerate.jsonData'),
             disabled: true,
             content: schemaData as XJsonSchema
           }

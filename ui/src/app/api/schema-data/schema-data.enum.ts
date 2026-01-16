@@ -7,15 +7,15 @@ export enum SchemaDataAuth {
 }
 
 export enum SchemaDataDescription {
-  SchemaData = 'SchemaData',
+  SchemaData = 'schemaData',
 
-  Id = 'SchemaDataId',
-  formId = '业务表单',
-  data = '数据'
+  Id = 'id',
+  formId = 'formId',
+  data = 'data'
 }
 
 export enum SchemaDataMessage {
-  CreatedSuccess = '新增数据成功',
-  UpdatedSuccess = '更新数据成功',
-  DeletedSuccess = '删除数据成功'
+  CreatedSuccess = 'createdSuccess',
+  UpdatedSuccess = 'updatedSuccess',
+  DeletedSuccess = 'deletedSuccess'
 }

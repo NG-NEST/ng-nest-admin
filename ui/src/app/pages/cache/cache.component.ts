@@ -10,6 +10,8 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import {
   XDialogService,
+  XI18nPipe,
+  XI18nService,
   XMessageBoxAction,
   XMessageBoxService,
   XMessageService
@@ -24,6 +26,7 @@ import { CacheGroupComponent } from './cache-group/cache-group.component';
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './cache.component.html',
@@ -37,15 +40,16 @@ export class CacheComponent {
   private messageBox = inject(XMessageBoxService);
   private message = inject(XMessageService);
   private dialog = inject(XDialogService);
+  private i18n = inject(XI18nService);
   searchForm = this.fb.group({
     name: [null]
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', label: BaseDescription.Index, width: 70 },
-    { id: 'type', label: CacheDescription.Type, flex: 1 },
-    { id: 'keys', label: CacheDescription.Keys, width: 100 },
-    { id: 'operate', label: BaseDescription.Operate, width: 100, right: 0 }
+    { id: 'index', type: 'index', label: this.i18n.L(`$base.${BaseDescription.Index}`), width: 70 },
+    { id: 'type', label: this.i18n.L(`$cache.${CacheDescription.Type}`), flex: 1 },
+    { id: 'keys', label: this.i18n.L(`$cache.${CacheDescription.Keys}`), width: 100 },
+    { id: 'operate', label: this.i18n.L(`$base.${BaseDescription.Operate}`), width: 100, right: 0 }
   ]);
 
   total = signal(0);
@@ -96,22 +100,16 @@ export class CacheComponent {
 
   setParams(index: number, size: number) {
     const orderBy: BaseOrder[] = [{ createdAt: 'desc' }];
-    // const where: CacheWhereInput = {};
-    // const { name } = this.searchForm.value;
-    // if (!XIsEmpty(name)) where.name = { contains: name! };
     return {
       skip: (index - 1) * size,
       take: size,
       orderBy
-      // where
     };
   }
 
   resultConvert(body: BasePagination<CacheGroup>) {
     const { data, count } = body;
     const list = data.map((x) => {
-      // x.createdAt = this.datePipe.transform(x.createdAt, 'yyyy-MM-dd HH:mm:ss')!;
-      // x.updatedAt = this.datePipe.transform(x.updatedAt, 'yyyy-MM-dd HH:mm:ss')!;
       return x;
     });
 
@@ -134,8 +132,8 @@ export class CacheComponent {
         break;
       case 'clear-all':
         this.messageBox.confirm({
-          title: '清除缓存',
-          content: `确认清除所有缓存吗？`,
+          title: this.i18n.L(`$cache.clear`),
+          content: this.i18n.L(`$cache.sureToClearAllCache`),
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;
@@ -163,8 +161,8 @@ export class CacheComponent {
       case 'delete':
         if (!cache) return;
         this.messageBox.confirm({
-          title: '删除缓存',
-          content: `确认删除此缓存吗？ [${this.typeMap.get(cache.type) ?? cache.type}]`,
+          title: this.i18n.L(`$cache.delete`),
+          content: `${this.i18n.L('$cache.sureToClearCache')} [${this.typeMap.get(cache.type) ?? cache.type}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

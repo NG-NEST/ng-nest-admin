@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { XJsonSchemaBehaviors, XTreeData } from '../../json-schema.type';
 import { AppSettingComponent } from '../setting.component';
-import { XInputNumberComponent, XSelectComponent } from '@ng-nest/ui';
+import { XI18nPipe, XInputNumberComponent, XSelectComponent } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-array',
-  imports: [ReactiveFormsModule, XInputNumberComponent, XSelectComponent],
+  imports: [ReactiveFormsModule, XInputNumberComponent, XI18nPipe, XSelectComponent],
   templateUrl: './array.component.html',
   styleUrls: ['./array.component.scss']
 })

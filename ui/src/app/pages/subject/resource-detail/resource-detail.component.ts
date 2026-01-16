@@ -14,6 +14,7 @@ import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
 import { XRadioComponent, XRadioNode } from '@ng-nest/ui/radio';
 import { XSwitchComponent } from '@ng-nest/ui/switch';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-resource-detail',
@@ -28,7 +29,8 @@ import { XSwitchComponent } from '@ng-nest/ui/switch';
     XInputNumberComponent,
     XTextareaComponent,
     XRadioComponent,
-    XSwitchComponent
+    XSwitchComponent,
+    XI18nPipe
   ],
   templateUrl: './resource-detail.component.html'
 })

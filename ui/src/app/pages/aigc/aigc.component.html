@@ -48,7 +48,7 @@
     <div class="prompt">
       <x-textarea formControlName="content" height="10rem"></x-textarea>
       <x-button attrType="submit" size="large" [loading]="isLoading()"
-        >&nbsp;&nbsp;&nbsp;&nbsp;提交&nbsp;&nbsp;&nbsp;&nbsp;</x-button
+        >&nbsp;&nbsp;&nbsp;&nbsp;{{ '$base.submit' | xI18n }}&nbsp;&nbsp;&nbsp;&nbsp;</x-button
       >
     </div>
   </form>

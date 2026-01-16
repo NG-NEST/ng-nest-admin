@@ -16,6 +16,7 @@ import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { XTagComponent } from '@ng-nest/ui/tag';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-user',
@@ -27,6 +28,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     XTableComponent,
     XLinkComponent,
     XTagComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './user.component.html',
@@ -40,18 +42,30 @@ export class UserComponent {
   dialog = inject(XDialogService);
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     name: [null]
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', label: BaseDescription.Index, width: 70, left: 0 },
-    { id: 'name', label: UserDescription.Name, width: 120, left: 70 },
-    { id: 'account', label: UserDescription.Account, width: 120, left: 190 },
-    { id: 'roles', label: RoleDescription.Role },
-    { id: 'email', label: UserDescription.Email },
-    { id: 'phone', label: UserDescription.Phone, width: 160 },
+    {
+      id: 'index',
+      type: 'index',
+      label: this.i18n.L(`$base.${BaseDescription.Index}`),
+      width: 70,
+      left: 0
+    },
+    { id: 'name', label: this.i18n.L(`$user.${UserDescription.Name}`), width: 120, left: 70 },
+    {
+      id: 'account',
+      label: this.i18n.L(`$user.${UserDescription.Account}`),
+      width: 120,
+      left: 190
+    },
+    { id: 'roles', label: this.i18n.L(`$role.${RoleDescription.Role}`) },
+    { id: 'email', label: this.i18n.L(`$user.${UserDescription.Email}`) },
+    { id: 'phone', label: this.i18n.L(`$user.${UserDescription.Phone}`), width: 160 },
     { id: 'operate', label: BaseDescription.Operate, width: 200, right: 0 }
   ]);
 

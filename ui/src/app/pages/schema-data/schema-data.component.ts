@@ -31,6 +31,7 @@ import { XLinkComponent } from '@ng-nest/ui/link';
 import { XCascadeComponent, XCascadeNode } from '@ng-nest/ui/cascade';
 import { first, groupBy } from 'lodash-es';
 import { XTooltipDirective } from '@ng-nest/ui/tooltip';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-schema-data',
@@ -43,6 +44,7 @@ import { XTooltipDirective } from '@ng-nest/ui/tooltip';
     XTableComponent,
     XLinkComponent,
     XTooltipDirective,
+    XI18nPipe,
     JsonPipe,
     AppAuthDirective
   ],
@@ -57,6 +59,7 @@ export class SchemaDataComponent {
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
   dialog = inject(XDialogService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     schemaId: [null]
@@ -76,18 +79,37 @@ export class SchemaDataComponent {
       if (createdAt) {
         createdAt.width = 200;
       } else {
-        cols.push({ id: 'createdAt', label: BaseDescription.CreatedAt, width: 200 });
+        cols.push({
+          id: 'createdAt',
+          label: this.i18n.L(`$base.${BaseDescription.CreatedAt}`),
+          width: 200
+        });
       }
       if (updatedAt) {
         updatedAt.width = 200;
       } else {
-        cols.push({ id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 200 });
+        cols.push({
+          id: 'updatedAt',
+          label: this.i18n.L(`$base.${BaseDescription.UpdatedAt}`),
+          width: 200
+        });
       }
     }
     columns = [
-      { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
+      {
+        id: 'index',
+        type: 'index',
+        left: 0,
+        label: this.i18n.L(`$base.${BaseDescription.Index}`),
+        width: 70
+      },
       ...cols,
-      { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+      {
+        id: 'operate',
+        label: this.i18n.L(`$base.${BaseDescription.Operate}`),
+        width: 160,
+        right: 0
+      }
     ];
     return columns;
   });

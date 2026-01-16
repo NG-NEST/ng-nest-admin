@@ -1,58 +1,77 @@
 <form [x-loading]="formLoading()" [formGroup]="form" class="app-dialog-form" (ngSubmit)="save()">
-  <h4 x-dialog-title class="title">{{ id() ? '修改用户' : '新增用户' }}</h4>
+  <h4 x-dialog-title class="title">
+    {{ (id() ? '$base.edit' : '$base.add') | xI18n }} {{ '$user.user' | xI18n }}
+  </h4>
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div class="item required">
-      <label>用户账号：</label>
-      <x-input formControlName="account" placeholder="请输入用户账号" required></x-input>
+      <label>{{ '$user.account' | xI18n }}</label>
+      <x-input
+        formControlName="account"
+        [placeholder]="'$user.accountPlaceholder' | xI18n"
+        required
+      ></x-input>
     </div>
     @if (!id()) {
       <div class="item required">
-        <label>用户密码：</label>
+        <label>{{ '$user.password' | xI18n }}</label>
         <x-input
           formControlName="password"
           type="password"
-          placeholder="请输入用户密码"
+          [placeholder]="'$user.passwordPlaceholder' | xI18n"
           required
         ></x-input>
       </div>
       <div class="item required">
-        <label>确认密码：</label>
+        <label>{{ '$user.confirmPassword' | xI18n }}</label>
         <x-input
           formControlName="checkPassword"
           type="password"
-          placeholder="请再次输入用户密码"
+          [placeholder]="'$user.confirmPasswordPlaceholder' | xI18n"
           required
-          message="密码不一致"
+          [message]="'$user.passwordNotMatch' | xI18n"
           [inputValidator]="passwordCheck"
         ></x-input>
       </div>
     }
     <div class="item required">
-      <label>用户角色：</label>
+      <label>{{ '$user.role' | xI18n }}</label>
       <x-select
         [data]="roles()"
         formControlName="roleIds"
         multiple
-        placeholder="请选择用户角色"
+        [placeholder]="'$user.rolePlaceholder' | xI18n"
         required
       ></x-select>
     </div>
     <div class="item required">
-      <label>用户名称：</label>
-      <x-input formControlName="name" placeholder="请输入用户名称" required></x-input>
+      <label>{{ '$user.name' | xI18n }}</label>
+      <x-input
+        formControlName="name"
+        [placeholder]="'$user.namePlaceholder' | xI18n"
+        required
+      ></x-input>
     </div>
     <div class="item required">
-      <label>用户邮箱：</label>
-      <x-input formControlName="email" placeholder="请输入用户邮箱" required></x-input>
+      <label>{{ '$user.email' | xI18n }}</label>
+      <x-input
+        formControlName="email"
+        [placeholder]="'$user.emailPlaceholder' | xI18n"
+        required
+      ></x-input>
     </div>
     <div class="item">
-      <label>手机号：</label>
-      <x-input formControlName="phone" placeholder="请输入用户手机号"></x-input>
+      <label>{{ '$user.phone' | xI18n }}</label>
+      <x-input
+        formControlName="phone"
+        [placeholder]="'$user.phonePlaceholder' | xI18n"
+      ></x-input>
     </div>
   </div>
   <div x-dialog-actions align="center" class="actions">
-    <x-button size="large" icon="fto-x" attrType="button" flat plain x-dialog-close>取消</x-button>
+    <x-button size="large" icon="fto-x" attrType="button" flat plain x-dialog-close>{{
+      '$base.cancel' | xI18n
+    }}</x-button>
     <x-button
       size="large"
       flat
@@ -61,7 +80,7 @@
       attrType="submit"
       [loading]="saveLoading()"
       [disabled]="!form.valid"
-      >保存</x-button
+      >{{ '$base.save' | xI18n }}</x-button
     >
   </div>
 </form>

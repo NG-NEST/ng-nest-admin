@@ -15,6 +15,7 @@ import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
 import { RolePermissionComponent } from './role-permission/role-permission.component';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 
 @Component({
   selector: 'app-role',
@@ -26,6 +27,7 @@ import { RolePermissionComponent } from './role-permission/role-permission.compo
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './role.component.html',
@@ -38,18 +40,25 @@ export class RoleComponent {
   dialog = inject(XDialogService);
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     name: [null]
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: RoleDescription.Name },
-    { id: 'description', label: RoleDescription.Description },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    {
+      id: 'index',
+      type: 'index',
+      left: 0,
+      label: this.i18n.L(`$base.${BaseDescription.Index}`),
+      width: 70
+    },
+    { id: 'name', label: this.i18n.L(`$role.${RoleDescription.Name}`) },
+    { id: 'description', label: this.i18n.L(`$role.${RoleDescription.Description}`) },
+    { id: 'createdAt', label: this.i18n.L(`$base.${BaseDescription.CreatedAt}`), width: 180 },
+    { id: 'updatedAt', label: this.i18n.L(`$base.${BaseDescription.UpdatedAt}`), width: 180 },
+    { id: 'operate', label: this.i18n.L(`$base.${BaseDescription.Operate}`), width: 160, right: 0 }
   ]);
 
   total = signal(0);
@@ -156,8 +165,8 @@ export class RoleComponent {
       case 'delete':
         if (!role) return;
         this.messageBox.confirm({
-          title: '删除角色',
-          content: `确认删除此角色吗？ [${role.name}]`,
+          title: this.i18n.translate('$role.deleteTitle'),
+          content: `${this.i18n.translate('$role.deleteConfirm')} [${role.name}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

@@ -18,7 +18,7 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div formGroupName="colors" class="app-theme-category">
-      <div class="item category">颜色</div>
+      <div class="item category">{{ 'header.colors' | xI18n }}</div>
       <div class="item">
         <x-color-picker
           [label]="'header.primary' | xI18n"
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div formGroupName="vars" class="app-theme-category">
-      <div class="item category">其它参数</div>
+      <div class="item category">{{ 'header.other' | xI18n }}</div>
       <div class="item">
         <x-radio
           [label]="'header.fontSize' | xI18n"

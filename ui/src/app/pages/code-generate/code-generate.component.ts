@@ -42,6 +42,8 @@ import {
   XDropdownComponent,
   XDropdownNode,
   XEmptyComponent,
+  XI18nPipe,
+  XI18nService,
   XIconComponent,
   XLinkComponent,
   XMessageBoxAction,
@@ -73,6 +75,7 @@ import { SyntaxInfoComponent } from './syntax-info/syntax-info.component';
     XTooltipDirective,
     XEmptyComponent,
     XDropdownComponent,
+    XI18nPipe,
     AppEditorComponent,
     AppFileIconPipe
   ],
@@ -92,6 +95,7 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   drawerService = inject(XDrawerService);
   datePipe = inject(DatePipe);
   document = inject(DOCUMENT);
+  i18n = inject(XI18nService);
 
   form = this.formBuilder.group({
     category: ['']
@@ -110,14 +114,6 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
   folderInput = viewChild.required<ElementRef<HTMLInputElement>>('folderInput');
 
   $destroy = new Subject<void>();
-
-  dropdownMenu = signal<XDropdownNode[]>([
-    { id: 'add-root', label: '添加根节点', icon: 'fto-plus' },
-    { id: 'folder-upload', label: '文件夹上传', icon: 'fto-upload' },
-    { id: 'variable-setting', label: '变量设置', icon: 'fto-settings' },
-    { id: 'category-preview', label: '生成预览', icon: 'fto-eye' },
-    { id: 'category-download', label: '代码下载', icon: 'fto-download' }
-  ]);
 
   ngOnInit(): void {
     this.getCategories().subscribe();
@@ -184,8 +180,8 @@ export class CodeGenerateComponent implements OnInit, OnDestroy {
         break;
       case 'delete':
         this.messageBox.confirm({
-          title: '删除角色',
-          content: `确认删除此节点吗？ [${data!.name}]`,
+          title: this.i18n.translate('$catalogue.deleteTitle'),
+          content: `${this.i18n.translate('$catalogue.deleteConfirm')} [${data!.name}]`,
           type: 'warning',
           callback: (msg: XMessageBoxAction) => {
             if (msg !== 'confirm') return;

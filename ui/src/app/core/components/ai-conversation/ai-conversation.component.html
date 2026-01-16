@@ -9,7 +9,7 @@
         (click)="testOpenAI()"
         [style.width.rem]="8"
       >
-        发送测试
+        {{ '$ai.sendTest' | xI18n }}
       </x-button>
       @if (testContent()) {
         <x-bubble
@@ -25,7 +25,9 @@
       <div class="left">
         <x-scrollable>
           <div class="new">
-            <x-button type="primary" text icon="fto-plus">开启新对话</x-button>
+            <x-button type="primary" text icon="fto-plus">{{
+              '$ai.startNewChat' | xI18n
+            }}</x-button>
           </div>
           <div class="list">
             <x-list [data]="list()"></x-list>

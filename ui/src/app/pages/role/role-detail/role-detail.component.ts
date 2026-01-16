@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { XI18nPipe } from '@ng-nest/ui';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XDialogModule, XDialogRef, X_DIALOG_DATA } from '@ng-nest/ui/dialog';
 import { XInputComponent } from '@ng-nest/ui/input';
@@ -15,7 +16,8 @@ import { Observable, Subject, finalize, tap } from 'rxjs';
     XLoadingComponent,
     XInputComponent,
     XButtonComponent,
-    XDialogModule
+    XDialogModule,
+    XI18nPipe
   ],
   templateUrl: './role-detail.component.html'
 })

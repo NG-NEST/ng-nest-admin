@@ -11,11 +11,13 @@ import { ResourceUpdateInput } from './update.input';
 import { ResourceSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { ResourceSelectInput } from './select.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class ResourceService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   resource(id: string): Observable<Resource> {
     return this.apollo
@@ -104,14 +106,20 @@ export class ResourceService {
   }
 
   create(input: ResourceCreateInput): Observable<string> {
-    return this.http.post('/api/resource', input).pipe(map(() => ResourceMessage.CreatedSuccess));
+    return this.http
+      .post('/api/resource', input)
+      .pipe(map(() => this.i18n.translate(`$resource.${ResourceMessage.CreatedSuccess}`)));
   }
 
   update(input: ResourceUpdateInput): Observable<string> {
-    return this.http.patch(`/api/resource`, input).pipe(map(() => ResourceMessage.UpdatedSuccess));
+    return this.http
+      .patch(`/api/resource`, input)
+      .pipe(map(() => this.i18n.translate(`$resource.${ResourceMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
-    return this.http.delete(`/api/resource/${id}`).pipe(map(() => ResourceMessage.DeletedSuccess));
+    return this.http
+      .delete(`/api/resource/${id}`)
+      .pipe(map(() => this.i18n.translate(`$resource.${ResourceMessage.DeletedSuccess}`)));
   }
 }

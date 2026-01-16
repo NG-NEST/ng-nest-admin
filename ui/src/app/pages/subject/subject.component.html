@@ -30,7 +30,7 @@
           icon="fto-plus"
           attrType="button"
           (click)="action('add')"
-          >新增</x-button
+          >{{ '$base.add' | xI18n }}</x-button
         >
       </div>
     </ng-template>
@@ -44,13 +44,13 @@
             [app-auth]="'subject-update'"
             type="primary"
             (click)="action('edit', row); $event.stopPropagation()"
-            >修改</x-link
+            >{{ '$base.edit' | xI18n }}</x-link
           >
           <x-link
             [app-auth]="'subject-delete'"
             type="danger"
             (click)="action('delete', row); $event.stopPropagation()"
-            >删除</x-link
+            >{{ '$base.delete' | xI18n }}</x-link
           >
         </div>
       </div>
@@ -65,12 +65,12 @@
       >
         <div class="list">
           <div class="item">
-            <label>资源名称：</label>
-            <x-input formControlName="name" placeholder="请输入资源名称"></x-input>
+            <label>{{ '$resource.name' | xI18n }}</label>
+            <x-input formControlName="name" [placeholder]="'$base.pleaseInput' | xI18n"></x-input>
           </div>
           <div class="item">
-            <label>资源标识：</label>
-            <x-input formControlName="code" placeholder="请输入资源标识"></x-input>
+            <label>{{ '$resource.code' | xI18n }}</label>
+            <x-input formControlName="code" [placeholder]="'$base.pleaseInput' | xI18n"></x-input>
           </div>
         </div>
         <div class="buttons">
@@ -80,7 +80,7 @@
               attrType="submit"
               [loading]="resourceSearchLoading()"
               [disabled]="!enabled()"
-              >搜索</x-button
+              >{{ '$base.search' | xI18n }}</x-button
             >
             <x-button
               icon="fto-refresh-cw"
@@ -88,7 +88,7 @@
               (click)="resourceAction('reset')"
               [loading]="resourceResetLoading()"
               [disabled]="!enabled()"
-              >重置</x-button
+              >{{ '$base.reset' | xI18n }}</x-button
             >
           </div>
           <x-button
@@ -98,7 +98,7 @@
             attrType="button"
             (click)="resourceAction('add')"
             [disabled]="!enabled()"
-            >新增</x-button
+            >{{ '$base.add' | xI18n }}</x-button
           >
         </div>
       </form>
@@ -126,19 +126,19 @@
             [app-auth]="'permission-view'"
             type="primary"
             (click)="resourceAction('permission', row)"
-            >许可</x-link
+            >{{ '$permission.permission' | xI18n }}</x-link
           >
           <x-link
             [app-auth]="'resource-update'"
             type="primary"
             (click)="resourceAction('edit', row)"
-            >修改</x-link
+            >{{ '$base.edit' | xI18n }}</x-link
           >
           <x-link
             [app-auth]="'resource-delete'"
             type="danger"
             (click)="resourceAction('delete', row)"
-            >删除</x-link
+            >{{ '$base.delete' | xI18n }}</x-link
           >
         </div>
       </ng-template>

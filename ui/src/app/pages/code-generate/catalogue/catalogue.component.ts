@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {
   XCascadeComponent,
   XCascadeNode,
+  XI18nPipe,
+  XI18nService,
   XIconComponent,
   XInputNumberComponent,
   XRadioComponent,
@@ -34,7 +36,8 @@ import { Observable, Subject, finalize, takeUntil, tap } from 'rxjs';
     XTextareaComponent,
     XIconComponent,
     XTooltipDirective,
-    XCascadeComponent
+    XCascadeComponent,
+    XI18nPipe
   ],
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss']
@@ -52,6 +55,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   private variable = inject(VariableService);
   private fb = inject(FormBuilder);
   private message = inject(XMessageService);
+  private i18n = inject(XI18nService);
 
   id = signal('');
   resourceId = signal('');
@@ -62,16 +66,16 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   variableList = signal<XCascadeNode[]>([]);
 
   title = computed(() => {
-    if (this.type() === 'add-root') return '添加根节点';
-    if (this.type() === 'add-child') return '添加子节点';
-    if (this.type() === 'edit') return '修改节点';
+    if (this.type() === 'add-root') return this.i18n.L('$codeGenerate.addRootNode');
+    if (this.type() === 'add-child') return this.i18n.L('$codeGenerate.addSubNode');
+    if (this.type() === 'edit') return this.i18n.L('$codeGenerate.editNode');
     return '';
   });
 
   get typeName() {
     const { type } = this.form.getRawValue();
-    if (type === 'Folder') return '文件夹名称';
-    else if (type === 'File') return '文件名称';
+    if (type === 'Folder') return this.i18n.L('$codeGenerate.pleaseInputFolderName');
+    else if (type === 'File') return this.i18n.L('$codeGenerate.pleaseInputFileName');
     return '';
   }
 

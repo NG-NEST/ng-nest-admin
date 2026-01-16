@@ -3,9 +3,9 @@
     <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
       <div class="buttons" [style.marginTop.px]="0">
         <div>
-          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()"
-            >刷新</x-button
-          >
+          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()">{{
+            '$base.refresh' | xI18n
+          }}</x-button>
         </div>
         <x-button
           type="primary"
@@ -13,7 +13,7 @@
           type="danger"
           attrType="button"
           (click)="action('clear-all')"
-          >删除所有缓存</x-button
+          >{{ '$cache.deleteAll' | xI18n }}</x-button
         >
       </div>
     </form>
@@ -42,16 +42,18 @@
     </ng-template>
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
-        <x-link [app-auth]="'cache-view'" type="primary" (click)="action('view', row)">查看</x-link>
+        <x-link [app-auth]="'cache-view'" type="primary" (click)="action('view', row)">{{
+          '$base.info' | xI18n
+        }}</x-link>
         <x-link [app-auth]="'cache-delete'" type="danger" (click)="action('delete', row)">
-          删除
+          {{ '$base.delete' | xI18n }}
         </x-link>
       </div>
     </ng-template>
     <ng-template #keysTpl let-column="$column" let-row="$row">
       <div class="keys">
         <x-button size="small" text type="primary" (click)="action('view', row)">
-          {{ row.keys.length }}条
+          {{ row.keys.length }} {{ '$cache.items' | xI18n }}
         </x-button>
       </div>
     </ng-template>

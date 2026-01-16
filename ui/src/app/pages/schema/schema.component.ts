@@ -14,6 +14,7 @@ import { XInputComponent } from '@ng-nest/ui/input';
 import { XButtonComponent } from '@ng-nest/ui/button';
 import { XLoadingComponent } from '@ng-nest/ui/loading';
 import { XLinkComponent } from '@ng-nest/ui/link';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-schema',
@@ -25,6 +26,7 @@ import { XLinkComponent } from '@ng-nest/ui/link';
     XLoadingComponent,
     XTableComponent,
     XLinkComponent,
+    XI18nPipe,
     AppAuthDirective
   ],
   templateUrl: './schema.component.html',
@@ -37,6 +39,7 @@ export class SchemaComponent {
   message = inject(XMessageService);
   messageBox = inject(XMessageBoxService);
   dialog = inject(XDialogService);
+  i18n = inject(XI18nService);
 
   searchForm = this.fb.group({
     name: [null],
@@ -44,13 +47,13 @@ export class SchemaComponent {
   });
 
   columns = signal<XTableColumn[]>([
-    { id: 'index', type: 'index', left: 0, label: BaseDescription.Index, width: 70 },
-    { id: 'name', label: SchemaDescription.Name, width: 200, left: 70 },
-    { id: 'code', label: SchemaDescription.Code },
-    { id: 'version', label: SchemaDescription.Version, width: 100 },
-    { id: 'createdAt', label: BaseDescription.CreatedAt, width: 180 },
-    { id: 'updatedAt', label: BaseDescription.UpdatedAt, width: 180 },
-    { id: 'operate', label: BaseDescription.Operate, width: 160, right: 0 }
+    { id: 'index', type: 'index', left: 0, label: this.i18n.L(BaseDescription.Index), width: 70 },
+    { id: 'name', label: this.i18n.L(SchemaDescription.Name), width: 200, left: 70 },
+    { id: 'code', label: this.i18n.L(SchemaDescription.Code) },
+    { id: 'version', label: this.i18n.L(SchemaDescription.Version), width: 100 },
+    { id: 'createdAt', label: this.i18n.L(BaseDescription.CreatedAt), width: 180 },
+    { id: 'updatedAt', label: this.i18n.L(BaseDescription.UpdatedAt), width: 180 },
+    { id: 'operate', label: this.i18n.L(BaseDescription.Operate), width: 160, right: 0 }
   ]);
 
   total = signal(0);
@@ -161,8 +164,8 @@ export class SchemaComponent {
       case 'delete':
         if (!schema) return;
         this.messageBox.confirm({
-          title: '删除数据结构',
-          content: `确认删除此数据结构吗？ [${schema.name}]`,
+          title: this.i18n.L('$schema.deleteSchema'),
+          content: `${this.i18n.L('$schema.sureToDeleteSchema')} [${schema.name}]`,
           type: 'warning',
           callback: (data: XMessageBoxAction) => {
             if (data !== 'confirm') return;

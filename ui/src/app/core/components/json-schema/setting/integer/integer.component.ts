@@ -10,6 +10,7 @@ import { XIconComponent } from '@ng-nest/ui/icon';
 import { XSelectComponent } from '@ng-nest/ui/select';
 import { XInputNumberComponent } from '@ng-nest/ui/input-number';
 import { XCheckboxComponent } from '@ng-nest/ui/checkbox';
+import { XI18nPipe } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-integer',
@@ -21,7 +22,8 @@ import { XCheckboxComponent } from '@ng-nest/ui/checkbox';
     XInputNumberComponent,
     XCheckboxComponent,
     XTooltipDirective,
-    XIconComponent
+    XIconComponent,
+    XI18nPipe
   ],
   templateUrl: './integer.component.html',
   styleUrls: ['./integer.component.scss']

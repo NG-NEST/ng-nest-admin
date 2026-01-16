@@ -2,15 +2,19 @@
   <form [formGroup]="form">
     <div class="group enum-const">
       <div class="item">
-        <label>枚举</label>
+        <label>{{ '$schema.enum' | xI18n }}</label>
         <x-switch formControlName="isEnum" (ngModelChange)="onIsEnumChange($event)"></x-switch>
       </div>
       <div class="item">
-        <label>常量</label>
+        <label>{{ '$schema.const' | xI18n }}</label>
         <div class="const">
           <x-switch formControlName="isConst" (ngModelChange)="onIsConstChange($event)"></x-switch>
           @if (isConst) {
-            <x-input class="const-input" placeholder="常量值" formControlName="const"></x-input>
+            <x-input
+              class="const-input"
+              [placeholder]="'$schema.constPlaceholder' | xI18n"
+              formControlName="const"
+            ></x-input>
           }
         </div>
       </div>
@@ -19,20 +23,20 @@
       <div class="group enums">
         <table formArrayName="enums" class="enum-table">
           <tr>
-            <td>枚举值</td>
-            <td>说明</td>
+            <td>{{ '$schema.enumValue' | xI18n }}</td>
+            <td>{{ '$schema.description' | xI18n }}</td>
             <td width="75"></td>
           </tr>
           @for (item of enumFormArray.controls; track item) {
             <tr [formGroupName]="$index">
               <td>
-                <x-input placeholder="枚举值" formControlName="value"></x-input>
+                <x-input [placeholder]="'$schema.enumValuePlaceholder' | xI18n" formControlName="value"></x-input>
               </td>
               <td>
-                <x-input placeholder="说明" formControlName="description"></x-input>
+                <x-input [placeholder]="'$base.pleaseInputDescription' | xI18n" formControlName="description"></x-input>
               </td>
               <td>
-                <a x-tooltip content="添加相邻值" class="add-enum" (click)="addEnumRow($index)">
+                <a x-tooltip [content]="'$schema.addNeighbor' | xI18n" class="add-enum" (click)="addEnumRow($index)">
                   <x-icon type="fto-plus-circle"></x-icon>
                 </a>
                 @if (enumFormArray.controls.length !== 1) {
@@ -48,40 +52,43 @@
     }
     <div class="group">
       <div class="item">
-        <label>format</label>
+        <label>{{ '$schema.format' | xI18n }}</label>
         <x-select formControlName="format" [data]="formats"> </x-select>
       </div>
       <div class="item">
-        <label>行为</label>
+        <label>{{ '$schema.behavior' | xI18n }}</label>
         <x-select formControlName="behavior" [data]="behaviors"> </x-select>
       </div>
       <div class="item">
-        <label>最小长度</label>
+        <label>{{ '$schema.minLength' | xI18n }}</label>
         <x-input-number [min]="0" placeholder=">=0" formControlName="minLength"></x-input-number>
       </div>
       <div class="item">
-        <label>最大长度</label>
+        <label>{{ '$schema.maxLength' | xI18n }}</label>
         <x-input-number [min]="0" placeholder=">=0" formControlName="maxLength"></x-input-number>
       </div>
       <div class="item">
-        <label>默认值</label>
+        <label>{{ '$schema.default' | xI18n }}</label>
         <x-input
           formControlName="default"
-          placeholder="默认值"
+          [placeholder]="'$schema.defaultPlaceholder' | xI18n"
           search
           allowInput
           multiple
         ></x-input>
       </div>
       <div class="item">
-        <label>pattern</label>
+        <label>{{ '$schema.pattern' | xI18n }}</label>
         <x-input formControlName="pattern" placeholder="^[A-Za-z0-9]+"></x-input>
       </div>
     </div>
     <div class="group one">
       <div class="item">
-        <label>示例值</label>
-        <x-select formControlName="examples" placeholder="示例值"></x-select>
+        <label>{{ '$schema.example' | xI18n }}</label>
+        <x-select
+          formControlName="examples"
+          [placeholder]="'$schema.examplePlaceholder' | xI18n"
+        ></x-select>
       </div>
     </div>
   </form>

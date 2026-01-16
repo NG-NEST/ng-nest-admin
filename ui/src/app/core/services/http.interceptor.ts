@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { XMessageRef, XMessageService } from '@ng-nest/ui/message';
+import { XI18nService } from '@ng-nest/ui/i18n';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { AppAuthService } from './auth.service';
 import { isString } from 'lodash-es';
@@ -19,6 +20,7 @@ export function AppNoopInterceptor(
 ): Observable<HttpEvent<unknown>> {
   const message = inject(XMessageService);
   const auth = inject(AppAuthService);
+  const i18n = inject(XI18nService);
   let headers: { [key: string]: string } = {};
   let addTokens = ['graphql', 'api'];
   let spt = request.url.split('/');
@@ -53,7 +55,7 @@ export function AppNoopInterceptor(
       return x;
     }),
     catchError((x: HttpErrorResponse) => {
-      let msg = '请求异常';
+      let msg = i18n.translate('$base.requestError');
       let error = x.error;
       if (isString(error)) {
         try {

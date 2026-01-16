@@ -12,11 +12,13 @@ import { PermissionSelectOutput } from './select.output';
 import { HttpClient } from '@angular/common/http';
 import { PermissionSelectInput } from './select.input';
 import { PermessionSaveManyInput } from './save-many.input';
+import { XI18nService } from '@ng-nest/ui/i18n';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
   apollo = inject(Apollo);
   http = inject(HttpClient);
+  i18n = inject(XI18nService);
 
   permission(id: string): Observable<Permission> {
     return this.apollo
@@ -89,24 +91,24 @@ export class PermissionService {
   create(input: PermissionCreateInput): Observable<string> {
     return this.http
       .post('/api/permission', input)
-      .pipe(map(() => PermissionMessage.CreatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$permission.${PermissionMessage.CreatedSuccess}`)));
   }
 
   update(input: PermissionUpdateInput): Observable<string> {
     return this.http
       .patch(`/api/permission`, input)
-      .pipe(map(() => PermissionMessage.UpdatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$permission.${PermissionMessage.UpdatedSuccess}`)));
   }
 
   delete(id: string): Observable<string> {
     return this.http
       .delete(`/api/permission/${id}`)
-      .pipe(map(() => PermissionMessage.DeletedSuccess));
+      .pipe(map(() => this.i18n.translate(`$permission.${PermissionMessage.DeletedSuccess}`)));
   }
 
   saveMany(input: PermessionSaveManyInput): Observable<string> {
     return this.http
       .post(`/api/permission/many`, input)
-      .pipe(map(() => PermissionMessage.UpdatedSuccess));
+      .pipe(map(() => this.i18n.translate(`$permission.${PermissionMessage.UpdatedSuccess}`)));
   }
 }

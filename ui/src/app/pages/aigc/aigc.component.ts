@@ -6,7 +6,7 @@ import { AuthService } from '@ui/api';
 import { AppAuthService, AppPrismService } from '@ui/core';
 import { XStorageService } from '@ng-nest/ui/core';
 import { Router } from '@angular/router';
-import { XI18nService } from '@ng-nest/ui/i18n';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui/i18n';
 import { XTextareaComponent } from '@ng-nest/ui/textarea';
 import { Socket, io } from 'socket.io-client';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -36,7 +36,8 @@ export const flyInBottom = [
     XButtonComponent,
     XIconComponent,
     XSliderComponent,
-    XSelectComponent
+    XSelectComponent,
+    XI18nPipe
   ],
   templateUrl: './aigc.component.html',
   styleUrls: ['./aigc.component.scss'],
@@ -100,6 +101,11 @@ export class AigcComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit() {
+    this.source.forEach((x) => {
+      x.name = this.i18n.translate(`$ai.${x.type}`);
+    });
+    this.slideData.set(this.source.map((x) => ({ label: x.name, id: x.type, data: x })));
+    this.activeSource.set(this.source[0]);
     this.form = this.fb.group({ content: [''] });
     this.createSocket();
   }

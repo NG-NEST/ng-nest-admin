@@ -17,6 +17,7 @@ import { Permission, ResourceService, RoleService, SubjectService } from '@ui/ap
 import { Observable, Subject, finalize, forkJoin, mergeMap, of, tap } from 'rxjs';
 import { XCheckboxComponent } from '@ng-nest/ui/checkbox';
 import { AppAuthService } from '@ui/core';
+import { XI18nPipe, XI18nService } from '@ng-nest/ui';
 
 @Component({
   selector: 'app-role-permission',
@@ -27,7 +28,8 @@ import { AppAuthService } from '@ui/core';
     XSelectComponent,
     XDialogModule,
     XTableComponent,
-    XCheckboxComponent
+    XCheckboxComponent,
+    XI18nPipe
   ],
   templateUrl: './role-permission.component.html',
   styleUrls: ['./role-permission.component.scss']
@@ -40,6 +42,7 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   message = inject(XMessageService);
   auth = inject(AppAuthService);
+  i18n = inject(XI18nService);
 
   dialogRef = inject(XDialogRef<RolePermissionComponent>);
   id = signal('');
@@ -51,8 +54,8 @@ export class RolePermissionComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
   columns = signal<XTableColumn[]>([
-    { id: 'name', label: '资源', type: 'expand', width: 200 },
-    { id: 'permissions', label: '许可', flex: 1 }
+    { id: 'name', label: this.i18n.L('$role.resource'), type: 'expand', width: 200 },
+    { id: 'permissions', label: this.i18n.L('$role.permission'), flex: 1 }
   ]);
 
   resources = signal<

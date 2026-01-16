@@ -3,7 +3,7 @@
     <form class="app-search-form" [formGroup]="searchForm" (ngSubmit)="action('search')">
       <div class="list">
         <div class="item">
-          <label>数据定义：</label>
+          <label>{{ '$schema.dataDefine' | xI18n }}</label>
           <x-cascade
             [data]="schemaList()"
             nodeTrigger="hover"
@@ -14,9 +14,9 @@
       </div>
       <div class="buttons">
         <div>
-          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()"
-            >刷新</x-button
-          >
+          <x-button icon="fto-refresh-cw" attrType="submit" [loading]="searchLoading()">{{
+            '$base.refresh' | xI18n
+          }}</x-button>
         </div>
         <x-button
           [app-auth]="'schema-data-create'"
@@ -24,7 +24,7 @@
           icon="fto-plus"
           attrType="button"
           (click)="action('add')"
-          >新增</x-button
+          >{{ '$base.add' | xI18n }}</x-button
         >
       </div>
     </form>
@@ -53,10 +53,10 @@
     <ng-template #operateTpl let-column="$column" let-row="$row">
       <div class="operate">
         <x-link [app-auth]="'schema-data-update'" type="primary" (click)="action('edit', row)">
-          修改
+          {{ '$base.edit' | xI18n }}
         </x-link>
         <x-link [app-auth]="'schema-data-delete'" type="danger" (click)="action('delete', row)">
-          删除
+          {{ '$base.delete' | xI18n }}
         </x-link>
       </div>
     </ng-template>
@@ -70,7 +70,7 @@
               [title]="row[column.id] | json"
               (click)="action('view-json-schema', row[column.id])"
             >
-              查看 JsonSchema
+              {{ '$codeGenerate.viewJsonSchema' | xI18n }}
             </x-link>
           } @else {
             <x-link
@@ -78,14 +78,14 @@
               [title]="row[column.id] | json"
               (click)="action('view-json', row[column.id])"
             >
-              查看 Json
+              {{ '$codeGenerate.viewJson' | xI18n }}
             </x-link>
           }
         }
         @case ('array') {
           <div class="keys">
             <x-link type="primary" x-tooltip [content]="row[column.id] | json">
-              {{ row[column.id]?.length }}条
+              {{ row[column.id]?.length }}{{ '$base.items' | xI18n }}
             </x-link>
           </div>
         }
