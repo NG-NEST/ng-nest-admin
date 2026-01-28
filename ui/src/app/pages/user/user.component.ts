@@ -66,7 +66,7 @@ export class UserComponent {
     { id: 'roles', label: this.i18n.L(`$role.${RoleDescription.Role}`) },
     { id: 'email', label: this.i18n.L(`$user.${UserDescription.Email}`) },
     { id: 'phone', label: this.i18n.L(`$user.${UserDescription.Phone}`), width: 160 },
-    { id: 'operate', label: BaseDescription.Operate, width: 200, right: 0 }
+    { id: 'operate', label: this.i18n.L(`$base.${BaseDescription.Operate}`), width: 200, right: 0 }
   ]);
 
   total = signal(0);

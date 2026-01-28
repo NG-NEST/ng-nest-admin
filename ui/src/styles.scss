@@ -141,6 +141,7 @@ input {
 
     label {
       white-space: nowrap;
+      margin-right: 0.5rem;
     }
   }
 
@@ -215,6 +216,7 @@ input {
         width: 8.625rem;
         line-height: 2.25rem;
         text-align: right;
+        margin-right: 0.5rem;
       }
 
       &.required {

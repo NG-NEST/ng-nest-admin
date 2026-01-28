@@ -1,6 +1,6 @@
 {
   "locale": "en_US",
-  "header": {
+  "$header": {
     "theme": "Theme Configuration",
     "colors": "Colors",
     "primary": "Primary Color",
@@ -15,7 +15,8 @@
     "fontSize": "Font Size",
     "borderWidth": "Border Width",
     "borderRadius": "Border Radius",
-    "borderSmallRadius": "Small Border Radius"
+    "borderSmallRadius": "Small Border Radius",
+    "exit": "Exit System"
   },
   "$base": {
     "yes": "Yes",
@@ -168,6 +169,7 @@
     "deletedSuccess": "Delete Prompt Success"
   },
   "$role": {
+    "role": "Role",
     "add": "Add Role",
     "edit": "Edit Role",
     "name": "Role Name",

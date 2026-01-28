@@ -4,7 +4,7 @@
 </ng-template>
 
 <div class="right">
-  <x-button (click)="onTheme()" [title]="'header.theme' | xI18n" icon="eao-color-palette" text></x-button>
+  <x-button (click)="onTheme()" [title]="'$header.theme' | xI18n" icon="eao-color-palette" text></x-button>
   <x-dropdown
     [data]="userMenu()"
     trigger="click"

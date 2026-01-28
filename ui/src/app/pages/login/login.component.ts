@@ -69,8 +69,8 @@ export class LoginComponent {
   form!: FormGroup;
 
   langs = [
-    { label: 'zh_CN', id: 'zh_CN' },
-    { label: 'en_US', id: 'en_US' }
+    { label: '简体中文', id: 'zh_CN' },
+    { label: 'English', id: 'en_US' }
   ];
 
   ngOnInit() {

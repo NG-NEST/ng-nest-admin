@@ -1,6 +1,6 @@
 <form [formGroup]="formGroup" class="app-dialog-form">
   <h4 x-dialog-title class="title">
-    <span>{{ 'header.theme' | xI18n }}</span>
+    <span>{{ '$header.theme' | xI18n }}</span>
     <x-switch
       [ngModelOptions]="{ standalone: true }"
       [checkedText]="moonTpl"
@@ -18,41 +18,41 @@
   <x-button x-dialog-close class="close" icon="fto-x" size="large" flat text></x-button>
   <div x-dialog-content class="content">
     <div formGroupName="colors" class="app-theme-category">
-      <div class="item category">{{ 'header.colors' | xI18n }}</div>
+      <div class="item category">{{ '$header.colors' | xI18n }}</div>
       <div class="item">
         <x-color-picker
-          [label]="'header.primary' | xI18n"
+          [label]="'$header.primary' | xI18n"
           formControlName="primary"
         ></x-color-picker>
-        <x-color-picker [label]="'header.text' | xI18n" formControlName="text"></x-color-picker>
+        <x-color-picker [label]="'$header.text' | xI18n" formControlName="text"></x-color-picker>
       </div>
       <div class="item">
         <x-color-picker
-          [label]="'header.success' | xI18n"
+          [label]="'$header.success' | xI18n"
           formControlName="success"
         ></x-color-picker>
         <x-color-picker
-          [label]="'header.warning' | xI18n"
+          [label]="'$header.warning' | xI18n"
           formControlName="warning"
         ></x-color-picker>
       </div>
       <div class="item">
-        <x-color-picker [label]="'header.danger' | xI18n" formControlName="danger"></x-color-picker>
-        <x-color-picker [label]="'header.info' | xI18n" formControlName="info"></x-color-picker>
+        <x-color-picker [label]="'$header.danger' | xI18n" formControlName="danger"></x-color-picker>
+        <x-color-picker [label]="'$header.info' | xI18n" formControlName="info"></x-color-picker>
       </div>
       <div class="item border-bottom">
         <x-color-picker
-          [label]="'header.background' | xI18n"
+          [label]="'$header.background' | xI18n"
           formControlName="background"
         ></x-color-picker>
-        <x-color-picker [label]="'header.border' | xI18n" formControlName="border"></x-color-picker>
+        <x-color-picker [label]="'$header.border' | xI18n" formControlName="border"></x-color-picker>
       </div>
     </div>
     <div formGroupName="vars" class="app-theme-category">
-      <div class="item category">{{ 'header.other' | xI18n }}</div>
+      <div class="item category">{{ '$header.other' | xI18n }}</div>
       <div class="item">
         <x-radio
-          [label]="'header.fontSize' | xI18n"
+          [label]="'$header.fontSize' | xI18n"
           formControlName="fontSize"
           [data]="[
             { id: 0.75, label: '12px' },
@@ -63,7 +63,7 @@
       </div>
       <div class="item">
         <x-radio
-          [label]="'header.borderWidth' | xI18n"
+          [label]="'$header.borderWidth' | xI18n"
           [data]="[
             { id: 0.0625, label: '1px' },
             { id: 0.125, label: '2px' },
@@ -75,7 +75,7 @@
       <div class="item">
         <x-radio
           vertical
-          [label]="'header.borderRadius' | xI18n"
+          [label]="'$header.borderRadius' | xI18n"
           [data]="[
             { id: 0, label: '0px' },
             { id: 0.125, label: '2px' },
@@ -88,7 +88,7 @@
         ></x-radio>
         <x-radio
           vertical
-          [label]="'header.borderSmallRadius' | xI18n"
+          [label]="'$header.borderSmallRadius' | xI18n"
           [data]="[
             { id: 0, label: '0px' },
             { id: 0.125, label: '2px' },

@@ -36,7 +36,7 @@ export class TabsComponent {
   userMenu = computed(() => [
     {
       id: 'exit',
-      label: this.i18n.translate('$menu.exit')
+      label: this.i18n.translate('$header.exit')
     }
   ]);
 
